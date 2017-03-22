@@ -12,7 +12,7 @@ CPU=-mmcu=atmega328p
 COPT=-g -Os -Wall $(CPU) -c
 
 # Object files to link
-OBJS=main_program.o functions.o
+OBJS=main_program.o usart.o
 
 # specify port
 PORTN=$(shell type COMPORT.inc)
@@ -31,8 +31,8 @@ main_program.o: main_program.c main_header.h
 	avr-gcc $(COPT) main_program.c
 
 # Other function / functions (create one for each .c / .o files)
-functions.o: functions.c main_header.h
-	avr-gcc $(COPT) functions.c
+usart.o: usart.c main_header.h
+	avr-gcc $(COPT) usart.c
 
 # Clean the working directory: remove unncessary iles
 CLEAN: 
