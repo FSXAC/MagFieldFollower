@@ -1,4 +1,5 @@
 // include libararies
+#define F_CPU 16000000UL
 #include <avr/io.h>
 #include <stdio.h>
 #include <util/delay.h>
@@ -29,6 +30,7 @@ void loop(void) {
     // blink some LEDs on pin 14 for me fam
     PORTB &= (~0x01);
     delay(1000);
-    PORTB |= ~0x01;
+    PORTB |= 0x01;
     delay(1000);
+    printf("THE END IS NEVER ");
 }
