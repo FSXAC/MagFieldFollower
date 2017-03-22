@@ -12,6 +12,8 @@
 #define RX_START() UCSR0B |= _BV(RXEN0)  // Enable RX
 #define RX_STOP()  UCSR0B &= ~_BV(RXEN0) // Disable RX
 
+// main functions
+
 // usart function prototypes for serial
 void usart_init(void);
 char usart_getchar( void );
@@ -19,3 +21,23 @@ void usart_putchar( char data );
 void usart_pstr(char *s);
 unsigned char usart_kbhit(void);
 int usart_putchar_printf(char var, FILE *stream);
+
+// program starts here
+int main(void) {setup(); while (1) loop();}
+
+// runs once
+void setup(void) {
+    int j;
+
+    // initialize usart
+    usart_init();
+    printf("Hello World!\n");
+
+    // print some numbers
+    for (j = 0; j<10; j++) printf("square(j)=%d\n", j*j);
+}
+
+// runs forever
+void loop(void) {
+    // do nothing
+}
