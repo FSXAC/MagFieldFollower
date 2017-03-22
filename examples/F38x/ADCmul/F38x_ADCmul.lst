@@ -1,0 +1,920 @@
+0000              1   ;--------------------------------------------------------
+0000              2   ; File Created by C51
+0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
+0000              4   ; This file was generated Wed Mar 01 14:21:45 2017
+0000              5   ;--------------------------------------------------------
+                  5   $name F38x_ADCmul
+                  6   $optc51 --model-small
+                  7   $printf_float
+0000              9            R_DSEG    segment data
+0000             10            R_CSEG    segment code
+0000             11            R_BSEG    segment bit
+0000             12            R_XSEG    segment xdata
+0000             13            R_PSEG    segment xdata
+0000             14            R_ISEG    segment idata
+0000             15            R_OSEG    segment data overlay
+0000             16            BIT_BANK  segment data overlay
+0000             17            R_HOME    segment code
+0000             18            R_GSINIT  segment code
+0000             19            R_IXSEG   segment xdata
+0000             20            R_CONST   segment code
+0000             21            R_XINIT   segment code
+0000             22            R_DINIT   segment code
+0000             23   
+0000             24   ;--------------------------------------------------------
+0000             25   ; Public variables in this module
+0000             26   ;--------------------------------------------------------
+0000             27            public _InitPinADC_PARM_2
+0000             28            public _main
+0000             29            public _Volts_at_Pin
+0000             30            public _ADC_at_Pin
+0000             31            public _InitPinADC
+0000             32            public _InitADC
+0000             33            public _waitms
+0000             34            public _Timer3us
+0000             35            public __c51_external_startup
+0000             36   ;--------------------------------------------------------
+0000             37   ; Special Function Registers
+0000             38   ;--------------------------------------------------------
+0000             39   _P0             DATA 0x80
+0000             40   _SP             DATA 0x81
+0000             41   _DPL            DATA 0x82
+0000             42   _DPH            DATA 0x83
+0000             43   _EMI0TC         DATA 0x84
+0000             44   _EMI0CF         DATA 0x85
+0000             45   _OSCLCN         DATA 0x86
+0000             46   _PCON           DATA 0x87
+0000             47   _TCON           DATA 0x88
+0000             48   _TMOD           DATA 0x89
+0000             49   _TL0            DATA 0x8a
+0000             50   _TL1            DATA 0x8b
+0000             51   _TH0            DATA 0x8c
+0000             52   _TH1            DATA 0x8d
+0000             53   _CKCON          DATA 0x8e
+0000             54   _PSCTL          DATA 0x8f
+0000             55   _P1             DATA 0x90
+0000             56   _TMR3CN         DATA 0x91
+0000             57   _TMR4CN         DATA 0x91
+0000             58   _TMR3RLL        DATA 0x92
+0000             59   _TMR4RLL        DATA 0x92
+0000             60   _TMR3RLH        DATA 0x93
+0000             61   _TMR4RLH        DATA 0x93
+0000             62   _TMR3L          DATA 0x94
+0000             63   _TMR4L          DATA 0x94
+0000             64   _TMR3H          DATA 0x95
+0000             65   _TMR4H          DATA 0x95
+0000             66   _USB0ADR        DATA 0x96
+0000             67   _USB0DAT        DATA 0x97
+0000             68   _SCON           DATA 0x98
+0000             69   _SCON0          DATA 0x98
+0000             70   _SBUF           DATA 0x99
+0000             71   _SBUF0          DATA 0x99
+0000             72   _CPT1CN         DATA 0x9a
+0000             73   _CPT0CN         DATA 0x9b
+0000             74   _CPT1MD         DATA 0x9c
+0000             75   _CPT0MD         DATA 0x9d
+0000             76   _CPT1MX         DATA 0x9e
+0000             77   _CPT0MX         DATA 0x9f
+0000             78   _P2             DATA 0xa0
+0000             79   _SPI0CFG        DATA 0xa1
+0000             80   _SPI0CKR        DATA 0xa2
+0000             81   _SPI0DAT        DATA 0xa3
+0000             82   _P0MDOUT        DATA 0xa4
+0000             83   _P1MDOUT        DATA 0xa5
+0000             84   _P2MDOUT        DATA 0xa6
+0000             85   _P3MDOUT        DATA 0xa7
+0000             86   _IE             DATA 0xa8
+0000             87   _CLKSEL         DATA 0xa9
+0000             88   _EMI0CN         DATA 0xaa
+0000             89   __XPAGE         DATA 0xaa
+0000             90   _SBCON1         DATA 0xac
+0000             91   _P4MDOUT        DATA 0xae
+0000             92   _PFE0CN         DATA 0xaf
+0000             93   _P3             DATA 0xb0
+0000             94   _OSCXCN         DATA 0xb1
+0000             95   _OSCICN         DATA 0xb2
+0000             96   _OSCICL         DATA 0xb3
+0000             97   _SBRLL1         DATA 0xb4
+0000             98   _SBRLH1         DATA 0xb5
+0000             99   _FLSCL          DATA 0xb6
+0000            100   _FLKEY          DATA 0xb7
+0000            101   _IP             DATA 0xb8
+0000            102   _CLKMUL         DATA 0xb9
+0000            103   _SMBTC          DATA 0xb9
+0000            104   _AMX0N          DATA 0xba
+0000            105   _AMX0P          DATA 0xbb
+0000            106   _ADC0CF         DATA 0xbc
+0000            107   _ADC0L          DATA 0xbd
+0000            108   _ADC0H          DATA 0xbe
+0000            109   _SFRPAGE        DATA 0xbf
+0000            110   _SMB0CN         DATA 0xc0
+0000            111   _SMB1CN         DATA 0xc0
+0000            112   _SMB0CF         DATA 0xc1
+0000            113   _SMB1CF         DATA 0xc1
+0000            114   _SMB0DAT        DATA 0xc2
+0000            115   _SMB1DAT        DATA 0xc2
+0000            116   _ADC0GTL        DATA 0xc3
+0000            117   _ADC0GTH        DATA 0xc4
+0000            118   _ADC0LTL        DATA 0xc5
+0000            119   _ADC0LTH        DATA 0xc6
+0000            120   _P4             DATA 0xc7
+0000            121   _TMR2CN         DATA 0xc8
+0000            122   _TMR5CN         DATA 0xc8
+0000            123   _REG01CN        DATA 0xc9
+0000            124   _TMR2RLL        DATA 0xca
+0000            125   _TMR5RLL        DATA 0xca
+0000            126   _TMR2RLH        DATA 0xcb
+0000            127   _TMR5RLH        DATA 0xcb
+0000            128   _TMR2L          DATA 0xcc
+0000            129   _TMR5L          DATA 0xcc
+0000            130   _TMR2H          DATA 0xcd
+0000            131   _TMR5H          DATA 0xcd
+0000            132   _SMB0ADM        DATA 0xce
+0000            133   _SMB1ADM        DATA 0xce
+0000            134   _SMB0ADR        DATA 0xcf
+0000            135   _SMB1ADR        DATA 0xcf
+0000            136   _PSW            DATA 0xd0
+0000            137   _REF0CN         DATA 0xd1
+0000            138   _SCON1          DATA 0xd2
+0000            139   _SBUF1          DATA 0xd3
+0000            140   _P0SKIP         DATA 0xd4
+0000            141   _P1SKIP         DATA 0xd5
+0000            142   _P2SKIP         DATA 0xd6
+0000            143   _USB0XCN        DATA 0xd7
+0000            144   _PCA0CN         DATA 0xd8
+0000            145   _PCA0MD         DATA 0xd9
+0000            146   _PCA0CPM0       DATA 0xda
+0000            147   _PCA0CPM1       DATA 0xdb
+0000            148   _PCA0CPM2       DATA 0xdc
+0000            149   _PCA0CPM3       DATA 0xdd
+0000            150   _PCA0CPM4       DATA 0xde
+0000            151   _P3SKIP         DATA 0xdf
+0000            152   _ACC            DATA 0xe0
+0000            153   _XBR0           DATA 0xe1
+0000            154   _XBR1           DATA 0xe2
+0000            155   _XBR2           DATA 0xe3
+0000            156   _IT01CF         DATA 0xe4
+0000            157   _CKCON1         DATA 0xe4
+0000            158   _SMOD1          DATA 0xe5
+0000            159   _EIE1           DATA 0xe6
+0000            160   _EIE2           DATA 0xe7
+0000            161   _ADC0CN         DATA 0xe8
+0000            162   _PCA0CPL1       DATA 0xe9
+0000            163   _PCA0CPH1       DATA 0xea
+0000            164   _PCA0CPL2       DATA 0xeb
+0000            165   _PCA0CPH2       DATA 0xec
+0000            166   _PCA0CPL3       DATA 0xed
+0000            167   _PCA0CPH3       DATA 0xee
+0000            168   _RSTSRC         DATA 0xef
+0000            169   _B              DATA 0xf0
+0000            170   _P0MDIN         DATA 0xf1
+0000            171   _P1MDIN         DATA 0xf2
+0000            172   _P2MDIN         DATA 0xf3
+0000            173   _P3MDIN         DATA 0xf4
+0000            174   _P4MDIN         DATA 0xf5
+0000            175   _EIP1           DATA 0xf6
+0000            176   _EIP2           DATA 0xf7
+0000            177   _SPI0CN         DATA 0xf8
+0000            178   _PCA0L          DATA 0xf9
+0000            179   _PCA0H          DATA 0xfa
+0000            180   _PCA0CPL0       DATA 0xfb
+0000            181   _PCA0CPH0       DATA 0xfc
+0000            182   _PCA0CPL4       DATA 0xfd
+0000            183   _PCA0CPH4       DATA 0xfe
+0000            184   _VDM0CN         DATA 0xff
+0000            185   _DPTR           DATA 0x8382
+0000            186   _TMR2RL         DATA 0xcbca
+0000            187   _TMR3RL         DATA 0x9392
+0000            188   _TMR4RL         DATA 0x9392
+0000            189   _TMR5RL         DATA 0xcbca
+0000            190   _TMR2           DATA 0xcdcc
+0000            191   _TMR3           DATA 0x9594
+0000            192   _TMR4           DATA 0x9594
+0000            193   _TMR5           DATA 0xcdcc
+0000            194   _SBRL1          DATA 0xb5b4
+0000            195   _ADC0           DATA 0xbebd
+0000            196   _ADC0GT         DATA 0xc4c3
+0000            197   _ADC0LT         DATA 0xc6c5
+0000            198   _PCA0           DATA 0xfaf9
+0000            199   _PCA0CP1        DATA 0xeae9
+0000            200   _PCA0CP2        DATA 0xeceb
+0000            201   _PCA0CP3        DATA 0xeeed
+0000            202   _PCA0CP0        DATA 0xfcfb
+0000            203   _PCA0CP4        DATA 0xfefd
+0000            204   ;--------------------------------------------------------
+0000            205   ; special function bits
+0000            206   ;--------------------------------------------------------
+0000            207   _P0_0           BIT 0x80
+0000            208   _P0_1           BIT 0x81
+0000            209   _P0_2           BIT 0x82
+0000            210   _P0_3           BIT 0x83
+0000            211   _P0_4           BIT 0x84
+0000            212   _P0_5           BIT 0x85
+0000            213   _P0_6           BIT 0x86
+0000            214   _P0_7           BIT 0x87
+0000            215   _TF1            BIT 0x8f
+0000            216   _TR1            BIT 0x8e
+0000            217   _TF0            BIT 0x8d
+0000            218   _TR0            BIT 0x8c
+0000            219   _IE1            BIT 0x8b
+0000            220   _IT1            BIT 0x8a
+0000            221   _IE0            BIT 0x89
+0000            222   _IT0            BIT 0x88
+0000            223   _P1_0           BIT 0x90
+0000            224   _P1_1           BIT 0x91
+0000            225   _P1_2           BIT 0x92
+0000            226   _P1_3           BIT 0x93
+0000            227   _P1_4           BIT 0x94
+0000            228   _P1_5           BIT 0x95
+0000            229   _P1_6           BIT 0x96
+0000            230   _P1_7           BIT 0x97
+0000            231   _S0MODE         BIT 0x9f
+0000            232   _SCON0_6        BIT 0x9e
+0000            233   _MCE0           BIT 0x9d
+0000            234   _REN0           BIT 0x9c
+0000            235   _TB80           BIT 0x9b
+0000            236   _RB80           BIT 0x9a
+0000            237   _TI0            BIT 0x99
+0000            238   _RI0            BIT 0x98
+0000            239   _SCON_6         BIT 0x9e
+0000            240   _MCE            BIT 0x9d
+0000            241   _REN            BIT 0x9c
+0000            242   _TB8            BIT 0x9b
+0000            243   _RB8            BIT 0x9a
+0000            244   _TI             BIT 0x99
+0000            245   _RI             BIT 0x98
+0000            246   _P2_0           BIT 0xa0
+0000            247   _P2_1           BIT 0xa1
+0000            248   _P2_2           BIT 0xa2
+0000            249   _P2_3           BIT 0xa3
+0000            250   _P2_4           BIT 0xa4
+0000            251   _P2_5           BIT 0xa5
+0000            252   _P2_6           BIT 0xa6
+0000            253   _P2_7           BIT 0xa7
+0000            254   _EA             BIT 0xaf
+0000            255   _ESPI0          BIT 0xae
+0000            256   _ET2            BIT 0xad
+0000            257   _ES0            BIT 0xac
+0000            258   _ET1            BIT 0xab
+0000            259   _EX1            BIT 0xaa
+0000            260   _ET0            BIT 0xa9
+0000            261   _EX0            BIT 0xa8
+0000            262   _P3_0           BIT 0xb0
+0000            263   _P3_1           BIT 0xb1
+0000            264   _P3_2           BIT 0xb2
+0000            265   _P3_3           BIT 0xb3
+0000            266   _P3_4           BIT 0xb4
+0000            267   _P3_5           BIT 0xb5
+0000            268   _P3_6           BIT 0xb6
+0000            269   _P3_7           BIT 0xb7
+0000            270   _IP_7           BIT 0xbf
+0000            271   _PSPI0          BIT 0xbe
+0000            272   _PT2            BIT 0xbd
+0000            273   _PS0            BIT 0xbc
+0000            274   _PT1            BIT 0xbb
+0000            275   _PX1            BIT 0xba
+0000            276   _PT0            BIT 0xb9
+0000            277   _PX0            BIT 0xb8
+0000            278   _MASTER0        BIT 0xc7
+0000            279   _TXMODE0        BIT 0xc6
+0000            280   _STA0           BIT 0xc5
+0000            281   _STO0           BIT 0xc4
+0000            282   _ACKRQ0         BIT 0xc3
+0000            283   _ARBLOST0       BIT 0xc2
+0000            284   _ACK0           BIT 0xc1
+0000            285   _SI0            BIT 0xc0
+0000            286   _MASTER1        BIT 0xc7
+0000            287   _TXMODE1        BIT 0xc6
+0000            288   _STA1           BIT 0xc5
+0000            289   _STO1           BIT 0xc4
+0000            290   _ACKRQ1         BIT 0xc3
+0000            291   _ARBLOST1       BIT 0xc2
+0000            292   _ACK1           BIT 0xc1
+0000            293   _SI1            BIT 0xc0
+0000            294   _TF2            BIT 0xcf
+0000            295   _TF2H           BIT 0xcf
+0000            296   _TF2L           BIT 0xce
+0000            297   _TF2LEN         BIT 0xcd
+0000            298   _TF2CEN         BIT 0xcc
+0000            299   _T2SPLIT        BIT 0xcb
+0000            300   _TR2            BIT 0xca
+0000            301   _T2CSS          BIT 0xc9
+0000            302   _T2XCLK         BIT 0xc8
+0000            303   _TF5H           BIT 0xcf
+0000            304   _TF5L           BIT 0xce
+0000            305   _TF5LEN         BIT 0xcd
+0000            306   _TMR5CN_4       BIT 0xcc
+0000            307   _T5SPLIT        BIT 0xcb
+0000            308   _TR5            BIT 0xca
+0000            309   _TMR5CN_1       BIT 0xc9
+0000            310   _T5XCLK         BIT 0xc8
+0000            311   _CY             BIT 0xd7
+0000            312   _AC             BIT 0xd6
+0000            313   _F0             BIT 0xd5
+0000            314   _RS1            BIT 0xd4
+0000            315   _RS0            BIT 0xd3
+0000            316   _OV             BIT 0xd2
+0000            317   _F1             BIT 0xd1
+0000            318   _PARITY         BIT 0xd0
+0000            319   _CF             BIT 0xdf
+0000            320   _CR             BIT 0xde
+0000            321   _PCA0CN_5       BIT 0xde
+0000            322   _CCF4           BIT 0xdc
+0000            323   _CCF3           BIT 0xdb
+0000            324   _CCF2           BIT 0xda
+0000            325   _CCF1           BIT 0xd9
+0000            326   _CCF0           BIT 0xd8
+0000            327   _ACC_7          BIT 0xe7
+0000            328   _ACC_6          BIT 0xe6
+0000            329   _ACC_5          BIT 0xe5
+0000            330   _ACC_4          BIT 0xe4
+0000            331   _ACC_3          BIT 0xe3
+0000            332   _ACC_2          BIT 0xe2
+0000            333   _ACC_1          BIT 0xe1
+0000            334   _ACC_0          BIT 0xe0
+0000            335   _AD0EN          BIT 0xef
+0000            336   _AD0TM          BIT 0xee
+0000            337   _AD0INT         BIT 0xed
+0000            338   _AD0BUSY        BIT 0xec
+0000            339   _AD0WINT        BIT 0xeb
+0000            340   _AD0CM2         BIT 0xea
+0000            341   _AD0CM1         BIT 0xe9
+0000            342   _AD0CM0         BIT 0xe8
+0000            343   _B_7            BIT 0xf7
+0000            344   _B_6            BIT 0xf6
+0000            345   _B_5            BIT 0xf5
+0000            346   _B_4            BIT 0xf4
+0000            347   _B_3            BIT 0xf3
+0000            348   _B_2            BIT 0xf2
+0000            349   _B_1            BIT 0xf1
+0000            350   _B_0            BIT 0xf0
+0000            351   _SPIF           BIT 0xff
+0000            352   _WCOL           BIT 0xfe
+0000            353   _MODF           BIT 0xfd
+0000            354   _RXOVRN         BIT 0xfc
+0000            355   _NSSMD1         BIT 0xfb
+0000            356   _NSSMD0         BIT 0xfa
+0000            357   _TXBMT          BIT 0xf9
+0000            358   _SPIEN          BIT 0xf8
+0000            359   ;--------------------------------------------------------
+0000            360   ; overlayable register banks
+0000            361   ;--------------------------------------------------------
+0000            362            rbank0 segment data overlay
+0000            363   ;--------------------------------------------------------
+0000            364   ; internal ram data
+0000            365   ;--------------------------------------------------------
+0000            366            rseg R_DSEG
+0000            367   _main_V_1_60:
+0000            368            ds 16
+0010            369   ;--------------------------------------------------------
+0010            370   ; overlayable items in internal ram 
+0010            371   ;--------------------------------------------------------
+0000            372            rseg    R_OSEG
+0000            373            rseg    R_OSEG
+0000            374   _InitPinADC_PARM_2:
+0000            375            ds 1
+0001            376            rseg    R_OSEG
+0001            377   ;--------------------------------------------------------
+0001            378   ; indirectly addressable internal ram data
+0001            379   ;--------------------------------------------------------
+0000            380            rseg R_ISEG
+0000            381   ;--------------------------------------------------------
+0000            382   ; absolute internal ram data
+0000            383   ;--------------------------------------------------------
+0000            384            DSEG
+0000            385   ;--------------------------------------------------------
+0000            386   ; bit data
+0000            387   ;--------------------------------------------------------
+0000            388            rseg R_BSEG
+0000            389   ;--------------------------------------------------------
+0000            390   ; paged external ram data
+0000            391   ;--------------------------------------------------------
+0000            392            rseg R_PSEG
+0000            393   ;--------------------------------------------------------
+0000            394   ; external ram data
+0000            395   ;--------------------------------------------------------
+0000            396            rseg R_XSEG
+0000            397   ;--------------------------------------------------------
+0000            398   ; absolute external ram data
+0000            399   ;--------------------------------------------------------
+0000            400            XSEG
+0000            401   ;--------------------------------------------------------
+0000            402   ; external initialized ram data
+0000            403   ;--------------------------------------------------------
+0000            404            rseg R_IXSEG
+0000            405            rseg R_HOME
+0000            406            rseg R_GSINIT
+0000            407            rseg R_CSEG
+0000            408   ;--------------------------------------------------------
+0000            409   ; Reset entry point and interrupt vectors
+0000            410   ;--------------------------------------------------------
+0000            411            CSEG at 0x0000
+0000 020100     412            ljmp    _crt0
+0003            413   ;--------------------------------------------------------
+0003            414   ; global & static initialisations
+0003            415   ;--------------------------------------------------------
+0000            416            rseg R_HOME
+0000            417            rseg R_GSINIT
+0000            418            rseg R_GSINIT
+0000            419   ;--------------------------------------------------------
+0000            420   ; data variables initialization
+0000            421   ;--------------------------------------------------------
+0000            422            rseg R_DINIT
+0000            423            ; The linker places a 'ret' at the end of segment R_DINIT.
+0000            424   ;--------------------------------------------------------
+0000            425   ; code
+0000            426   ;--------------------------------------------------------
+0000            427            rseg R_CSEG
+0000            428   ;------------------------------------------------------------
+0000            429   ;Allocation info for local variables in function '_c51_external_startup'
+0000            430   ;------------------------------------------------------------
+0000            431   ;------------------------------------------------------------
+0000            432   ;        F38x_ADCmul.c:19: char _c51_external_startup (void)
+0000            433   ;        -----------------------------------------
+0000            434   ;         function _c51_external_startup
+0000            435   ;        -----------------------------------------
+0000            436   __c51_external_startup:
+0000            437            using   0
+0000            438   ;        F38x_ADCmul.c:21: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
+0000 53D9BF     439            anl     _PCA0MD,#0xBF
+0003            440   ;        F38x_ADCmul.c:22: VDM0CN=0x80; // enable VDD monitor
+0003 75FF80     441            mov     _VDM0CN,#0x80
+0006            442   ;        F38x_ADCmul.c:23: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
+0006 75EF06     443            mov     _RSTSRC,#0x06
+0009            444   ;        F38x_ADCmul.c:31: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
+0009 43A903     445            orl     _CLKSEL,#0x03
+000C            446   ;        F38x_ADCmul.c:35: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
+000C 43B203     447            orl     _OSCICN,#0x03
+000F            448   ;        F38x_ADCmul.c:38: SCON0 = 0x10; 
+000F 759810     449            mov     _SCON0,#0x10
+0012            450   ;        F38x_ADCmul.c:40: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
+0012 758D30     451            mov     _TH1,#0x30
+0015            452   ;        F38x_ADCmul.c:41: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
+0015 538EF4     453            anl     _CKCON,#0xF4
+0018            454   ;        F38x_ADCmul.c:42: CKCON |=  0x08;
+0018 438E08     455            orl     _CKCON,#0x08
+001B            456   ;        F38x_ADCmul.c:55: TL1 = TH1;      // Init Timer1
+001B 858D8B     457            mov     _TL1,_TH1
+001E            458   ;        F38x_ADCmul.c:56: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
+001E 53890F     459            anl     _TMOD,#0x0F
+0021            460   ;        F38x_ADCmul.c:57: TMOD |=  0x20;                       
+0021 438920     461            orl     _TMOD,#0x20
+0024            462   ;        F38x_ADCmul.c:58: TR1 = 1; // START Timer1
+0024 D28E       463            setb    _TR1
+0026            464   ;        F38x_ADCmul.c:59: TI = 1;  // Indicate TX0 ready
+0026 D299       465            setb    _TI
+0028            466   ;        F38x_ADCmul.c:62: P0MDOUT |= 0x01;  // set P0.0 and P0.4 as push-pull outputs
+0028 43A401     467            orl     _P0MDOUT,#0x01
+002B            468   ;        F38x_ADCmul.c:63: XBR0 = 0x01;      // Enable UART0 on P0.4(TX0) and P0.5(RX0)
+002B 75E101     469            mov     _XBR0,#0x01
+002E            470   ;        F38x_ADCmul.c:64: XBR1 = 0x40;      // enable crossbar
+002E 75E240     471            mov     _XBR1,#0x40
+0031            472   ;        F38x_ADCmul.c:66: return 0;
+0031 758200     473            mov     dpl,#0x00
+0034 22         474            ret
+0035            475   ;------------------------------------------------------------
+0035            476   ;Allocation info for local variables in function 'Timer3us'
+0035            477   ;------------------------------------------------------------
+0035            478   ;us                        Allocated to registers r2 
+0035            479   ;i                         Allocated to registers r3 
+0035            480   ;------------------------------------------------------------
+0035            481   ;        F38x_ADCmul.c:70: void Timer3us(unsigned char us)
+0035            482   ;        -----------------------------------------
+0035            483   ;         function Timer3us
+0035            484   ;        -----------------------------------------
+0035            485   _Timer3us:
+0035 AA82       486            mov     r2,dpl
+0037            487   ;        F38x_ADCmul.c:75: CKCON|=0b_0100_0000;
+0037 438E40     488            orl     _CKCON,#0x40
+003A            489   ;        F38x_ADCmul.c:77: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+003A 7592D0     490            mov     _TMR3RL,#0xD0
+003D 7593FF     491            mov     (_TMR3RL >> 8),#0xFF
+0040            492   ;        F38x_ADCmul.c:78: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+0040 859294     493            mov     _TMR3,_TMR3RL
+0043 859395     494            mov     (_TMR3 >> 8),(_TMR3RL >> 8)
+0046            495   ;        F38x_ADCmul.c:80: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
+0046 759104     496            mov     _TMR3CN,#0x04
+0049            497   ;        F38x_ADCmul.c:81: for (i = 0; i < us; i++)       // Count <us> overflows
+0049 7B00       498            mov     r3,#0x00
+004B            499   L003004?:
+004B C3         500            clr     c
+004C EB         501            mov     a,r3
+004D 9A         502            subb    a,r2
+004E 5001       503            jnc     L003007?
+0050            504   ;        F38x_ADCmul.c:83: while (!(TMR3CN & 0x80));  // Wait for overflow
+0050            505   L003001?:
+0050 E591       506            mov     a,_TMR3CN
+0052 30E780     507            jnb     acc.7,L003001?
+0055            508   ;        F38x_ADCmul.c:84: TMR3CN &= ~(0x80);         // Clear overflow indicator
+0055 53917F     509            anl     _TMR3CN,#0x7F
+0058            510   ;        F38x_ADCmul.c:81: for (i = 0; i < us; i++)       // Count <us> overflows
+0058 0B         511            inc     r3
+0059 8001       512            sjmp    L003004?
+005B            513   L003007?:
+005B            514   ;        F38x_ADCmul.c:86: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
+005B 759100     515            mov     _TMR3CN,#0x00
+005E 22         516            ret
+005F            517   ;------------------------------------------------------------
+005F            518   ;Allocation info for local variables in function 'waitms'
+005F            519   ;------------------------------------------------------------
+005F            520   ;ms                        Allocated to registers r2 r3 
+005F            521   ;j                         Allocated to registers r2 r3 
+005F            522   ;------------------------------------------------------------
+005F            523   ;        F38x_ADCmul.c:89: void waitms (unsigned int ms)
+005F            524   ;        -----------------------------------------
+005F            525   ;         function waitms
+005F            526   ;        -----------------------------------------
+005F            527   _waitms:
+005F AA82       528            mov     r2,dpl
+0061 AB83       529            mov     r3,dph
+0063            530   ;        F38x_ADCmul.c:92: for(j=ms; j!=0; j--)
+0063            531   L004001?:
+0063 BA0080     532            cjne    r2,#0x00,L004010?
+0066 BB0080     533            cjne    r3,#0x00,L004010?
+0069 22         534            ret
+006A            535   L004010?:
+006A            536   ;        F38x_ADCmul.c:94: Timer3us(249);
+006A 7582F9     537            mov     dpl,#0xF9
+006D C002       538            push    ar2
+006F C003       539            push    ar3
+0071 120100     540            lcall   _Timer3us
+0074            541   ;        F38x_ADCmul.c:95: Timer3us(249);
+0074 7582F9     542            mov     dpl,#0xF9
+0077 120100     543            lcall   _Timer3us
+007A            544   ;        F38x_ADCmul.c:96: Timer3us(249);
+007A 7582F9     545            mov     dpl,#0xF9
+007D 120100     546            lcall   _Timer3us
+0080            547   ;        F38x_ADCmul.c:97: Timer3us(250);
+0080 7582FA     548            mov     dpl,#0xFA
+0083 120100     549            lcall   _Timer3us
+0086 D003       550            pop     ar3
+0088 D002       551            pop     ar2
+008A            552   ;        F38x_ADCmul.c:92: for(j=ms; j!=0; j--)
+008A 1A         553            dec     r2
+008B BAFFC0     554            cjne    r2,#0xff,L004011?
+008E 1B         555            dec     r3
+008F            556   L004011?:
+008F 8001       557            sjmp    L004001?
+0091            558   ;------------------------------------------------------------
+0091            559   ;Allocation info for local variables in function 'InitADC'
+0091            560   ;------------------------------------------------------------
+0091            561   ;------------------------------------------------------------
+0091            562   ;        F38x_ADCmul.c:101: void InitADC (void)
+0091            563   ;        -----------------------------------------
+0091            564   ;         function InitADC
+0091            565   ;        -----------------------------------------
+0091            566   _InitADC:
+0091            567   ;        F38x_ADCmul.c:104: ADC0CF = 0xF8; // SAR clock = 31, Right-justified result
+0091 75BCF8     568            mov     _ADC0CF,#0xF8
+0094            569   ;        F38x_ADCmul.c:105: ADC0CN = 0b_1000_0000; // AD0EN=1, AD0TM=0
+0094 75E880     570            mov     _ADC0CN,#0x80
+0097            571   ;        F38x_ADCmul.c:106: REF0CN = 0b_0000_1000; //Select VDD as the voltage reference for the converter
+0097 75D108     572            mov     _REF0CN,#0x08
+009A 22         573            ret
+009B            574   ;------------------------------------------------------------
+009B            575   ;Allocation info for local variables in function 'InitPinADC'
+009B            576   ;------------------------------------------------------------
+009B            577   ;pinno                     Allocated with name '_InitPinADC_PARM_2'
+009B            578   ;portno                    Allocated to registers r2 
+009B            579   ;mask                      Allocated to registers r3 
+009B            580   ;------------------------------------------------------------
+009B            581   ;        F38x_ADCmul.c:109: void InitPinADC (unsigned char portno, unsigned char pinno)
+009B            582   ;        -----------------------------------------
+009B            583   ;         function InitPinADC
+009B            584   ;        -----------------------------------------
+009B            585   _InitPinADC:
+009B AA82       586            mov     r2,dpl
+009D            587   ;        F38x_ADCmul.c:113: mask=1<<pinno;
+009D 8548F0     588            mov     b,_InitPinADC_PARM_2
+00A0 05F0       589            inc     b
+00A2 7401       590            mov     a,#0x01
+00A4 8001       591            sjmp    L006012?
+00A6            592   L006010?:
+00A6 25E0       593            add     a,acc
+00A8            594   L006012?:
+00A8 D5F080     595            djnz    b,L006010?
+00AB FB         596            mov     r3,a
+00AC            597   ;        F38x_ADCmul.c:115: switch (portno)
+00AC EA         598            mov     a,r2
+00AD 24FC       599            add     a,#0xff - 0x03
+00AF 4001       600            jc      L006007?
+00B1 EA         601            mov     a,r2
+00B2 2A         602            add     a,r2
+00B3 2A         603            add     a,r2
+00B4 909F00     604            mov     dptr,#L006014?
+00B7 73         605            jmp     @a+dptr
+00B8            606   L006014?:
+00B8 020100     607            ljmp    L006001?
+00BB 020100     608            ljmp    L006002?
+00BE 020100     609            ljmp    L006003?
+00C1 020100     610            ljmp    L006004?
+00C4            611   ;        F38x_ADCmul.c:117: case 0:
+00C4            612   L006001?:
+00C4            613   ;        F38x_ADCmul.c:118: P0MDIN &= (~mask); // Set pin as analog input
+00C4 EB         614            mov     a,r3
+00C5 F4         615            cpl     a
+00C6 52F1       616            anl     _P0MDIN,a
+00C8            617   ;        F38x_ADCmul.c:119: P0SKIP |= mask; // Skip Crossbar decoding for this pin
+00C8 EB         618            mov     a,r3
+00C9 42D4       619            orl     _P0SKIP,a
+00CB            620   ;        F38x_ADCmul.c:120: break;
+00CB            621   ;        F38x_ADCmul.c:121: case 1:
+00CB 22         622            ret
+00CC            623   L006002?:
+00CC            624   ;        F38x_ADCmul.c:122: P1MDIN &= (~mask); // Set pin as analog input
+00CC EB         625            mov     a,r3
+00CD F4         626            cpl     a
+00CE 52F2       627            anl     _P1MDIN,a
+00D0            628   ;        F38x_ADCmul.c:123: P1SKIP |= mask; // Skip Crossbar decoding for this pin
+00D0 EB         629            mov     a,r3
+00D1 42D5       630            orl     _P1SKIP,a
+00D3            631   ;        F38x_ADCmul.c:124: break;
+00D3            632   ;        F38x_ADCmul.c:125: case 2:
+00D3 22         633            ret
+00D4            634   L006003?:
+00D4            635   ;        F38x_ADCmul.c:126: P2MDIN &= (~mask); // Set pin as analog input
+00D4 EB         636            mov     a,r3
+00D5 F4         637            cpl     a
+00D6 52F3       638            anl     _P2MDIN,a
+00D8            639   ;        F38x_ADCmul.c:127: P2SKIP |= mask; // Skip Crossbar decoding for this pin
+00D8 EB         640            mov     a,r3
+00D9 42D6       641            orl     _P2SKIP,a
+00DB            642   ;        F38x_ADCmul.c:128: break;
+00DB            643   ;        F38x_ADCmul.c:129: case 3:
+00DB 22         644            ret
+00DC            645   L006004?:
+00DC            646   ;        F38x_ADCmul.c:130: P3MDIN &= (~mask); // Set pin as analog input
+00DC EB         647            mov     a,r3
+00DD F4         648            cpl     a
+00DE FA         649            mov     r2,a
+00DF 52F4       650            anl     _P3MDIN,a
+00E1            651   ;        F38x_ADCmul.c:131: P3SKIP |= mask; // Skip Crossbar decoding for this pin
+00E1 EB         652            mov     a,r3
+00E2 42DF       653            orl     _P3SKIP,a
+00E4            654   ;        F38x_ADCmul.c:135: }
+00E4            655   L006007?:
+00E4 22         656            ret
+00E5            657   ;------------------------------------------------------------
+00E5            658   ;Allocation info for local variables in function 'ADC_at_Pin'
+00E5            659   ;------------------------------------------------------------
+00E5            660   ;pin                       Allocated to registers 
+00E5            661   ;------------------------------------------------------------
+00E5            662   ;        F38x_ADCmul.c:138: unsigned int ADC_at_Pin(unsigned char pin)
+00E5            663   ;        -----------------------------------------
+00E5            664   ;         function ADC_at_Pin
+00E5            665   ;        -----------------------------------------
+00E5            666   _ADC_at_Pin:
+00E5 8582BB     667            mov     _AMX0P,dpl
+00E8            668   ;        F38x_ADCmul.c:141: AMX0N = LQFP32_MUX_GND;  // GND is negative input (Single-ended Mode)
+00E8 75BA1F     669            mov     _AMX0N,#0x1F
+00EB            670   ;        F38x_ADCmul.c:143: AD0BUSY=1;
+00EB D2EC       671            setb    _AD0BUSY
+00ED            672   ;        F38x_ADCmul.c:144: while (AD0BUSY); // Wait for dummy conversion to finish
+00ED            673   L007001?:
+00ED 20EC40     674            jb      _AD0BUSY,L007001?
+00F0            675   ;        F38x_ADCmul.c:146: AD0BUSY = 1;
+00F0 D2EC       676            setb    _AD0BUSY
+00F2            677   ;        F38x_ADCmul.c:147: while (AD0BUSY); // Wait for conversion to complete
+00F2            678   L007004?:
+00F2 20EC80     679            jb      _AD0BUSY,L007004?
+00F5            680   ;        F38x_ADCmul.c:148: return (ADC0L+(ADC0H*0x100));
+00F5 AABD       681            mov     r2,_ADC0L
+00F7 7B00       682            mov     r3,#0x00
+00F9 ADBE       683            mov     r5,_ADC0H
+00FB 7C00       684            mov     r4,#0x00
+00FD EC         685            mov     a,r4
+00FE 2A         686            add     a,r2
+00FF F582       687            mov     dpl,a
+0101 ED         688            mov     a,r5
+0102 3B         689            addc    a,r3
+0103 F583       690            mov     dph,a
+0105 22         691            ret
+0106            692   ;------------------------------------------------------------
+0106            693   ;Allocation info for local variables in function 'Volts_at_Pin'
+0106            694   ;------------------------------------------------------------
+0106            695   ;pin                       Allocated to registers r2 
+0106            696   ;------------------------------------------------------------
+0106            697   ;        F38x_ADCmul.c:151: float Volts_at_Pin(unsigned char pin)
+0106            698   ;        -----------------------------------------
+0106            699   ;         function Volts_at_Pin
+0106            700   ;        -----------------------------------------
+0106            701   _Volts_at_Pin:
+0106            702   ;        F38x_ADCmul.c:153: return ((ADC_at_Pin(pin)*3.30)/1024.0);
+0106 120100     703            lcall   _ADC_at_Pin
+0109 120100     704            lcall   ___uint2fs
+010C AA82       705            mov     r2,dpl
+010E AB83       706            mov     r3,dph
+0110 ACF0       707            mov     r4,b
+0112 FD         708            mov     r5,a
+0113 C002       709            push    ar2
+0115 C003       710            push    ar3
+0117 C004       711            push    ar4
+0119 C005       712            push    ar5
+011B 903333     713            mov     dptr,#0x3333
+011E 75F053     714            mov     b,#0x53
+0121 7440       715            mov     a,#0x40
+0123 120100     716            lcall   ___fsmul
+0126 AA82       717            mov     r2,dpl
+0128 AB83       718            mov     r3,dph
+012A ACF0       719            mov     r4,b
+012C FD         720            mov     r5,a
+012D E581       721            mov     a,sp
+012F 24FC       722            add     a,#0xfc
+0131 F581       723            mov     sp,a
+0133 E4         724            clr     a
+0134 C0E0       725            push    acc
+0136 C0E0       726            push    acc
+0138 7480       727            mov     a,#0x80
+013A C0E0       728            push    acc
+013C 7444       729            mov     a,#0x44
+013E C0E0       730            push    acc
+0140 8A82       731            mov     dpl,r2
+0142 8B83       732            mov     dph,r3
+0144 8CF0       733            mov     b,r4
+0146 ED         734            mov     a,r5
+0147 120100     735            lcall   ___fsdiv
+014A AA82       736            mov     r2,dpl
+014C AB83       737            mov     r3,dph
+014E ACF0       738            mov     r4,b
+0150 FD         739            mov     r5,a
+0151 E581       740            mov     a,sp
+0153 24FC       741            add     a,#0xfc
+0155 F581       742            mov     sp,a
+0157 8A82       743            mov     dpl,r2
+0159 8B83       744            mov     dph,r3
+015B 8CF0       745            mov     b,r4
+015D ED         746            mov     a,r5
+015E 22         747            ret
+015F            748   ;------------------------------------------------------------
+015F            749   ;Allocation info for local variables in function 'main'
+015F            750   ;------------------------------------------------------------
+015F            751   ;V                         Allocated with name '_main_V_1_60'
+015F            752   ;------------------------------------------------------------
+015F            753   ;        F38x_ADCmul.c:156: void main (void)
+015F            754   ;        -----------------------------------------
+015F            755   ;         function main
+015F            756   ;        -----------------------------------------
+015F            757   _main:
+015F            758   ;        F38x_ADCmul.c:160: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+015F 74C0       759            mov     a,#__str_0
+0161 C0E0       760            push    acc
+0163 74A1       761            mov     a,#(__str_0 >> 8)
+0165 C0E0       762            push    acc
+0167 7480       763            mov     a,#0x80
+0169 C0E0       764            push    acc
+016B 120100     765            lcall   _printf
+016E 1581       766            dec     sp
+0170 1581       767            dec     sp
+0172 1581       768            dec     sp
+0174            769   ;        F38x_ADCmul.c:161: printf("\r\nUsing ADC with arbitrary pins.\r\n");
+0174 7440       770            mov     a,#__str_1
+0176 C0E0       771            push    acc
+0178 74A2       772            mov     a,#(__str_1 >> 8)
+017A C0E0       773            push    acc
+017C 7480       774            mov     a,#0x80
+017E C0E0       775            push    acc
+0180 120100     776            lcall   _printf
+0183 1581       777            dec     sp
+0185 1581       778            dec     sp
+0187 1581       779            dec     sp
+0189            780   ;        F38x_ADCmul.c:164: InitPinADC(2, 0); // Configure P2.0 as analog input
+0189 754800     781            mov     _InitPinADC_PARM_2,#0x00
+018C 758202     782            mov     dpl,#0x02
+018F 120100     783            lcall   _InitPinADC
+0192            784   ;        F38x_ADCmul.c:165: InitPinADC(2, 1); // Configure P2.1 as analog input
+0192 754801     785            mov     _InitPinADC_PARM_2,#0x01
+0195 758202     786            mov     dpl,#0x02
+0198 120100     787            lcall   _InitPinADC
+019B            788   ;        F38x_ADCmul.c:166: InitPinADC(2, 2); // Configure P2.2 as analog input
+019B 754802     789            mov     _InitPinADC_PARM_2,#0x02
+019E 758202     790            mov     dpl,#0x02
+01A1 120100     791            lcall   _InitPinADC
+01A4            792   ;        F38x_ADCmul.c:167: InitPinADC(2, 3); // Configure P2.3 as analog input
+01A4 754803     793            mov     _InitPinADC_PARM_2,#0x03
+01A7 758202     794            mov     dpl,#0x02
+01AA 120100     795            lcall   _InitPinADC
+01AD            796   ;        F38x_ADCmul.c:169: InitADC();
+01AD 120100     797            lcall   _InitADC
+01B0            798   ;        F38x_ADCmul.c:171: while(1)
+01B0            799   L009002?:
+01B0            800   ;        F38x_ADCmul.c:173: V[0]=Volts_at_Pin(LQFP32_MUX_P2_0);
+01B0 758208     801            mov     dpl,#0x08
+01B3 120100     802            lcall   _Volts_at_Pin
+01B6 AA82       803            mov     r2,dpl
+01B8 AB83       804            mov     r3,dph
+01BA ACF0       805            mov     r4,b
+01BC FD         806            mov     r5,a
+01BD 8A40       807            mov     _main_V_1_60,r2
+01BF 8B41       808            mov     (_main_V_1_60 + 1),r3
+01C1 8C42       809            mov     (_main_V_1_60 + 2),r4
+01C3 8D43       810            mov     (_main_V_1_60 + 3),r5
+01C5            811   ;        F38x_ADCmul.c:174: V[1]=Volts_at_Pin(LQFP32_MUX_P2_1);
+01C5 758209     812            mov     dpl,#0x09
+01C8 120100     813            lcall   _Volts_at_Pin
+01CB AA82       814            mov     r2,dpl
+01CD AB83       815            mov     r3,dph
+01CF ACF0       816            mov     r4,b
+01D1 FD         817            mov     r5,a
+01D2 8A44       818            mov     (_main_V_1_60 + 0x0004),r2
+01D4 8B45       819            mov     ((_main_V_1_60 + 0x0004) + 1),r3
+01D6 8C46       820            mov     ((_main_V_1_60 + 0x0004) + 2),r4
+01D8 8D47       821            mov     ((_main_V_1_60 + 0x0004) + 3),r5
+01DA            822   ;        F38x_ADCmul.c:175: V[2]=Volts_at_Pin(LQFP32_MUX_P2_2);
+01DA 75820A     823            mov     dpl,#0x0A
+01DD 120100     824            lcall   _Volts_at_Pin
+01E0 AA82       825            mov     r2,dpl
+01E2 AB83       826            mov     r3,dph
+01E4 ACF0       827            mov     r4,b
+01E6 FD         828            mov     r5,a
+01E7 8A48       829            mov     (_main_V_1_60 + 0x0008),r2
+01E9 8B49       830            mov     ((_main_V_1_60 + 0x0008) + 1),r3
+01EB 8C4A       831            mov     ((_main_V_1_60 + 0x0008) + 2),r4
+01ED 8D4B       832            mov     ((_main_V_1_60 + 0x0008) + 3),r5
+01EF            833   ;        F38x_ADCmul.c:176: V[3]=Volts_at_Pin(LQFP32_MUX_P2_3);
+01EF 75820B     834            mov     dpl,#0x0B
+01F2 120100     835            lcall   _Volts_at_Pin
+01F5 AA82       836            mov     r2,dpl
+01F7 AB83       837            mov     r3,dph
+01F9 ACF0       838            mov     r4,b
+01FB FD         839            mov     r5,a
+01FC 8A4C       840            mov     (_main_V_1_60 + 0x000c),r2
+01FE 8B4D       841            mov     ((_main_V_1_60 + 0x000c) + 1),r3
+0200 8C4E       842            mov     ((_main_V_1_60 + 0x000c) + 2),r4
+0202 8D4F       843            mov     ((_main_V_1_60 + 0x000c) + 3),r5
+0204            844   ;        F38x_ADCmul.c:178: V[0], V[1], V[2], V[3]);
+0204            845   ;        F38x_ADCmul.c:177: printf("V(P2.0)=%5.3f, V(P2.1)=%5.3f, V(P2.2)=%5.3f, V(P2.3)=%5.3f\r",
+0204 C04C       846            push    (_main_V_1_60 + 0x000c)
+0206 C04D       847            push    ((_main_V_1_60 + 0x000c) + 1)
+0208 C04E       848            push    ((_main_V_1_60 + 0x000c) + 2)
+020A C04F       849            push    ((_main_V_1_60 + 0x000c) + 3)
+020C C048       850            push    (_main_V_1_60 + 0x0008)
+020E C049       851            push    ((_main_V_1_60 + 0x0008) + 1)
+0210 C04A       852            push    ((_main_V_1_60 + 0x0008) + 2)
+0212 C04B       853            push    ((_main_V_1_60 + 0x0008) + 3)
+0214 C044       854            push    (_main_V_1_60 + 0x0004)
+0216 C045       855            push    ((_main_V_1_60 + 0x0004) + 1)
+0218 C046       856            push    ((_main_V_1_60 + 0x0004) + 2)
+021A C047       857            push    ((_main_V_1_60 + 0x0004) + 3)
+021C C040       858            push    _main_V_1_60
+021E C041       859            push    (_main_V_1_60 + 1)
+0220 C042       860            push    (_main_V_1_60 + 2)
+0222 C043       861            push    (_main_V_1_60 + 3)
+0224 74C0       862            mov     a,#__str_2
+0226 C0E0       863            push    acc
+0228 74A2       864            mov     a,#(__str_2 >> 8)
+022A C0E0       865            push    acc
+022C 7480       866            mov     a,#0x80
+022E C0E0       867            push    acc
+0230 120100     868            lcall   _printf
+0233 E581       869            mov     a,sp
+0235 24ED       870            add     a,#0xed
+0237 F581       871            mov     sp,a
+0239            872   ;        F38x_ADCmul.c:179: waitms(500);
+0239 9001F4     873            mov     dptr,#0x01F4
+023C 120100     874            lcall   _waitms
+023F 020100     875            ljmp    L009002?
+0242            876            rseg R_CSEG
+0242            877   
+0000            878            rseg R_XINIT
+0000            879   
+0000            880            rseg R_CONST
+0000            881   __str_0:
+0000 1B         882            db 0x1B
+0001 5B324A     883            db '[2J'
+0004 00         884            db 0x00
+0005            885   __str_1:
+0005 0D         886            db 0x0D
+0006 0A         887            db 0x0A
+0007 5573696E   888            db 'Using ADC with arbitrary pins.'
+     67204144
+     43207769
+     74682061
+     72626974
+     72617279
+     2070696E
+     732E
+0025 0D         889            db 0x0D
+0026 0A         890            db 0x0A
+0027 00         891            db 0x00
+0028            892   __str_2:
+0028 56285032   893            db 'V(P2.0)=%5.3f, V(P2.1)=%5.3f, V(P2.2)=%5.3f, V(P2.3)=%5.3f'
+     2E30293D
+     25352E33
+     662C2056
+     2850322E
+     31293D25
+     352E3366
+     2C205628
+     50322E32
+     293D2535
+     2E33662C
+     20562850
+     322E3329
+     3D25352E
+     3366
+0062 0D         894            db 0x0D
+0063 00         895            db 0x00
+0064            896   
+0003            897            CSEG
+0003            898   
+0003            899   end

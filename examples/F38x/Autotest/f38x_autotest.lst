@@ -1,0 +1,1598 @@
+0000              1   ;--------------------------------------------------------
+0000              2   ; File Created by C51
+0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
+0000              4   ; This file was generated Sun Feb 26 15:48:40 2017
+0000              5   ;--------------------------------------------------------
+                  5   $name f38x_autotest
+                  6   $optc51 --model-small
+0000              8            R_DSEG    segment data
+0000              9            R_CSEG    segment code
+0000             10            R_BSEG    segment bit
+0000             11            R_XSEG    segment xdata
+0000             12            R_PSEG    segment xdata
+0000             13            R_ISEG    segment idata
+0000             14            R_OSEG    segment data overlay
+0000             15            BIT_BANK  segment data overlay
+0000             16            R_HOME    segment code
+0000             17            R_GSINIT  segment code
+0000             18            R_IXSEG   segment xdata
+0000             19            R_CONST   segment code
+0000             20            R_XINIT   segment code
+0000             21            R_DINIT   segment code
+0000             22   
+0000             23   ;--------------------------------------------------------
+0000             24   ; Public variables in this module
+0000             25   ;--------------------------------------------------------
+0000             26            public _main
+0000             27            public _Initial_Check
+0000             28            public _Check_Pin_Zero
+0000             29            public _Test_Pair
+0000             30            public _dopass
+0000             31            public _dofailb
+0000             32            public _dofail
+0000             33            public _Read_Pin
+0000             34            public _Set_Pin_Zero
+0000             35            public _Set_Pin_One
+0000             36            public _Set_Pin_Input
+0000             37            public _Set_Pin_Output
+0000             38            public _countzero
+0000             39            public _WaitXms
+0000             40            public _Timer3us
+0000             41            public __c51_external_startup
+0000             42            public _UART0_Init
+0000             43            public _SYSCLK_Init
+0000             44            public _PORT_Init
+0000             45            public _Test_Pair_PARM_2
+0000             46   ;--------------------------------------------------------
+0000             47   ; Special Function Registers
+0000             48   ;--------------------------------------------------------
+0000             49   _P0             DATA 0x80
+0000             50   _SP             DATA 0x81
+0000             51   _DPL            DATA 0x82
+0000             52   _DPH            DATA 0x83
+0000             53   _EMI0TC         DATA 0x84
+0000             54   _EMI0CF         DATA 0x85
+0000             55   _OSCLCN         DATA 0x86
+0000             56   _PCON           DATA 0x87
+0000             57   _TCON           DATA 0x88
+0000             58   _TMOD           DATA 0x89
+0000             59   _TL0            DATA 0x8a
+0000             60   _TL1            DATA 0x8b
+0000             61   _TH0            DATA 0x8c
+0000             62   _TH1            DATA 0x8d
+0000             63   _CKCON          DATA 0x8e
+0000             64   _PSCTL          DATA 0x8f
+0000             65   _P1             DATA 0x90
+0000             66   _TMR3CN         DATA 0x91
+0000             67   _TMR4CN         DATA 0x91
+0000             68   _TMR3RLL        DATA 0x92
+0000             69   _TMR4RLL        DATA 0x92
+0000             70   _TMR3RLH        DATA 0x93
+0000             71   _TMR4RLH        DATA 0x93
+0000             72   _TMR3L          DATA 0x94
+0000             73   _TMR4L          DATA 0x94
+0000             74   _TMR3H          DATA 0x95
+0000             75   _TMR4H          DATA 0x95
+0000             76   _USB0ADR        DATA 0x96
+0000             77   _USB0DAT        DATA 0x97
+0000             78   _SCON           DATA 0x98
+0000             79   _SCON0          DATA 0x98
+0000             80   _SBUF           DATA 0x99
+0000             81   _SBUF0          DATA 0x99
+0000             82   _CPT1CN         DATA 0x9a
+0000             83   _CPT0CN         DATA 0x9b
+0000             84   _CPT1MD         DATA 0x9c
+0000             85   _CPT0MD         DATA 0x9d
+0000             86   _CPT1MX         DATA 0x9e
+0000             87   _CPT0MX         DATA 0x9f
+0000             88   _P2             DATA 0xa0
+0000             89   _SPI0CFG        DATA 0xa1
+0000             90   _SPI0CKR        DATA 0xa2
+0000             91   _SPI0DAT        DATA 0xa3
+0000             92   _P0MDOUT        DATA 0xa4
+0000             93   _P1MDOUT        DATA 0xa5
+0000             94   _P2MDOUT        DATA 0xa6
+0000             95   _P3MDOUT        DATA 0xa7
+0000             96   _IE             DATA 0xa8
+0000             97   _CLKSEL         DATA 0xa9
+0000             98   _EMI0CN         DATA 0xaa
+0000             99   __XPAGE         DATA 0xaa
+0000            100   _SBCON1         DATA 0xac
+0000            101   _P4MDOUT        DATA 0xae
+0000            102   _PFE0CN         DATA 0xaf
+0000            103   _P3             DATA 0xb0
+0000            104   _OSCXCN         DATA 0xb1
+0000            105   _OSCICN         DATA 0xb2
+0000            106   _OSCICL         DATA 0xb3
+0000            107   _SBRLL1         DATA 0xb4
+0000            108   _SBRLH1         DATA 0xb5
+0000            109   _FLSCL          DATA 0xb6
+0000            110   _FLKEY          DATA 0xb7
+0000            111   _IP             DATA 0xb8
+0000            112   _CLKMUL         DATA 0xb9
+0000            113   _SMBTC          DATA 0xb9
+0000            114   _AMX0N          DATA 0xba
+0000            115   _AMX0P          DATA 0xbb
+0000            116   _ADC0CF         DATA 0xbc
+0000            117   _ADC0L          DATA 0xbd
+0000            118   _ADC0H          DATA 0xbe
+0000            119   _SFRPAGE        DATA 0xbf
+0000            120   _SMB0CN         DATA 0xc0
+0000            121   _SMB1CN         DATA 0xc0
+0000            122   _SMB0CF         DATA 0xc1
+0000            123   _SMB1CF         DATA 0xc1
+0000            124   _SMB0DAT        DATA 0xc2
+0000            125   _SMB1DAT        DATA 0xc2
+0000            126   _ADC0GTL        DATA 0xc3
+0000            127   _ADC0GTH        DATA 0xc4
+0000            128   _ADC0LTL        DATA 0xc5
+0000            129   _ADC0LTH        DATA 0xc6
+0000            130   _P4             DATA 0xc7
+0000            131   _TMR2CN         DATA 0xc8
+0000            132   _TMR5CN         DATA 0xc8
+0000            133   _REG01CN        DATA 0xc9
+0000            134   _TMR2RLL        DATA 0xca
+0000            135   _TMR5RLL        DATA 0xca
+0000            136   _TMR2RLH        DATA 0xcb
+0000            137   _TMR5RLH        DATA 0xcb
+0000            138   _TMR2L          DATA 0xcc
+0000            139   _TMR5L          DATA 0xcc
+0000            140   _TMR2H          DATA 0xcd
+0000            141   _TMR5H          DATA 0xcd
+0000            142   _SMB0ADM        DATA 0xce
+0000            143   _SMB1ADM        DATA 0xce
+0000            144   _SMB0ADR        DATA 0xcf
+0000            145   _SMB1ADR        DATA 0xcf
+0000            146   _PSW            DATA 0xd0
+0000            147   _REF0CN         DATA 0xd1
+0000            148   _SCON1          DATA 0xd2
+0000            149   _SBUF1          DATA 0xd3
+0000            150   _P0SKIP         DATA 0xd4
+0000            151   _P1SKIP         DATA 0xd5
+0000            152   _P2SKIP         DATA 0xd6
+0000            153   _USB0XCN        DATA 0xd7
+0000            154   _PCA0CN         DATA 0xd8
+0000            155   _PCA0MD         DATA 0xd9
+0000            156   _PCA0CPM0       DATA 0xda
+0000            157   _PCA0CPM1       DATA 0xdb
+0000            158   _PCA0CPM2       DATA 0xdc
+0000            159   _PCA0CPM3       DATA 0xdd
+0000            160   _PCA0CPM4       DATA 0xde
+0000            161   _P3SKIP         DATA 0xdf
+0000            162   _ACC            DATA 0xe0
+0000            163   _XBR0           DATA 0xe1
+0000            164   _XBR1           DATA 0xe2
+0000            165   _XBR2           DATA 0xe3
+0000            166   _IT01CF         DATA 0xe4
+0000            167   _CKCON1         DATA 0xe4
+0000            168   _SMOD1          DATA 0xe5
+0000            169   _EIE1           DATA 0xe6
+0000            170   _EIE2           DATA 0xe7
+0000            171   _ADC0CN         DATA 0xe8
+0000            172   _PCA0CPL1       DATA 0xe9
+0000            173   _PCA0CPH1       DATA 0xea
+0000            174   _PCA0CPL2       DATA 0xeb
+0000            175   _PCA0CPH2       DATA 0xec
+0000            176   _PCA0CPL3       DATA 0xed
+0000            177   _PCA0CPH3       DATA 0xee
+0000            178   _RSTSRC         DATA 0xef
+0000            179   _B              DATA 0xf0
+0000            180   _P0MDIN         DATA 0xf1
+0000            181   _P1MDIN         DATA 0xf2
+0000            182   _P2MDIN         DATA 0xf3
+0000            183   _P3MDIN         DATA 0xf4
+0000            184   _P4MDIN         DATA 0xf5
+0000            185   _EIP1           DATA 0xf6
+0000            186   _EIP2           DATA 0xf7
+0000            187   _SPI0CN         DATA 0xf8
+0000            188   _PCA0L          DATA 0xf9
+0000            189   _PCA0H          DATA 0xfa
+0000            190   _PCA0CPL0       DATA 0xfb
+0000            191   _PCA0CPH0       DATA 0xfc
+0000            192   _PCA0CPL4       DATA 0xfd
+0000            193   _PCA0CPH4       DATA 0xfe
+0000            194   _VDM0CN         DATA 0xff
+0000            195   _DPTR           DATA 0x8382
+0000            196   _TMR2RL         DATA 0xcbca
+0000            197   _TMR3RL         DATA 0x9392
+0000            198   _TMR4RL         DATA 0x9392
+0000            199   _TMR5RL         DATA 0xcbca
+0000            200   _TMR2           DATA 0xcdcc
+0000            201   _TMR3           DATA 0x9594
+0000            202   _TMR4           DATA 0x9594
+0000            203   _TMR5           DATA 0xcdcc
+0000            204   _SBRL1          DATA 0xb5b4
+0000            205   _ADC0           DATA 0xbebd
+0000            206   _ADC0GT         DATA 0xc4c3
+0000            207   _ADC0LT         DATA 0xc6c5
+0000            208   _PCA0           DATA 0xfaf9
+0000            209   _PCA0CP1        DATA 0xeae9
+0000            210   _PCA0CP2        DATA 0xeceb
+0000            211   _PCA0CP3        DATA 0xeeed
+0000            212   _PCA0CP0        DATA 0xfcfb
+0000            213   _PCA0CP4        DATA 0xfefd
+0000            214   ;--------------------------------------------------------
+0000            215   ; special function bits
+0000            216   ;--------------------------------------------------------
+0000            217   _P0_0           BIT 0x80
+0000            218   _P0_1           BIT 0x81
+0000            219   _P0_2           BIT 0x82
+0000            220   _P0_3           BIT 0x83
+0000            221   _P0_4           BIT 0x84
+0000            222   _P0_5           BIT 0x85
+0000            223   _P0_6           BIT 0x86
+0000            224   _P0_7           BIT 0x87
+0000            225   _TF1            BIT 0x8f
+0000            226   _TR1            BIT 0x8e
+0000            227   _TF0            BIT 0x8d
+0000            228   _TR0            BIT 0x8c
+0000            229   _IE1            BIT 0x8b
+0000            230   _IT1            BIT 0x8a
+0000            231   _IE0            BIT 0x89
+0000            232   _IT0            BIT 0x88
+0000            233   _P1_0           BIT 0x90
+0000            234   _P1_1           BIT 0x91
+0000            235   _P1_2           BIT 0x92
+0000            236   _P1_3           BIT 0x93
+0000            237   _P1_4           BIT 0x94
+0000            238   _P1_5           BIT 0x95
+0000            239   _P1_6           BIT 0x96
+0000            240   _P1_7           BIT 0x97
+0000            241   _S0MODE         BIT 0x9f
+0000            242   _SCON0_6        BIT 0x9e
+0000            243   _MCE0           BIT 0x9d
+0000            244   _REN0           BIT 0x9c
+0000            245   _TB80           BIT 0x9b
+0000            246   _RB80           BIT 0x9a
+0000            247   _TI0            BIT 0x99
+0000            248   _RI0            BIT 0x98
+0000            249   _SCON_6         BIT 0x9e
+0000            250   _MCE            BIT 0x9d
+0000            251   _REN            BIT 0x9c
+0000            252   _TB8            BIT 0x9b
+0000            253   _RB8            BIT 0x9a
+0000            254   _TI             BIT 0x99
+0000            255   _RI             BIT 0x98
+0000            256   _P2_0           BIT 0xa0
+0000            257   _P2_1           BIT 0xa1
+0000            258   _P2_2           BIT 0xa2
+0000            259   _P2_3           BIT 0xa3
+0000            260   _P2_4           BIT 0xa4
+0000            261   _P2_5           BIT 0xa5
+0000            262   _P2_6           BIT 0xa6
+0000            263   _P2_7           BIT 0xa7
+0000            264   _EA             BIT 0xaf
+0000            265   _ESPI0          BIT 0xae
+0000            266   _ET2            BIT 0xad
+0000            267   _ES0            BIT 0xac
+0000            268   _ET1            BIT 0xab
+0000            269   _EX1            BIT 0xaa
+0000            270   _ET0            BIT 0xa9
+0000            271   _EX0            BIT 0xa8
+0000            272   _P3_0           BIT 0xb0
+0000            273   _P3_1           BIT 0xb1
+0000            274   _P3_2           BIT 0xb2
+0000            275   _P3_3           BIT 0xb3
+0000            276   _P3_4           BIT 0xb4
+0000            277   _P3_5           BIT 0xb5
+0000            278   _P3_6           BIT 0xb6
+0000            279   _P3_7           BIT 0xb7
+0000            280   _IP_7           BIT 0xbf
+0000            281   _PSPI0          BIT 0xbe
+0000            282   _PT2            BIT 0xbd
+0000            283   _PS0            BIT 0xbc
+0000            284   _PT1            BIT 0xbb
+0000            285   _PX1            BIT 0xba
+0000            286   _PT0            BIT 0xb9
+0000            287   _PX0            BIT 0xb8
+0000            288   _MASTER0        BIT 0xc7
+0000            289   _TXMODE0        BIT 0xc6
+0000            290   _STA0           BIT 0xc5
+0000            291   _STO0           BIT 0xc4
+0000            292   _ACKRQ0         BIT 0xc3
+0000            293   _ARBLOST0       BIT 0xc2
+0000            294   _ACK0           BIT 0xc1
+0000            295   _SI0            BIT 0xc0
+0000            296   _MASTER1        BIT 0xc7
+0000            297   _TXMODE1        BIT 0xc6
+0000            298   _STA1           BIT 0xc5
+0000            299   _STO1           BIT 0xc4
+0000            300   _ACKRQ1         BIT 0xc3
+0000            301   _ARBLOST1       BIT 0xc2
+0000            302   _ACK1           BIT 0xc1
+0000            303   _SI1            BIT 0xc0
+0000            304   _TF2            BIT 0xcf
+0000            305   _TF2H           BIT 0xcf
+0000            306   _TF2L           BIT 0xce
+0000            307   _TF2LEN         BIT 0xcd
+0000            308   _TF2CEN         BIT 0xcc
+0000            309   _T2SPLIT        BIT 0xcb
+0000            310   _TR2            BIT 0xca
+0000            311   _T2CSS          BIT 0xc9
+0000            312   _T2XCLK         BIT 0xc8
+0000            313   _TF5H           BIT 0xcf
+0000            314   _TF5L           BIT 0xce
+0000            315   _TF5LEN         BIT 0xcd
+0000            316   _TMR5CN_4       BIT 0xcc
+0000            317   _T5SPLIT        BIT 0xcb
+0000            318   _TR5            BIT 0xca
+0000            319   _TMR5CN_1       BIT 0xc9
+0000            320   _T5XCLK         BIT 0xc8
+0000            321   _CY             BIT 0xd7
+0000            322   _AC             BIT 0xd6
+0000            323   _F0             BIT 0xd5
+0000            324   _RS1            BIT 0xd4
+0000            325   _RS0            BIT 0xd3
+0000            326   _OV             BIT 0xd2
+0000            327   _F1             BIT 0xd1
+0000            328   _PARITY         BIT 0xd0
+0000            329   _CF             BIT 0xdf
+0000            330   _CR             BIT 0xde
+0000            331   _PCA0CN_5       BIT 0xde
+0000            332   _CCF4           BIT 0xdc
+0000            333   _CCF3           BIT 0xdb
+0000            334   _CCF2           BIT 0xda
+0000            335   _CCF1           BIT 0xd9
+0000            336   _CCF0           BIT 0xd8
+0000            337   _ACC_7          BIT 0xe7
+0000            338   _ACC_6          BIT 0xe6
+0000            339   _ACC_5          BIT 0xe5
+0000            340   _ACC_4          BIT 0xe4
+0000            341   _ACC_3          BIT 0xe3
+0000            342   _ACC_2          BIT 0xe2
+0000            343   _ACC_1          BIT 0xe1
+0000            344   _ACC_0          BIT 0xe0
+0000            345   _AD0EN          BIT 0xef
+0000            346   _AD0TM          BIT 0xee
+0000            347   _AD0INT         BIT 0xed
+0000            348   _AD0BUSY        BIT 0xec
+0000            349   _AD0WINT        BIT 0xeb
+0000            350   _AD0CM2         BIT 0xea
+0000            351   _AD0CM1         BIT 0xe9
+0000            352   _AD0CM0         BIT 0xe8
+0000            353   _B_7            BIT 0xf7
+0000            354   _B_6            BIT 0xf6
+0000            355   _B_5            BIT 0xf5
+0000            356   _B_4            BIT 0xf4
+0000            357   _B_3            BIT 0xf3
+0000            358   _B_2            BIT 0xf2
+0000            359   _B_1            BIT 0xf1
+0000            360   _B_0            BIT 0xf0
+0000            361   _SPIF           BIT 0xff
+0000            362   _WCOL           BIT 0xfe
+0000            363   _MODF           BIT 0xfd
+0000            364   _RXOVRN         BIT 0xfc
+0000            365   _NSSMD1         BIT 0xfb
+0000            366   _NSSMD0         BIT 0xfa
+0000            367   _TXBMT          BIT 0xf9
+0000            368   _SPIEN          BIT 0xf8
+0000            369   ;--------------------------------------------------------
+0000            370   ; overlayable register banks
+0000            371   ;--------------------------------------------------------
+0000            372            rbank0 segment data overlay
+0000            373   ;--------------------------------------------------------
+0000            374   ; internal ram data
+0000            375   ;--------------------------------------------------------
+0000            376            rseg R_DSEG
+0000            377   _Test_Pair_PARM_2:
+0000            378            ds 1
+0001            379   ;--------------------------------------------------------
+0001            380   ; overlayable items in internal ram 
+0001            381   ;--------------------------------------------------------
+0000            382            rseg    R_OSEG
+0000            383            rseg    R_OSEG
+0000            384            rseg    R_OSEG
+0000            385            rseg    R_OSEG
+0000            386            rseg    R_OSEG
+0000            387            rseg    R_OSEG
+0000            388            rseg    R_OSEG
+0000            389   ;--------------------------------------------------------
+0000            390   ; indirectly addressable internal ram data
+0000            391   ;--------------------------------------------------------
+0000            392            rseg R_ISEG
+0000            393   ;--------------------------------------------------------
+0000            394   ; absolute internal ram data
+0000            395   ;--------------------------------------------------------
+0000            396            DSEG
+0000            397   ;--------------------------------------------------------
+0000            398   ; bit data
+0000            399   ;--------------------------------------------------------
+0000            400            rseg R_BSEG
+0000            401   ;--------------------------------------------------------
+0000            402   ; paged external ram data
+0000            403   ;--------------------------------------------------------
+0000            404            rseg R_PSEG
+0000            405   ;--------------------------------------------------------
+0000            406   ; external ram data
+0000            407   ;--------------------------------------------------------
+0000            408            rseg R_XSEG
+0000            409   ;--------------------------------------------------------
+0000            410   ; absolute external ram data
+0000            411   ;--------------------------------------------------------
+0000            412            XSEG
+0000            413   ;--------------------------------------------------------
+0000            414   ; external initialized ram data
+0000            415   ;--------------------------------------------------------
+0000            416            rseg R_IXSEG
+0000            417            rseg R_HOME
+0000            418            rseg R_GSINIT
+0000            419            rseg R_CSEG
+0000            420   ;--------------------------------------------------------
+0000            421   ; Reset entry point and interrupt vectors
+0000            422   ;--------------------------------------------------------
+0000            423            CSEG at 0x0000
+0000 020100     424            ljmp    _crt0
+0003            425   ;--------------------------------------------------------
+0003            426   ; global & static initialisations
+0003            427   ;--------------------------------------------------------
+0000            428            rseg R_HOME
+0000            429            rseg R_GSINIT
+0000            430            rseg R_GSINIT
+0000            431   ;--------------------------------------------------------
+0000            432   ; data variables initialization
+0000            433   ;--------------------------------------------------------
+0000            434            rseg R_DINIT
+0000            435            ; The linker places a 'ret' at the end of segment R_DINIT.
+0000            436   ;--------------------------------------------------------
+0000            437   ; code
+0000            438   ;--------------------------------------------------------
+0000            439            rseg R_CSEG
+0000            440   ;------------------------------------------------------------
+0000            441   ;Allocation info for local variables in function 'PORT_Init'
+0000            442   ;------------------------------------------------------------
+0000            443   ;------------------------------------------------------------
+0000            444   ;        f38x_autotest.c:27: void PORT_Init (void)
+0000            445   ;        -----------------------------------------
+0000            446   ;         function PORT_Init
+0000            447   ;        -----------------------------------------
+0000            448   _PORT_Init:
+0000            449            using   0
+0000            450   ;        f38x_autotest.c:29: P0MDOUT |= 0x10; // Enable UTX as push-pull output
+0000 43A410     451            orl     _P0MDOUT,#0x10
+0003            452   ;        f38x_autotest.c:30: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)                     
+0003 75E101     453            mov     _XBR0,#0x01
+0006            454   ;        f38x_autotest.c:31: XBR1     = 0x40; // Enable crossbar and weak pull-ups
+0006 75E240     455            mov     _XBR1,#0x40
+0009 22         456            ret
+000A            457   ;------------------------------------------------------------
+000A            458   ;Allocation info for local variables in function 'SYSCLK_Init'
+000A            459   ;------------------------------------------------------------
+000A            460   ;------------------------------------------------------------
+000A            461   ;        f38x_autotest.c:34: void SYSCLK_Init (void)
+000A            462   ;        -----------------------------------------
+000A            463   ;         function SYSCLK_Init
+000A            464   ;        -----------------------------------------
+000A            465   _SYSCLK_Init:
+000A            466   ;        f38x_autotest.c:42: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
+000A 43A903     467            orl     _CLKSEL,#0x03
+000D            468   ;        f38x_autotest.c:46: OSCICN |= 0x03;   // Configure internal oscillator for its maximum frequency
+000D 43B203     469            orl     _OSCICN,#0x03
+0010            470   ;        f38x_autotest.c:47: RSTSRC  = 0x04;   // Enable missing clock detector
+0010 75EF04     471            mov     _RSTSRC,#0x04
+0013 22         472            ret
+0014            473   ;------------------------------------------------------------
+0014            474   ;Allocation info for local variables in function 'UART0_Init'
+0014            475   ;------------------------------------------------------------
+0014            476   ;------------------------------------------------------------
+0014            477   ;        f38x_autotest.c:50: void UART0_Init (void)
+0014            478   ;        -----------------------------------------
+0014            479   ;         function UART0_Init
+0014            480   ;        -----------------------------------------
+0014            481   _UART0_Init:
+0014            482   ;        f38x_autotest.c:52: SCON0 = 0x10;
+0014 759810     483            mov     _SCON0,#0x10
+0017            484   ;        f38x_autotest.c:55: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
+0017 758D30     485            mov     _TH1,#0x30
+001A            486   ;        f38x_autotest.c:56: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
+001A 538EF4     487            anl     _CKCON,#0xF4
+001D            488   ;        f38x_autotest.c:57: CKCON |=  0x08;
+001D 438E08     489            orl     _CKCON,#0x08
+0020            490   ;        f38x_autotest.c:70: TL1 = TH1;      // Init Timer1
+0020 858D8B     491            mov     _TL1,_TH1
+0023            492   ;        f38x_autotest.c:71: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
+0023 53890F     493            anl     _TMOD,#0x0F
+0026            494   ;        f38x_autotest.c:72: TMOD |=  0x20;                       
+0026 438920     495            orl     _TMOD,#0x20
+0029            496   ;        f38x_autotest.c:73: TR1 = 1; // START Timer1
+0029 D28E       497            setb    _TR1
+002B            498   ;        f38x_autotest.c:74: TI = 1;  // Indicate TX0 ready
+002B D299       499            setb    _TI
+002D 22         500            ret
+002E            501   ;------------------------------------------------------------
+002E            502   ;Allocation info for local variables in function '_c51_external_startup'
+002E            503   ;------------------------------------------------------------
+002E            504   ;------------------------------------------------------------
+002E            505   ;        f38x_autotest.c:77: char _c51_external_startup (void)
+002E            506   ;        -----------------------------------------
+002E            507   ;         function _c51_external_startup
+002E            508   ;        -----------------------------------------
+002E            509   __c51_external_startup:
+002E            510   ;        f38x_autotest.c:79: PCA0MD &= ~0x40; // WDTE = 0 (clear watchdog timer enable)
+002E 53D9BF     511            anl     _PCA0MD,#0xBF
+0031            512   ;        f38x_autotest.c:80: PORT_Init();     // Initialize Port I/O
+0031 120100     513            lcall   _PORT_Init
+0034            514   ;        f38x_autotest.c:81: SYSCLK_Init ();  // Initialize Oscillator
+0034 120100     515            lcall   _SYSCLK_Init
+0037            516   ;        f38x_autotest.c:82: UART0_Init();    // Initialize UART0
+0037 120100     517            lcall   _UART0_Init
+003A            518   ;        f38x_autotest.c:83: return 0;
+003A 758200     519            mov     dpl,#0x00
+003D 22         520            ret
+003E            521   ;------------------------------------------------------------
+003E            522   ;Allocation info for local variables in function 'Timer3us'
+003E            523   ;------------------------------------------------------------
+003E            524   ;us                        Allocated to registers r2 r3 r4 r5 
+003E            525   ;i                         Allocated to registers r6 r7 r0 r1 
+003E            526   ;------------------------------------------------------------
+003E            527   ;        f38x_autotest.c:87: void Timer3us(unsigned long us)
+003E            528   ;        -----------------------------------------
+003E            529   ;         function Timer3us
+003E            530   ;        -----------------------------------------
+003E            531   _Timer3us:
+003E AA82       532            mov     r2,dpl
+0040 AB83       533            mov     r3,dph
+0042 ACF0       534            mov     r4,b
+0044 FD         535            mov     r5,a
+0045            536   ;        f38x_autotest.c:92: CKCON|=0b_0100_0000;
+0045 438E40     537            orl     _CKCON,#0x40
+0048            538   ;        f38x_autotest.c:94: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+0048 7592D0     539            mov     _TMR3RL,#0xD0
+004B 7593FF     540            mov     (_TMR3RL >> 8),#0xFF
+004E            541   ;        f38x_autotest.c:95: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+004E 859294     542            mov     _TMR3,_TMR3RL
+0051 859395     543            mov     (_TMR3 >> 8),(_TMR3RL >> 8)
+0054            544   ;        f38x_autotest.c:97: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
+0054 759104     545            mov     _TMR3CN,#0x04
+0057            546   ;        f38x_autotest.c:98: for (i = 0; i < us; i++)       // Count <us> overflows
+0057 7E00       547            mov     r6,#0x00
+0059 7F00       548            mov     r7,#0x00
+005B 7800       549            mov     r0,#0x00
+005D 7900       550            mov     r1,#0x00
+005F            551   L006004?:
+005F C3         552            clr     c
+0060 EE         553            mov     a,r6
+0061 9A         554            subb    a,r2
+0062 EF         555            mov     a,r7
+0063 9B         556            subb    a,r3
+0064 E8         557            mov     a,r0
+0065 9C         558            subb    a,r4
+0066 E9         559            mov     a,r1
+0067 9D         560            subb    a,r5
+0068 5001       561            jnc     L006007?
+006A            562   ;        f38x_autotest.c:100: while (!(TMR3CN & 0x80));  // Wait for overflow
+006A            563   L006001?:
+006A E591       564            mov     a,_TMR3CN
+006C 30E788     565            jnb     acc.7,L006001?
+006F            566   ;        f38x_autotest.c:101: TMR3CN &= ~(0x80);         // Clear overflow indicator
+006F 53917F     567            anl     _TMR3CN,#0x7F
+0072            568   ;        f38x_autotest.c:98: for (i = 0; i < us; i++)       // Count <us> overflows
+0072 0E         569            inc     r6
+0073 BE0008     570            cjne    r6,#0x00,L006016?
+0076 0F         571            inc     r7
+0077 BF0008     572            cjne    r7,#0x00,L006016?
+007A 08         573            inc     r0
+007B B80008     574            cjne    r0,#0x00,L006004?
+007E 09         575            inc     r1
+007F            576   L006016?:
+007F 8001       577            sjmp    L006004?
+0081            578   L006007?:
+0081            579   ;        f38x_autotest.c:103: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
+0081 759100     580            mov     _TMR3CN,#0x00
+0084 22         581            ret
+0085            582   ;------------------------------------------------------------
+0085            583   ;Allocation info for local variables in function 'WaitXms'
+0085            584   ;------------------------------------------------------------
+0085            585   ;ms                        Allocated to registers r2 r3 
+0085            586   ;j                         Allocated to registers r2 r3 
+0085            587   ;------------------------------------------------------------
+0085            588   ;        f38x_autotest.c:106: void WaitXms (unsigned int ms)
+0085            589   ;        -----------------------------------------
+0085            590   ;         function WaitXms
+0085            591   ;        -----------------------------------------
+0085            592   _WaitXms:
+0085 AA82       593            mov     r2,dpl
+0087 AB83       594            mov     r3,dph
+0089            595   ;        f38x_autotest.c:109: for(j=ms; j!=0; j--)
+0089            596   L007001?:
+0089 BA0088     597            cjne    r2,#0x00,L007010?
+008C BB0088     598            cjne    r3,#0x00,L007010?
+008F 22         599            ret
+0090            600   L007010?:
+0090            601   ;        f38x_autotest.c:111: Timer3us(249);
+0090 9000F9     602            mov     dptr,#(0xF9&0x00ff)
+0093 E4         603            clr     a
+0094 F5F0       604            mov     b,a
+0096 C002       605            push    ar2
+0098 C003       606            push    ar3
+009A 120100     607            lcall   _Timer3us
+009D            608   ;        f38x_autotest.c:112: Timer3us(249);
+009D 9000F9     609            mov     dptr,#(0xF9&0x00ff)
+00A0 E4         610            clr     a
+00A1 F5F0       611            mov     b,a
+00A3 120100     612            lcall   _Timer3us
+00A6            613   ;        f38x_autotest.c:113: Timer3us(249);
+00A6 9000F9     614            mov     dptr,#(0xF9&0x00ff)
+00A9 E4         615            clr     a
+00AA F5F0       616            mov     b,a
+00AC 120100     617            lcall   _Timer3us
+00AF            618   ;        f38x_autotest.c:114: Timer3us(250);
+00AF 9000FA     619            mov     dptr,#(0xFA&0x00ff)
+00B2 E4         620            clr     a
+00B3 F5F0       621            mov     b,a
+00B5 120100     622            lcall   _Timer3us
+00B8 D003       623            pop     ar3
+00BA D002       624            pop     ar2
+00BC            625   ;        f38x_autotest.c:109: for(j=ms; j!=0; j--)
+00BC 1A         626            dec     r2
+00BD BAFFC8     627            cjne    r2,#0xff,L007011?
+00C0 1B         628            dec     r3
+00C1            629   L007011?:
+00C1 8001       630            sjmp    L007001?
+00C3            631   ;------------------------------------------------------------
+00C3            632   ;Allocation info for local variables in function 'countzero'
+00C3            633   ;------------------------------------------------------------
+00C3            634   ;j                         Allocated to registers r2 
+00C3            635   ;------------------------------------------------------------
+00C3            636   ;        f38x_autotest.c:118: unsigned char countzero(void)
+00C3            637   ;        -----------------------------------------
+00C3            638   ;         function countzero
+00C3            639   ;        -----------------------------------------
+00C3            640   _countzero:
+00C3            641   ;        f38x_autotest.c:122: j=0;
+00C3 7A00       642            mov     r2,#0x00
+00C5            643   ;        f38x_autotest.c:124: if (P0_0==0) j++;
+00C5 208008     644            jb      _P0_0,L008002?
+00C8 7A01       645            mov     r2,#0x01
+00CA            646   L008002?:
+00CA            647   ;        f38x_autotest.c:125: if (P0_1==0) j++;
+00CA 208148     648            jb      _P0_1,L008004?
+00CD 0A         649            inc     r2
+00CE            650   L008004?:
+00CE            651   ;        f38x_autotest.c:126: if (P0_2==0) j++;
+00CE 208288     652            jb      _P0_2,L008006?
+00D1 0A         653            inc     r2
+00D2            654   L008006?:
+00D2            655   ;        f38x_autotest.c:127: if (P0_3==0) j++;
+00D2 2083C8     656            jb      _P0_3,L008008?
+00D5 0A         657            inc     r2
+00D6            658   L008008?:
+00D6            659   ;        f38x_autotest.c:130: if (P0_6==0) j++;
+00D6 208608     660            jb      _P0_6,L008010?
+00D9 0A         661            inc     r2
+00DA            662   L008010?:
+00DA            663   ;        f38x_autotest.c:131: if (P0_7==0) j++;
+00DA 208748     664            jb      _P0_7,L008012?
+00DD 0A         665            inc     r2
+00DE            666   L008012?:
+00DE            667   ;        f38x_autotest.c:133: if (P1_0==0) j++;
+00DE 209088     668            jb      _P1_0,L008014?
+00E1 0A         669            inc     r2
+00E2            670   L008014?:
+00E2            671   ;        f38x_autotest.c:134: if (P1_1==0) j++;
+00E2 2091C8     672            jb      _P1_1,L008016?
+00E5 0A         673            inc     r2
+00E6            674   L008016?:
+00E6            675   ;        f38x_autotest.c:135: if (P1_2==0) j++;
+00E6 209208     676            jb      _P1_2,L008018?
+00E9 0A         677            inc     r2
+00EA            678   L008018?:
+00EA            679   ;        f38x_autotest.c:136: if (P1_3==0) j++;
+00EA 209348     680            jb      _P1_3,L008020?
+00ED 0A         681            inc     r2
+00EE            682   L008020?:
+00EE            683   ;        f38x_autotest.c:137: if (P1_4==0) j++;
+00EE 209488     684            jb      _P1_4,L008022?
+00F1 0A         685            inc     r2
+00F2            686   L008022?:
+00F2            687   ;        f38x_autotest.c:138: if (P1_5==0) j++;
+00F2 2095C8     688            jb      _P1_5,L008024?
+00F5 0A         689            inc     r2
+00F6            690   L008024?:
+00F6            691   ;        f38x_autotest.c:139: if (P1_6==0) j++;
+00F6 209608     692            jb      _P1_6,L008026?
+00F9 0A         693            inc     r2
+00FA            694   L008026?:
+00FA            695   ;        f38x_autotest.c:140: if (P1_7==0) j++;
+00FA 209748     696            jb      _P1_7,L008028?
+00FD 0A         697            inc     r2
+00FE            698   L008028?:
+00FE            699   ;        f38x_autotest.c:142: if (P2_0==0) j++;
+00FE 20A088     700            jb      _P2_0,L008030?
+0101 0A         701            inc     r2
+0102            702   L008030?:
+0102            703   ;        f38x_autotest.c:143: if (P2_1==0) j++;
+0102 20A1C8     704            jb      _P2_1,L008032?
+0105 0A         705            inc     r2
+0106            706   L008032?:
+0106            707   ;        f38x_autotest.c:144: if (P2_2==0) j++;
+0106 20A208     708            jb      _P2_2,L008034?
+0109 0A         709            inc     r2
+010A            710   L008034?:
+010A            711   ;        f38x_autotest.c:145: if (P2_3==0) j++;
+010A 20A348     712            jb      _P2_3,L008036?
+010D 0A         713            inc     r2
+010E            714   L008036?:
+010E            715   ;        f38x_autotest.c:146: if (P2_4==0) j++;
+010E 20A488     716            jb      _P2_4,L008038?
+0111 0A         717            inc     r2
+0112            718   L008038?:
+0112            719   ;        f38x_autotest.c:147: if (P2_5==0) j++;
+0112 20A5C8     720            jb      _P2_5,L008040?
+0115 0A         721            inc     r2
+0116            722   L008040?:
+0116            723   ;        f38x_autotest.c:148: if (P2_6==0) j++;
+0116 20A608     724            jb      _P2_6,L008042?
+0119 0A         725            inc     r2
+011A            726   L008042?:
+011A            727   ;        f38x_autotest.c:149: if (P2_7==0) j++;
+011A 20A748     728            jb      _P2_7,L008044?
+011D 0A         729            inc     r2
+011E            730   L008044?:
+011E            731   ;        f38x_autotest.c:151: if (P3_0==0) j++;
+011E 20B088     732            jb      _P3_0,L008046?
+0121 0A         733            inc     r2
+0122            734   L008046?:
+0122            735   ;        f38x_autotest.c:153: return j;
+0122 8A82       736            mov     dpl,r2
+0124 22         737            ret
+0125            738   ;------------------------------------------------------------
+0125            739   ;Allocation info for local variables in function 'Set_Pin_Output'
+0125            740   ;------------------------------------------------------------
+0125            741   ;pin                       Allocated to registers r2 
+0125            742   ;mask                      Allocated to registers r3 
+0125            743   ;------------------------------------------------------------
+0125            744   ;        f38x_autotest.c:156: void Set_Pin_Output (unsigned char pin)
+0125            745   ;        -----------------------------------------
+0125            746   ;         function Set_Pin_Output
+0125            747   ;        -----------------------------------------
+0125            748   _Set_Pin_Output:
+0125 AA82       749            mov     r2,dpl
+0127            750   ;        f38x_autotest.c:160: mask=(1<<(pin&0x7));
+0127 7407       751            mov     a,#0x07
+0129 5A         752            anl     a,r2
+012A F5F0       753            mov     b,a
+012C 05F0       754            inc     b
+012E 7401       755            mov     a,#0x01
+0130 8001       756            sjmp    L009011?
+0132            757   L009009?:
+0132 25E0       758            add     a,acc
+0134            759   L009011?:
+0134 D5F008     760            djnz    b,L009009?
+0137 FB         761            mov     r3,a
+0138            762   ;        f38x_autotest.c:161: switch(pin/0x10)
+0138 EA         763            mov     a,r2
+0139 C4         764            swap    a
+013A 540F       765            anl     a,#0x0f
+013C FA         766            mov  r2,a
+013D 24FC       767            add     a,#0xff - 0x03
+013F 4001       768            jc      L009006?
+0141 EA         769            mov     a,r2
+0142 2A         770            add     a,r2
+0143 2A         771            add     a,r2
+0144 90A888     772            mov     dptr,#L009013?
+0147 73         773            jmp     @a+dptr
+0148            774   L009013?:
+0148 020100     775            ljmp    L009001?
+014B 020100     776            ljmp    L009002?
+014E 020100     777            ljmp    L009003?
+0151 020100     778            ljmp    L009004?
+0154            779   ;        f38x_autotest.c:163: case 0: P0MDOUT |= mask; break;
+0154            780   L009001?:
+0154 EB         781            mov     a,r3
+0155 42A4       782            orl     _P0MDOUT,a
+0157            783   ;        f38x_autotest.c:164: case 1: P1MDOUT |= mask; break;
+0157 22         784            ret
+0158            785   L009002?:
+0158 EB         786            mov     a,r3
+0159 42A5       787            orl     _P1MDOUT,a
+015B            788   ;        f38x_autotest.c:165: case 2: P2MDOUT |= mask; break; 
+015B 22         789            ret
+015C            790   L009003?:
+015C EB         791            mov     a,r3
+015D 42A6       792            orl     _P2MDOUT,a
+015F            793   ;        f38x_autotest.c:166: case 3: P3MDOUT |= mask; break; 
+015F 22         794            ret
+0160            795   L009004?:
+0160 EB         796            mov     a,r3
+0161 42A7       797            orl     _P3MDOUT,a
+0163            798   ;        f38x_autotest.c:167: }  
+0163            799   L009006?:
+0163 22         800            ret
+0164            801   ;------------------------------------------------------------
+0164            802   ;Allocation info for local variables in function 'Set_Pin_Input'
+0164            803   ;------------------------------------------------------------
+0164            804   ;pin                       Allocated to registers r2 
+0164            805   ;mask                      Allocated to registers r3 
+0164            806   ;------------------------------------------------------------
+0164            807   ;        f38x_autotest.c:170: void Set_Pin_Input (unsigned char pin)
+0164            808   ;        -----------------------------------------
+0164            809   ;         function Set_Pin_Input
+0164            810   ;        -----------------------------------------
+0164            811   _Set_Pin_Input:
+0164 AA82       812            mov     r2,dpl
+0166            813   ;        f38x_autotest.c:174: mask=(1<<(pin&0x7));
+0166 7407       814            mov     a,#0x07
+0168 5A         815            anl     a,r2
+0169 F5F0       816            mov     b,a
+016B 05F0       817            inc     b
+016D 7401       818            mov     a,#0x01
+016F 8001       819            sjmp    L010011?
+0171            820   L010009?:
+0171 25E0       821            add     a,acc
+0173            822   L010011?:
+0173 D5F008     823            djnz    b,L010009?
+0176            824   ;        f38x_autotest.c:175: mask=~mask;
+0176 F4         825            cpl     a
+0177 FB         826            mov     r3,a
+0178            827   ;        f38x_autotest.c:176: switch(pin/0x10)
+0178 EA         828            mov     a,r2
+0179 C4         829            swap    a
+017A 540F       830            anl     a,#0x0f
+017C FA         831            mov  r2,a
+017D 24FC       832            add     a,#0xff - 0x03
+017F 4001       833            jc      L010006?
+0181 EA         834            mov     a,r2
+0182 2A         835            add     a,r2
+0183 2A         836            add     a,r2
+0184 90AA88     837            mov     dptr,#L010013?
+0187 73         838            jmp     @a+dptr
+0188            839   L010013?:
+0188 020100     840            ljmp    L010001?
+018B 020100     841            ljmp    L010002?
+018E 020100     842            ljmp    L010003?
+0191 020100     843            ljmp    L010004?
+0194            844   ;        f38x_autotest.c:178: case 0: P0MDOUT &= mask; break;
+0194            845   L010001?:
+0194 EB         846            mov     a,r3
+0195 52A4       847            anl     _P0MDOUT,a
+0197            848   ;        f38x_autotest.c:179: case 1: P1MDOUT &= mask; break;
+0197 22         849            ret
+0198            850   L010002?:
+0198 EB         851            mov     a,r3
+0199 52A5       852            anl     _P1MDOUT,a
+019B            853   ;        f38x_autotest.c:180: case 2: P2MDOUT &= mask; break; 
+019B 22         854            ret
+019C            855   L010003?:
+019C EB         856            mov     a,r3
+019D 52A6       857            anl     _P2MDOUT,a
+019F            858   ;        f38x_autotest.c:181: case 3: P3MDOUT &= mask; break; 
+019F 22         859            ret
+01A0            860   L010004?:
+01A0 EB         861            mov     a,r3
+01A1 52A7       862            anl     _P3MDOUT,a
+01A3            863   ;        f38x_autotest.c:182: }  
+01A3            864   L010006?:
+01A3 22         865            ret
+01A4            866   ;------------------------------------------------------------
+01A4            867   ;Allocation info for local variables in function 'Set_Pin_One'
+01A4            868   ;------------------------------------------------------------
+01A4            869   ;pin                       Allocated to registers r2 
+01A4            870   ;mask                      Allocated to registers r3 
+01A4            871   ;------------------------------------------------------------
+01A4            872   ;        f38x_autotest.c:185: void Set_Pin_One (unsigned char pin)
+01A4            873   ;        -----------------------------------------
+01A4            874   ;         function Set_Pin_One
+01A4            875   ;        -----------------------------------------
+01A4            876   _Set_Pin_One:
+01A4 AA82       877            mov     r2,dpl
+01A6            878   ;        f38x_autotest.c:189: mask=(1<<(pin&0x7));
+01A6 7407       879            mov     a,#0x07
+01A8 5A         880            anl     a,r2
+01A9 F5F0       881            mov     b,a
+01AB 05F0       882            inc     b
+01AD 7401       883            mov     a,#0x01
+01AF 8001       884            sjmp    L011011?
+01B1            885   L011009?:
+01B1 25E0       886            add     a,acc
+01B3            887   L011011?:
+01B3 D5F008     888            djnz    b,L011009?
+01B6 FB         889            mov     r3,a
+01B7            890   ;        f38x_autotest.c:190: switch(pin/0x10)
+01B7 EA         891            mov     a,r2
+01B8 C4         892            swap    a
+01B9 540F       893            anl     a,#0x0f
+01BB FA         894            mov  r2,a
+01BC 24FC       895            add     a,#0xff - 0x03
+01BE 4001       896            jc      L011006?
+01C0 EA         897            mov     a,r2
+01C1 2A         898            add     a,r2
+01C2 2A         899            add     a,r2
+01C3 90AC88     900            mov     dptr,#L011013?
+01C6 73         901            jmp     @a+dptr
+01C7            902   L011013?:
+01C7 020100     903            ljmp    L011001?
+01CA 020100     904            ljmp    L011002?
+01CD 020100     905            ljmp    L011003?
+01D0 020100     906            ljmp    L011004?
+01D3            907   ;        f38x_autotest.c:192: case 0: P0 |= mask; break;
+01D3            908   L011001?:
+01D3 EB         909            mov     a,r3
+01D4 4280       910            orl     _P0,a
+01D6            911   ;        f38x_autotest.c:193: case 1: P1 |= mask; break;
+01D6 22         912            ret
+01D7            913   L011002?:
+01D7 EB         914            mov     a,r3
+01D8 4290       915            orl     _P1,a
+01DA            916   ;        f38x_autotest.c:194: case 2: P2 |= mask; break; 
+01DA 22         917            ret
+01DB            918   L011003?:
+01DB EB         919            mov     a,r3
+01DC 42A0       920            orl     _P2,a
+01DE            921   ;        f38x_autotest.c:195: case 3: P3 |= mask; break; 
+01DE 22         922            ret
+01DF            923   L011004?:
+01DF EB         924            mov     a,r3
+01E0 42B0       925            orl     _P3,a
+01E2            926   ;        f38x_autotest.c:196: }  
+01E2            927   L011006?:
+01E2 22         928            ret
+01E3            929   ;------------------------------------------------------------
+01E3            930   ;Allocation info for local variables in function 'Set_Pin_Zero'
+01E3            931   ;------------------------------------------------------------
+01E3            932   ;pin                       Allocated to registers r2 
+01E3            933   ;mask                      Allocated to registers r3 
+01E3            934   ;------------------------------------------------------------
+01E3            935   ;        f38x_autotest.c:199: void Set_Pin_Zero (unsigned char pin)
+01E3            936   ;        -----------------------------------------
+01E3            937   ;         function Set_Pin_Zero
+01E3            938   ;        -----------------------------------------
+01E3            939   _Set_Pin_Zero:
+01E3 AA82       940            mov     r2,dpl
+01E5            941   ;        f38x_autotest.c:203: mask=(1<<(pin&0x7));
+01E5 7407       942            mov     a,#0x07
+01E7 5A         943            anl     a,r2
+01E8 F5F0       944            mov     b,a
+01EA 05F0       945            inc     b
+01EC 7401       946            mov     a,#0x01
+01EE 8001       947            sjmp    L012011?
+01F0            948   L012009?:
+01F0 25E0       949            add     a,acc
+01F2            950   L012011?:
+01F2 D5F008     951            djnz    b,L012009?
+01F5            952   ;        f38x_autotest.c:204: mask=~mask;
+01F5 F4         953            cpl     a
+01F6 FB         954            mov     r3,a
+01F7            955   ;        f38x_autotest.c:205: switch(pin/0x10)
+01F7 EA         956            mov     a,r2
+01F8 C4         957            swap    a
+01F9 540F       958            anl     a,#0x0f
+01FB FA         959            mov  r2,a
+01FC 24FC       960            add     a,#0xff - 0x03
+01FE 4001       961            jc      L012006?
+0200 EA         962            mov     a,r2
+0201 2A         963            add     a,r2
+0202 2A         964            add     a,r2
+0203 90AE88     965            mov     dptr,#L012013?
+0206 73         966            jmp     @a+dptr
+0207            967   L012013?:
+0207 020100     968            ljmp    L012001?
+020A 020100     969            ljmp    L012002?
+020D 020100     970            ljmp    L012003?
+0210 020100     971            ljmp    L012004?
+0213            972   ;        f38x_autotest.c:207: case 0: P0 &= mask; break;
+0213            973   L012001?:
+0213 EB         974            mov     a,r3
+0214 5280       975            anl     _P0,a
+0216            976   ;        f38x_autotest.c:208: case 1: P1 &= mask; break;
+0216 22         977            ret
+0217            978   L012002?:
+0217 EB         979            mov     a,r3
+0218 5290       980            anl     _P1,a
+021A            981   ;        f38x_autotest.c:209: case 2: P2 &= mask; break; 
+021A 22         982            ret
+021B            983   L012003?:
+021B EB         984            mov     a,r3
+021C 52A0       985            anl     _P2,a
+021E            986   ;        f38x_autotest.c:210: case 3: P3 &= mask; break; 
+021E 22         987            ret
+021F            988   L012004?:
+021F EB         989            mov     a,r3
+0220 52B0       990            anl     _P3,a
+0222            991   ;        f38x_autotest.c:211: }  
+0222            992   L012006?:
+0222 22         993            ret
+0223            994   ;------------------------------------------------------------
+0223            995   ;Allocation info for local variables in function 'Read_Pin'
+0223            996   ;------------------------------------------------------------
+0223            997   ;pin                       Allocated to registers r2 
+0223            998   ;mask                      Allocated to registers r3 
+0223            999   ;result                    Allocated to registers r2 
+0223           1000   ;------------------------------------------------------------
+0223           1001   ;        f38x_autotest.c:214: bit Read_Pin (unsigned char pin)
+0223           1002   ;        -----------------------------------------
+0223           1003   ;         function Read_Pin
+0223           1004   ;        -----------------------------------------
+0223           1005   _Read_Pin:
+0223 AA82      1006            mov     r2,dpl
+0225           1007   ;        f38x_autotest.c:218: mask=(1<<(pin&0x7));
+0225 7407      1008            mov     a,#0x07
+0227 5A        1009            anl     a,r2
+0228 F5F0      1010            mov     b,a
+022A 05F0      1011            inc     b
+022C 7401      1012            mov     a,#0x01
+022E 8001      1013            sjmp    L013012?
+0230           1014   L013010?:
+0230 25E0      1015            add     a,acc
+0232           1016   L013012?:
+0232 D5F008    1017            djnz    b,L013010?
+0235 FB        1018            mov     r3,a
+0236           1019   ;        f38x_autotest.c:219: switch(pin/0x10)
+0236 EA        1020            mov     a,r2
+0237 C4        1021            swap    a
+0238 540F      1022            anl     a,#0x0f
+023A FA        1023            mov  r2,a
+023B 24FC      1024            add     a,#0xff - 0x03
+023D 4001      1025            jc      L013002?
+023F EA        1026            mov     a,r2
+0240 2A        1027            add     a,r2
+0241 2A        1028            add     a,r2
+0242 90B088    1029            mov     dptr,#L013014?
+0245 73        1030            jmp     @a+dptr
+0246           1031   L013014?:
+0246 020100    1032            ljmp    L013002?
+0249 020100    1033            ljmp    L013003?
+024C 020100    1034            ljmp    L013004?
+024F 020100    1035            ljmp    L013005?
+0252           1036   ;        f38x_autotest.c:222: case 0: result = P0 & mask; break;
+0252           1037   L013002?:
+0252 EB        1038            mov     a,r3
+0253 5580      1039            anl     a,_P0
+0255 FA        1040            mov     r2,a
+0256           1041   ;        f38x_autotest.c:223: case 1: result = P1 & mask; break;
+0256 8001      1042            sjmp    L013006?
+0258           1043   L013003?:
+0258 EB        1044            mov     a,r3
+0259 5590      1045            anl     a,_P1
+025B FA        1046            mov     r2,a
+025C           1047   ;        f38x_autotest.c:224: case 2: result = P2 & mask; break; 
+025C 8001      1048            sjmp    L013006?
+025E           1049   L013004?:
+025E EB        1050            mov     a,r3
+025F 55A0      1051            anl     a,_P2
+0261 FA        1052            mov     r2,a
+0262           1053   ;        f38x_autotest.c:225: case 3: result = P3 & mask; break; 
+0262 8001      1054            sjmp    L013006?
+0264           1055   L013005?:
+0264 EB        1056            mov     a,r3
+0265 55B0      1057            anl     a,_P3
+0267 FA        1058            mov     r2,a
+0268           1059   ;        f38x_autotest.c:226: }
+0268           1060   L013006?:
+0268           1061   ;        f38x_autotest.c:227: return (result?1:0);
+0268 EA        1062            mov     a,r2
+0269 24FF      1063            add     a,#0xff
+026B 22        1064            ret
+026C           1065   ;------------------------------------------------------------
+026C           1066   ;Allocation info for local variables in function 'dofail'
+026C           1067   ;------------------------------------------------------------
+026C           1068   ;pin                       Allocated to registers r2 
+026C           1069   ;------------------------------------------------------------
+026C           1070   ;        f38x_autotest.c:230: void dofail(unsigned char pin)
+026C           1071   ;        -----------------------------------------
+026C           1072   ;         function dofail
+026C           1073   ;        -----------------------------------------
+026C           1074   _dofail:
+026C AA82      1075            mov     r2,dpl
+026E           1076   ;        f38x_autotest.c:232: printf("P%d.%d FAILED (OPEN)\n", pin/0x10, pin&7);
+026E 7407      1077            mov     a,#0x07
+0270 5A        1078            anl     a,r2
+0271 FB        1079            mov     r3,a
+0272 7C00      1080            mov     r4,#0x00
+0274 EA        1081            mov     a,r2
+0275 C4        1082            swap    a
+0276 540F      1083            anl     a,#0x0f
+0278 FA        1084            mov     r2,a
+0279 7D00      1085            mov     r5,#0x00
+027B C003      1086            push    ar3
+027D C004      1087            push    ar4
+027F C002      1088            push    ar2
+0281 C005      1089            push    ar5
+0283 74C8      1090            mov     a,#__str_0
+0285 C0E0      1091            push    acc
+0287 74B1      1092            mov     a,#(__str_0 >> 8)
+0289 C0E0      1093            push    acc
+028B 7480      1094            mov     a,#0x80
+028D C0E0      1095            push    acc
+028F 120100    1096            lcall   _printf
+0292 E581      1097            mov     a,sp
+0294 24F9      1098            add     a,#0xf9
+0296 F581      1099            mov     sp,a
+0298           1100   ;        f38x_autotest.c:233: while(1);
+0298           1101   L014002?:
+0298 8001      1102            sjmp    L014002?
+029A           1103   ;------------------------------------------------------------
+029A           1104   ;Allocation info for local variables in function 'dofailb'
+029A           1105   ;------------------------------------------------------------
+029A           1106   ;pin                       Allocated to registers r2 
+029A           1107   ;------------------------------------------------------------
+029A           1108   ;        f38x_autotest.c:236: void dofailb(unsigned char pin)
+029A           1109   ;        -----------------------------------------
+029A           1110   ;         function dofailb
+029A           1111   ;        -----------------------------------------
+029A           1112   _dofailb:
+029A AA82      1113            mov     r2,dpl
+029C           1114   ;        f38x_autotest.c:238: printf("P%d.%d FAILED (SHORT)\n", pin/0x10, pin&7);
+029C 7407      1115            mov     a,#0x07
+029E 5A        1116            anl     a,r2
+029F FB        1117            mov     r3,a
+02A0 7C00      1118            mov     r4,#0x00
+02A2 EA        1119            mov     a,r2
+02A3 C4        1120            swap    a
+02A4 540F      1121            anl     a,#0x0f
+02A6 FA        1122            mov     r2,a
+02A7 7D00      1123            mov     r5,#0x00
+02A9 C003      1124            push    ar3
+02AB C004      1125            push    ar4
+02AD C002      1126            push    ar2
+02AF C005      1127            push    ar5
+02B1 74C8      1128            mov     a,#__str_1
+02B3 C0E0      1129            push    acc
+02B5 74B2      1130            mov     a,#(__str_1 >> 8)
+02B7 C0E0      1131            push    acc
+02B9 7480      1132            mov     a,#0x80
+02BB C0E0      1133            push    acc
+02BD 120100    1134            lcall   _printf
+02C0 E581      1135            mov     a,sp
+02C2 24F9      1136            add     a,#0xf9
+02C4 F581      1137            mov     sp,a
+02C6           1138   ;        f38x_autotest.c:239: while(1);
+02C6           1139   L015002?:
+02C6 8001      1140            sjmp    L015002?
+02C8           1141   ;------------------------------------------------------------
+02C8           1142   ;Allocation info for local variables in function 'dopass'
+02C8           1143   ;------------------------------------------------------------
+02C8           1144   ;pin                       Allocated to registers r2 
+02C8           1145   ;------------------------------------------------------------
+02C8           1146   ;        f38x_autotest.c:242: void dopass(unsigned char pin)
+02C8           1147   ;        -----------------------------------------
+02C8           1148   ;         function dopass
+02C8           1149   ;        -----------------------------------------
+02C8           1150   _dopass:
+02C8 AA82      1151            mov     r2,dpl
+02CA           1152   ;        f38x_autotest.c:244: printf("P%d.%d, ", pin/0x10, pin&7);
+02CA 7407      1153            mov     a,#0x07
+02CC 5A        1154            anl     a,r2
+02CD FB        1155            mov     r3,a
+02CE 7C00      1156            mov     r4,#0x00
+02D0 EA        1157            mov     a,r2
+02D1 C4        1158            swap    a
+02D2 540F      1159            anl     a,#0x0f
+02D4 FA        1160            mov     r2,a
+02D5 7D00      1161            mov     r5,#0x00
+02D7 C003      1162            push    ar3
+02D9 C004      1163            push    ar4
+02DB C002      1164            push    ar2
+02DD C005      1165            push    ar5
+02DF 7448      1166            mov     a,#__str_2
+02E1 C0E0      1167            push    acc
+02E3 74B3      1168            mov     a,#(__str_2 >> 8)
+02E5 C0E0      1169            push    acc
+02E7 7480      1170            mov     a,#0x80
+02E9 C0E0      1171            push    acc
+02EB 120100    1172            lcall   _printf
+02EE E581      1173            mov     a,sp
+02F0 24F9      1174            add     a,#0xf9
+02F2 F581      1175            mov     sp,a
+02F4 22        1176            ret
+02F5           1177   ;------------------------------------------------------------
+02F5           1178   ;Allocation info for local variables in function 'Test_Pair'
+02F5           1179   ;------------------------------------------------------------
+02F5           1180   ;pin2                      Allocated with name '_Test_Pair_PARM_2'
+02F5           1181   ;pin1                      Allocated to registers r2 
+02F5           1182   ;------------------------------------------------------------
+02F5           1183   ;        f38x_autotest.c:247: void Test_Pair (unsigned char pin1, unsigned char pin2)
+02F5           1184   ;        -----------------------------------------
+02F5           1185   ;         function Test_Pair
+02F5           1186   ;        -----------------------------------------
+02F5           1187   _Test_Pair:
+02F5           1188   ;        f38x_autotest.c:249: Set_Pin_Output(pin1);
+02F5 AA82      1189            mov  r2,dpl
+02F7 C002      1190            push    ar2
+02F9 120100    1191            lcall   _Set_Pin_Output
+02FC           1192   ;        f38x_autotest.c:250: Set_Pin_Input(pin2);
+02FC 855882    1193            mov     dpl,_Test_Pair_PARM_2
+02FF 120100    1194            lcall   _Set_Pin_Input
+0302 D002      1195            pop     ar2
+0304           1196   ;        f38x_autotest.c:251: Set_Pin_Zero(pin1);
+0304 8A82      1197            mov     dpl,r2
+0306 C002      1198            push    ar2
+0308 120100    1199            lcall   _Set_Pin_Zero
+030B           1200   ;        f38x_autotest.c:252: WaitXms(2);
+030B 900002    1201            mov     dptr,#0x0002
+030E 120100    1202            lcall   _WaitXms
+0311           1203   ;        f38x_autotest.c:253: if(Read_Pin(pin2)==1) dofail(pin2);
+0311 855882    1204            mov     dpl,_Test_Pair_PARM_2
+0314 120100    1205            lcall   _Read_Pin
+0317 E4        1206            clr     a
+0318 33        1207            rlc     a
+0319 FB        1208            mov     r3,a
+031A D002      1209            pop     ar2
+031C BB0188    1210            cjne    r3,#0x01,L017002?
+031F 855882    1211            mov     dpl,_Test_Pair_PARM_2
+0322 C002      1212            push    ar2
+0324 120100    1213            lcall   _dofail
+0327 D002      1214            pop     ar2
+0329           1215   L017002?:
+0329           1216   ;        f38x_autotest.c:254: if (countzero()!=2) dofailb(pin2);
+0329 C002      1217            push    ar2
+032B 120100    1218            lcall   _countzero
+032E AB82      1219            mov     r3,dpl
+0330 D002      1220            pop     ar2
+0332 BB02C8    1221            cjne    r3,#0x02,L017017?
+0335 8001      1222            sjmp    L017004?
+0337           1223   L017017?:
+0337 855882    1224            mov     dpl,_Test_Pair_PARM_2
+033A C002      1225            push    ar2
+033C 120100    1226            lcall   _dofailb
+033F D002      1227            pop     ar2
+0341           1228   L017004?:
+0341           1229   ;        f38x_autotest.c:255: dopass(pin2);
+0341 855882    1230            mov     dpl,_Test_Pair_PARM_2
+0344 C002      1231            push    ar2
+0346 120100    1232            lcall   _dopass
+0349           1233   ;        f38x_autotest.c:257: Set_Pin_Output(pin2);
+0349 855882    1234            mov     dpl,_Test_Pair_PARM_2
+034C 120100    1235            lcall   _Set_Pin_Output
+034F D002      1236            pop     ar2
+0351           1237   ;        f38x_autotest.c:258: Set_Pin_Input(pin1);
+0351 8A82      1238            mov     dpl,r2
+0353 C002      1239            push    ar2
+0355 120100    1240            lcall   _Set_Pin_Input
+0358           1241   ;        f38x_autotest.c:259: Set_Pin_Zero(pin2);
+0358 855882    1242            mov     dpl,_Test_Pair_PARM_2
+035B 120100    1243            lcall   _Set_Pin_Zero
+035E           1244   ;        f38x_autotest.c:260: WaitXms(2);
+035E 900002    1245            mov     dptr,#0x0002
+0361 120100    1246            lcall   _WaitXms
+0364 D002      1247            pop     ar2
+0366           1248   ;        f38x_autotest.c:261: if(Read_Pin(pin1)==1) dofail(pin1);
+0366 8A82      1249            mov     dpl,r2
+0368 C002      1250            push    ar2
+036A 120100    1251            lcall   _Read_Pin
+036D E4        1252            clr     a
+036E 33        1253            rlc     a
+036F FB        1254            mov     r3,a
+0370 D002      1255            pop     ar2
+0372 BB0148    1256            cjne    r3,#0x01,L017006?
+0375 8A82      1257            mov     dpl,r2
+0377 C002      1258            push    ar2
+0379 120100    1259            lcall   _dofail
+037C D002      1260            pop     ar2
+037E           1261   L017006?:
+037E           1262   ;        f38x_autotest.c:262: if (countzero()!=2) dofailb(pin1);
+037E C002      1263            push    ar2
+0380 120100    1264            lcall   _countzero
+0383 AB82      1265            mov     r3,dpl
+0385 D002      1266            pop     ar2
+0387 BB0288    1267            cjne    r3,#0x02,L017020?
+038A 8001      1268            sjmp    L017008?
+038C           1269   L017020?:
+038C 8A82      1270            mov     dpl,r2
+038E C002      1271            push    ar2
+0390 120100    1272            lcall   _dofailb
+0393 D002      1273            pop     ar2
+0395           1274   L017008?:
+0395           1275   ;        f38x_autotest.c:263: dopass(pin1);
+0395 8A82      1276            mov     dpl,r2
+0397 C002      1277            push    ar2
+0399 120100    1278            lcall   _dopass
+039C D002      1279            pop     ar2
+039E           1280   ;        f38x_autotest.c:265: Set_Pin_One(pin1);
+039E 8A82      1281            mov     dpl,r2
+03A0 C002      1282            push    ar2
+03A2 120100    1283            lcall   _Set_Pin_One
+03A5           1284   ;        f38x_autotest.c:266: Set_Pin_One(pin2);
+03A5 855882    1285            mov     dpl,_Test_Pair_PARM_2
+03A8 120100    1286            lcall   _Set_Pin_One
+03AB D002      1287            pop     ar2
+03AD           1288   ;        f38x_autotest.c:267: Set_Pin_Input(pin1);
+03AD 8A82      1289            mov     dpl,r2
+03AF 120100    1290            lcall   _Set_Pin_Input
+03B2           1291   ;        f38x_autotest.c:268: Set_Pin_Input(pin2);
+03B2 855882    1292            mov     dpl,_Test_Pair_PARM_2
+03B5 020100    1293            ljmp    _Set_Pin_Input
+03B8           1294   ;------------------------------------------------------------
+03B8           1295   ;Allocation info for local variables in function 'Check_Pin_Zero'
+03B8           1296   ;------------------------------------------------------------
+03B8           1297   ;pin                       Allocated to registers r2 
+03B8           1298   ;------------------------------------------------------------
+03B8           1299   ;        f38x_autotest.c:271: void Check_Pin_Zero (unsigned char pin)
+03B8           1300   ;        -----------------------------------------
+03B8           1301   ;         function Check_Pin_Zero
+03B8           1302   ;        -----------------------------------------
+03B8           1303   _Check_Pin_Zero:
+03B8           1304   ;        f38x_autotest.c:273: if(Read_Pin(pin)==0)
+03B8 AA82      1305            mov  r2,dpl
+03BA C002      1306            push    ar2
+03BC 120100    1307            lcall   _Read_Pin
+03BF D002      1308            pop     ar2
+03C1 4001      1309            jc      L018003?
+03C3           1310   ;        f38x_autotest.c:275: printf("P%d.%d is connected to ground\n", pin/0x10, pin&7);
+03C3 7407      1311            mov     a,#0x07
+03C5 5A        1312            anl     a,r2
+03C6 FB        1313            mov     r3,a
+03C7 7C00      1314            mov     r4,#0x00
+03C9 EA        1315            mov     a,r2
+03CA C4        1316            swap    a
+03CB 540F      1317            anl     a,#0x0f
+03CD FA        1318            mov     r2,a
+03CE 7D00      1319            mov     r5,#0x00
+03D0 C003      1320            push    ar3
+03D2 C004      1321            push    ar4
+03D4 C002      1322            push    ar2
+03D6 C005      1323            push    ar5
+03D8 7448      1324            mov     a,#__str_3
+03DA C0E0      1325            push    acc
+03DC 74B5      1326            mov     a,#(__str_3 >> 8)
+03DE C0E0      1327            push    acc
+03E0 7480      1328            mov     a,#0x80
+03E2 C0E0      1329            push    acc
+03E4 120100    1330            lcall   _printf
+03E7 E581      1331            mov     a,sp
+03E9 24F9      1332            add     a,#0xf9
+03EB F581      1333            mov     sp,a
+03ED           1334   L018003?:
+03ED 22        1335            ret
+03EE           1336   ;------------------------------------------------------------
+03EE           1337   ;Allocation info for local variables in function 'Initial_Check'
+03EE           1338   ;------------------------------------------------------------
+03EE           1339   ;------------------------------------------------------------
+03EE           1340   ;        f38x_autotest.c:279: void Initial_Check (void)
+03EE           1341   ;        -----------------------------------------
+03EE           1342   ;         function Initial_Check
+03EE           1343   ;        -----------------------------------------
+03EE           1344   _Initial_Check:
+03EE           1345   ;        f38x_autotest.c:281: if (countzero()!=0)
+03EE 120100    1346            lcall   _countzero
+03F1 E582      1347            mov     a,dpl
+03F3 7001      1348            jnz     L019010?
+03F5 22        1349            ret
+03F6           1350   L019010?:
+03F6           1351   ;        f38x_autotest.c:283: Check_Pin_Zero(0x00);
+03F6 758200    1352            mov     dpl,#0x00
+03F9 120100    1353            lcall   _Check_Pin_Zero
+03FC           1354   ;        f38x_autotest.c:284: Check_Pin_Zero(0x01);
+03FC 758201    1355            mov     dpl,#0x01
+03FF 120100    1356            lcall   _Check_Pin_Zero
+0402           1357   ;        f38x_autotest.c:285: Check_Pin_Zero(0x02);
+0402 758202    1358            mov     dpl,#0x02
+0405 120100    1359            lcall   _Check_Pin_Zero
+0408           1360   ;        f38x_autotest.c:286: Check_Pin_Zero(0x03);
+0408 758203    1361            mov     dpl,#0x03
+040B 120100    1362            lcall   _Check_Pin_Zero
+040E           1363   ;        f38x_autotest.c:289: Check_Pin_Zero(0x06);
+040E 758206    1364            mov     dpl,#0x06
+0411 120100    1365            lcall   _Check_Pin_Zero
+0414           1366   ;        f38x_autotest.c:290: Check_Pin_Zero(0x07);
+0414 758207    1367            mov     dpl,#0x07
+0417 120100    1368            lcall   _Check_Pin_Zero
+041A           1369   ;        f38x_autotest.c:291: Check_Pin_Zero(0x10);
+041A 758210    1370            mov     dpl,#0x10
+041D 120100    1371            lcall   _Check_Pin_Zero
+0420           1372   ;        f38x_autotest.c:292: Check_Pin_Zero(0x11);
+0420 758211    1373            mov     dpl,#0x11
+0423 120100    1374            lcall   _Check_Pin_Zero
+0426           1375   ;        f38x_autotest.c:293: Check_Pin_Zero(0x12);
+0426 758212    1376            mov     dpl,#0x12
+0429 120100    1377            lcall   _Check_Pin_Zero
+042C           1378   ;        f38x_autotest.c:294: Check_Pin_Zero(0x13);
+042C 758213    1379            mov     dpl,#0x13
+042F 120100    1380            lcall   _Check_Pin_Zero
+0432           1381   ;        f38x_autotest.c:295: Check_Pin_Zero(0x14);
+0432 758214    1382            mov     dpl,#0x14
+0435 120100    1383            lcall   _Check_Pin_Zero
+0438           1384   ;        f38x_autotest.c:296: Check_Pin_Zero(0x15);
+0438 758215    1385            mov     dpl,#0x15
+043B 120100    1386            lcall   _Check_Pin_Zero
+043E           1387   ;        f38x_autotest.c:297: Check_Pin_Zero(0x16);
+043E 758216    1388            mov     dpl,#0x16
+0441 120100    1389            lcall   _Check_Pin_Zero
+0444           1390   ;        f38x_autotest.c:298: Check_Pin_Zero(0x17);
+0444 758217    1391            mov     dpl,#0x17
+0447 120100    1392            lcall   _Check_Pin_Zero
+044A           1393   ;        f38x_autotest.c:299: Check_Pin_Zero(0x20);
+044A 758220    1394            mov     dpl,#0x20
+044D 120100    1395            lcall   _Check_Pin_Zero
+0450           1396   ;        f38x_autotest.c:300: Check_Pin_Zero(0x21);
+0450 758221    1397            mov     dpl,#0x21
+0453 120100    1398            lcall   _Check_Pin_Zero
+0456           1399   ;        f38x_autotest.c:301: Check_Pin_Zero(0x22);
+0456 758222    1400            mov     dpl,#0x22
+0459 120100    1401            lcall   _Check_Pin_Zero
+045C           1402   ;        f38x_autotest.c:302: Check_Pin_Zero(0x23);
+045C 758223    1403            mov     dpl,#0x23
+045F 120100    1404            lcall   _Check_Pin_Zero
+0462           1405   ;        f38x_autotest.c:303: Check_Pin_Zero(0x24);
+0462 758224    1406            mov     dpl,#0x24
+0465 120100    1407            lcall   _Check_Pin_Zero
+0468           1408   ;        f38x_autotest.c:304: Check_Pin_Zero(0x25);
+0468 758225    1409            mov     dpl,#0x25
+046B 120100    1410            lcall   _Check_Pin_Zero
+046E           1411   ;        f38x_autotest.c:305: Check_Pin_Zero(0x26);
+046E 758226    1412            mov     dpl,#0x26
+0471 120100    1413            lcall   _Check_Pin_Zero
+0474           1414   ;        f38x_autotest.c:306: Check_Pin_Zero(0x27);
+0474 758227    1415            mov     dpl,#0x27
+0477 120100    1416            lcall   _Check_Pin_Zero
+047A           1417   ;        f38x_autotest.c:307: Check_Pin_Zero(0x30);
+047A 758230    1418            mov     dpl,#0x30
+047D 120100    1419            lcall   _Check_Pin_Zero
+0480           1420   ;        f38x_autotest.c:308: while(1);
+0480           1421   L019002?:
+0480 8001      1422            sjmp    L019002?
+0482           1423   ;------------------------------------------------------------
+0482           1424   ;Allocation info for local variables in function 'main'
+0482           1425   ;------------------------------------------------------------
+0482           1426   ;------------------------------------------------------------
+0482           1427   ;        f38x_autotest.c:312: void main(void)
+0482           1428   ;        -----------------------------------------
+0482           1429   ;         function main
+0482           1430   ;        -----------------------------------------
+0482           1431   _main:
+0482           1432   ;        f38x_autotest.c:316: printf("\n\nF38x board autotest\n");
+0482 7408      1433            mov     a,#__str_4
+0484 C0E0      1434            push    acc
+0486 74B6      1435            mov     a,#(__str_4 >> 8)
+0488 C0E0      1436            push    acc
+048A 7480      1437            mov     a,#0x80
+048C C0E0      1438            push    acc
+048E 120100    1439            lcall   _printf
+0491 1581      1440            dec     sp
+0493 1581      1441            dec     sp
+0495 1581      1442            dec     sp
+0497           1443   ;        f38x_autotest.c:317: Initial_Check();
+0497 120100    1444            lcall   _Initial_Check
+049A           1445   ;        f38x_autotest.c:319: Test_Pair(0x01, 0x02); // P0.1 and P0.2
+049A 755802    1446            mov     _Test_Pair_PARM_2,#0x02
+049D 758201    1447            mov     dpl,#0x01
+04A0 120100    1448            lcall   _Test_Pair
+04A3           1449   ;        f38x_autotest.c:320: Test_Pair(0x00, 0x03); // P0.0 and P0.3
+04A3 755803    1450            mov     _Test_Pair_PARM_2,#0x03
+04A6 758200    1451            mov     dpl,#0x00
+04A9 120100    1452            lcall   _Test_Pair
+04AC           1453   ;        f38x_autotest.c:321: Test_Pair(0x22, 0x21); // P2.2 and P2.1
+04AC 755821    1454            mov     _Test_Pair_PARM_2,#0x21
+04AF 758222    1455            mov     dpl,#0x22
+04B2 120100    1456            lcall   _Test_Pair
+04B5           1457   ;        f38x_autotest.c:322: Test_Pair(0x23, 0x20); // etc.
+04B5 755820    1458            mov     _Test_Pair_PARM_2,#0x20
+04B8 758223    1459            mov     dpl,#0x23
+04BB 120100    1460            lcall   _Test_Pair
+04BE           1461   ;        f38x_autotest.c:323: printf("\n");
+04BE 7448      1462            mov     a,#__str_5
+04C0 C0E0      1463            push    acc
+04C2 74B6      1464            mov     a,#(__str_5 >> 8)
+04C4 C0E0      1465            push    acc
+04C6 7480      1466            mov     a,#0x80
+04C8 C0E0      1467            push    acc
+04CA 120100    1468            lcall   _printf
+04CD 1581      1469            dec     sp
+04CF 1581      1470            dec     sp
+04D1 1581      1471            dec     sp
+04D3           1472   ;        f38x_autotest.c:324: Test_Pair(0x24, 0x17);
+04D3 755817    1473            mov     _Test_Pair_PARM_2,#0x17
+04D6 758224    1474            mov     dpl,#0x24
+04D9 120100    1475            lcall   _Test_Pair
+04DC           1476   ;        f38x_autotest.c:325: Test_Pair(0x25, 0x16);
+04DC 755816    1477            mov     _Test_Pair_PARM_2,#0x16
+04DF 758225    1478            mov     dpl,#0x25
+04E2 120100    1479            lcall   _Test_Pair
+04E5           1480   ;        f38x_autotest.c:326: Test_Pair(0x26, 0x15);
+04E5 755815    1481            mov     _Test_Pair_PARM_2,#0x15
+04E8 758226    1482            mov     dpl,#0x26
+04EB 120100    1483            lcall   _Test_Pair
+04EE           1484   ;        f38x_autotest.c:327: Test_Pair(0x27, 0x14);
+04EE 755814    1485            mov     _Test_Pair_PARM_2,#0x14
+04F1 758227    1486            mov     dpl,#0x27
+04F4 120100    1487            lcall   _Test_Pair
+04F7           1488   ;        f38x_autotest.c:328: printf("\n");
+04F7 7448      1489            mov     a,#__str_5
+04F9 C0E0      1490            push    acc
+04FB 74B6      1491            mov     a,#(__str_5 >> 8)
+04FD C0E0      1492            push    acc
+04FF 7480      1493            mov     a,#0x80
+0501 C0E0      1494            push    acc
+0503 120100    1495            lcall   _printf
+0506 1581      1496            dec     sp
+0508 1581      1497            dec     sp
+050A 1581      1498            dec     sp
+050C           1499   ;        f38x_autotest.c:329: Test_Pair(0x06, 0x11);
+050C 755811    1500            mov     _Test_Pair_PARM_2,#0x11
+050F 758206    1501            mov     dpl,#0x06
+0512 120100    1502            lcall   _Test_Pair
+0515           1503   ;        f38x_autotest.c:330: Test_Pair(0x07, 0x12);
+0515 755812    1504            mov     _Test_Pair_PARM_2,#0x12
+0518 758207    1505            mov     dpl,#0x07
+051B 120100    1506            lcall   _Test_Pair
+051E           1507   ;        f38x_autotest.c:331: Test_Pair(0x10, 0x13);
+051E 755813    1508            mov     _Test_Pair_PARM_2,#0x13
+0521 758210    1509            mov     dpl,#0x10
+0524 120100    1510            lcall   _Test_Pair
+0527           1511   ;        f38x_autotest.c:333: printf("\n\nSuccess!\n");
+0527 7488      1512            mov     a,#__str_6
+0529 C0E0      1513            push    acc
+052B 74B6      1514            mov     a,#(__str_6 >> 8)
+052D C0E0      1515            push    acc
+052F 7480      1516            mov     a,#0x80
+0531 C0E0      1517            push    acc
+0533 120100    1518            lcall   _printf
+0536 1581      1519            dec     sp
+0538 1581      1520            dec     sp
+053A 1581      1521            dec     sp
+053C           1522   ;        f38x_autotest.c:335: Set_Pin_Output(0x30);
+053C 758230    1523            mov     dpl,#0x30
+053F 120100    1524            lcall   _Set_Pin_Output
+0542           1525   ;        f38x_autotest.c:336: while(1)
+0542           1526   L020002?:
+0542           1527   ;        f38x_autotest.c:338: P3_0=0;
+0542 C2B0      1528            clr     _P3_0
+0544           1529   ;        f38x_autotest.c:339: WaitXms(TOUT);
+0544 9001F4    1530            mov     dptr,#0x01F4
+0547 120100    1531            lcall   _WaitXms
+054A           1532   ;        f38x_autotest.c:340: P3_0=1;
+054A D2B0      1533            setb    _P3_0
+054C           1534   ;        f38x_autotest.c:341: WaitXms(TOUT);
+054C 9001F4    1535            mov     dptr,#0x01F4
+054F 120100    1536            lcall   _WaitXms
+0552 8001      1537            sjmp    L020002?
+0554           1538            rseg R_CSEG
+0554           1539   
+0000           1540            rseg R_XINIT
+0000           1541   
+0000           1542            rseg R_CONST
+0000           1543   __str_0:
+0000 5025642E  1544            db 'P%d.%d FAILED (OPEN)'
+     25642046
+     41494C45
+     4420284F
+     50454E29
+0014 0A        1545            db 0x0A
+0015 00        1546            db 0x00
+0016           1547   __str_1:
+0016 5025642E  1548            db 'P%d.%d FAILED (SHORT)'
+     25642046
+     41494C45
+     44202853
+     484F5254
+     29
+002B 0A        1549            db 0x0A
+002C 00        1550            db 0x00
+002D           1551   __str_2:
+002D 5025642E  1552            db 'P%d.%d, '
+     25642C20
+0035 00        1553            db 0x00
+0036           1554   __str_3:
+0036 5025642E  1555            db 'P%d.%d is connected to ground'
+     25642069
+     7320636F
+     6E6E6563
+     74656420
+     746F2067
+     726F756E
+     64
+0053 0A        1556            db 0x0A
+0054 00        1557            db 0x00
+0055           1558   __str_4:
+0055 0A        1559            db 0x0A
+0056 0A        1560            db 0x0A
+0057 46333878  1561            db 'F38x board autotest'
+     20626F61
+     72642061
+     75746F74
+     657374
+006A 0A        1562            db 0x0A
+006B 00        1563            db 0x00
+006C           1564   __str_5:
+006C 0A        1565            db 0x0A
+006D 00        1566            db 0x00
+006E           1567   __str_6:
+006E 0A        1568            db 0x0A
+006F 0A        1569            db 0x0A
+0070 53756363  1570            db 'Success!'
+     65737321
+0078 0A        1571            db 0x0A
+0079 00        1572            db 0x00
+007A           1573   
+0003           1574            CSEG
+0003           1575   
+0003           1576   end

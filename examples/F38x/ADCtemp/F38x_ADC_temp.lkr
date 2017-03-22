@@ -1,0 +1,6 @@
+path=c:\Source\Call51\Bin\..\lib\small
+lib=libc51.lib
+lib=libint.lib
+lib=liblong.lib
+lib=libfloat.lib
+obj=F38x_ADC_temp.obj
