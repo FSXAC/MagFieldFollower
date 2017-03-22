@@ -36,6 +36,7 @@ functions.o: functions.c
 # Clean the working directory: remove unncessary iles
 CLEAN: 
 	@del *.hex *.elf *.o 2>nul
+	@echo Squeaky clean! :3
 
 # Flash the .hex file to the microcontroller (restart putty too)
 FLASH:

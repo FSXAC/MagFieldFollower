@@ -1,5 +1,5 @@
 // include libararies
-#include <arv/io.h>
+#include <avr/io.h>
 #include <stdio.h>
 
 // header preprocessor constants
@@ -13,6 +13,8 @@
 #define RX_STOP()  UCSR0B &= ~_BV(RXEN0) // Disable RX
 
 // main functions
+void setup(void);
+void loop(void);
 
 // usart function prototypes for serial
 void usart_init(void);
