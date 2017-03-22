@@ -7,6 +7,7 @@
 #define TX_STOP()  UCSR0B &= ~_BV(TXEN0) // Disable TX
 #define RX_START() UCSR0B |= _BV(RXEN0)  // Enable RX
 #define RX_STOP()  UCSR0B &= ~_BV(RXEN0) // Disable RX
+#define delay(x) _delay_ms(x) // short hand for _delay_ms
 
 // main functions
 void setup(void);
