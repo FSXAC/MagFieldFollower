@@ -12,7 +12,7 @@ CPU=-mmcu=atmega328p
 COPT=-g -Os -Wall $(CPU) -c
 
 # Object files to link
-OBJS=main_file.o functions.o
+OBJS=main_program.o functions.o
 
 # specify port
 PORTN=$(shell type COMPORT.inc)
