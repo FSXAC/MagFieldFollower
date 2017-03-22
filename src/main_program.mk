@@ -47,7 +47,7 @@ FLASH:
 	putty.exe -serial $(PORTN) -sercfg 19200,8,n,1,N -v
 
 # testing target
-TEST:
+TEST: main_program.hex
 	@echo Testing works! :)
 
 # opens the directory the makefile is contained in

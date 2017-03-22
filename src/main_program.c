@@ -3,21 +3,7 @@
 #include <avr/io.h>
 #include <stdio.h>
 #include <util/delay.h>
-#include <avr/interrupt.h>
 #include "main_header.h"
-
-// ===[global variables]===
-
-// ===[interrupt service routine]===
-ISR(TIMER1_OVF_vect) {
-    counter++;
-    if (counter > 100) {
-        counter = 0;
-
-        // toggle pin 15
-        PORTB ^= 0x02;
-    }
-}
 
 // ===[starting vector]===
 int main(void) {setup(); while (1) loop();}
