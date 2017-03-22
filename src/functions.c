@@ -26,3 +26,43 @@ void usart_init(void) {
     UCSR0C = (_DATA << UCSZ00);
 }
 
+// write a single character
+void usart_putchar(char data) {
+    // Wait for empty transmit buffer
+    while (!(UCSR0A & (_BV(UDRE0))));
+
+    // Start transmission of data
+    UDR0 = data;
+}
+
+// read a single character
+char usart_getchar(void) {
+    // Wait for incoming data
+    while (!(UCSR0A & (_BV(RXC0)))); 
+
+    // Return received data
+    return UDR0; 
+}
+
+// WTF is this shit?
+unsigned char usart_kbhit(void) {
+    //return nonzero if char waiting polled version
+    return (UCSR0A & (1<<RXC0)) ? 1 : 0; 
+}
+
+// write a string
+void usart_pstr(char *s) {
+    // loop through entire string
+    while (*s) {
+        usart_putchar(*s);
+        s++;
+    }
+}
+
+// what???
+int usart_putchar_printf(char var, FILE *stream) {
+    // translate \n to \r + \n
+    if (var == '\n') usart_putchar('\r'); 
+    usart_putchar(var);
+    return 0;
+}
