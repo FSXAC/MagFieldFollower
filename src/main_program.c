@@ -1,6 +1,7 @@
 // include libararies
 #include <avr/io.h>
 #include <stdio.h>
+#include "main_header.h"
 
 // program starts here
 int main(void) {setup(); while (1) loop();}

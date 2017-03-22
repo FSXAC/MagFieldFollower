@@ -1,6 +1,7 @@
 // include libararies
 #include <avr/io.h>
 #include <stdio.h>
+#include "main_header.h"
 
 // I'm not exactly sure what this line does
 static FILE mystdout = FDEV_SETUP_STREAM(usart_putchar_printf, NULL, _FDEV_SETUP_WRITE);
