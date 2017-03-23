@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Thu Mar 23 12:08:49 2017
+; This file was generated Thu Mar 23 13:33:04 2017
 ;--------------------------------------------------------
 $name motors
 $optc51 --model-small
@@ -24,7 +24,7 @@ $optc51 --model-small
 ; Public variables in this module
 ;--------------------------------------------------------
 	public _main
-	public _forward_backward
+	public _configure_mode1
 	public _Timer2_ISR
 	public __c51_external_startup
 	public _direction
@@ -535,6 +535,8 @@ _Timer2_ISR:
 	push	b
 	push	ar2
 	push	ar3
+	push	ar4
+	push	ar5
 	push	psw
 	mov	psw,#0x00
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:89: TF2H = 0; // Clear Timer2 interrupt flag
@@ -547,7 +549,7 @@ _Timer2_ISR:
 	jnc	L003002?
 	mov	_pwm_count,#0x00
 L003002?:
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:93: (direction == 0) ? (MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_count >pwm_both? 0 : 1) :
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:93: (direction == 0) ? (MOTOR_LEFT1 = MOTOR_RIGHT1 = (pwm_count >pwm_both)? 0 : 1) :
 	mov	a,_direction
 	orl	a,(_direction + 1)
 	cjne	a,#0x01,L003010?
@@ -568,31 +570,40 @@ L003010?:
 	subb	a,b
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
-	mov	_P1_6,c
-	mov	c,_P1_6
 	mov	_P2_1,c
 	mov	c,_P2_1
+	mov	_P1_6,c
+	mov	c,_P1_6
 	sjmp	L003003?
 L003005?:
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:94: (MOTOR_LEFT0 = MOTOR_RIGHT0 = pwm_count >pwm_both? 0 : 1);
-	mov	r2,_pwm_count
-	mov	r3,#0x00
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:94: (MOTOR_LEFT1 = MOTOR_RIGHT1 = (pwm_count >(100-pwm_both))? 0 : 1);
+	mov	a,#0x64
 	clr	c
-	mov	a,_pwm_both
-	subb	a,r2
-	mov	a,(_pwm_both + 1)
+	subb	a,_pwm_both
+	mov	r2,a
+	clr	a
+	subb	a,(_pwm_both + 1)
+	mov	r3,a
+	mov	r4,_pwm_count
+	mov	r5,#0x00
+	clr	c
+	mov	a,r2
+	subb	a,r4
+	mov	a,r3
 	xrl	a,#0x80
-	mov	b,r3
+	mov	b,r5
 	xrl	b,#0x80
 	subb	a,b
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
-	mov	_P1_5,c
-	mov	c,_P1_5
-	mov	_P2_0,c
-	mov	c,_P2_0
+	mov	_P2_1,c
+	mov	c,_P2_1
+	mov	_P1_6,c
+	mov	c,_P1_6
 L003003?:
 	pop	psw
+	pop	ar5
+	pop	ar4
 	pop	ar3
 	pop	ar2
 	pop	b
@@ -601,46 +612,46 @@ L003003?:
 ;	eliminated unneeded push/pop dpl
 ;	eliminated unneeded push/pop dph
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'forward_backward'
+;Allocation info for local variables in function 'configure_mode1'
 ;------------------------------------------------------------
 ;direction                 Allocated to registers r2 r3 
 ;------------------------------------------------------------
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:105: void forward_backward(int direction)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:101: void configure_mode1(int direction)
 ;	-----------------------------------------
-;	 function forward_backward
+;	 function configure_mode1
 ;	-----------------------------------------
-_forward_backward:
+_configure_mode1:
 	mov	r2,dpl
 	mov	r3,dph
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:108: if (direction == 0) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:104: if (direction == 0) {
 	mov	a,r2
 	orl	a,r3
 	jnz	L004004?
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:109: MOTOR_LEFT0 = MOTOR_RIGHT0 = 0;
-	clr	_P1_5
-	mov	c,_P1_5
-	mov	_P2_0,c
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:105: MOTOR_LEFT0 = MOTOR_RIGHT0 = 0;
+	clr	_P2_0
+	mov	c,_P2_0
+	mov	_P1_5,c
 	ret
 L004004?:
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:113: else if (direction == 1) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:109: else if (direction == 1) {
 	cjne	r2,#0x01,L004006?
 	cjne	r3,#0x00,L004006?
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:115: MOTOR_LEFT1 = MOTOR_RIGHT1 = 0;
-	clr	_P1_6
-	mov	c,_P1_6
-	mov	_P2_1,c
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:111: MOTOR_LEFT1 = MOTOR_RIGHT1 = 0;
+	clr	_P2_1
+	mov	c,_P2_1
+	mov	_P1_6,c
 L004006?:
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:121: void main (void)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:117: void main (void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:123: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:126: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 	mov	a,#__str_0
 	push	acc
 	mov	a,#(__str_0 >> 8)
@@ -651,7 +662,7 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:125: "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:128: "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
 	mov	a,#__str_1
 	push	acc
 	mov	a,#(__str_1 >> 8)
@@ -662,7 +673,7 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:126: printf("Please enter motors mode 1-6");
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:129: printf("Please enter motors mode 1-6\n");
 	mov	a,#__str_2
 	push	acc
 	mov	a,#(__str_2 >> 8)
@@ -673,7 +684,7 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:127: scanf("%d \n",&mode);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:130: scanf("%d \n",&mode);
 	mov	a,#_mode
 	push	acc
 	mov	a,#(_mode >> 8)
@@ -690,15 +701,15 @@ _main:
 	mov	a,sp
 	add	a,#0xfa
 	mov	sp,a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:128: if(mode == 1) {printf("Enter pwm and direction"); scanf("%d %d",pwm_both, direction); }
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:131: if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",pwm_both, direction); }//configure_mode1(direction); }
 	mov	a,#0x01
-	cjne	a,_mode,L005013?
+	cjne	a,_mode,L005010?
 	clr	a
-	cjne	a,(_mode + 1),L005013?
-	sjmp	L005014?
-L005013?:
-	sjmp	L005006?
-L005014?:
+	cjne	a,(_mode + 1),L005010?
+	sjmp	L005011?
+L005010?:
+	sjmp	L005004?
+L005011?:
 	mov	a,#__str_4
 	push	acc
 	mov	a,#(__str_4 >> 8)
@@ -723,19 +734,27 @@ L005014?:
 	mov	a,sp
 	add	a,#0xf9
 	mov	sp,a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:131: while(1)
-L005006?:
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:133: switch(mode)
-	mov	r2,_mode
-	mov	r3,(_mode + 1)
-	cjne	r2,#0x01,L005006?
-	cjne	r3,#0x00,L005006?
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:136: case 1 : forward_backward(direction);
-	mov	dpl,_direction
-	mov	dph,(_direction + 1)
-	lcall	_forward_backward
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:137: }
-	sjmp	L005006?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:134: while(1)
+L005004?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:143: printf("%d\n",MOTOR_LEFT0);
+	mov	c,_P1_5
+	clr	a
+	rlc	a
+	mov	r2,a
+	mov	r3,#0x00
+	push	ar2
+	push	ar3
+	mov	a,#__str_6
+	push	acc
+	mov	a,#(__str_6 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	mov	a,sp
+	add	a,#0xfb
+	mov	sp,a
+	sjmp	L005004?
 	rseg R_CSEG
 
 	rseg R_XINIT
@@ -756,6 +775,7 @@ __str_1:
 	db 0x00
 __str_2:
 	db 'Please enter motors mode 1-6'
+	db 0x0A
 	db 0x00
 __str_3:
 	db '%d '
@@ -763,9 +783,14 @@ __str_3:
 	db 0x00
 __str_4:
 	db 'Enter pwm and direction'
+	db 0x0A
 	db 0x00
 __str_5:
 	db '%d %d'
+	db 0x00
+__str_6:
+	db '%d'
+	db 0x0A
 	db 0x00
 
 	CSEG

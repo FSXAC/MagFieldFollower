@@ -10,16 +10,17 @@
 #define SYSCLK    48000000L // SYSCLK frequency in Hz
 #define BAUDRATE  115200L   // Baud rate of UART in bps
 
-#define MOTOR_LEFT0 P2_0
-#define MOTOR_LEFT1 P2_1
-#define MOTOR_RIGHT0 P1_5
-#define MOTOR_RIGHT1 P1_6
+#define MOTOR_LEFT0 P1_5
+#define MOTOR_LEFT1 P1_6
+#define MOTOR_RIGHT0 P2_0
+#define MOTOR_RIGHT1 P2_1
 
 volatile unsigned char pwm_count=0;
 volatile int mode = 0;
-volatile int pwm_Left = 0;
-volatile int pwm_right = 0;
-volatile int pwm_both = 0;
+volatile int pwm_Left0 = 0;
+volatile int pwm_Left1 = 0;
+volatile int pwm_Right0 = 0;
+volatile int pwm_Right1 = 0;
 volatile int direction = 0; // 1 for back 0 for forward
 
 char _c51_external_startup (void)
@@ -90,19 +91,19 @@ void Timer2_ISR (void) interrupt 5
 
 	pwm_count++;
 	if(pwm_count>100) pwm_count=0;
-	(direction == 0) ? (MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_count >pwm_both? 0 : 1) :
-	 									 (MOTOR_LEFT0 = MOTOR_RIGHT0 = pwm_count >pwm_both? 0 : 1);
 
-
-	//OUT0=pwm_count>50?0:1;
-	//OUT1=pwm_count>75?0:1;
+// To fully turn off one pin pass -1 to their pwm_***
+	MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1;
+	MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1;
+	MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1;
+	MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1;
 }
 
 /* Program that controls forward/reverse direction of the robot.
 	Parameters
 	pwm_both: the value of pwm that controls speed of motors
 	direction: flag to set whether robot goes forwards(0) or backwards(1). */
-void forward_backward(int direction)
+void configure_mode1(int direction)
 {
 
 	if (direction == 0) {
@@ -120,22 +121,31 @@ void forward_backward(int direction)
 
 void main (void)
 {
+
+   MOTOR_LEFT0 =0;
+   MOTOR_LEFT1 =0;
+   MOTOR_RIGHT0 =0;
+   MOTOR_RIGHT1 =0;
+
+
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 	printf("Square wave generator for the F38x.\r\n"
 	       "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
-	printf("Please enter motors mode 1-6");
+	printf("Please enter motors mode 1-6\n");
 	scanf("%d \n",&mode);
-	if(mode == 1) {printf("Enter pwm and direction"); scanf("%d %d",pwm_both, direction); }
+	if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",pwm_both, direction); }//configure_mode1(direction); }
 
 
 	while(1)
 	{
-		switch(mode)
+		/*switch(mode)
 		{
 			//forward_backward mode
 			case 1 : forward_backward(direction);
-		}
 
+		}
+				*/
+		printf("%d\n",MOTOR_LEFT0);
 
 	}
 }
