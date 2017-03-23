@@ -101,14 +101,7 @@ void Timer2_ISR (void) interrupt 5
 	direction: flag to set whether robot goes forwards(0) or backwards(1). */
 void forward_backward(int pwm_both, int direction)
 {
-	// THIS IS INCORRECT (FIXME)
-	// (direction == 0) ? (MOTOR_LEFT0 = 0; MOTOR_RIGHT0 = 0;) :
-	//
-	// // ALTERNATIVE
-	// MOTOR_LEFT0 = (direction != 0);
-	// MOTOR_RIGHT0 = (direction != 0);
-
-	// BETTER ALTERNATIVE (this is all from Mansur!)
+	
 	if (direction == 0) {
 		MOTOR_LEFT0 = MOTOR_RIGHT0 = 0;
 		MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
