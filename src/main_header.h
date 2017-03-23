@@ -9,9 +9,11 @@
 #define RX_STOP()  UCSR0B &= ~_BV(RXEN0) // Disable RX
 #define delay(x) _delay_ms(x) // short hand for _delay_ms
 
-// define flags
-#define TIMER0_ENABLED
-#define TIMER1_ENABLED
+// useful definitions
+#define HIGH 1
+#define LOW 0
+#define OUTPUT 1
+#define INPUT 0
 
 // main functions
 void setup(void);
@@ -27,3 +29,6 @@ void usart_putchar( char data );
 void usart_pstr(char *s);
 unsigned char usart_kbhit(void);
 int usart_putchar_printf(char var, FILE *stream);
+
+// user functions
+void pinMode(char port, unsigned char pin, unsigned char direction);

@@ -4,11 +4,15 @@
 #include <avr/interrupt.h>
 #include "main_header.h"
 
+#define TIMER0_ENABLED
+#define TIMER1_ENABLED
+
 // ===[global variables]===
 unsigned int counter = 0;
-unsigned char magData = 0;
+unsigned char magData = 1;
 
 // ===[interrupt service routine]===
+#ifdef TIMER0_ENABLED
 ISR(TIMER0_OVF_vect) {
 	// toggle pin 15 on and off
 	counter++;
@@ -17,12 +21,15 @@ ISR(TIMER0_OVF_vect) {
 		counter = 0;
 	}
 }
+#endif
 
+#ifdef TIMER1_ENABLED
 ISR(TIMER1_OVF_vect) {
     // toggle data on and off
 	// magData = !magData;
 	PORTB ^= 0x01;
 }
+#endif
 
 // intialize timer 0
 void timer_init(void) {
@@ -37,7 +44,7 @@ void timer_init(void) {
 	#endif
 
 	#ifdef TIMER1_ENABLED
-		TCCR1B = 1<<CS01;
+		TCCR1B = 0x05;
 		TIFR1 = 1<<TOV1;
 		TIMSK1 = 1<<TOIE1;
 	#endif
