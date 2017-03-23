@@ -90,25 +90,28 @@ void Timer2_ISR (void) interrupt 5
 
 	pwm_count++;
 	if(pwm_count>100) pwm_count=0;
+	(direction == 0) ? (MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_count >pwm_both? 0 : 1) :
+	 									 (MOTOR_LEFT0 = MOTOR_RIGHT0 = pwm_count >pwm_both? 0 : 1);
 
-	OUT0=pwm_count>50?0:1;
-	OUT1=pwm_count>75?0:1;
+
+	//OUT0=pwm_count>50?0:1;
+	//OUT1=pwm_count>75?0:1;
 }
 
 /* Program that controls forward/reverse direction of the robot.
 	Parameters
 	pwm_both: the value of pwm that controls speed of motors
 	direction: flag to set whether robot goes forwards(0) or backwards(1). */
-void forward_backward(int pwm_both, int direction)
+void forward_backward(int direction)
 {
-	
+
 	if (direction == 0) {
 		MOTOR_LEFT0 = MOTOR_RIGHT0 = 0;
-		MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
+		//MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
 	}
 
 	else if (direction == 1) {
-		MOTOR_LEFT0 = MOTOR_RIGHT0 = pwm_both;
+		//MOTOR_LEFT0 = MOTOR_RIGHT0 = pwm_both;
 		MOTOR_LEFT1 = MOTOR_RIGHT1 = 0;
 	}
 
@@ -130,7 +133,7 @@ void main (void)
 		switch(mode)
 		{
 			//forward_backward mode
-			case mode == 1: forward_backward(pwm_both, direction);
+			case 1 : forward_backward(direction);
 		}
 
 
