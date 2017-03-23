@@ -10,10 +10,10 @@
 #define SYSCLK    48000000L // SYSCLK frequency in Hz
 #define BAUDRATE  115200L   // Baud rate of UART in bps
 
-#define MOTOR_LEFT0 P2_1
-#define MOTOR_LEFT1 p2_2
-#define MOTOR_RIGHT0 P2_3
-#define MOTOR_RIGHT1 P2_3
+#define MOTOR_LEFT0 P2_0
+#define MOTOR_LEFT1 P2_1
+#define MOTOR_RIGHT0 P1_5
+#define MOTOR_RIGHT1 P1_6
 
 volatile unsigned char pwm_count=0;
 volatile int mode = 0;
@@ -95,9 +95,29 @@ void Timer2_ISR (void) interrupt 5
 	OUT1=pwm_count>75?0:1;
 }
 
+/* Program that controls forward/reverse direction of the robot.
+	Parameters
+	pwm_both: the value of pwm that controls speed of motors
+	direction: flag to set whether robot goes forwards(0) or backwards(1). */
 void forward_backward(int pwm_both, int direction)
 {
-	(direction == 0) ? (MOTOR_LEFT0 = 0; MOTOR_RIGHT0 = 0;) :  
+	// THIS IS INCORRECT (FIXME)
+	// (direction == 0) ? (MOTOR_LEFT0 = 0; MOTOR_RIGHT0 = 0;) :
+	//
+	// // ALTERNATIVE
+	// MOTOR_LEFT0 = (direction != 0);
+	// MOTOR_RIGHT0 = (direction != 0);
+
+	// BETTER ALTERNATIVE (this is all from Mansur!)
+	if (direction == 0) {
+		MOTOR_LEFT0 = MOTOR_RIGHT0 = 0;
+		MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
+	}
+
+	else if (direction == 1) {
+		MOTOR_LEFT0 = MOTOR_RIGHT0 = pwm_both;
+		MOTOR_LEFT1 = MOTOR_RIGHT1 = 0;
+	}
 
 }
 
