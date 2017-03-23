@@ -21,18 +21,8 @@ void setup(void) {
     DDRB  |= (0x01) | (0x02);
     PORTB |= 0x01;
 
-    // TUrn on timer with no prescaler
-    // TCCR1B |= _BV(CS10);
-    // TIMSK1 |= _BV(TOIE1);
-
-    // turn on interrupts
-    // sei();
-
     // Turn on timer 0 for square output
-    timer0_init();
-
-    // print some numbers
-    for (j = 0; j<10; j++) printf("square(j)=%d\n", j*j);
+    timer_init();
 }
 
 // runs forever
@@ -41,6 +31,6 @@ void loop(void) {
     // PORTB &= (~0x01);
     // delay(1000);
     // PORTB |= 0x01;
-    delay(1000);
+    // delay(1000);
     printf("THE END IS NEVER ");
 }

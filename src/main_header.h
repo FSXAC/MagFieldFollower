@@ -9,12 +9,16 @@
 #define RX_STOP()  UCSR0B &= ~_BV(RXEN0) // Disable RX
 #define delay(x) _delay_ms(x) // short hand for _delay_ms
 
+// define flags
+#define TIMER0_ENABLED
+#define TIMER1_ENABLED
+
 // main functions
 void setup(void);
 void loop(void);
 
 // timer/isr functions
-void timer0_init(void);
+void timer_init(void);
 
 // usart function prototypes for serial
 void usart_init(void);
