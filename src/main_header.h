@@ -13,6 +13,9 @@
 void setup(void);
 void loop(void);
 
+// timer/isr functions
+void timer0_init(void);
+
 // usart function prototypes for serial
 void usart_init(void);
 char usart_getchar( void );
