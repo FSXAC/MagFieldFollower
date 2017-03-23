@@ -9,34 +9,38 @@
 
 // ===[global variables]===
 volatile unsigned char counter0 = 0;
-volatile unsigned char counter1 = 0;
-volatile unsigned char magData = 1;
+volatile unsigned char magEnabled = 1;
+volatile unsigned char magData = 0x01;
+volatile unsigned char magDataBit = 0;
 
 // ===[interrupt service routine]===
+// Timer 0
 #ifdef TIMER0_ENABLED
 ISR(TIMER0_OVF_vect) {
 	// toggle pin 15 on and off
 	counter0++;
-	if (counter0 > 1 && magData) {
+	if (counter0 > 1 && magEnabled) {
 		counter0 = 0;
 		PORTB ^= 0x02;
-	} else PORTB &= ~0x02;
+	} else PORTB |= 0x02;
 }
 #endif
 
+// Timer 1
 #ifdef TIMER1_ENABLED
 ISR(TIMER1_OVF_vect) {
-	counter1++;
-	if (counter1 > 5) {
-		counter1 = 0;
-		magData = !magData;
+	if (magDataBit < 8) {
+		// if the bit at magDatabit is 1, turn the modulation on; otherwise, off
+		magEnabled = (1<<magDataBit++) & magData;
 	}
 }
 #endif
 
-// intialize timer 0
+// intialize timers
 void timer_init(void) {
+	// timer 0
 	#ifdef TIMER0_ENABLED
+		// prescaler
 		TCCR0B = 1<<CS00;
 
 		// clear overflow flag
@@ -46,10 +50,22 @@ void timer_init(void) {
 		TIMSK0 = 1<<TOIE0;
 	#endif
 
+	// timer 1
 	#ifdef TIMER1_ENABLED
-		TCCR1B |= 0x01; // 1024 prescaler
+		// prescaler
+		TCCR1B |= 0x01;
 		TIFR1 = 1<<TOV1;
 		TIMSK1 = 1<<TOIE1;
 	#endif
 	sei();
+}
+
+// set magnetic data
+void setMagData(unsigned char new_data) {
+	magData = new_data<<1;
+}
+
+// start transmission
+void magStartTransmit(void) {
+	magDataBit = 0;
 }

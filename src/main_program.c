@@ -5,6 +5,9 @@
 #include <util/delay.h>
 #include "main_header.h"
 
+// global constants
+
+
 // ===[starting vector]===
 int main(void) {setup(); while (1) loop();}
 
@@ -26,11 +29,12 @@ void setup(void) {
 // runs forever
 void loop(void) {
     // blink some LEDs on pin 14 for me fam
-    // PORTB &= (~0x01);
-    // delay(1000);
-    // PORTB |= 0x01;
+    PORTB ^= 0x01;
     delay(1000);
-    printf("THE END IS NEVER ");
+
+    // send some bits
+    setMagData(0x55);
+    magStartTransmit();
 }
 
 // set pin output
