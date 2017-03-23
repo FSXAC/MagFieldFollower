@@ -16,10 +16,8 @@ void setup(void) {
 
     // initialize some pins
     // set direction of port/pin
-    // DDRB  |= (0x01) | (0x02);
-    // PORTB |= 0x01;
-    pinMode('b', 1, OUTPUT);
-    pinMode('b', 2, OUTPUT);
+    pinMode('b', 0);
+    pinMode('b', 1);
 
     // Turn on timer 0 for square output
     timer_init();
@@ -36,16 +34,16 @@ void loop(void) {
 }
 
 // set pin output
-void pinMode(char port, unsigned char pin, unsigned char direction) {
+void pinMode(char port, unsigned char pin) {
     switch (port) {
         case 'B':
-        case 'b': DDRB |= (direction<<pin); printf("%d\n", DDRB); return;
+        case 'b': DDRB |= (1<<pin); return;
         case 'C':
         case 'c':
-            if (pin < 7) DDRC |= (direction<<pin); 
+            if (pin < 7) DDRC |= (1<<pin); 
             return;
         case 'D':
-        case 'd': DDRD |= (direction<<pin); return;
+        case 'd': DDRD |= (1<<pin); return;
         default: return;
     }
 }

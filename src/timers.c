@@ -8,26 +8,29 @@
 #define TIMER1_ENABLED
 
 // ===[global variables]===
-unsigned int counter = 0;
-unsigned char magData = 1;
+volatile unsigned char counter0 = 0;
+volatile unsigned char counter1 = 0;
+volatile unsigned char magData = 1;
 
 // ===[interrupt service routine]===
 #ifdef TIMER0_ENABLED
 ISR(TIMER0_OVF_vect) {
 	// toggle pin 15 on and off
-	counter++;
-	if (counter > 1 && magData) {
+	counter0++;
+	if (counter0 > 1 && magData) {
+		counter0 = 0;
 		PORTB ^= 0x02;
-		counter = 0;
-	}
+	} else PORTB &= ~0x02;
 }
 #endif
 
 #ifdef TIMER1_ENABLED
 ISR(TIMER1_OVF_vect) {
-    // toggle data on and off
-	// magData = !magData;
-	PORTB ^= 0x01;
+	counter1++;
+	if (counter1 > 5) {
+		counter1 = 0;
+		magData = !magData;
+	}
 }
 #endif
 
@@ -44,7 +47,7 @@ void timer_init(void) {
 	#endif
 
 	#ifdef TIMER1_ENABLED
-		TCCR1B = 0x05;
+		TCCR1B |= 0x01; // 1024 prescaler
 		TIFR1 = 1<<TOV1;
 		TIMSK1 = 1<<TOIE1;
 	#endif

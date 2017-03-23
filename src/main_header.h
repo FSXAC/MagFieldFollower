@@ -12,8 +12,6 @@
 // useful definitions
 #define HIGH 1
 #define LOW 0
-#define OUTPUT 1
-#define INPUT 0
 
 // main functions
 void setup(void);
@@ -31,4 +29,4 @@ unsigned char usart_kbhit(void);
 int usart_putchar_printf(char var, FILE *stream);
 
 // user functions
-void pinMode(char port, unsigned char pin, unsigned char direction);
+void pinMode(char port, unsigned char pin);
