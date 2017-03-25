@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Thu Mar 23 13:33:04 2017
+; This file was generated Fri Mar 24 21:31:53 2017
 ;--------------------------------------------------------
 $name motors
 $optc51 --model-small
@@ -24,13 +24,15 @@ $optc51 --model-small
 ; Public variables in this module
 ;--------------------------------------------------------
 	public _main
-	public _configure_mode1
+	public _forward_backward
 	public _Timer2_ISR
 	public __c51_external_startup
 	public _direction
+	public _pwm_Right1
+	public _pwm_Right0
+	public _pwm_Left1
+	public _pwm_Left0
 	public _pwm_both
-	public _pwm_right
-	public _pwm_Left
 	public _mode
 	public _pwm_count
 ;--------------------------------------------------------
@@ -368,11 +370,15 @@ _pwm_count:
 	ds 1
 _mode:
 	ds 2
-_pwm_Left:
-	ds 2
-_pwm_right:
-	ds 2
 _pwm_both:
+	ds 2
+_pwm_Left0:
+	ds 2
+_pwm_Left1:
+	ds 2
+_pwm_Right0:
+	ds 2
+_pwm_Right1:
 	ds 2
 _direction:
 	ds 2
@@ -430,25 +436,33 @@ _Timer2_ISR_sloc0_1_0:
 ; data variables initialization
 ;--------------------------------------------------------
 	rseg R_DINIT
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:18: volatile unsigned char pwm_count=0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:18: volatile  char pwm_count=0;
 	mov	_pwm_count,#0x00
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:19: volatile int mode = 0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:19: volatile  int mode = 0;
 	clr	a
 	mov	_mode,a
 	mov	(_mode + 1),a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:20: volatile int pwm_Left = 0;
-	clr	a
-	mov	_pwm_Left,a
-	mov	(_pwm_Left + 1),a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:21: volatile int pwm_right = 0;
-	clr	a
-	mov	_pwm_right,a
-	mov	(_pwm_right + 1),a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:22: volatile int pwm_both = 0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:20: volatile  int pwm_both =0;
 	clr	a
 	mov	_pwm_both,a
 	mov	(_pwm_both + 1),a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:23: volatile int direction = 0; // 1 for back 0 for forward
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:21: volatile  int pwm_Left0 = 0; //p1.5
+	clr	a
+	mov	_pwm_Left0,a
+	mov	(_pwm_Left0 + 1),a
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:22: volatile  int pwm_Left1 = 0; //p1.6
+	clr	a
+	mov	_pwm_Left1,a
+	mov	(_pwm_Left1 + 1),a
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:23: volatile  int pwm_Right0 = 0; //p2.0
+	clr	a
+	mov	_pwm_Right0,a
+	mov	(_pwm_Right0 + 1),a
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:24: volatile  int pwm_Right1 = 0; //p2.1
+	clr	a
+	mov	_pwm_Right1,a
+	mov	(_pwm_Right1 + 1),a
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:25: volatile int direction = 0; // 1 for back 0 for forward
 	clr	a
 	mov	_direction,a
 	mov	(_direction + 1),a
@@ -461,72 +475,72 @@ _Timer2_ISR_sloc0_1_0:
 ;Allocation info for local variables in function '_c51_external_startup'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:25: char _c51_external_startup (void)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:27: char _c51_external_startup (void)
 ;	-----------------------------------------
 ;	 function _c51_external_startup
 ;	-----------------------------------------
 __c51_external_startup:
 	using	0
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:27: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:29: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
 	anl	_PCA0MD,#0xBF
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:28: VDM0CN=0x80; // enable VDD monitor
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:30: VDM0CN=0x80; // enable VDD monitor
 	mov	_VDM0CN,#0x80
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:29: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:31: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
 	mov	_RSTSRC,#0x06
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:37: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:39: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
 	orl	_CLKSEL,#0x03
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:41: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:43: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
 	orl	_OSCICN,#0x03
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:44: SCON0 = 0x10;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:46: SCON0 = 0x10;
 	mov	_SCON0,#0x10
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:46: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:48: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
 	mov	_TH1,#0x30
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:47: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:49: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
 	anl	_CKCON,#0xF4
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:48: CKCON |=  0x08;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:50: CKCON |=  0x08;
 	orl	_CKCON,#0x08
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:61: TL1 = TH1;      // Init Timer1
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:63: TL1 = TH1;      // Init Timer1
 	mov	_TL1,_TH1
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:62: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:64: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
 	anl	_TMOD,#0x0F
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:63: TMOD |=  0x20;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:65: TMOD |=  0x20;
 	orl	_TMOD,#0x20
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:64: TR1 = 1; // START Timer1
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:66: TR1 = 1; // START Timer1
 	setb	_TR1
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:65: TI = 1;  // Indicate TX0 ready
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:67: TI = 1;  // Indicate TX0 ready
 	setb	_TI
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:68: P2MDOUT|=0b_0000_0011;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:70: P2MDOUT|=0b_0000_0011;
 	orl	_P2MDOUT,#0x03
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:69: P0MDOUT |= 0x10; // Enable UTX as push-pull output
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:71: P0MDOUT |= 0x10; // Enable UTX as push-pull output
 	orl	_P0MDOUT,#0x10
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:70: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:72: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
 	mov	_XBR0,#0x01
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:71: XBR1     = 0x40; // Enable crossbar and weak pull-ups
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:73: XBR1     = 0x40; // Enable crossbar and weak pull-ups
 	mov	_XBR1,#0x40
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:74: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:76: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
 	mov	_TMR2CN,#0x00
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:75: CKCON|=0b_0001_0000;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:77: CKCON|=0b_0001_0000;
 	orl	_CKCON,#0x10
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:76: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:78: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
 	mov	_TMR2RL,#0x78
 	mov	(_TMR2RL >> 8),#0xEC
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:77: TMR2=0xffff;   // Set to reload immediately
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:79: TMR2=0xffff;   // Set to reload immediately
 	mov	_TMR2,#0xFF
 	mov	(_TMR2 >> 8),#0xFF
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:78: ET2=1;         // Enable Timer2 interrupts
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:80: ET2=1;         // Enable Timer2 interrupts
 	setb	_ET2
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:79: TR2=1;         // Start Timer2
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:81: TR2=1;         // Start Timer2
 	setb	_TR2
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:81: EA=1; // Enable interrupts
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:83: EA=1; // Enable interrupts
 	setb	_EA
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:83: return 0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:85: return 0;
 	mov	dpl,#0x00
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'Timer2_ISR'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:87: void Timer2_ISR (void) interrupt 5
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:89: void Timer2_ISR (void) interrupt 5
 ;	-----------------------------------------
 ;	 function Timer2_ISR
 ;	-----------------------------------------
@@ -535,35 +549,82 @@ _Timer2_ISR:
 	push	b
 	push	ar2
 	push	ar3
-	push	ar4
-	push	ar5
 	push	psw
 	mov	psw,#0x00
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:89: TF2H = 0; // Clear Timer2 interrupt flag
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:91: TF2H = 0; // Clear Timer2 interrupt flag
 	clr	_TF2H
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:91: pwm_count++;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:93: pwm_count++;
 	inc	_pwm_count
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:92: if(pwm_count>100) pwm_count=0;
-	mov	a,_pwm_count
-	add	a,#0xff - 0x64
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:94: if(pwm_count>100) pwm_count=0;
+	clr	c
+	mov	a,#(0x64 ^ 0x80)
+	mov	b,_pwm_count
+	xrl	b,#0x80
+	subb	a,b
 	jnc	L003002?
 	mov	_pwm_count,#0x00
 L003002?:
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:93: (direction == 0) ? (MOTOR_LEFT1 = MOTOR_RIGHT1 = (pwm_count >pwm_both)? 0 : 1) :
-	mov	a,_direction
-	orl	a,(_direction + 1)
-	cjne	a,#0x01,L003010?
-L003010?:
-	clr	a
-	rlc	a
-	mov	r2,a
-	jz	L003005?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:97: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
 	mov	r2,_pwm_count
-	mov	r3,#0x00
+	mov	a,_pwm_count
+	rlc	a
+	subb	a,acc
+	mov	r3,a
 	clr	c
-	mov	a,_pwm_both
+	mov	a,_pwm_Left0
 	subb	a,r2
-	mov	a,(_pwm_both + 1)
+	mov	a,(_pwm_Left0 + 1)
+	xrl	a,#0x80
+	mov	b,r3
+	xrl	b,#0x80
+	subb	a,b
+	mov  _Timer2_ISR_sloc0_1_0,c
+	cpl	c
+	mov	_P1_5,c
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:98: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
+	mov	r2,_pwm_count
+	mov	a,_pwm_count
+	rlc	a
+	subb	a,acc
+	mov	r3,a
+	clr	c
+	mov	a,_pwm_Left1
+	subb	a,r2
+	mov	a,(_pwm_Left1 + 1)
+	xrl	a,#0x80
+	mov	b,r3
+	xrl	b,#0x80
+	subb	a,b
+	mov  _Timer2_ISR_sloc0_1_0,c
+	cpl	c
+	mov	_P1_6,c
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:99: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
+	mov	r2,_pwm_count
+	mov	a,_pwm_count
+	rlc	a
+	subb	a,acc
+	mov	r3,a
+	clr	c
+	mov	a,_pwm_Right0
+	subb	a,r2
+	mov	a,(_pwm_Right0 + 1)
+	xrl	a,#0x80
+	mov	b,r3
+	xrl	b,#0x80
+	subb	a,b
+	mov  _Timer2_ISR_sloc0_1_0,c
+	cpl	c
+	mov	_P2_0,c
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:100: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
+	mov	r2,_pwm_count
+	mov	a,_pwm_count
+	rlc	a
+	subb	a,acc
+	mov	r3,a
+	clr	c
+	mov	a,_pwm_Right1
+	subb	a,r2
+	mov	a,(_pwm_Right1 + 1)
 	xrl	a,#0x80
 	mov	b,r3
 	xrl	b,#0x80
@@ -571,39 +632,7 @@ L003010?:
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P2_1,c
-	mov	c,_P2_1
-	mov	_P1_6,c
-	mov	c,_P1_6
-	sjmp	L003003?
-L003005?:
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:94: (MOTOR_LEFT1 = MOTOR_RIGHT1 = (pwm_count >(100-pwm_both))? 0 : 1);
-	mov	a,#0x64
-	clr	c
-	subb	a,_pwm_both
-	mov	r2,a
-	clr	a
-	subb	a,(_pwm_both + 1)
-	mov	r3,a
-	mov	r4,_pwm_count
-	mov	r5,#0x00
-	clr	c
-	mov	a,r2
-	subb	a,r4
-	mov	a,r3
-	xrl	a,#0x80
-	mov	b,r5
-	xrl	b,#0x80
-	subb	a,b
-	mov  _Timer2_ISR_sloc0_1_0,c
-	cpl	c
-	mov	_P2_1,c
-	mov	c,_P2_1
-	mov	_P1_6,c
-	mov	c,_P1_6
-L003003?:
 	pop	psw
-	pop	ar5
-	pop	ar4
 	pop	ar3
 	pop	ar2
 	pop	b
@@ -612,46 +641,63 @@ L003003?:
 ;	eliminated unneeded push/pop dpl
 ;	eliminated unneeded push/pop dph
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'configure_mode1'
+;Allocation info for local variables in function 'forward_backward'
 ;------------------------------------------------------------
-;direction                 Allocated to registers r2 r3 
+;direction                 Allocated to registers r2 
 ;------------------------------------------------------------
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:101: void configure_mode1(int direction)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:107: void forward_backward(unsigned char direction)
 ;	-----------------------------------------
-;	 function configure_mode1
+;	 function forward_backward
 ;	-----------------------------------------
-_configure_mode1:
-	mov	r2,dpl
-	mov	r3,dph
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:104: if (direction == 0) {
-	mov	a,r2
-	orl	a,r3
+_forward_backward:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:110: if (direction == 0) { //p2.1,1.6 on
+	mov	a,dpl
+	mov	r2,a
 	jnz	L004004?
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:105: MOTOR_LEFT0 = MOTOR_RIGHT0 = 0;
-	clr	_P2_0
-	mov	c,_P2_0
-	mov	_P1_5,c
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:111: pwm_Left0 = pwm_Right0 = -1;
+	mov	_pwm_Right0,#0xFF
+	mov	(_pwm_Right0 + 1),#0xFF
+	mov	_pwm_Left0,#0xFF
+	mov	(_pwm_Left0 + 1),#0xFF
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:112: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
+	mov	_pwm_Right1,_pwm_both
+	mov	(_pwm_Right1 + 1),(_pwm_both + 1)
+	mov	_pwm_Left1,_pwm_both
+	mov	(_pwm_Left1 + 1),(_pwm_both + 1)
 	ret
 L004004?:
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:109: else if (direction == 1) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:115: else if (direction == 1) { //p2.0,1.5 on
 	cjne	r2,#0x01,L004006?
-	cjne	r3,#0x00,L004006?
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:111: MOTOR_LEFT1 = MOTOR_RIGHT1 = 0;
-	clr	_P2_1
-	mov	c,_P2_1
-	mov	_P1_6,c
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:116: pwm_Left1 = pwm_Right1 = -1;
+	mov	_pwm_Right1,#0xFF
+	mov	(_pwm_Right1 + 1),#0xFF
+	mov	_pwm_Left1,#0xFF
+	mov	(_pwm_Left1 + 1),#0xFF
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:117: pwm_Left0 = pwm_Right0 = pwm_both; 
+	mov	_pwm_Right0,_pwm_both
+	mov	(_pwm_Right0 + 1),(_pwm_both + 1)
+	mov	_pwm_Left0,_pwm_both
+	mov	(_pwm_Left0 + 1),(_pwm_both + 1)
 L004006?:
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:117: void main (void)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:125: void main (void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:126: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:128: MOTOR_LEFT0 =0;
+	clr	_P1_5
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:129: MOTOR_LEFT1 =0;
+	clr	_P1_6
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:130: MOTOR_RIGHT0 =0;
+	clr	_P2_0
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:131: MOTOR_RIGHT1 =0;
+	clr	_P2_1
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:134: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 	mov	a,#__str_0
 	push	acc
 	mov	a,#(__str_0 >> 8)
@@ -662,7 +708,7 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:128: "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:136: "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
 	mov	a,#__str_1
 	push	acc
 	mov	a,#(__str_1 >> 8)
@@ -673,7 +719,7 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:129: printf("Please enter motors mode 1-6\n");
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:137: printf("Please enter motors mode 1-6\n");
 	mov	a,#__str_2
 	push	acc
 	mov	a,#(__str_2 >> 8)
@@ -684,7 +730,7 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:130: scanf("%d \n",&mode);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:138: scanf("%d \n",&mode);
 	mov	a,#_mode
 	push	acc
 	mov	a,#(_mode >> 8)
@@ -701,7 +747,7 @@ _main:
 	mov	a,sp
 	add	a,#0xfa
 	mov	sp,a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:131: if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",pwm_both, direction); }//configure_mode1(direction); }
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:139: if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
 	mov	a,#0x01
 	cjne	a,_mode,L005010?
 	clr	a
@@ -720,10 +766,18 @@ L005011?:
 	dec	sp
 	dec	sp
 	dec	sp
-	push	_direction
-	push	(_direction + 1)
-	push	_pwm_both
-	push	(_pwm_both + 1)
+	mov	a,#_direction
+	push	acc
+	mov	a,#(_direction >> 8)
+	push	acc
+	mov	a,#0x40
+	push	acc
+	mov	a,#_pwm_both
+	push	acc
+	mov	a,#(_pwm_both >> 8)
+	push	acc
+	mov	a,#0x40
+	push	acc
 	mov	a,#__str_5
 	push	acc
 	mov	a,#(__str_5 >> 8)
@@ -732,28 +786,12 @@ L005011?:
 	push	acc
 	lcall	_scanf
 	mov	a,sp
-	add	a,#0xf9
+	add	a,#0xf7
 	mov	sp,a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:134: while(1)
+	mov	dpl,_direction
+	lcall	_forward_backward
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:142: while(1)
 L005004?:
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:143: printf("%d\n",MOTOR_LEFT0);
-	mov	c,_P1_5
-	clr	a
-	rlc	a
-	mov	r2,a
-	mov	r3,#0x00
-	push	ar2
-	push	ar3
-	mov	a,#__str_6
-	push	acc
-	mov	a,#(__str_6 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	mov	a,sp
-	add	a,#0xfb
-	mov	sp,a
 	sjmp	L005004?
 	rseg R_CSEG
 
@@ -787,10 +825,6 @@ __str_4:
 	db 0x00
 __str_5:
 	db '%d %d'
-	db 0x00
-__str_6:
-	db '%d'
-	db 0x0A
 	db 0x00
 
 	CSEG

@@ -15,12 +15,13 @@
 #define MOTOR_RIGHT0 P2_0
 #define MOTOR_RIGHT1 P2_1
 
-volatile unsigned char pwm_count=0;
-volatile int mode = 0;
-volatile int pwm_Left0 = 0;
-volatile int pwm_Left1 = 0;
-volatile int pwm_Right0 = 0;
-volatile int pwm_Right1 = 0;
+volatile  char pwm_count=0;
+volatile  int mode = 0;
+volatile  int pwm_both =0;
+volatile  int pwm_Left0 = 0; //p1.5
+volatile  int pwm_Left1 = 0; //p1.6
+volatile  int pwm_Right0 = 0; //p2.0
+volatile  int pwm_Right1 = 0; //p2.1
 volatile int direction = 0; // 1 for back 0 for forward
 
 char _c51_external_startup (void)
@@ -93,27 +94,29 @@ void Timer2_ISR (void) interrupt 5
 	if(pwm_count>100) pwm_count=0;
 
 // To fully turn off one pin pass -1 to their pwm_***
-	MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1;
-	MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1;
-	MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1;
-	MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1;
+	MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
+	MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
+	MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
+	MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
 }
 
 /* Program that controls forward/reverse direction of the robot.
 	Parameters
 	pwm_both: the value of pwm that controls speed of motors
 	direction: flag to set whether robot goes forwards(0) or backwards(1). */
-void configure_mode1(int direction)
+void forward_backward(unsigned char direction)
 {
 
-	if (direction == 0) {
-		MOTOR_LEFT0 = MOTOR_RIGHT0 = 0;
-		//MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
+	if (direction == 0) { //p2.1,1.6 on
+		pwm_Left0 = pwm_Right0 = -1;
+		pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
 	}
 
-	else if (direction == 1) {
+	else if (direction == 1) { //p2.0,1.5 on
+		pwm_Left1 = pwm_Right1 = -1;
+		pwm_Left0 = pwm_Right0 = pwm_both; 
 		//MOTOR_LEFT0 = MOTOR_RIGHT0 = pwm_both;
-		MOTOR_LEFT1 = MOTOR_RIGHT1 = 0;
+		//MOTOR_LEFT1 = MOTOR_RIGHT1 = 0;
 	}
 
 }
@@ -121,7 +124,7 @@ void configure_mode1(int direction)
 
 void main (void)
 {
-
+	
    MOTOR_LEFT0 =0;
    MOTOR_LEFT1 =0;
    MOTOR_RIGHT0 =0;
@@ -133,19 +136,18 @@ void main (void)
 	       "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
 	printf("Please enter motors mode 1-6\n");
 	scanf("%d \n",&mode);
-	if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",pwm_both, direction); }//configure_mode1(direction); }
-
+	if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
+    //printf("%d\n", pwm_Left1);
 
 	while(1)
-	{
-		/*switch(mode)
-		{
-			//forward_backward mode
-			case 1 : forward_backward(direction);
+	{	
+	  //	switch(mode)
+	  //	{
+	  //		//forward_backward mode
+      //			case 1 : forward_backward(direction);
 
-		}
-				*/
-		printf("%d\n",MOTOR_LEFT0);
+	  //	}
+	 //printf("%d\n",MOTOR_LEFT0);
 
 	}
 }
