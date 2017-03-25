@@ -28,8 +28,6 @@ void setup(void) {
 
 // runs forever
 void loop(void) {
-    // blink some LEDs on pin 14 for me fam
-    // PORTB ^= 0x01;
 
     // send some bits
     setMagData(0x55); //1000 0001
