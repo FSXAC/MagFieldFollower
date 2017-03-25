@@ -8,6 +8,13 @@
 #define RX_START() UCSR0B |= _BV(RXEN0)  // Enable RX
 #define RX_STOP()  UCSR0B &= ~_BV(RXEN0) // Disable RX
 #define delay(x) _delay_ms(x) // short hand for _delay_ms
+#define turnOff(x) &=~(1<<x)
+#define turnOn(x) |=(1<<x)
+#define toggle(x) ^=(1<<x)
+
+// pin definitions
+#define LED_PIN 0x01
+#define WIRE_PIN 0x02
 
 // useful definitions
 #define HIGH 1
@@ -22,7 +29,7 @@ void timer_init(void);
 
 // mag functions
 void setMagData(unsigned char new_data);
-void magStartTransmit(void);
+void transmit(void);
 
 // usart function prototypes for serial
 void usart_init(void);
