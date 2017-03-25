@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Fri Mar 24 21:31:53 2017
+; This file was generated Fri Mar 24 21:35:06 2017
 ;--------------------------------------------------------
 $name motors
 $optc51 --model-small
@@ -369,19 +369,19 @@ _SPIEN          BIT 0xf8
 _pwm_count:
 	ds 1
 _mode:
-	ds 2
+	ds 1
 _pwm_both:
-	ds 2
+	ds 1
 _pwm_Left0:
-	ds 2
+	ds 1
 _pwm_Left1:
-	ds 2
+	ds 1
 _pwm_Right0:
-	ds 2
+	ds 1
 _pwm_Right1:
-	ds 2
+	ds 1
 _direction:
-	ds 2
+	ds 1
 ;--------------------------------------------------------
 ; overlayable items in internal ram 
 ;--------------------------------------------------------
@@ -438,34 +438,20 @@ _Timer2_ISR_sloc0_1_0:
 	rseg R_DINIT
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:18: volatile  char pwm_count=0;
 	mov	_pwm_count,#0x00
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:19: volatile  int mode = 0;
-	clr	a
-	mov	_mode,a
-	mov	(_mode + 1),a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:20: volatile  int pwm_both =0;
-	clr	a
-	mov	_pwm_both,a
-	mov	(_pwm_both + 1),a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:21: volatile  int pwm_Left0 = 0; //p1.5
-	clr	a
-	mov	_pwm_Left0,a
-	mov	(_pwm_Left0 + 1),a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:22: volatile  int pwm_Left1 = 0; //p1.6
-	clr	a
-	mov	_pwm_Left1,a
-	mov	(_pwm_Left1 + 1),a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:23: volatile  int pwm_Right0 = 0; //p2.0
-	clr	a
-	mov	_pwm_Right0,a
-	mov	(_pwm_Right0 + 1),a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:24: volatile  int pwm_Right1 = 0; //p2.1
-	clr	a
-	mov	_pwm_Right1,a
-	mov	(_pwm_Right1 + 1),a
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:25: volatile int direction = 0; // 1 for back 0 for forward
-	clr	a
-	mov	_direction,a
-	mov	(_direction + 1),a
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:19: volatile  char mode = 0;
+	mov	_mode,#0x00
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:20: volatile  char pwm_both =0;
+	mov	_pwm_both,#0x00
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:21: volatile  char pwm_Left0 = 0; //p1.5
+	mov	_pwm_Left0,#0x00
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:22: volatile  char pwm_Left1 = 0; //p1.6
+	mov	_pwm_Left1,#0x00
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:23: volatile  char pwm_Right0 = 0; //p2.0
+	mov	_pwm_Right0,#0x00
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:24: volatile  char pwm_Right1 = 0; //p2.1
+	mov	_pwm_Right1,#0x00
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:25: volatile char direction = 0; // 1 for back 0 for forward
+	mov	_direction,#0x00
 	; The linker places a 'ret' at the end of segment R_DINIT.
 ;--------------------------------------------------------
 ; code
@@ -547,8 +533,6 @@ __c51_external_startup:
 _Timer2_ISR:
 	push	acc
 	push	b
-	push	ar2
-	push	ar3
 	push	psw
 	mov	psw,#0x00
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:91: TF2H = 0; // Clear Timer2 interrupt flag
@@ -565,76 +549,46 @@ _Timer2_ISR:
 	mov	_pwm_count,#0x00
 L003002?:
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:97: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
-	mov	r2,_pwm_count
-	mov	a,_pwm_count
-	rlc	a
-	subb	a,acc
-	mov	r3,a
 	clr	c
 	mov	a,_pwm_Left0
-	subb	a,r2
-	mov	a,(_pwm_Left0 + 1)
 	xrl	a,#0x80
-	mov	b,r3
+	mov	b,_pwm_count
 	xrl	b,#0x80
 	subb	a,b
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P1_5,c
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:98: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
-	mov	r2,_pwm_count
-	mov	a,_pwm_count
-	rlc	a
-	subb	a,acc
-	mov	r3,a
 	clr	c
 	mov	a,_pwm_Left1
-	subb	a,r2
-	mov	a,(_pwm_Left1 + 1)
 	xrl	a,#0x80
-	mov	b,r3
+	mov	b,_pwm_count
 	xrl	b,#0x80
 	subb	a,b
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P1_6,c
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:99: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
-	mov	r2,_pwm_count
-	mov	a,_pwm_count
-	rlc	a
-	subb	a,acc
-	mov	r3,a
 	clr	c
 	mov	a,_pwm_Right0
-	subb	a,r2
-	mov	a,(_pwm_Right0 + 1)
 	xrl	a,#0x80
-	mov	b,r3
+	mov	b,_pwm_count
 	xrl	b,#0x80
 	subb	a,b
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P2_0,c
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:100: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
-	mov	r2,_pwm_count
-	mov	a,_pwm_count
-	rlc	a
-	subb	a,acc
-	mov	r3,a
 	clr	c
 	mov	a,_pwm_Right1
-	subb	a,r2
-	mov	a,(_pwm_Right1 + 1)
 	xrl	a,#0x80
-	mov	b,r3
+	mov	b,_pwm_count
 	xrl	b,#0x80
 	subb	a,b
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P2_1,c
 	pop	psw
-	pop	ar3
-	pop	ar2
 	pop	b
 	pop	acc
 	reti
@@ -656,28 +610,20 @@ _forward_backward:
 	jnz	L004004?
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:111: pwm_Left0 = pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
-	mov	(_pwm_Right0 + 1),#0xFF
 	mov	_pwm_Left0,#0xFF
-	mov	(_pwm_Left0 + 1),#0xFF
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:112: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
 	mov	_pwm_Right1,_pwm_both
-	mov	(_pwm_Right1 + 1),(_pwm_both + 1)
 	mov	_pwm_Left1,_pwm_both
-	mov	(_pwm_Left1 + 1),(_pwm_both + 1)
 	ret
 L004004?:
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:115: else if (direction == 1) { //p2.0,1.5 on
 	cjne	r2,#0x01,L004006?
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:116: pwm_Left1 = pwm_Right1 = -1;
 	mov	_pwm_Right1,#0xFF
-	mov	(_pwm_Right1 + 1),#0xFF
 	mov	_pwm_Left1,#0xFF
-	mov	(_pwm_Left1 + 1),#0xFF
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:117: pwm_Left0 = pwm_Right0 = pwm_both; 
 	mov	_pwm_Right0,_pwm_both
-	mov	(_pwm_Right0 + 1),(_pwm_both + 1)
 	mov	_pwm_Left0,_pwm_both
-	mov	(_pwm_Left0 + 1),(_pwm_both + 1)
 L004006?:
 	ret
 ;------------------------------------------------------------
@@ -749,13 +695,7 @@ _main:
 	mov	sp,a
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:139: if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
 	mov	a,#0x01
-	cjne	a,_mode,L005010?
-	clr	a
-	cjne	a,(_mode + 1),L005010?
-	sjmp	L005011?
-L005010?:
-	sjmp	L005004?
-L005011?:
+	cjne	a,_mode,L005004?
 	mov	a,#__str_4
 	push	acc
 	mov	a,#(__str_4 >> 8)

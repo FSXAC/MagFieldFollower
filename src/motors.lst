@@ -1,7 +1,7 @@
 0000              1   ;--------------------------------------------------------
 0000              2   ; File Created by C51
 0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-0000              4   ; This file was generated Fri Mar 24 21:31:53 2017
+0000              4   ; This file was generated Fri Mar 24 21:35:06 2017
 0000              5   ;--------------------------------------------------------
                   5   $name motors
                   6   $optc51 --model-small
@@ -369,22 +369,22 @@
 0000            369   _pwm_count:
 0000            370            ds 1
 0001            371   _mode:
-0001            372            ds 2
-0003            373   _pwm_both:
-0003            374            ds 2
-0005            375   _pwm_Left0:
-0005            376            ds 2
-0007            377   _pwm_Left1:
-0007            378            ds 2
-0009            379   _pwm_Right0:
-0009            380            ds 2
-000B            381   _pwm_Right1:
-000B            382            ds 2
-000D            383   _direction:
-000D            384            ds 2
-000F            385   ;--------------------------------------------------------
-000F            386   ; overlayable items in internal ram 
-000F            387   ;--------------------------------------------------------
+0001            372            ds 1
+0002            373   _pwm_both:
+0002            374            ds 1
+0003            375   _pwm_Left0:
+0003            376            ds 1
+0004            377   _pwm_Left1:
+0004            378            ds 1
+0005            379   _pwm_Right0:
+0005            380            ds 1
+0006            381   _pwm_Right1:
+0006            382            ds 1
+0007            383   _direction:
+0007            384            ds 1
+0008            385   ;--------------------------------------------------------
+0008            386   ; overlayable items in internal ram 
+0008            387   ;--------------------------------------------------------
 0000            388            rseg    R_OSEG
 0000            389   ;--------------------------------------------------------
 0000            390   ; indirectly addressable internal ram data
@@ -438,372 +438,312 @@
 0000            438            rseg R_DINIT
 0000            439   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:18: volatile  char pwm_count=0;
 0000 752000     440            mov     _pwm_count,#0x00
-0003            441   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:19: volatile  int mode = 0;
-0003 E4         442            clr     a
-0004 F5E0       443            mov     _mode,a
-0006 F5E1       444            mov     (_mode + 1),a
-0008            445   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:20: volatile  int pwm_both =0;
-0008 E4         446            clr     a
-0009 F5A0       447            mov     _pwm_both,a
-000B F5A1       448            mov     (_pwm_both + 1),a
-000D            449   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:21: volatile  int pwm_Left0 = 0; //p1.5
-000D E4         450            clr     a
-000E F560       451            mov     _pwm_Left0,a
-0010 F561       452            mov     (_pwm_Left0 + 1),a
-0012            453   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:22: volatile  int pwm_Left1 = 0; //p1.6
-0012 E4         454            clr     a
-0013 F520       455            mov     _pwm_Left1,a
-0015 F521       456            mov     (_pwm_Left1 + 1),a
-0017            457   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:23: volatile  int pwm_Right0 = 0; //p2.0
-0017 E4         458            clr     a
-0018 F5E0       459            mov     _pwm_Right0,a
-001A F5E1       460            mov     (_pwm_Right0 + 1),a
-001C            461   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:24: volatile  int pwm_Right1 = 0; //p2.1
-001C E4         462            clr     a
-001D F5A0       463            mov     _pwm_Right1,a
-001F F5A1       464            mov     (_pwm_Right1 + 1),a
-0021            465   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:25: volatile int direction = 0; // 1 for back 0 for forward
-0021 E4         466            clr     a
-0022 F560       467            mov     _direction,a
-0024 F561       468            mov     (_direction + 1),a
-0026            469            ; The linker places a 'ret' at the end of segment R_DINIT.
-0026            470   ;--------------------------------------------------------
-0026            471   ; code
-0026            472   ;--------------------------------------------------------
-0000            473            rseg R_CSEG
-0000            474   ;------------------------------------------------------------
-0000            475   ;Allocation info for local variables in function '_c51_external_startup'
-0000            476   ;------------------------------------------------------------
-0000            477   ;------------------------------------------------------------
-0000            478   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:27: char _c51_external_startup (void)
-0000            479   ;        -----------------------------------------
-0000            480   ;         function _c51_external_startup
-0000            481   ;        -----------------------------------------
-0000            482   __c51_external_startup:
-0000            483            using   0
-0000            484   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:29: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
-0000 53D9BF     485            anl     _PCA0MD,#0xBF
-0003            486   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:30: VDM0CN=0x80; // enable VDD monitor
-0003 75FF80     487            mov     _VDM0CN,#0x80
-0006            488   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:31: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
-0006 75EF06     489            mov     _RSTSRC,#0x06
-0009            490   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:39: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
-0009 43A903     491            orl     _CLKSEL,#0x03
-000C            492   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:43: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
-000C 43B203     493            orl     _OSCICN,#0x03
-000F            494   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:46: SCON0 = 0x10;
-000F 759810     495            mov     _SCON0,#0x10
-0012            496   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:48: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
-0012 758D30     497            mov     _TH1,#0x30
-0015            498   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:49: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
-0015 538EF4     499            anl     _CKCON,#0xF4
-0018            500   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:50: CKCON |=  0x08;
-0018 438E08     501            orl     _CKCON,#0x08
-001B            502   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:63: TL1 = TH1;      // Init Timer1
-001B 858D8B     503            mov     _TL1,_TH1
-001E            504   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:64: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
-001E 53890F     505            anl     _TMOD,#0x0F
-0021            506   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:65: TMOD |=  0x20;
-0021 438920     507            orl     _TMOD,#0x20
-0024            508   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:66: TR1 = 1; // START Timer1
-0024 D28E       509            setb    _TR1
-0026            510   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:67: TI = 1;  // Indicate TX0 ready
-0026 D299       511            setb    _TI
-0028            512   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:70: P2MDOUT|=0b_0000_0011;
-0028 43A603     513            orl     _P2MDOUT,#0x03
-002B            514   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:71: P0MDOUT |= 0x10; // Enable UTX as push-pull output
-002B 43A410     515            orl     _P0MDOUT,#0x10
-002E            516   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:72: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
-002E 75E101     517            mov     _XBR0,#0x01
-0031            518   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:73: XBR1     = 0x40; // Enable crossbar and weak pull-ups
-0031 75E240     519            mov     _XBR1,#0x40
-0034            520   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:76: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
-0034 75C800     521            mov     _TMR2CN,#0x00
-0037            522   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:77: CKCON|=0b_0001_0000;
-0037 438E10     523            orl     _CKCON,#0x10
-003A            524   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:78: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
-003A 75CA78     525            mov     _TMR2RL,#0x78
-003D 75CBEC     526            mov     (_TMR2RL >> 8),#0xEC
-0040            527   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:79: TMR2=0xffff;   // Set to reload immediately
-0040 75CCFF     528            mov     _TMR2,#0xFF
-0043 75CDFF     529            mov     (_TMR2 >> 8),#0xFF
-0046            530   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:80: ET2=1;         // Enable Timer2 interrupts
-0046 D2AD       531            setb    _ET2
-0048            532   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:81: TR2=1;         // Start Timer2
-0048 D2CA       533            setb    _TR2
-004A            534   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:83: EA=1; // Enable interrupts
-004A D2AF       535            setb    _EA
-004C            536   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:85: return 0;
-004C 758200     537            mov     dpl,#0x00
-004F 22         538            ret
-0050            539   ;------------------------------------------------------------
-0050            540   ;Allocation info for local variables in function 'Timer2_ISR'
-0050            541   ;------------------------------------------------------------
-0050            542   ;------------------------------------------------------------
-0050            543   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:89: void Timer2_ISR (void) interrupt 5
-0050            544   ;        -----------------------------------------
-0050            545   ;         function Timer2_ISR
-0050            546   ;        -----------------------------------------
-0050            547   _Timer2_ISR:
-0050 C0E0       548            push    acc
-0052 C0F0       549            push    b
-0054 C002       550            push    ar2
-0056 C003       551            push    ar3
-0058 C0D0       552            push    psw
-005A 75D000     553            mov     psw,#0x00
-005D            554   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:91: TF2H = 0; // Clear Timer2 interrupt flag
-005D C2CF       555            clr     _TF2H
-005F            556   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:93: pwm_count++;
-005F 0520       557            inc     _pwm_count
-0061            558   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:94: if(pwm_count>100) pwm_count=0;
-0061 C3         559            clr     c
-0062 74E4       560            mov     a,#(0x64 ^ 0x80)
-0064 8520F0     561            mov     b,_pwm_count
-0067 63F080     562            xrl     b,#0x80
-006A 95F0       563            subb    a,b
-006C 5001       564            jnc     L003002?
-006E 752000     565            mov     _pwm_count,#0x00
-0071            566   L003002?:
-0071            567   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:97: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
-0071 AA20       568            mov     r2,_pwm_count
-0073 E520       569            mov     a,_pwm_count
-0075 33         570            rlc     a
-0076 95E0       571            subb    a,acc
-0078 FB         572            mov     r3,a
-0079 C3         573            clr     c
-007A E560       574            mov     a,_pwm_Left0
-007C 9A         575            subb    a,r2
-007D E561       576            mov     a,(_pwm_Left0 + 1)
-007F 6480       577            xrl     a,#0x80
-0081 8BF0       578            mov     b,r3
-0083 63F080     579            xrl     b,#0x80
-0086 95F0       580            subb    a,b
-0088 9258       581            mov  _Timer2_ISR_sloc0_1_0,c
-008A B3         582            cpl     c
-008B 9295       583            mov     _P1_5,c
-008D            584   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:98: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
-008D AA20       585            mov     r2,_pwm_count
-008F E520       586            mov     a,_pwm_count
-0091 33         587            rlc     a
-0092 95E0       588            subb    a,acc
-0094 FB         589            mov     r3,a
-0095 C3         590            clr     c
-0096 E520       591            mov     a,_pwm_Left1
-0098 9A         592            subb    a,r2
-0099 E521       593            mov     a,(_pwm_Left1 + 1)
-009B 6480       594            xrl     a,#0x80
-009D 8BF0       595            mov     b,r3
-009F 63F080     596            xrl     b,#0x80
-00A2 95F0       597            subb    a,b
-00A4 9258       598            mov  _Timer2_ISR_sloc0_1_0,c
-00A6 B3         599            cpl     c
-00A7 9296       600            mov     _P1_6,c
-00A9            601   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:99: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
-00A9 AA20       602            mov     r2,_pwm_count
-00AB E520       603            mov     a,_pwm_count
-00AD 33         604            rlc     a
-00AE 95E0       605            subb    a,acc
-00B0 FB         606            mov     r3,a
-00B1 C3         607            clr     c
-00B2 E5E0       608            mov     a,_pwm_Right0
-00B4 9A         609            subb    a,r2
-00B5 E5E1       610            mov     a,(_pwm_Right0 + 1)
-00B7 6480       611            xrl     a,#0x80
-00B9 8BF0       612            mov     b,r3
-00BB 63F080     613            xrl     b,#0x80
-00BE 95F0       614            subb    a,b
-00C0 9258       615            mov  _Timer2_ISR_sloc0_1_0,c
-00C2 B3         616            cpl     c
-00C3 92A0       617            mov     _P2_0,c
-00C5            618   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:100: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
-00C5 AA20       619            mov     r2,_pwm_count
-00C7 E520       620            mov     a,_pwm_count
-00C9 33         621            rlc     a
-00CA 95E0       622            subb    a,acc
-00CC FB         623            mov     r3,a
-00CD C3         624            clr     c
-00CE E5A0       625            mov     a,_pwm_Right1
-00D0 9A         626            subb    a,r2
-00D1 E5A1       627            mov     a,(_pwm_Right1 + 1)
-00D3 6480       628            xrl     a,#0x80
-00D5 8BF0       629            mov     b,r3
-00D7 63F080     630            xrl     b,#0x80
-00DA 95F0       631            subb    a,b
-00DC 9258       632            mov  _Timer2_ISR_sloc0_1_0,c
-00DE B3         633            cpl     c
-00DF 92A1       634            mov     _P2_1,c
-00E1 D0D0       635            pop     psw
-00E3 D003       636            pop     ar3
-00E5 D002       637            pop     ar2
-00E7 D0F0       638            pop     b
-00E9 D0E0       639            pop     acc
-00EB 32         640            reti
-00EC            641   ;        eliminated unneeded push/pop dpl
-00EC            642   ;        eliminated unneeded push/pop dph
-00EC            643   ;------------------------------------------------------------
-00EC            644   ;Allocation info for local variables in function 'forward_backward'
-00EC            645   ;------------------------------------------------------------
-00EC            646   ;direction                 Allocated to registers r2 
-00EC            647   ;------------------------------------------------------------
-00EC            648   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:107: void forward_backward(unsigned char direction)
-00EC            649   ;        -----------------------------------------
-00EC            650   ;         function forward_backward
-00EC            651   ;        -----------------------------------------
-00EC            652   _forward_backward:
-00EC            653   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:110: if (direction == 0) { //p2.1,1.6 on
-00EC E582       654            mov     a,dpl
-00EE FA         655            mov     r2,a
-00EF 7001       656            jnz     L004004?
-00F1            657   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:111: pwm_Left0 = pwm_Right0 = -1;
-00F1 75E0FF     658            mov     _pwm_Right0,#0xFF
-00F4 75E1FF     659            mov     (_pwm_Right0 + 1),#0xFF
-00F7 7560FF     660            mov     _pwm_Left0,#0xFF
-00FA 7561FF     661            mov     (_pwm_Left0 + 1),#0xFF
-00FD            662   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:112: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
-00FD 85A0A0     663            mov     _pwm_Right1,_pwm_both
-0100 85A1A1     664            mov     (_pwm_Right1 + 1),(_pwm_both + 1)
-0103 85A020     665            mov     _pwm_Left1,_pwm_both
-0106 85A121     666            mov     (_pwm_Left1 + 1),(_pwm_both + 1)
-0109 22         667            ret
-010A            668   L004004?:
-010A            669   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:115: else if (direction == 1) { //p2.0,1.5 on
-010A BA0158     670            cjne    r2,#0x01,L004006?
-010D            671   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:116: pwm_Left1 = pwm_Right1 = -1;
-010D 75A0FF     672            mov     _pwm_Right1,#0xFF
-0110 75A1FF     673            mov     (_pwm_Right1 + 1),#0xFF
-0113 7520FF     674            mov     _pwm_Left1,#0xFF
-0116 7521FF     675            mov     (_pwm_Left1 + 1),#0xFF
-0119            676   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:117: pwm_Left0 = pwm_Right0 = pwm_both; 
-0119 85A0E0     677            mov     _pwm_Right0,_pwm_both
-011C 85A1E1     678            mov     (_pwm_Right0 + 1),(_pwm_both + 1)
-011F 85A060     679            mov     _pwm_Left0,_pwm_both
-0122 85A161     680            mov     (_pwm_Left0 + 1),(_pwm_both + 1)
-0125            681   L004006?:
-0125 22         682            ret
-0126            683   ;------------------------------------------------------------
-0126            684   ;Allocation info for local variables in function 'main'
-0126            685   ;------------------------------------------------------------
-0126            686   ;------------------------------------------------------------
-0126            687   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:125: void main (void)
-0126            688   ;        -----------------------------------------
-0126            689   ;         function main
-0126            690   ;        -----------------------------------------
-0126            691   _main:
-0126            692   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:128: MOTOR_LEFT0 =0;
-0126 C295       693            clr     _P1_5
-0128            694   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:129: MOTOR_LEFT1 =0;
-0128 C296       695            clr     _P1_6
-012A            696   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:130: MOTOR_RIGHT0 =0;
-012A C2A0       697            clr     _P2_0
-012C            698   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:131: MOTOR_RIGHT1 =0;
-012C C2A1       699            clr     _P2_1
-012E            700   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:134: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
-012E 7498       701            mov     a,#__str_0
-0130 C0E0       702            push    acc
-0132 749A       703            mov     a,#(__str_0 >> 8)
-0134 C0E0       704            push    acc
-0136 7480       705            mov     a,#0x80
-0138 C0E0       706            push    acc
-013A 120100     707            lcall   _printf
-013D 1581       708            dec     sp
-013F 1581       709            dec     sp
-0141 1581       710            dec     sp
-0143            711   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:136: "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
-0143 7458       712            mov     a,#__str_1
-0145 C0E0       713            push    acc
-0147 749B       714            mov     a,#(__str_1 >> 8)
-0149 C0E0       715            push    acc
-014B 7480       716            mov     a,#0x80
-014D C0E0       717            push    acc
-014F 120100     718            lcall   _printf
-0152 1581       719            dec     sp
-0154 1581       720            dec     sp
-0156 1581       721            dec     sp
-0158            722   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:137: printf("Please enter motors mode 1-6\n");
-0158 7498       723            mov     a,#__str_2
-015A C0E0       724            push    acc
-015C 749B       725            mov     a,#(__str_2 >> 8)
-015E C0E0       726            push    acc
-0160 7480       727            mov     a,#0x80
-0162 C0E0       728            push    acc
-0164 120100     729            lcall   _printf
-0167 1581       730            dec     sp
-0169 1581       731            dec     sp
-016B 1581       732            dec     sp
-016D            733   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:138: scanf("%d \n",&mode);
-016D 74E0       734            mov     a,#_mode
-016F C0E0       735            push    acc
-0171 7413       736            mov     a,#(_mode >> 8)
-0173 C0E0       737            push    acc
-0175 7440       738            mov     a,#0x40
-0177 C0E0       739            push    acc
-0179 74D8       740            mov     a,#__str_3
-017B C0E0       741            push    acc
-017D 749B       742            mov     a,#(__str_3 >> 8)
-017F C0E0       743            push    acc
-0181 7480       744            mov     a,#0x80
-0183 C0E0       745            push    acc
-0185 120100     746            lcall   _scanf
-0188 E581       747            mov     a,sp
-018A 24FA       748            add     a,#0xfa
-018C F581       749            mov     sp,a
-018E            750   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:139: if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
-018E 7401       751            mov     a,#0x01
-0190 B5E058     752            cjne    a,_mode,L005010?
-0193 E4         753            clr     a
-0194 B5E158     754            cjne    a,(_mode + 1),L005010?
-0197 8001       755            sjmp    L005011?
-0199            756   L005010?:
-0199 8001       757            sjmp    L005004?
-019B            758   L005011?:
-019B 7418       759            mov     a,#__str_4
-019D C0E0       760            push    acc
-019F 749D       761            mov     a,#(__str_4 >> 8)
-01A1 C0E0       762            push    acc
-01A3 7480       763            mov     a,#0x80
-01A5 C0E0       764            push    acc
-01A7 120100     765            lcall   _printf
-01AA 1581       766            dec     sp
-01AC 1581       767            dec     sp
-01AE 1581       768            dec     sp
-01B0 7460       769            mov     a,#_direction
-01B2 C0E0       770            push    acc
-01B4 7412       771            mov     a,#(_direction >> 8)
-01B6 C0E0       772            push    acc
-01B8 7440       773            mov     a,#0x40
-01BA C0E0       774            push    acc
-01BC 74A0       775            mov     a,#_pwm_both
-01BE C0E0       776            push    acc
-01C0 7413       777            mov     a,#(_pwm_both >> 8)
-01C2 C0E0       778            push    acc
-01C4 7440       779            mov     a,#0x40
-01C6 C0E0       780            push    acc
-01C8 7458       781            mov     a,#__str_5
-01CA C0E0       782            push    acc
-01CC 749D       783            mov     a,#(__str_5 >> 8)
-01CE C0E0       784            push    acc
-01D0 7480       785            mov     a,#0x80
-01D2 C0E0       786            push    acc
-01D4 120100     787            lcall   _scanf
-01D7 E581       788            mov     a,sp
-01D9 24F7       789            add     a,#0xf7
-01DB F581       790            mov     sp,a
-01DD 856082     791            mov     dpl,_direction
-01E0 120100     792            lcall   _forward_backward
-01E3            793   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:142: while(1)
-01E3            794   L005004?:
-01E3 8001       795            sjmp    L005004?
-01E5            796            rseg R_CSEG
-01E5            797   
-0000            798            rseg R_XINIT
-0000            799   
-0000            800            rseg R_CONST
-0000            801   __str_0:
-0000 1B         802            db 0x1B
-0001 5B324A     803            db '[2J'
-0004 00         804            db 0x00
-0005            805   __str_1:
-0005 53717561   806            db 'Square wave generator for the F38x.'
+0003            441   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:19: volatile  char mode = 0;
+0003 75E000     442            mov     _mode,#0x00
+0006            443   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:20: volatile  char pwm_both =0;
+0006 75A000     444            mov     _pwm_both,#0x00
+0009            445   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:21: volatile  char pwm_Left0 = 0; //p1.5
+0009 756000     446            mov     _pwm_Left0,#0x00
+000C            447   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:22: volatile  char pwm_Left1 = 0; //p1.6
+000C 752000     448            mov     _pwm_Left1,#0x00
+000F            449   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:23: volatile  char pwm_Right0 = 0; //p2.0
+000F 75E000     450            mov     _pwm_Right0,#0x00
+0012            451   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:24: volatile  char pwm_Right1 = 0; //p2.1
+0012 75A000     452            mov     _pwm_Right1,#0x00
+0015            453   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:25: volatile char direction = 0; // 1 for back 0 for forward
+0015 756000     454            mov     _direction,#0x00
+0018            455            ; The linker places a 'ret' at the end of segment R_DINIT.
+0018            456   ;--------------------------------------------------------
+0018            457   ; code
+0018            458   ;--------------------------------------------------------
+0000            459            rseg R_CSEG
+0000            460   ;------------------------------------------------------------
+0000            461   ;Allocation info for local variables in function '_c51_external_startup'
+0000            462   ;------------------------------------------------------------
+0000            463   ;------------------------------------------------------------
+0000            464   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:27: char _c51_external_startup (void)
+0000            465   ;        -----------------------------------------
+0000            466   ;         function _c51_external_startup
+0000            467   ;        -----------------------------------------
+0000            468   __c51_external_startup:
+0000            469            using   0
+0000            470   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:29: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
+0000 53D9BF     471            anl     _PCA0MD,#0xBF
+0003            472   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:30: VDM0CN=0x80; // enable VDD monitor
+0003 75FF80     473            mov     _VDM0CN,#0x80
+0006            474   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:31: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
+0006 75EF06     475            mov     _RSTSRC,#0x06
+0009            476   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:39: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
+0009 43A903     477            orl     _CLKSEL,#0x03
+000C            478   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:43: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
+000C 43B203     479            orl     _OSCICN,#0x03
+000F            480   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:46: SCON0 = 0x10;
+000F 759810     481            mov     _SCON0,#0x10
+0012            482   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:48: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
+0012 758D30     483            mov     _TH1,#0x30
+0015            484   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:49: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
+0015 538EF4     485            anl     _CKCON,#0xF4
+0018            486   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:50: CKCON |=  0x08;
+0018 438E08     487            orl     _CKCON,#0x08
+001B            488   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:63: TL1 = TH1;      // Init Timer1
+001B 858D8B     489            mov     _TL1,_TH1
+001E            490   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:64: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
+001E 53890F     491            anl     _TMOD,#0x0F
+0021            492   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:65: TMOD |=  0x20;
+0021 438920     493            orl     _TMOD,#0x20
+0024            494   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:66: TR1 = 1; // START Timer1
+0024 D28E       495            setb    _TR1
+0026            496   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:67: TI = 1;  // Indicate TX0 ready
+0026 D299       497            setb    _TI
+0028            498   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:70: P2MDOUT|=0b_0000_0011;
+0028 43A603     499            orl     _P2MDOUT,#0x03
+002B            500   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:71: P0MDOUT |= 0x10; // Enable UTX as push-pull output
+002B 43A410     501            orl     _P0MDOUT,#0x10
+002E            502   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:72: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
+002E 75E101     503            mov     _XBR0,#0x01
+0031            504   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:73: XBR1     = 0x40; // Enable crossbar and weak pull-ups
+0031 75E240     505            mov     _XBR1,#0x40
+0034            506   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:76: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
+0034 75C800     507            mov     _TMR2CN,#0x00
+0037            508   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:77: CKCON|=0b_0001_0000;
+0037 438E10     509            orl     _CKCON,#0x10
+003A            510   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:78: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
+003A 75CA78     511            mov     _TMR2RL,#0x78
+003D 75CBEC     512            mov     (_TMR2RL >> 8),#0xEC
+0040            513   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:79: TMR2=0xffff;   // Set to reload immediately
+0040 75CCFF     514            mov     _TMR2,#0xFF
+0043 75CDFF     515            mov     (_TMR2 >> 8),#0xFF
+0046            516   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:80: ET2=1;         // Enable Timer2 interrupts
+0046 D2AD       517            setb    _ET2
+0048            518   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:81: TR2=1;         // Start Timer2
+0048 D2CA       519            setb    _TR2
+004A            520   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:83: EA=1; // Enable interrupts
+004A D2AF       521            setb    _EA
+004C            522   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:85: return 0;
+004C 758200     523            mov     dpl,#0x00
+004F 22         524            ret
+0050            525   ;------------------------------------------------------------
+0050            526   ;Allocation info for local variables in function 'Timer2_ISR'
+0050            527   ;------------------------------------------------------------
+0050            528   ;------------------------------------------------------------
+0050            529   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:89: void Timer2_ISR (void) interrupt 5
+0050            530   ;        -----------------------------------------
+0050            531   ;         function Timer2_ISR
+0050            532   ;        -----------------------------------------
+0050            533   _Timer2_ISR:
+0050 C0E0       534            push    acc
+0052 C0F0       535            push    b
+0054 C0D0       536            push    psw
+0056 75D000     537            mov     psw,#0x00
+0059            538   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:91: TF2H = 0; // Clear Timer2 interrupt flag
+0059 C2CF       539            clr     _TF2H
+005B            540   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:93: pwm_count++;
+005B 0520       541            inc     _pwm_count
+005D            542   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:94: if(pwm_count>100) pwm_count=0;
+005D C3         543            clr     c
+005E 74E4       544            mov     a,#(0x64 ^ 0x80)
+0060 8520F0     545            mov     b,_pwm_count
+0063 63F080     546            xrl     b,#0x80
+0066 95F0       547            subb    a,b
+0068 5001       548            jnc     L003002?
+006A 752000     549            mov     _pwm_count,#0x00
+006D            550   L003002?:
+006D            551   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:97: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
+006D C3         552            clr     c
+006E E560       553            mov     a,_pwm_Left0
+0070 6480       554            xrl     a,#0x80
+0072 8520F0     555            mov     b,_pwm_count
+0075 63F080     556            xrl     b,#0x80
+0078 95F0       557            subb    a,b
+007A 9258       558            mov  _Timer2_ISR_sloc0_1_0,c
+007C B3         559            cpl     c
+007D 9295       560            mov     _P1_5,c
+007F            561   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:98: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
+007F C3         562            clr     c
+0080 E520       563            mov     a,_pwm_Left1
+0082 6480       564            xrl     a,#0x80
+0084 8520F0     565            mov     b,_pwm_count
+0087 63F080     566            xrl     b,#0x80
+008A 95F0       567            subb    a,b
+008C 9258       568            mov  _Timer2_ISR_sloc0_1_0,c
+008E B3         569            cpl     c
+008F 9296       570            mov     _P1_6,c
+0091            571   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:99: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
+0091 C3         572            clr     c
+0092 E5E0       573            mov     a,_pwm_Right0
+0094 6480       574            xrl     a,#0x80
+0096 8520F0     575            mov     b,_pwm_count
+0099 63F080     576            xrl     b,#0x80
+009C 95F0       577            subb    a,b
+009E 9258       578            mov  _Timer2_ISR_sloc0_1_0,c
+00A0 B3         579            cpl     c
+00A1 92A0       580            mov     _P2_0,c
+00A3            581   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:100: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
+00A3 C3         582            clr     c
+00A4 E5A0       583            mov     a,_pwm_Right1
+00A6 6480       584            xrl     a,#0x80
+00A8 8520F0     585            mov     b,_pwm_count
+00AB 63F080     586            xrl     b,#0x80
+00AE 95F0       587            subb    a,b
+00B0 9258       588            mov  _Timer2_ISR_sloc0_1_0,c
+00B2 B3         589            cpl     c
+00B3 92A1       590            mov     _P2_1,c
+00B5 D0D0       591            pop     psw
+00B7 D0F0       592            pop     b
+00B9 D0E0       593            pop     acc
+00BB 32         594            reti
+00BC            595   ;        eliminated unneeded push/pop dpl
+00BC            596   ;        eliminated unneeded push/pop dph
+00BC            597   ;------------------------------------------------------------
+00BC            598   ;Allocation info for local variables in function 'forward_backward'
+00BC            599   ;------------------------------------------------------------
+00BC            600   ;direction                 Allocated to registers r2 
+00BC            601   ;------------------------------------------------------------
+00BC            602   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:107: void forward_backward(unsigned char direction)
+00BC            603   ;        -----------------------------------------
+00BC            604   ;         function forward_backward
+00BC            605   ;        -----------------------------------------
+00BC            606   _forward_backward:
+00BC            607   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:110: if (direction == 0) { //p2.1,1.6 on
+00BC E582       608            mov     a,dpl
+00BE FA         609            mov     r2,a
+00BF 7001       610            jnz     L004004?
+00C1            611   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:111: pwm_Left0 = pwm_Right0 = -1;
+00C1 75E0FF     612            mov     _pwm_Right0,#0xFF
+00C4 7560FF     613            mov     _pwm_Left0,#0xFF
+00C7            614   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:112: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
+00C7 85A0A0     615            mov     _pwm_Right1,_pwm_both
+00CA 85A020     616            mov     _pwm_Left1,_pwm_both
+00CD 22         617            ret
+00CE            618   L004004?:
+00CE            619   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:115: else if (direction == 1) { //p2.0,1.5 on
+00CE BA0158     620            cjne    r2,#0x01,L004006?
+00D1            621   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:116: pwm_Left1 = pwm_Right1 = -1;
+00D1 75A0FF     622            mov     _pwm_Right1,#0xFF
+00D4 7520FF     623            mov     _pwm_Left1,#0xFF
+00D7            624   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:117: pwm_Left0 = pwm_Right0 = pwm_both; 
+00D7 85A0E0     625            mov     _pwm_Right0,_pwm_both
+00DA 85A060     626            mov     _pwm_Left0,_pwm_both
+00DD            627   L004006?:
+00DD 22         628            ret
+00DE            629   ;------------------------------------------------------------
+00DE            630   ;Allocation info for local variables in function 'main'
+00DE            631   ;------------------------------------------------------------
+00DE            632   ;------------------------------------------------------------
+00DE            633   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:125: void main (void)
+00DE            634   ;        -----------------------------------------
+00DE            635   ;         function main
+00DE            636   ;        -----------------------------------------
+00DE            637   _main:
+00DE            638   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:128: MOTOR_LEFT0 =0;
+00DE C295       639            clr     _P1_5
+00E0            640   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:129: MOTOR_LEFT1 =0;
+00E0 C296       641            clr     _P1_6
+00E2            642   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:130: MOTOR_RIGHT0 =0;
+00E2 C2A0       643            clr     _P2_0
+00E4            644   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:131: MOTOR_RIGHT1 =0;
+00E4 C2A1       645            clr     _P2_1
+00E6            646   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:134: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+00E6 7498       647            mov     a,#__str_0
+00E8 C0E0       648            push    acc
+00EA 749A       649            mov     a,#(__str_0 >> 8)
+00EC C0E0       650            push    acc
+00EE 7480       651            mov     a,#0x80
+00F0 C0E0       652            push    acc
+00F2 120100     653            lcall   _printf
+00F5 1581       654            dec     sp
+00F7 1581       655            dec     sp
+00F9 1581       656            dec     sp
+00FB            657   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:136: "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
+00FB 7458       658            mov     a,#__str_1
+00FD C0E0       659            push    acc
+00FF 749B       660            mov     a,#(__str_1 >> 8)
+0101 C0E0       661            push    acc
+0103 7480       662            mov     a,#0x80
+0105 C0E0       663            push    acc
+0107 120100     664            lcall   _printf
+010A 1581       665            dec     sp
+010C 1581       666            dec     sp
+010E 1581       667            dec     sp
+0110            668   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:137: printf("Please enter motors mode 1-6\n");
+0110 7498       669            mov     a,#__str_2
+0112 C0E0       670            push    acc
+0114 749B       671            mov     a,#(__str_2 >> 8)
+0116 C0E0       672            push    acc
+0118 7480       673            mov     a,#0x80
+011A C0E0       674            push    acc
+011C 120100     675            lcall   _printf
+011F 1581       676            dec     sp
+0121 1581       677            dec     sp
+0123 1581       678            dec     sp
+0125            679   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:138: scanf("%d \n",&mode);
+0125 74E0       680            mov     a,#_mode
+0127 C0E0       681            push    acc
+0129 7413       682            mov     a,#(_mode >> 8)
+012B C0E0       683            push    acc
+012D 7440       684            mov     a,#0x40
+012F C0E0       685            push    acc
+0131 74D8       686            mov     a,#__str_3
+0133 C0E0       687            push    acc
+0135 749B       688            mov     a,#(__str_3 >> 8)
+0137 C0E0       689            push    acc
+0139 7480       690            mov     a,#0x80
+013B C0E0       691            push    acc
+013D 120100     692            lcall   _scanf
+0140 E581       693            mov     a,sp
+0142 24FA       694            add     a,#0xfa
+0144 F581       695            mov     sp,a
+0146            696   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:139: if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
+0146 7401       697            mov     a,#0x01
+0148 B5E058     698            cjne    a,_mode,L005004?
+014B 7498       699            mov     a,#__str_4
+014D C0E0       700            push    acc
+014F 749C       701            mov     a,#(__str_4 >> 8)
+0151 C0E0       702            push    acc
+0153 7480       703            mov     a,#0x80
+0155 C0E0       704            push    acc
+0157 120100     705            lcall   _printf
+015A 1581       706            dec     sp
+015C 1581       707            dec     sp
+015E 1581       708            dec     sp
+0160 7460       709            mov     a,#_direction
+0162 C0E0       710            push    acc
+0164 7412       711            mov     a,#(_direction >> 8)
+0166 C0E0       712            push    acc
+0168 7440       713            mov     a,#0x40
+016A C0E0       714            push    acc
+016C 74A0       715            mov     a,#_pwm_both
+016E C0E0       716            push    acc
+0170 7413       717            mov     a,#(_pwm_both >> 8)
+0172 C0E0       718            push    acc
+0174 7440       719            mov     a,#0x40
+0176 C0E0       720            push    acc
+0178 74D8       721            mov     a,#__str_5
+017A C0E0       722            push    acc
+017C 749C       723            mov     a,#(__str_5 >> 8)
+017E C0E0       724            push    acc
+0180 7480       725            mov     a,#0x80
+0182 C0E0       726            push    acc
+0184 120100     727            lcall   _scanf
+0187 E581       728            mov     a,sp
+0189 24F7       729            add     a,#0xf7
+018B F581       730            mov     sp,a
+018D 856082     731            mov     dpl,_direction
+0190 120100     732            lcall   _forward_backward
+0193            733   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:142: while(1)
+0193            734   L005004?:
+0193 8001       735            sjmp    L005004?
+0195            736            rseg R_CSEG
+0195            737   
+0000            738            rseg R_XINIT
+0000            739   
+0000            740            rseg R_CONST
+0000            741   __str_0:
+0000 1B         742            db 0x1B
+0001 5B324A     743            db '[2J'
+0004 00         744            db 0x00
+0005            745   __str_1:
+0005 53717561   746            db 'Square wave generator for the F38x.'
      72652077
      61766520
      67656E65
@@ -812,51 +752,51 @@
      72207468
      65204633
      38782E
-0028 0D         807            db 0x0D
-0029 0A         808            db 0x0A
-002A 43686563   809            db 'Check pins P2.1 and P2.'
+0028 0D         747            db 0x0D
+0029 0A         748            db 0x0A
+002A 43686563   749            db 'Check pins P2.1 and P2.'
      6B207069
      6E732050
      322E3120
      616E6420
      50322E
-0041 32207769   810            db '2 with the oscilloscope.'
+0041 32207769   750            db '2 with the oscilloscope.'
      74682074
      6865206F
      7363696C
      6C6F7363
      6F70652E
-0059 0D         811            db 0x0D
-005A 0A         812            db 0x0A
-005B 00         813            db 0x00
-005C            814   __str_2:
-005C 506C6561   815            db 'Please enter motors mode 1-6'
+0059 0D         751            db 0x0D
+005A 0A         752            db 0x0A
+005B 00         753            db 0x00
+005C            754   __str_2:
+005C 506C6561   755            db 'Please enter motors mode 1-6'
      73652065
      6E746572
      206D6F74
      6F727320
      6D6F6465
      20312D36
-0078 0A         816            db 0x0A
-0079 00         817            db 0x00
-007A            818   __str_3:
-007A 256420     819            db '%d '
-007D 0A         820            db 0x0A
-007E 00         821            db 0x00
-007F            822   __str_4:
-007F 456E7465   823            db 'Enter pwm and direction'
+0078 0A         756            db 0x0A
+0079 00         757            db 0x00
+007A            758   __str_3:
+007A 256420     759            db '%d '
+007D 0A         760            db 0x0A
+007E 00         761            db 0x00
+007F            762   __str_4:
+007F 456E7465   763            db 'Enter pwm and direction'
      72207077
      6D20616E
      64206469
      72656374
      696F6E
-0096 0A         824            db 0x0A
-0097 00         825            db 0x00
-0098            826   __str_5:
-0098 25642025   827            db '%d %d'
+0096 0A         764            db 0x0A
+0097 00         765            db 0x00
+0098            766   __str_5:
+0098 25642025   767            db '%d %d'
      64
-009D 00         828            db 0x00
-009E            829   
-002E            830            CSEG
-002E            831   
-002E            832   end
+009D 00         768            db 0x00
+009E            769   
+002E            770            CSEG
+002E            771   
+002E            772   end

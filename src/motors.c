@@ -16,13 +16,13 @@
 #define MOTOR_RIGHT1 P2_1
 
 volatile  char pwm_count=0;
-volatile  int mode = 0;
-volatile  int pwm_both =0;
-volatile  int pwm_Left0 = 0; //p1.5
-volatile  int pwm_Left1 = 0; //p1.6
-volatile  int pwm_Right0 = 0; //p2.0
-volatile  int pwm_Right1 = 0; //p2.1
-volatile int direction = 0; // 1 for back 0 for forward
+volatile  char mode = 0;
+volatile  char pwm_both =0;
+volatile  char pwm_Left0 = 0; //p1.5
+volatile  char pwm_Left1 = 0; //p1.6
+volatile  char pwm_Right0 = 0; //p2.0
+volatile  char pwm_Right1 = 0; //p2.1
+volatile char direction = 0; // 1 for back 0 for forward
 
 char _c51_external_startup (void)
 {
