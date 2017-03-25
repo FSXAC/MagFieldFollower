@@ -1,7 +1,7 @@
 0000              1   ;--------------------------------------------------------
 0000              2   ; File Created by C51
 0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-0000              4   ; This file was generated Fri Mar 24 21:35:06 2017
+0000              4   ; This file was generated Fri Mar 24 21:38:17 2017
 0000              5   ;--------------------------------------------------------
                   5   $name motors
                   6   $optc51 --model-small
@@ -695,7 +695,7 @@
 0144 F581       695            mov     sp,a
 0146            696   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:139: if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
 0146 7401       697            mov     a,#0x01
-0148 B5E058     698            cjne    a,_mode,L005004?
+0148 B5E058     698            cjne    a,_mode,L005002?
 014B 7498       699            mov     a,#__str_4
 014D C0E0       700            push    acc
 014F 749C       701            mov     a,#(__str_4 >> 8)
@@ -730,20 +730,37 @@
 018B F581       730            mov     sp,a
 018D 856082     731            mov     dpl,_direction
 0190 120100     732            lcall   _forward_backward
-0193            733   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:142: while(1)
-0193            734   L005004?:
-0193 8001       735            sjmp    L005004?
-0195            736            rseg R_CSEG
-0195            737   
-0000            738            rseg R_XINIT
-0000            739   
-0000            740            rseg R_CONST
-0000            741   __str_0:
-0000 1B         742            db 0x1B
-0001 5B324A     743            db '[2J'
-0004 00         744            db 0x00
-0005            745   __str_1:
-0005 53717561   746            db 'Square wave generator for the F38x.'
+0193            733   L005002?:
+0193            734   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:140: if(mode == 2) {printf("Stop mode triggered"); pwm_both = -1;forward_backward(direction); }
+0193 7402       735            mov     a,#0x02
+0195 B5E018     736            cjne    a,_mode,L005006?
+0198 7458       737            mov     a,#__str_6
+019A C0E0       738            push    acc
+019C 749D       739            mov     a,#(__str_6 >> 8)
+019E C0E0       740            push    acc
+01A0 7480       741            mov     a,#0x80
+01A2 C0E0       742            push    acc
+01A4 120100     743            lcall   _printf
+01A7 1581       744            dec     sp
+01A9 1581       745            dec     sp
+01AB 1581       746            dec     sp
+01AD 75A0FF     747            mov     _pwm_both,#0xFF
+01B0 856082     748            mov     dpl,_direction
+01B3 120100     749            lcall   _forward_backward
+01B6            750   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:143: while(1)
+01B6            751   L005006?:
+01B6 8001       752            sjmp    L005006?
+01B8            753            rseg R_CSEG
+01B8            754   
+0000            755            rseg R_XINIT
+0000            756   
+0000            757            rseg R_CONST
+0000            758   __str_0:
+0000 1B         759            db 0x1B
+0001 5B324A     760            db '[2J'
+0004 00         761            db 0x00
+0005            762   __str_1:
+0005 53717561   763            db 'Square wave generator for the F38x.'
      72652077
      61766520
      67656E65
@@ -752,51 +769,58 @@
      72207468
      65204633
      38782E
-0028 0D         747            db 0x0D
-0029 0A         748            db 0x0A
-002A 43686563   749            db 'Check pins P2.1 and P2.'
+0028 0D         764            db 0x0D
+0029 0A         765            db 0x0A
+002A 43686563   766            db 'Check pins P2.1 and P2.'
      6B207069
      6E732050
      322E3120
      616E6420
      50322E
-0041 32207769   750            db '2 with the oscilloscope.'
+0041 32207769   767            db '2 with the oscilloscope.'
      74682074
      6865206F
      7363696C
      6C6F7363
      6F70652E
-0059 0D         751            db 0x0D
-005A 0A         752            db 0x0A
-005B 00         753            db 0x00
-005C            754   __str_2:
-005C 506C6561   755            db 'Please enter motors mode 1-6'
+0059 0D         768            db 0x0D
+005A 0A         769            db 0x0A
+005B 00         770            db 0x00
+005C            771   __str_2:
+005C 506C6561   772            db 'Please enter motors mode 1-6'
      73652065
      6E746572
      206D6F74
      6F727320
      6D6F6465
      20312D36
-0078 0A         756            db 0x0A
-0079 00         757            db 0x00
-007A            758   __str_3:
-007A 256420     759            db '%d '
-007D 0A         760            db 0x0A
-007E 00         761            db 0x00
-007F            762   __str_4:
-007F 456E7465   763            db 'Enter pwm and direction'
+0078 0A         773            db 0x0A
+0079 00         774            db 0x00
+007A            775   __str_3:
+007A 256420     776            db '%d '
+007D 0A         777            db 0x0A
+007E 00         778            db 0x00
+007F            779   __str_4:
+007F 456E7465   780            db 'Enter pwm and direction'
      72207077
      6D20616E
      64206469
      72656374
      696F6E
-0096 0A         764            db 0x0A
-0097 00         765            db 0x00
-0098            766   __str_5:
-0098 25642025   767            db '%d %d'
+0096 0A         781            db 0x0A
+0097 00         782            db 0x00
+0098            783   __str_5:
+0098 25642025   784            db '%d %d'
      64
-009D 00         768            db 0x00
-009E            769   
-002E            770            CSEG
-002E            771   
-002E            772   end
+009D 00         785            db 0x00
+009E            786   __str_6:
+009E 53746F70   787            db 'Stop mode triggered'
+     206D6F64
+     65207472
+     69676765
+     726564
+00B1 00         788            db 0x00
+00B2            789   
+002E            790            CSEG
+002E            791   
+002E            792   end

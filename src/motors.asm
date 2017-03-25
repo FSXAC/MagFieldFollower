@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Fri Mar 24 21:35:06 2017
+; This file was generated Fri Mar 24 21:38:17 2017
 ;--------------------------------------------------------
 $name motors
 $optc51 --model-small
@@ -695,7 +695,7 @@ _main:
 	mov	sp,a
 ;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:139: if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
 	mov	a,#0x01
-	cjne	a,_mode,L005004?
+	cjne	a,_mode,L005002?
 	mov	a,#__str_4
 	push	acc
 	mov	a,#(__str_4 >> 8)
@@ -730,9 +730,26 @@ _main:
 	mov	sp,a
 	mov	dpl,_direction
 	lcall	_forward_backward
-;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:142: while(1)
-L005004?:
-	sjmp	L005004?
+L005002?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:140: if(mode == 2) {printf("Stop mode triggered"); pwm_both = -1;forward_backward(direction); }
+	mov	a,#0x02
+	cjne	a,_mode,L005006?
+	mov	a,#__str_6
+	push	acc
+	mov	a,#(__str_6 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+	mov	_pwm_both,#0xFF
+	mov	dpl,_direction
+	lcall	_forward_backward
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:143: while(1)
+L005006?:
+	sjmp	L005006?
 	rseg R_CSEG
 
 	rseg R_XINIT
@@ -765,6 +782,9 @@ __str_4:
 	db 0x00
 __str_5:
 	db '%d %d'
+	db 0x00
+__str_6:
+	db 'Stop mode triggered'
 	db 0x00
 
 	CSEG

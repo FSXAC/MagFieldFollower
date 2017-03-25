@@ -137,6 +137,7 @@ void main (void)
 	printf("Please enter motors mode 1-6\n");
 	scanf("%d \n",&mode);
 	if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
+    if(mode == 2) {printf("Stop mode triggered"); pwm_both = -1;forward_backward(direction); }
     //printf("%d\n", pwm_Left1);
 
 	while(1)
