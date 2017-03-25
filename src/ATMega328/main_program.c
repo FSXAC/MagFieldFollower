@@ -6,7 +6,7 @@
 #include "main_header.h"
 
 // global constants
-
+unsigned char magDataBuffer = 0x00;
 
 // ===[starting vector]===
 int main(void) {setup(); while (1) loop();}
@@ -30,7 +30,7 @@ void setup(void) {
 void loop(void) {
 
     // send some bits
-    setMagData(0x55); //1000 0001
+    setMagData(magDataBuffer); //1000 0001
     transmit();
     delay(10000);
 }
