@@ -8,13 +8,28 @@
 #define RX_START() UCSR0B |= _BV(RXEN0)  // Enable RX
 #define RX_STOP()  UCSR0B &= ~_BV(RXEN0) // Disable RX
 #define delay(x) _delay_ms(x) // short hand for _delay_ms
+#define turnOff(x) &=~(1<<x)
+#define turnOn(x) |=(1<<x)
+#define toggle(x) ^=(1<<x)
+
+// pin definitions
+#define LED_PIN 0x01
+#define WIRE_PIN 0x02
+
+// useful definitions
+#define HIGH 1
+#define LOW 0
 
 // main functions
 void setup(void);
 void loop(void);
 
 // timer/isr functions
-void timer0_init(void);
+void timer_init(void);
+
+// mag functions
+void setMagData(unsigned char new_data);
+void transmit(void);
 
 // usart function prototypes for serial
 void usart_init(void);
@@ -23,3 +38,6 @@ void usart_putchar( char data );
 void usart_pstr(char *s);
 unsigned char usart_kbhit(void);
 int usart_putchar_printf(char var, FILE *stream);
+
+// user functions
+void pinMode(char port, unsigned char pin);
