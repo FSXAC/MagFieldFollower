@@ -12,7 +12,7 @@ CPU=-mmcu=atmega328p
 COPT=-g -Os -Wall $(CPU) -c
 
 # Object files to link
-OBJS=main_program.o functions.o
+OBJS=main_program.o usart.o timers.o adc.o
 
 # specify port
 PORTN=$(shell type COMPORT.inc)
@@ -31,8 +31,12 @@ main_program.o: main_program.c main_header.h
 	avr-gcc $(COPT) main_program.c
 
 # Other function / functions (create one for each .c / .o files)
-functions.o: functions.c main_header.h
-	avr-gcc $(COPT) functions.c
+usart.o: usart.c main_header.h
+	avr-gcc $(COPT) usart.c
+timers.o: timers.c main_header.h
+	avr-gcc $(COPT) timers.c
+adc.o: adc.c
+	avr-gcc $(COPT) adc.c
 
 # Clean the working directory: remove unncessary iles
 CLEAN: 
@@ -47,7 +51,7 @@ FLASH:
 	putty.exe -serial $(PORTN) -sercfg 19200,8,n,1,N -v
 
 # testing target
-TEST:
+TEST: main_program.hex
 	@echo Testing works! :)
 
 # opens the directory the makefile is contained in
