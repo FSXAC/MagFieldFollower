@@ -7,6 +7,7 @@
 
 // global constants
 uint8_t magDataBuffer = 0x55;
+uint16_t adc_controller_x, adc_controller_y;
 
 // ===[starting vector]===
 int main(void) {setup(); while (1) loop();}
@@ -31,21 +32,15 @@ void setup(void) {
 
 // runs forever
 void loop(void) {
-    uint8_t iter = 0;
-    uint16_t adc_value;
+    adc_controller_x = adc_read(0);
+    adc_controller_y = adc_read(1);
+    magDataBuffer = (adc_controller_x < 50) ? 0x55 : (adc_controller_x > 700) ? 0x0F : 0;
 
     // send some bits
-    // setMagData(magDataBuffer); //1000 0001
-    // transmit();
-    // magDataBuffer++;
-    // delay(500);
+    setMagData(magDataBuffer); 
+    transmit();
 
-    // read adc and print to screen
-    adc_value = adc_read(0);
-    printf("ADC reading: %4d\t", adc_value);
-    for (; iter < adc_value / 40; iter++) printf("#");
-    printf("\n");
-    delay(50);
+    delay(250);
 }
 
 // set pin output
