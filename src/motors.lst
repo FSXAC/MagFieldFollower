@@ -1,7 +1,7 @@
 0000              1   ;--------------------------------------------------------
 0000              2   ; File Created by C51
 0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-0000              4   ; This file was generated Fri Mar 24 21:38:17 2017
+0000              4   ; This file was generated Tue Mar 28 11:30:39 2017
 0000              5   ;--------------------------------------------------------
                   5   $name motors
                   6   $optc51 --model-small
@@ -23,744 +23,1113 @@
 0000             23   ;--------------------------------------------------------
 0000             24   ; Public variables in this module
 0000             25   ;--------------------------------------------------------
-0000             26            public _main
-0000             27            public _forward_backward
-0000             28            public _Timer2_ISR
-0000             29            public __c51_external_startup
-0000             30            public _direction
-0000             31            public _pwm_Right1
-0000             32            public _pwm_Right0
-0000             33            public _pwm_Left1
-0000             34            public _pwm_Left0
-0000             35            public _pwm_both
-0000             36            public _mode
-0000             37            public _pwm_count
-0000             38   ;--------------------------------------------------------
-0000             39   ; Special Function Registers
-0000             40   ;--------------------------------------------------------
-0000             41   _P0             DATA 0x80
-0000             42   _SP             DATA 0x81
-0000             43   _DPL            DATA 0x82
-0000             44   _DPH            DATA 0x83
-0000             45   _EMI0TC         DATA 0x84
-0000             46   _EMI0CF         DATA 0x85
-0000             47   _OSCLCN         DATA 0x86
-0000             48   _PCON           DATA 0x87
-0000             49   _TCON           DATA 0x88
-0000             50   _TMOD           DATA 0x89
-0000             51   _TL0            DATA 0x8a
-0000             52   _TL1            DATA 0x8b
-0000             53   _TH0            DATA 0x8c
-0000             54   _TH1            DATA 0x8d
-0000             55   _CKCON          DATA 0x8e
-0000             56   _PSCTL          DATA 0x8f
-0000             57   _P1             DATA 0x90
-0000             58   _TMR3CN         DATA 0x91
-0000             59   _TMR4CN         DATA 0x91
-0000             60   _TMR3RLL        DATA 0x92
-0000             61   _TMR4RLL        DATA 0x92
-0000             62   _TMR3RLH        DATA 0x93
-0000             63   _TMR4RLH        DATA 0x93
-0000             64   _TMR3L          DATA 0x94
-0000             65   _TMR4L          DATA 0x94
-0000             66   _TMR3H          DATA 0x95
-0000             67   _TMR4H          DATA 0x95
-0000             68   _USB0ADR        DATA 0x96
-0000             69   _USB0DAT        DATA 0x97
-0000             70   _SCON           DATA 0x98
-0000             71   _SCON0          DATA 0x98
-0000             72   _SBUF           DATA 0x99
-0000             73   _SBUF0          DATA 0x99
-0000             74   _CPT1CN         DATA 0x9a
-0000             75   _CPT0CN         DATA 0x9b
-0000             76   _CPT1MD         DATA 0x9c
-0000             77   _CPT0MD         DATA 0x9d
-0000             78   _CPT1MX         DATA 0x9e
-0000             79   _CPT0MX         DATA 0x9f
-0000             80   _P2             DATA 0xa0
-0000             81   _SPI0CFG        DATA 0xa1
-0000             82   _SPI0CKR        DATA 0xa2
-0000             83   _SPI0DAT        DATA 0xa3
-0000             84   _P0MDOUT        DATA 0xa4
-0000             85   _P1MDOUT        DATA 0xa5
-0000             86   _P2MDOUT        DATA 0xa6
-0000             87   _P3MDOUT        DATA 0xa7
-0000             88   _IE             DATA 0xa8
-0000             89   _CLKSEL         DATA 0xa9
-0000             90   _EMI0CN         DATA 0xaa
-0000             91   __XPAGE         DATA 0xaa
-0000             92   _SBCON1         DATA 0xac
-0000             93   _P4MDOUT        DATA 0xae
-0000             94   _PFE0CN         DATA 0xaf
-0000             95   _P3             DATA 0xb0
-0000             96   _OSCXCN         DATA 0xb1
-0000             97   _OSCICN         DATA 0xb2
-0000             98   _OSCICL         DATA 0xb3
-0000             99   _SBRLL1         DATA 0xb4
-0000            100   _SBRLH1         DATA 0xb5
-0000            101   _FLSCL          DATA 0xb6
-0000            102   _FLKEY          DATA 0xb7
-0000            103   _IP             DATA 0xb8
-0000            104   _CLKMUL         DATA 0xb9
-0000            105   _SMBTC          DATA 0xb9
-0000            106   _AMX0N          DATA 0xba
-0000            107   _AMX0P          DATA 0xbb
-0000            108   _ADC0CF         DATA 0xbc
-0000            109   _ADC0L          DATA 0xbd
-0000            110   _ADC0H          DATA 0xbe
-0000            111   _SFRPAGE        DATA 0xbf
-0000            112   _SMB0CN         DATA 0xc0
-0000            113   _SMB1CN         DATA 0xc0
-0000            114   _SMB0CF         DATA 0xc1
-0000            115   _SMB1CF         DATA 0xc1
-0000            116   _SMB0DAT        DATA 0xc2
-0000            117   _SMB1DAT        DATA 0xc2
-0000            118   _ADC0GTL        DATA 0xc3
-0000            119   _ADC0GTH        DATA 0xc4
-0000            120   _ADC0LTL        DATA 0xc5
-0000            121   _ADC0LTH        DATA 0xc6
-0000            122   _P4             DATA 0xc7
-0000            123   _TMR2CN         DATA 0xc8
-0000            124   _TMR5CN         DATA 0xc8
-0000            125   _REG01CN        DATA 0xc9
-0000            126   _TMR2RLL        DATA 0xca
-0000            127   _TMR5RLL        DATA 0xca
-0000            128   _TMR2RLH        DATA 0xcb
-0000            129   _TMR5RLH        DATA 0xcb
-0000            130   _TMR2L          DATA 0xcc
-0000            131   _TMR5L          DATA 0xcc
-0000            132   _TMR2H          DATA 0xcd
-0000            133   _TMR5H          DATA 0xcd
-0000            134   _SMB0ADM        DATA 0xce
-0000            135   _SMB1ADM        DATA 0xce
-0000            136   _SMB0ADR        DATA 0xcf
-0000            137   _SMB1ADR        DATA 0xcf
-0000            138   _PSW            DATA 0xd0
-0000            139   _REF0CN         DATA 0xd1
-0000            140   _SCON1          DATA 0xd2
-0000            141   _SBUF1          DATA 0xd3
-0000            142   _P0SKIP         DATA 0xd4
-0000            143   _P1SKIP         DATA 0xd5
-0000            144   _P2SKIP         DATA 0xd6
-0000            145   _USB0XCN        DATA 0xd7
-0000            146   _PCA0CN         DATA 0xd8
-0000            147   _PCA0MD         DATA 0xd9
-0000            148   _PCA0CPM0       DATA 0xda
-0000            149   _PCA0CPM1       DATA 0xdb
-0000            150   _PCA0CPM2       DATA 0xdc
-0000            151   _PCA0CPM3       DATA 0xdd
-0000            152   _PCA0CPM4       DATA 0xde
-0000            153   _P3SKIP         DATA 0xdf
-0000            154   _ACC            DATA 0xe0
-0000            155   _XBR0           DATA 0xe1
-0000            156   _XBR1           DATA 0xe2
-0000            157   _XBR2           DATA 0xe3
-0000            158   _IT01CF         DATA 0xe4
-0000            159   _CKCON1         DATA 0xe4
-0000            160   _SMOD1          DATA 0xe5
-0000            161   _EIE1           DATA 0xe6
-0000            162   _EIE2           DATA 0xe7
-0000            163   _ADC0CN         DATA 0xe8
-0000            164   _PCA0CPL1       DATA 0xe9
-0000            165   _PCA0CPH1       DATA 0xea
-0000            166   _PCA0CPL2       DATA 0xeb
-0000            167   _PCA0CPH2       DATA 0xec
-0000            168   _PCA0CPL3       DATA 0xed
-0000            169   _PCA0CPH3       DATA 0xee
-0000            170   _RSTSRC         DATA 0xef
-0000            171   _B              DATA 0xf0
-0000            172   _P0MDIN         DATA 0xf1
-0000            173   _P1MDIN         DATA 0xf2
-0000            174   _P2MDIN         DATA 0xf3
-0000            175   _P3MDIN         DATA 0xf4
-0000            176   _P4MDIN         DATA 0xf5
-0000            177   _EIP1           DATA 0xf6
-0000            178   _EIP2           DATA 0xf7
-0000            179   _SPI0CN         DATA 0xf8
-0000            180   _PCA0L          DATA 0xf9
-0000            181   _PCA0H          DATA 0xfa
-0000            182   _PCA0CPL0       DATA 0xfb
-0000            183   _PCA0CPH0       DATA 0xfc
-0000            184   _PCA0CPL4       DATA 0xfd
-0000            185   _PCA0CPH4       DATA 0xfe
-0000            186   _VDM0CN         DATA 0xff
-0000            187   _DPTR           DATA 0x8382
-0000            188   _TMR2RL         DATA 0xcbca
-0000            189   _TMR3RL         DATA 0x9392
-0000            190   _TMR4RL         DATA 0x9392
-0000            191   _TMR5RL         DATA 0xcbca
-0000            192   _TMR2           DATA 0xcdcc
-0000            193   _TMR3           DATA 0x9594
-0000            194   _TMR4           DATA 0x9594
-0000            195   _TMR5           DATA 0xcdcc
-0000            196   _SBRL1          DATA 0xb5b4
-0000            197   _ADC0           DATA 0xbebd
-0000            198   _ADC0GT         DATA 0xc4c3
-0000            199   _ADC0LT         DATA 0xc6c5
-0000            200   _PCA0           DATA 0xfaf9
-0000            201   _PCA0CP1        DATA 0xeae9
-0000            202   _PCA0CP2        DATA 0xeceb
-0000            203   _PCA0CP3        DATA 0xeeed
-0000            204   _PCA0CP0        DATA 0xfcfb
-0000            205   _PCA0CP4        DATA 0xfefd
-0000            206   ;--------------------------------------------------------
-0000            207   ; special function bits
-0000            208   ;--------------------------------------------------------
-0000            209   _P0_0           BIT 0x80
-0000            210   _P0_1           BIT 0x81
-0000            211   _P0_2           BIT 0x82
-0000            212   _P0_3           BIT 0x83
-0000            213   _P0_4           BIT 0x84
-0000            214   _P0_5           BIT 0x85
-0000            215   _P0_6           BIT 0x86
-0000            216   _P0_7           BIT 0x87
-0000            217   _TF1            BIT 0x8f
-0000            218   _TR1            BIT 0x8e
-0000            219   _TF0            BIT 0x8d
-0000            220   _TR0            BIT 0x8c
-0000            221   _IE1            BIT 0x8b
-0000            222   _IT1            BIT 0x8a
-0000            223   _IE0            BIT 0x89
-0000            224   _IT0            BIT 0x88
-0000            225   _P1_0           BIT 0x90
-0000            226   _P1_1           BIT 0x91
-0000            227   _P1_2           BIT 0x92
-0000            228   _P1_3           BIT 0x93
-0000            229   _P1_4           BIT 0x94
-0000            230   _P1_5           BIT 0x95
-0000            231   _P1_6           BIT 0x96
-0000            232   _P1_7           BIT 0x97
-0000            233   _S0MODE         BIT 0x9f
-0000            234   _SCON0_6        BIT 0x9e
-0000            235   _MCE0           BIT 0x9d
-0000            236   _REN0           BIT 0x9c
-0000            237   _TB80           BIT 0x9b
-0000            238   _RB80           BIT 0x9a
-0000            239   _TI0            BIT 0x99
-0000            240   _RI0            BIT 0x98
-0000            241   _SCON_6         BIT 0x9e
-0000            242   _MCE            BIT 0x9d
-0000            243   _REN            BIT 0x9c
-0000            244   _TB8            BIT 0x9b
-0000            245   _RB8            BIT 0x9a
-0000            246   _TI             BIT 0x99
-0000            247   _RI             BIT 0x98
-0000            248   _P2_0           BIT 0xa0
-0000            249   _P2_1           BIT 0xa1
-0000            250   _P2_2           BIT 0xa2
-0000            251   _P2_3           BIT 0xa3
-0000            252   _P2_4           BIT 0xa4
-0000            253   _P2_5           BIT 0xa5
-0000            254   _P2_6           BIT 0xa6
-0000            255   _P2_7           BIT 0xa7
-0000            256   _EA             BIT 0xaf
-0000            257   _ESPI0          BIT 0xae
-0000            258   _ET2            BIT 0xad
-0000            259   _ES0            BIT 0xac
-0000            260   _ET1            BIT 0xab
-0000            261   _EX1            BIT 0xaa
-0000            262   _ET0            BIT 0xa9
-0000            263   _EX0            BIT 0xa8
-0000            264   _P3_0           BIT 0xb0
-0000            265   _P3_1           BIT 0xb1
-0000            266   _P3_2           BIT 0xb2
-0000            267   _P3_3           BIT 0xb3
-0000            268   _P3_4           BIT 0xb4
-0000            269   _P3_5           BIT 0xb5
-0000            270   _P3_6           BIT 0xb6
-0000            271   _P3_7           BIT 0xb7
-0000            272   _IP_7           BIT 0xbf
-0000            273   _PSPI0          BIT 0xbe
-0000            274   _PT2            BIT 0xbd
-0000            275   _PS0            BIT 0xbc
-0000            276   _PT1            BIT 0xbb
-0000            277   _PX1            BIT 0xba
-0000            278   _PT0            BIT 0xb9
-0000            279   _PX0            BIT 0xb8
-0000            280   _MASTER0        BIT 0xc7
-0000            281   _TXMODE0        BIT 0xc6
-0000            282   _STA0           BIT 0xc5
-0000            283   _STO0           BIT 0xc4
-0000            284   _ACKRQ0         BIT 0xc3
-0000            285   _ARBLOST0       BIT 0xc2
-0000            286   _ACK0           BIT 0xc1
-0000            287   _SI0            BIT 0xc0
-0000            288   _MASTER1        BIT 0xc7
-0000            289   _TXMODE1        BIT 0xc6
-0000            290   _STA1           BIT 0xc5
-0000            291   _STO1           BIT 0xc4
-0000            292   _ACKRQ1         BIT 0xc3
-0000            293   _ARBLOST1       BIT 0xc2
-0000            294   _ACK1           BIT 0xc1
-0000            295   _SI1            BIT 0xc0
-0000            296   _TF2            BIT 0xcf
-0000            297   _TF2H           BIT 0xcf
-0000            298   _TF2L           BIT 0xce
-0000            299   _TF2LEN         BIT 0xcd
-0000            300   _TF2CEN         BIT 0xcc
-0000            301   _T2SPLIT        BIT 0xcb
-0000            302   _TR2            BIT 0xca
-0000            303   _T2CSS          BIT 0xc9
-0000            304   _T2XCLK         BIT 0xc8
-0000            305   _TF5H           BIT 0xcf
-0000            306   _TF5L           BIT 0xce
-0000            307   _TF5LEN         BIT 0xcd
-0000            308   _TMR5CN_4       BIT 0xcc
-0000            309   _T5SPLIT        BIT 0xcb
-0000            310   _TR5            BIT 0xca
-0000            311   _TMR5CN_1       BIT 0xc9
-0000            312   _T5XCLK         BIT 0xc8
-0000            313   _CY             BIT 0xd7
-0000            314   _AC             BIT 0xd6
-0000            315   _F0             BIT 0xd5
-0000            316   _RS1            BIT 0xd4
-0000            317   _RS0            BIT 0xd3
-0000            318   _OV             BIT 0xd2
-0000            319   _F1             BIT 0xd1
-0000            320   _PARITY         BIT 0xd0
-0000            321   _CF             BIT 0xdf
-0000            322   _CR             BIT 0xde
-0000            323   _PCA0CN_5       BIT 0xde
-0000            324   _CCF4           BIT 0xdc
-0000            325   _CCF3           BIT 0xdb
-0000            326   _CCF2           BIT 0xda
-0000            327   _CCF1           BIT 0xd9
-0000            328   _CCF0           BIT 0xd8
-0000            329   _ACC_7          BIT 0xe7
-0000            330   _ACC_6          BIT 0xe6
-0000            331   _ACC_5          BIT 0xe5
-0000            332   _ACC_4          BIT 0xe4
-0000            333   _ACC_3          BIT 0xe3
-0000            334   _ACC_2          BIT 0xe2
-0000            335   _ACC_1          BIT 0xe1
-0000            336   _ACC_0          BIT 0xe0
-0000            337   _AD0EN          BIT 0xef
-0000            338   _AD0TM          BIT 0xee
-0000            339   _AD0INT         BIT 0xed
-0000            340   _AD0BUSY        BIT 0xec
-0000            341   _AD0WINT        BIT 0xeb
-0000            342   _AD0CM2         BIT 0xea
-0000            343   _AD0CM1         BIT 0xe9
-0000            344   _AD0CM0         BIT 0xe8
-0000            345   _B_7            BIT 0xf7
-0000            346   _B_6            BIT 0xf6
-0000            347   _B_5            BIT 0xf5
-0000            348   _B_4            BIT 0xf4
-0000            349   _B_3            BIT 0xf3
-0000            350   _B_2            BIT 0xf2
-0000            351   _B_1            BIT 0xf1
-0000            352   _B_0            BIT 0xf0
-0000            353   _SPIF           BIT 0xff
-0000            354   _WCOL           BIT 0xfe
-0000            355   _MODF           BIT 0xfd
-0000            356   _RXOVRN         BIT 0xfc
-0000            357   _NSSMD1         BIT 0xfb
-0000            358   _NSSMD0         BIT 0xfa
-0000            359   _TXBMT          BIT 0xf9
-0000            360   _SPIEN          BIT 0xf8
-0000            361   ;--------------------------------------------------------
-0000            362   ; overlayable register banks
-0000            363   ;--------------------------------------------------------
-0000            364            rbank0 segment data overlay
-0000            365   ;--------------------------------------------------------
-0000            366   ; internal ram data
+0000             26            public _InitPinADC_PARM_2
+0000             27            public _main
+0000             28            public _linetrack
+0000             29            public _Volts_at_Pin
+0000             30            public _ADC_at_Pin
+0000             31            public _InitPinADC
+0000             32            public _InitADC
+0000             33            public _forward_backward
+0000             34            public _Timer2_ISR
+0000             35            public __c51_external_startup
+0000             36            public _direction
+0000             37            public _pwm_Right1
+0000             38            public _pwm_Right0
+0000             39            public _pwm_Left1
+0000             40            public _pwm_Left0
+0000             41            public _pwm_both
+0000             42            public _mode
+0000             43            public _pwm_count
+0000             44   ;--------------------------------------------------------
+0000             45   ; Special Function Registers
+0000             46   ;--------------------------------------------------------
+0000             47   _P0             DATA 0x80
+0000             48   _SP             DATA 0x81
+0000             49   _DPL            DATA 0x82
+0000             50   _DPH            DATA 0x83
+0000             51   _EMI0TC         DATA 0x84
+0000             52   _EMI0CF         DATA 0x85
+0000             53   _OSCLCN         DATA 0x86
+0000             54   _PCON           DATA 0x87
+0000             55   _TCON           DATA 0x88
+0000             56   _TMOD           DATA 0x89
+0000             57   _TL0            DATA 0x8a
+0000             58   _TL1            DATA 0x8b
+0000             59   _TH0            DATA 0x8c
+0000             60   _TH1            DATA 0x8d
+0000             61   _CKCON          DATA 0x8e
+0000             62   _PSCTL          DATA 0x8f
+0000             63   _P1             DATA 0x90
+0000             64   _TMR3CN         DATA 0x91
+0000             65   _TMR4CN         DATA 0x91
+0000             66   _TMR3RLL        DATA 0x92
+0000             67   _TMR4RLL        DATA 0x92
+0000             68   _TMR3RLH        DATA 0x93
+0000             69   _TMR4RLH        DATA 0x93
+0000             70   _TMR3L          DATA 0x94
+0000             71   _TMR4L          DATA 0x94
+0000             72   _TMR3H          DATA 0x95
+0000             73   _TMR4H          DATA 0x95
+0000             74   _USB0ADR        DATA 0x96
+0000             75   _USB0DAT        DATA 0x97
+0000             76   _SCON           DATA 0x98
+0000             77   _SCON0          DATA 0x98
+0000             78   _SBUF           DATA 0x99
+0000             79   _SBUF0          DATA 0x99
+0000             80   _CPT1CN         DATA 0x9a
+0000             81   _CPT0CN         DATA 0x9b
+0000             82   _CPT1MD         DATA 0x9c
+0000             83   _CPT0MD         DATA 0x9d
+0000             84   _CPT1MX         DATA 0x9e
+0000             85   _CPT0MX         DATA 0x9f
+0000             86   _P2             DATA 0xa0
+0000             87   _SPI0CFG        DATA 0xa1
+0000             88   _SPI0CKR        DATA 0xa2
+0000             89   _SPI0DAT        DATA 0xa3
+0000             90   _P0MDOUT        DATA 0xa4
+0000             91   _P1MDOUT        DATA 0xa5
+0000             92   _P2MDOUT        DATA 0xa6
+0000             93   _P3MDOUT        DATA 0xa7
+0000             94   _IE             DATA 0xa8
+0000             95   _CLKSEL         DATA 0xa9
+0000             96   _EMI0CN         DATA 0xaa
+0000             97   __XPAGE         DATA 0xaa
+0000             98   _SBCON1         DATA 0xac
+0000             99   _P4MDOUT        DATA 0xae
+0000            100   _PFE0CN         DATA 0xaf
+0000            101   _P3             DATA 0xb0
+0000            102   _OSCXCN         DATA 0xb1
+0000            103   _OSCICN         DATA 0xb2
+0000            104   _OSCICL         DATA 0xb3
+0000            105   _SBRLL1         DATA 0xb4
+0000            106   _SBRLH1         DATA 0xb5
+0000            107   _FLSCL          DATA 0xb6
+0000            108   _FLKEY          DATA 0xb7
+0000            109   _IP             DATA 0xb8
+0000            110   _CLKMUL         DATA 0xb9
+0000            111   _SMBTC          DATA 0xb9
+0000            112   _AMX0N          DATA 0xba
+0000            113   _AMX0P          DATA 0xbb
+0000            114   _ADC0CF         DATA 0xbc
+0000            115   _ADC0L          DATA 0xbd
+0000            116   _ADC0H          DATA 0xbe
+0000            117   _SFRPAGE        DATA 0xbf
+0000            118   _SMB0CN         DATA 0xc0
+0000            119   _SMB1CN         DATA 0xc0
+0000            120   _SMB0CF         DATA 0xc1
+0000            121   _SMB1CF         DATA 0xc1
+0000            122   _SMB0DAT        DATA 0xc2
+0000            123   _SMB1DAT        DATA 0xc2
+0000            124   _ADC0GTL        DATA 0xc3
+0000            125   _ADC0GTH        DATA 0xc4
+0000            126   _ADC0LTL        DATA 0xc5
+0000            127   _ADC0LTH        DATA 0xc6
+0000            128   _P4             DATA 0xc7
+0000            129   _TMR2CN         DATA 0xc8
+0000            130   _TMR5CN         DATA 0xc8
+0000            131   _REG01CN        DATA 0xc9
+0000            132   _TMR2RLL        DATA 0xca
+0000            133   _TMR5RLL        DATA 0xca
+0000            134   _TMR2RLH        DATA 0xcb
+0000            135   _TMR5RLH        DATA 0xcb
+0000            136   _TMR2L          DATA 0xcc
+0000            137   _TMR5L          DATA 0xcc
+0000            138   _TMR2H          DATA 0xcd
+0000            139   _TMR5H          DATA 0xcd
+0000            140   _SMB0ADM        DATA 0xce
+0000            141   _SMB1ADM        DATA 0xce
+0000            142   _SMB0ADR        DATA 0xcf
+0000            143   _SMB1ADR        DATA 0xcf
+0000            144   _PSW            DATA 0xd0
+0000            145   _REF0CN         DATA 0xd1
+0000            146   _SCON1          DATA 0xd2
+0000            147   _SBUF1          DATA 0xd3
+0000            148   _P0SKIP         DATA 0xd4
+0000            149   _P1SKIP         DATA 0xd5
+0000            150   _P2SKIP         DATA 0xd6
+0000            151   _USB0XCN        DATA 0xd7
+0000            152   _PCA0CN         DATA 0xd8
+0000            153   _PCA0MD         DATA 0xd9
+0000            154   _PCA0CPM0       DATA 0xda
+0000            155   _PCA0CPM1       DATA 0xdb
+0000            156   _PCA0CPM2       DATA 0xdc
+0000            157   _PCA0CPM3       DATA 0xdd
+0000            158   _PCA0CPM4       DATA 0xde
+0000            159   _P3SKIP         DATA 0xdf
+0000            160   _ACC            DATA 0xe0
+0000            161   _XBR0           DATA 0xe1
+0000            162   _XBR1           DATA 0xe2
+0000            163   _XBR2           DATA 0xe3
+0000            164   _IT01CF         DATA 0xe4
+0000            165   _CKCON1         DATA 0xe4
+0000            166   _SMOD1          DATA 0xe5
+0000            167   _EIE1           DATA 0xe6
+0000            168   _EIE2           DATA 0xe7
+0000            169   _ADC0CN         DATA 0xe8
+0000            170   _PCA0CPL1       DATA 0xe9
+0000            171   _PCA0CPH1       DATA 0xea
+0000            172   _PCA0CPL2       DATA 0xeb
+0000            173   _PCA0CPH2       DATA 0xec
+0000            174   _PCA0CPL3       DATA 0xed
+0000            175   _PCA0CPH3       DATA 0xee
+0000            176   _RSTSRC         DATA 0xef
+0000            177   _B              DATA 0xf0
+0000            178   _P0MDIN         DATA 0xf1
+0000            179   _P1MDIN         DATA 0xf2
+0000            180   _P2MDIN         DATA 0xf3
+0000            181   _P3MDIN         DATA 0xf4
+0000            182   _P4MDIN         DATA 0xf5
+0000            183   _EIP1           DATA 0xf6
+0000            184   _EIP2           DATA 0xf7
+0000            185   _SPI0CN         DATA 0xf8
+0000            186   _PCA0L          DATA 0xf9
+0000            187   _PCA0H          DATA 0xfa
+0000            188   _PCA0CPL0       DATA 0xfb
+0000            189   _PCA0CPH0       DATA 0xfc
+0000            190   _PCA0CPL4       DATA 0xfd
+0000            191   _PCA0CPH4       DATA 0xfe
+0000            192   _VDM0CN         DATA 0xff
+0000            193   _DPTR           DATA 0x8382
+0000            194   _TMR2RL         DATA 0xcbca
+0000            195   _TMR3RL         DATA 0x9392
+0000            196   _TMR4RL         DATA 0x9392
+0000            197   _TMR5RL         DATA 0xcbca
+0000            198   _TMR2           DATA 0xcdcc
+0000            199   _TMR3           DATA 0x9594
+0000            200   _TMR4           DATA 0x9594
+0000            201   _TMR5           DATA 0xcdcc
+0000            202   _SBRL1          DATA 0xb5b4
+0000            203   _ADC0           DATA 0xbebd
+0000            204   _ADC0GT         DATA 0xc4c3
+0000            205   _ADC0LT         DATA 0xc6c5
+0000            206   _PCA0           DATA 0xfaf9
+0000            207   _PCA0CP1        DATA 0xeae9
+0000            208   _PCA0CP2        DATA 0xeceb
+0000            209   _PCA0CP3        DATA 0xeeed
+0000            210   _PCA0CP0        DATA 0xfcfb
+0000            211   _PCA0CP4        DATA 0xfefd
+0000            212   ;--------------------------------------------------------
+0000            213   ; special function bits
+0000            214   ;--------------------------------------------------------
+0000            215   _P0_0           BIT 0x80
+0000            216   _P0_1           BIT 0x81
+0000            217   _P0_2           BIT 0x82
+0000            218   _P0_3           BIT 0x83
+0000            219   _P0_4           BIT 0x84
+0000            220   _P0_5           BIT 0x85
+0000            221   _P0_6           BIT 0x86
+0000            222   _P0_7           BIT 0x87
+0000            223   _TF1            BIT 0x8f
+0000            224   _TR1            BIT 0x8e
+0000            225   _TF0            BIT 0x8d
+0000            226   _TR0            BIT 0x8c
+0000            227   _IE1            BIT 0x8b
+0000            228   _IT1            BIT 0x8a
+0000            229   _IE0            BIT 0x89
+0000            230   _IT0            BIT 0x88
+0000            231   _P1_0           BIT 0x90
+0000            232   _P1_1           BIT 0x91
+0000            233   _P1_2           BIT 0x92
+0000            234   _P1_3           BIT 0x93
+0000            235   _P1_4           BIT 0x94
+0000            236   _P1_5           BIT 0x95
+0000            237   _P1_6           BIT 0x96
+0000            238   _P1_7           BIT 0x97
+0000            239   _S0MODE         BIT 0x9f
+0000            240   _SCON0_6        BIT 0x9e
+0000            241   _MCE0           BIT 0x9d
+0000            242   _REN0           BIT 0x9c
+0000            243   _TB80           BIT 0x9b
+0000            244   _RB80           BIT 0x9a
+0000            245   _TI0            BIT 0x99
+0000            246   _RI0            BIT 0x98
+0000            247   _SCON_6         BIT 0x9e
+0000            248   _MCE            BIT 0x9d
+0000            249   _REN            BIT 0x9c
+0000            250   _TB8            BIT 0x9b
+0000            251   _RB8            BIT 0x9a
+0000            252   _TI             BIT 0x99
+0000            253   _RI             BIT 0x98
+0000            254   _P2_0           BIT 0xa0
+0000            255   _P2_1           BIT 0xa1
+0000            256   _P2_2           BIT 0xa2
+0000            257   _P2_3           BIT 0xa3
+0000            258   _P2_4           BIT 0xa4
+0000            259   _P2_5           BIT 0xa5
+0000            260   _P2_6           BIT 0xa6
+0000            261   _P2_7           BIT 0xa7
+0000            262   _EA             BIT 0xaf
+0000            263   _ESPI0          BIT 0xae
+0000            264   _ET2            BIT 0xad
+0000            265   _ES0            BIT 0xac
+0000            266   _ET1            BIT 0xab
+0000            267   _EX1            BIT 0xaa
+0000            268   _ET0            BIT 0xa9
+0000            269   _EX0            BIT 0xa8
+0000            270   _P3_0           BIT 0xb0
+0000            271   _P3_1           BIT 0xb1
+0000            272   _P3_2           BIT 0xb2
+0000            273   _P3_3           BIT 0xb3
+0000            274   _P3_4           BIT 0xb4
+0000            275   _P3_5           BIT 0xb5
+0000            276   _P3_6           BIT 0xb6
+0000            277   _P3_7           BIT 0xb7
+0000            278   _IP_7           BIT 0xbf
+0000            279   _PSPI0          BIT 0xbe
+0000            280   _PT2            BIT 0xbd
+0000            281   _PS0            BIT 0xbc
+0000            282   _PT1            BIT 0xbb
+0000            283   _PX1            BIT 0xba
+0000            284   _PT0            BIT 0xb9
+0000            285   _PX0            BIT 0xb8
+0000            286   _MASTER0        BIT 0xc7
+0000            287   _TXMODE0        BIT 0xc6
+0000            288   _STA0           BIT 0xc5
+0000            289   _STO0           BIT 0xc4
+0000            290   _ACKRQ0         BIT 0xc3
+0000            291   _ARBLOST0       BIT 0xc2
+0000            292   _ACK0           BIT 0xc1
+0000            293   _SI0            BIT 0xc0
+0000            294   _MASTER1        BIT 0xc7
+0000            295   _TXMODE1        BIT 0xc6
+0000            296   _STA1           BIT 0xc5
+0000            297   _STO1           BIT 0xc4
+0000            298   _ACKRQ1         BIT 0xc3
+0000            299   _ARBLOST1       BIT 0xc2
+0000            300   _ACK1           BIT 0xc1
+0000            301   _SI1            BIT 0xc0
+0000            302   _TF2            BIT 0xcf
+0000            303   _TF2H           BIT 0xcf
+0000            304   _TF2L           BIT 0xce
+0000            305   _TF2LEN         BIT 0xcd
+0000            306   _TF2CEN         BIT 0xcc
+0000            307   _T2SPLIT        BIT 0xcb
+0000            308   _TR2            BIT 0xca
+0000            309   _T2CSS          BIT 0xc9
+0000            310   _T2XCLK         BIT 0xc8
+0000            311   _TF5H           BIT 0xcf
+0000            312   _TF5L           BIT 0xce
+0000            313   _TF5LEN         BIT 0xcd
+0000            314   _TMR5CN_4       BIT 0xcc
+0000            315   _T5SPLIT        BIT 0xcb
+0000            316   _TR5            BIT 0xca
+0000            317   _TMR5CN_1       BIT 0xc9
+0000            318   _T5XCLK         BIT 0xc8
+0000            319   _CY             BIT 0xd7
+0000            320   _AC             BIT 0xd6
+0000            321   _F0             BIT 0xd5
+0000            322   _RS1            BIT 0xd4
+0000            323   _RS0            BIT 0xd3
+0000            324   _OV             BIT 0xd2
+0000            325   _F1             BIT 0xd1
+0000            326   _PARITY         BIT 0xd0
+0000            327   _CF             BIT 0xdf
+0000            328   _CR             BIT 0xde
+0000            329   _PCA0CN_5       BIT 0xde
+0000            330   _CCF4           BIT 0xdc
+0000            331   _CCF3           BIT 0xdb
+0000            332   _CCF2           BIT 0xda
+0000            333   _CCF1           BIT 0xd9
+0000            334   _CCF0           BIT 0xd8
+0000            335   _ACC_7          BIT 0xe7
+0000            336   _ACC_6          BIT 0xe6
+0000            337   _ACC_5          BIT 0xe5
+0000            338   _ACC_4          BIT 0xe4
+0000            339   _ACC_3          BIT 0xe3
+0000            340   _ACC_2          BIT 0xe2
+0000            341   _ACC_1          BIT 0xe1
+0000            342   _ACC_0          BIT 0xe0
+0000            343   _AD0EN          BIT 0xef
+0000            344   _AD0TM          BIT 0xee
+0000            345   _AD0INT         BIT 0xed
+0000            346   _AD0BUSY        BIT 0xec
+0000            347   _AD0WINT        BIT 0xeb
+0000            348   _AD0CM2         BIT 0xea
+0000            349   _AD0CM1         BIT 0xe9
+0000            350   _AD0CM0         BIT 0xe8
+0000            351   _B_7            BIT 0xf7
+0000            352   _B_6            BIT 0xf6
+0000            353   _B_5            BIT 0xf5
+0000            354   _B_4            BIT 0xf4
+0000            355   _B_3            BIT 0xf3
+0000            356   _B_2            BIT 0xf2
+0000            357   _B_1            BIT 0xf1
+0000            358   _B_0            BIT 0xf0
+0000            359   _SPIF           BIT 0xff
+0000            360   _WCOL           BIT 0xfe
+0000            361   _MODF           BIT 0xfd
+0000            362   _RXOVRN         BIT 0xfc
+0000            363   _NSSMD1         BIT 0xfb
+0000            364   _NSSMD0         BIT 0xfa
+0000            365   _TXBMT          BIT 0xf9
+0000            366   _SPIEN          BIT 0xf8
 0000            367   ;--------------------------------------------------------
-0000            368            rseg R_DSEG
-0000            369   _pwm_count:
-0000            370            ds 1
-0001            371   _mode:
-0001            372            ds 1
-0002            373   _pwm_both:
-0002            374            ds 1
-0003            375   _pwm_Left0:
-0003            376            ds 1
-0004            377   _pwm_Left1:
-0004            378            ds 1
-0005            379   _pwm_Right0:
-0005            380            ds 1
-0006            381   _pwm_Right1:
-0006            382            ds 1
-0007            383   _direction:
-0007            384            ds 1
-0008            385   ;--------------------------------------------------------
-0008            386   ; overlayable items in internal ram 
-0008            387   ;--------------------------------------------------------
-0000            388            rseg    R_OSEG
-0000            389   ;--------------------------------------------------------
-0000            390   ; indirectly addressable internal ram data
-0000            391   ;--------------------------------------------------------
-0000            392            rseg R_ISEG
-0000            393   ;--------------------------------------------------------
-0000            394   ; absolute internal ram data
-0000            395   ;--------------------------------------------------------
-0000            396            DSEG
-0000            397   ;--------------------------------------------------------
-0000            398   ; bit data
-0000            399   ;--------------------------------------------------------
-0000            400            rseg R_BSEG
-0000            401   _Timer2_ISR_sloc0_1_0:
-0000            402            DBIT    1
+0000            368   ; overlayable register banks
+0000            369   ;--------------------------------------------------------
+0000            370            rbank0 segment data overlay
+0000            371   ;--------------------------------------------------------
+0000            372   ; internal ram data
+0000            373   ;--------------------------------------------------------
+0000            374            rseg R_DSEG
+0000            375   _pwm_count:
+0000            376            ds 1
+0001            377   _mode:
+0001            378            ds 1
+0002            379   _pwm_both:
+0002            380            ds 1
+0003            381   _pwm_Left0:
+0003            382            ds 1
+0004            383   _pwm_Left1:
+0004            384            ds 1
+0005            385   _pwm_Right0:
+0005            386            ds 1
+0006            387   _pwm_Right1:
+0006            388            ds 1
+0007            389   _direction:
+0007            390            ds 1
+0008            391   _linetrack_vleft_1_60:
+0008            392            ds 4
+000C            393   _linetrack_vright_1_60:
+000C            394            ds 4
+0010            395   ;--------------------------------------------------------
+0010            396   ; overlayable items in internal ram 
+0010            397   ;--------------------------------------------------------
+0000            398            rseg    R_OSEG
+0000            399            rseg    R_OSEG
+0000            400   _InitPinADC_PARM_2:
+0000            401            ds 1
+0001            402            rseg    R_OSEG
 0001            403   ;--------------------------------------------------------
-0001            404   ; paged external ram data
+0001            404   ; indirectly addressable internal ram data
 0001            405   ;--------------------------------------------------------
-0000            406            rseg R_PSEG
+0000            406            rseg R_ISEG
 0000            407   ;--------------------------------------------------------
-0000            408   ; external ram data
+0000            408   ; absolute internal ram data
 0000            409   ;--------------------------------------------------------
-0000            410            rseg R_XSEG
+0000            410            DSEG
 0000            411   ;--------------------------------------------------------
-0000            412   ; absolute external ram data
+0000            412   ; bit data
 0000            413   ;--------------------------------------------------------
-0000            414            XSEG
-0000            415   ;--------------------------------------------------------
-0000            416   ; external initialized ram data
-0000            417   ;--------------------------------------------------------
-0000            418            rseg R_IXSEG
-0000            419            rseg R_HOME
-0000            420            rseg R_GSINIT
-0000            421            rseg R_CSEG
-0000            422   ;--------------------------------------------------------
-0000            423   ; Reset entry point and interrupt vectors
-0000            424   ;--------------------------------------------------------
-0000            425            CSEG at 0x0000
-0000 020100     426            ljmp    _crt0
-002B            427            CSEG at 0x002b
-002B 020100     428            ljmp    _Timer2_ISR
-002E            429   ;--------------------------------------------------------
-002E            430   ; global & static initialisations
-002E            431   ;--------------------------------------------------------
-0000            432            rseg R_HOME
-0000            433            rseg R_GSINIT
+0000            414            rseg R_BSEG
+0000            415   _Timer2_ISR_sloc0_1_0:
+0000            416            DBIT    1
+0001            417   ;--------------------------------------------------------
+0001            418   ; paged external ram data
+0001            419   ;--------------------------------------------------------
+0000            420            rseg R_PSEG
+0000            421   ;--------------------------------------------------------
+0000            422   ; external ram data
+0000            423   ;--------------------------------------------------------
+0000            424            rseg R_XSEG
+0000            425   ;--------------------------------------------------------
+0000            426   ; absolute external ram data
+0000            427   ;--------------------------------------------------------
+0000            428            XSEG
+0000            429   ;--------------------------------------------------------
+0000            430   ; external initialized ram data
+0000            431   ;--------------------------------------------------------
+0000            432            rseg R_IXSEG
+0000            433            rseg R_HOME
 0000            434            rseg R_GSINIT
-0000            435   ;--------------------------------------------------------
-0000            436   ; data variables initialization
-0000            437   ;--------------------------------------------------------
-0000            438            rseg R_DINIT
-0000            439   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:18: volatile  char pwm_count=0;
-0000 752000     440            mov     _pwm_count,#0x00
-0003            441   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:19: volatile  char mode = 0;
-0003 75E000     442            mov     _mode,#0x00
-0006            443   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:20: volatile  char pwm_both =0;
-0006 75A000     444            mov     _pwm_both,#0x00
-0009            445   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:21: volatile  char pwm_Left0 = 0; //p1.5
-0009 756000     446            mov     _pwm_Left0,#0x00
-000C            447   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:22: volatile  char pwm_Left1 = 0; //p1.6
-000C 752000     448            mov     _pwm_Left1,#0x00
-000F            449   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:23: volatile  char pwm_Right0 = 0; //p2.0
-000F 75E000     450            mov     _pwm_Right0,#0x00
-0012            451   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:24: volatile  char pwm_Right1 = 0; //p2.1
-0012 75A000     452            mov     _pwm_Right1,#0x00
-0015            453   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:25: volatile char direction = 0; // 1 for back 0 for forward
-0015 756000     454            mov     _direction,#0x00
-0018            455            ; The linker places a 'ret' at the end of segment R_DINIT.
-0018            456   ;--------------------------------------------------------
-0018            457   ; code
-0018            458   ;--------------------------------------------------------
-0000            459            rseg R_CSEG
-0000            460   ;------------------------------------------------------------
-0000            461   ;Allocation info for local variables in function '_c51_external_startup'
-0000            462   ;------------------------------------------------------------
-0000            463   ;------------------------------------------------------------
-0000            464   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:27: char _c51_external_startup (void)
-0000            465   ;        -----------------------------------------
-0000            466   ;         function _c51_external_startup
-0000            467   ;        -----------------------------------------
-0000            468   __c51_external_startup:
-0000            469            using   0
-0000            470   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:29: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
-0000 53D9BF     471            anl     _PCA0MD,#0xBF
-0003            472   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:30: VDM0CN=0x80; // enable VDD monitor
-0003 75FF80     473            mov     _VDM0CN,#0x80
-0006            474   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:31: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
-0006 75EF06     475            mov     _RSTSRC,#0x06
-0009            476   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:39: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
-0009 43A903     477            orl     _CLKSEL,#0x03
-000C            478   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:43: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
-000C 43B203     479            orl     _OSCICN,#0x03
-000F            480   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:46: SCON0 = 0x10;
-000F 759810     481            mov     _SCON0,#0x10
-0012            482   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:48: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
-0012 758D30     483            mov     _TH1,#0x30
-0015            484   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:49: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
-0015 538EF4     485            anl     _CKCON,#0xF4
-0018            486   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:50: CKCON |=  0x08;
-0018 438E08     487            orl     _CKCON,#0x08
-001B            488   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:63: TL1 = TH1;      // Init Timer1
-001B 858D8B     489            mov     _TL1,_TH1
-001E            490   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:64: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
-001E 53890F     491            anl     _TMOD,#0x0F
-0021            492   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:65: TMOD |=  0x20;
-0021 438920     493            orl     _TMOD,#0x20
-0024            494   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:66: TR1 = 1; // START Timer1
-0024 D28E       495            setb    _TR1
-0026            496   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:67: TI = 1;  // Indicate TX0 ready
-0026 D299       497            setb    _TI
-0028            498   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:70: P2MDOUT|=0b_0000_0011;
-0028 43A603     499            orl     _P2MDOUT,#0x03
-002B            500   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:71: P0MDOUT |= 0x10; // Enable UTX as push-pull output
-002B 43A410     501            orl     _P0MDOUT,#0x10
-002E            502   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:72: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
-002E 75E101     503            mov     _XBR0,#0x01
-0031            504   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:73: XBR1     = 0x40; // Enable crossbar and weak pull-ups
-0031 75E240     505            mov     _XBR1,#0x40
-0034            506   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:76: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
-0034 75C800     507            mov     _TMR2CN,#0x00
-0037            508   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:77: CKCON|=0b_0001_0000;
-0037 438E10     509            orl     _CKCON,#0x10
-003A            510   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:78: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
-003A 75CA78     511            mov     _TMR2RL,#0x78
-003D 75CBEC     512            mov     (_TMR2RL >> 8),#0xEC
-0040            513   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:79: TMR2=0xffff;   // Set to reload immediately
-0040 75CCFF     514            mov     _TMR2,#0xFF
-0043 75CDFF     515            mov     (_TMR2 >> 8),#0xFF
-0046            516   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:80: ET2=1;         // Enable Timer2 interrupts
-0046 D2AD       517            setb    _ET2
-0048            518   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:81: TR2=1;         // Start Timer2
-0048 D2CA       519            setb    _TR2
-004A            520   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:83: EA=1; // Enable interrupts
-004A D2AF       521            setb    _EA
-004C            522   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:85: return 0;
-004C 758200     523            mov     dpl,#0x00
-004F 22         524            ret
-0050            525   ;------------------------------------------------------------
-0050            526   ;Allocation info for local variables in function 'Timer2_ISR'
-0050            527   ;------------------------------------------------------------
-0050            528   ;------------------------------------------------------------
-0050            529   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:89: void Timer2_ISR (void) interrupt 5
-0050            530   ;        -----------------------------------------
-0050            531   ;         function Timer2_ISR
-0050            532   ;        -----------------------------------------
-0050            533   _Timer2_ISR:
-0050 C0E0       534            push    acc
-0052 C0F0       535            push    b
-0054 C0D0       536            push    psw
-0056 75D000     537            mov     psw,#0x00
-0059            538   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:91: TF2H = 0; // Clear Timer2 interrupt flag
-0059 C2CF       539            clr     _TF2H
-005B            540   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:93: pwm_count++;
-005B 0520       541            inc     _pwm_count
-005D            542   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:94: if(pwm_count>100) pwm_count=0;
-005D C3         543            clr     c
-005E 74E4       544            mov     a,#(0x64 ^ 0x80)
-0060 8520F0     545            mov     b,_pwm_count
-0063 63F080     546            xrl     b,#0x80
-0066 95F0       547            subb    a,b
-0068 5001       548            jnc     L003002?
-006A 752000     549            mov     _pwm_count,#0x00
-006D            550   L003002?:
-006D            551   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:97: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
-006D C3         552            clr     c
-006E E560       553            mov     a,_pwm_Left0
-0070 6480       554            xrl     a,#0x80
-0072 8520F0     555            mov     b,_pwm_count
-0075 63F080     556            xrl     b,#0x80
-0078 95F0       557            subb    a,b
-007A 9258       558            mov  _Timer2_ISR_sloc0_1_0,c
-007C B3         559            cpl     c
-007D 9295       560            mov     _P1_5,c
-007F            561   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:98: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
-007F C3         562            clr     c
-0080 E520       563            mov     a,_pwm_Left1
-0082 6480       564            xrl     a,#0x80
-0084 8520F0     565            mov     b,_pwm_count
-0087 63F080     566            xrl     b,#0x80
-008A 95F0       567            subb    a,b
-008C 9258       568            mov  _Timer2_ISR_sloc0_1_0,c
-008E B3         569            cpl     c
-008F 9296       570            mov     _P1_6,c
-0091            571   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:99: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
-0091 C3         572            clr     c
-0092 E5E0       573            mov     a,_pwm_Right0
-0094 6480       574            xrl     a,#0x80
-0096 8520F0     575            mov     b,_pwm_count
-0099 63F080     576            xrl     b,#0x80
-009C 95F0       577            subb    a,b
-009E 9258       578            mov  _Timer2_ISR_sloc0_1_0,c
-00A0 B3         579            cpl     c
-00A1 92A0       580            mov     _P2_0,c
-00A3            581   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:100: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
-00A3 C3         582            clr     c
-00A4 E5A0       583            mov     a,_pwm_Right1
-00A6 6480       584            xrl     a,#0x80
-00A8 8520F0     585            mov     b,_pwm_count
-00AB 63F080     586            xrl     b,#0x80
-00AE 95F0       587            subb    a,b
-00B0 9258       588            mov  _Timer2_ISR_sloc0_1_0,c
-00B2 B3         589            cpl     c
-00B3 92A1       590            mov     _P2_1,c
-00B5 D0D0       591            pop     psw
-00B7 D0F0       592            pop     b
-00B9 D0E0       593            pop     acc
-00BB 32         594            reti
-00BC            595   ;        eliminated unneeded push/pop dpl
-00BC            596   ;        eliminated unneeded push/pop dph
-00BC            597   ;------------------------------------------------------------
-00BC            598   ;Allocation info for local variables in function 'forward_backward'
-00BC            599   ;------------------------------------------------------------
-00BC            600   ;direction                 Allocated to registers r2 
-00BC            601   ;------------------------------------------------------------
-00BC            602   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:107: void forward_backward(unsigned char direction)
-00BC            603   ;        -----------------------------------------
-00BC            604   ;         function forward_backward
-00BC            605   ;        -----------------------------------------
-00BC            606   _forward_backward:
-00BC            607   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:110: if (direction == 0) { //p2.1,1.6 on
-00BC E582       608            mov     a,dpl
-00BE FA         609            mov     r2,a
-00BF 7001       610            jnz     L004004?
-00C1            611   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:111: pwm_Left0 = pwm_Right0 = -1;
-00C1 75E0FF     612            mov     _pwm_Right0,#0xFF
-00C4 7560FF     613            mov     _pwm_Left0,#0xFF
-00C7            614   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:112: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
-00C7 85A0A0     615            mov     _pwm_Right1,_pwm_both
-00CA 85A020     616            mov     _pwm_Left1,_pwm_both
-00CD 22         617            ret
-00CE            618   L004004?:
-00CE            619   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:115: else if (direction == 1) { //p2.0,1.5 on
-00CE BA0158     620            cjne    r2,#0x01,L004006?
-00D1            621   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:116: pwm_Left1 = pwm_Right1 = -1;
-00D1 75A0FF     622            mov     _pwm_Right1,#0xFF
-00D4 7520FF     623            mov     _pwm_Left1,#0xFF
-00D7            624   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:117: pwm_Left0 = pwm_Right0 = pwm_both; 
-00D7 85A0E0     625            mov     _pwm_Right0,_pwm_both
-00DA 85A060     626            mov     _pwm_Left0,_pwm_both
-00DD            627   L004006?:
-00DD 22         628            ret
-00DE            629   ;------------------------------------------------------------
-00DE            630   ;Allocation info for local variables in function 'main'
-00DE            631   ;------------------------------------------------------------
-00DE            632   ;------------------------------------------------------------
-00DE            633   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:125: void main (void)
-00DE            634   ;        -----------------------------------------
-00DE            635   ;         function main
-00DE            636   ;        -----------------------------------------
-00DE            637   _main:
-00DE            638   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:128: MOTOR_LEFT0 =0;
-00DE C295       639            clr     _P1_5
-00E0            640   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:129: MOTOR_LEFT1 =0;
-00E0 C296       641            clr     _P1_6
-00E2            642   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:130: MOTOR_RIGHT0 =0;
-00E2 C2A0       643            clr     _P2_0
-00E4            644   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:131: MOTOR_RIGHT1 =0;
-00E4 C2A1       645            clr     _P2_1
-00E6            646   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:134: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
-00E6 7498       647            mov     a,#__str_0
-00E8 C0E0       648            push    acc
-00EA 749A       649            mov     a,#(__str_0 >> 8)
-00EC C0E0       650            push    acc
-00EE 7480       651            mov     a,#0x80
-00F0 C0E0       652            push    acc
-00F2 120100     653            lcall   _printf
-00F5 1581       654            dec     sp
-00F7 1581       655            dec     sp
-00F9 1581       656            dec     sp
-00FB            657   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:136: "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
-00FB 7458       658            mov     a,#__str_1
-00FD C0E0       659            push    acc
-00FF 749B       660            mov     a,#(__str_1 >> 8)
-0101 C0E0       661            push    acc
-0103 7480       662            mov     a,#0x80
-0105 C0E0       663            push    acc
-0107 120100     664            lcall   _printf
-010A 1581       665            dec     sp
-010C 1581       666            dec     sp
-010E 1581       667            dec     sp
-0110            668   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:137: printf("Please enter motors mode 1-6\n");
-0110 7498       669            mov     a,#__str_2
-0112 C0E0       670            push    acc
-0114 749B       671            mov     a,#(__str_2 >> 8)
-0116 C0E0       672            push    acc
-0118 7480       673            mov     a,#0x80
-011A C0E0       674            push    acc
-011C 120100     675            lcall   _printf
-011F 1581       676            dec     sp
-0121 1581       677            dec     sp
-0123 1581       678            dec     sp
-0125            679   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:138: scanf("%d \n",&mode);
-0125 74E0       680            mov     a,#_mode
-0127 C0E0       681            push    acc
-0129 7413       682            mov     a,#(_mode >> 8)
-012B C0E0       683            push    acc
-012D 7440       684            mov     a,#0x40
-012F C0E0       685            push    acc
-0131 74D8       686            mov     a,#__str_3
-0133 C0E0       687            push    acc
-0135 749B       688            mov     a,#(__str_3 >> 8)
-0137 C0E0       689            push    acc
-0139 7480       690            mov     a,#0x80
-013B C0E0       691            push    acc
-013D 120100     692            lcall   _scanf
-0140 E581       693            mov     a,sp
-0142 24FA       694            add     a,#0xfa
-0144 F581       695            mov     sp,a
-0146            696   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:139: if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
-0146 7401       697            mov     a,#0x01
-0148 B5E058     698            cjne    a,_mode,L005002?
-014B 7498       699            mov     a,#__str_4
-014D C0E0       700            push    acc
-014F 749C       701            mov     a,#(__str_4 >> 8)
-0151 C0E0       702            push    acc
-0153 7480       703            mov     a,#0x80
-0155 C0E0       704            push    acc
-0157 120100     705            lcall   _printf
-015A 1581       706            dec     sp
-015C 1581       707            dec     sp
-015E 1581       708            dec     sp
-0160 7460       709            mov     a,#_direction
-0162 C0E0       710            push    acc
-0164 7412       711            mov     a,#(_direction >> 8)
-0166 C0E0       712            push    acc
-0168 7440       713            mov     a,#0x40
-016A C0E0       714            push    acc
-016C 74A0       715            mov     a,#_pwm_both
-016E C0E0       716            push    acc
-0170 7413       717            mov     a,#(_pwm_both >> 8)
-0172 C0E0       718            push    acc
-0174 7440       719            mov     a,#0x40
-0176 C0E0       720            push    acc
-0178 74D8       721            mov     a,#__str_5
-017A C0E0       722            push    acc
-017C 749C       723            mov     a,#(__str_5 >> 8)
-017E C0E0       724            push    acc
-0180 7480       725            mov     a,#0x80
-0182 C0E0       726            push    acc
-0184 120100     727            lcall   _scanf
-0187 E581       728            mov     a,sp
-0189 24F7       729            add     a,#0xf7
-018B F581       730            mov     sp,a
-018D 856082     731            mov     dpl,_direction
-0190 120100     732            lcall   _forward_backward
-0193            733   L005002?:
-0193            734   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:140: if(mode == 2) {printf("Stop mode triggered"); pwm_both = -1;forward_backward(direction); }
-0193 7402       735            mov     a,#0x02
-0195 B5E018     736            cjne    a,_mode,L005006?
-0198 7458       737            mov     a,#__str_6
-019A C0E0       738            push    acc
-019C 749D       739            mov     a,#(__str_6 >> 8)
-019E C0E0       740            push    acc
-01A0 7480       741            mov     a,#0x80
-01A2 C0E0       742            push    acc
-01A4 120100     743            lcall   _printf
-01A7 1581       744            dec     sp
-01A9 1581       745            dec     sp
-01AB 1581       746            dec     sp
-01AD 75A0FF     747            mov     _pwm_both,#0xFF
-01B0 856082     748            mov     dpl,_direction
-01B3 120100     749            lcall   _forward_backward
-01B6            750   ;        C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:143: while(1)
-01B6            751   L005006?:
-01B6 8001       752            sjmp    L005006?
-01B8            753            rseg R_CSEG
-01B8            754   
-0000            755            rseg R_XINIT
-0000            756   
-0000            757            rseg R_CONST
-0000            758   __str_0:
-0000 1B         759            db 0x1B
-0001 5B324A     760            db '[2J'
-0004 00         761            db 0x00
-0005            762   __str_1:
-0005 53717561   763            db 'Square wave generator for the F38x.'
+0000            435            rseg R_CSEG
+0000            436   ;--------------------------------------------------------
+0000            437   ; Reset entry point and interrupt vectors
+0000            438   ;--------------------------------------------------------
+0000            439            CSEG at 0x0000
+0000 020100     440            ljmp    _crt0
+002B            441            CSEG at 0x002b
+002B 020100     442            ljmp    _Timer2_ISR
+002E            443   ;--------------------------------------------------------
+002E            444   ; global & static initialisations
+002E            445   ;--------------------------------------------------------
+0000            446            rseg R_HOME
+0000            447            rseg R_GSINIT
+0000            448            rseg R_GSINIT
+0000            449   ;--------------------------------------------------------
+0000            450   ; data variables initialization
+0000            451   ;--------------------------------------------------------
+0000            452            rseg R_DINIT
+0000            453   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:18: volatile  char pwm_count=0;
+0000 755800     454            mov     _pwm_count,#0x00
+0003            455   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:19: volatile  char mode = 0;
+0003 751800     456            mov     _mode,#0x00
+0006            457   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:20: volatile  char pwm_both =0;
+0006 75D800     458            mov     _pwm_both,#0x00
+0009            459   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:21: volatile  char pwm_Left0 = 0; //p1.5
+0009 759800     460            mov     _pwm_Left0,#0x00
+000C            461   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:22: volatile  char pwm_Left1 = 0; //p1.6
+000C 755800     462            mov     _pwm_Left1,#0x00
+000F            463   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:23: volatile  char pwm_Right0 = 0; //p2.0
+000F 751800     464            mov     _pwm_Right0,#0x00
+0012            465   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:24: volatile  char pwm_Right1 = 0; //p2.1
+0012 75D800     466            mov     _pwm_Right1,#0x00
+0015            467   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:25: volatile  char direction = 0; // 1 for back 0 for forward
+0015 759800     468            mov     _direction,#0x00
+0018            469            ; The linker places a 'ret' at the end of segment R_DINIT.
+0018            470   ;--------------------------------------------------------
+0018            471   ; code
+0018            472   ;--------------------------------------------------------
+0000            473            rseg R_CSEG
+0000            474   ;------------------------------------------------------------
+0000            475   ;Allocation info for local variables in function '_c51_external_startup'
+0000            476   ;------------------------------------------------------------
+0000            477   ;------------------------------------------------------------
+0000            478   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:29: char _c51_external_startup (void)
+0000            479   ;        -----------------------------------------
+0000            480   ;         function _c51_external_startup
+0000            481   ;        -----------------------------------------
+0000            482   __c51_external_startup:
+0000            483            using   0
+0000            484   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:31: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
+0000 53D9BF     485            anl     _PCA0MD,#0xBF
+0003            486   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:32: VDM0CN=0x80; // enable VDD monitor
+0003 75FF80     487            mov     _VDM0CN,#0x80
+0006            488   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:33: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
+0006 75EF06     489            mov     _RSTSRC,#0x06
+0009            490   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:41: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
+0009 43A903     491            orl     _CLKSEL,#0x03
+000C            492   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:45: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
+000C 43B203     493            orl     _OSCICN,#0x03
+000F            494   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:48: SCON0 = 0x10;
+000F 759810     495            mov     _SCON0,#0x10
+0012            496   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:50: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
+0012 758D30     497            mov     _TH1,#0x30
+0015            498   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:51: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
+0015 538EF4     499            anl     _CKCON,#0xF4
+0018            500   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:52: CKCON |=  0x08;
+0018 438E08     501            orl     _CKCON,#0x08
+001B            502   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:65: TL1 = TH1;      // Init Timer1
+001B 858D8B     503            mov     _TL1,_TH1
+001E            504   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:66: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
+001E 53890F     505            anl     _TMOD,#0x0F
+0021            506   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:67: TMOD |=  0x20;
+0021 438920     507            orl     _TMOD,#0x20
+0024            508   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:68: TR1 = 1; // START Timer1
+0024 D28E       509            setb    _TR1
+0026            510   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:69: TI = 1;  // Indicate TX0 ready
+0026 D299       511            setb    _TI
+0028            512   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:72: P2MDOUT|=0b_0000_0011;
+0028 43A603     513            orl     _P2MDOUT,#0x03
+002B            514   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:73: P0MDOUT |= 0x10; // Enable UTX as push-pull output
+002B 43A410     515            orl     _P0MDOUT,#0x10
+002E            516   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:74: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
+002E 75E101     517            mov     _XBR0,#0x01
+0031            518   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:75: XBR1     = 0x40; // Enable crossbar and weak pull-ups
+0031 75E240     519            mov     _XBR1,#0x40
+0034            520   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:78: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
+0034 75C800     521            mov     _TMR2CN,#0x00
+0037            522   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:79: CKCON|=0b_0001_0000;
+0037 438E10     523            orl     _CKCON,#0x10
+003A            524   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:80: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
+003A 75CA78     525            mov     _TMR2RL,#0x78
+003D 75CBEC     526            mov     (_TMR2RL >> 8),#0xEC
+0040            527   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:81: TMR2=0xffff;   // Set to reload immediately
+0040 75CCFF     528            mov     _TMR2,#0xFF
+0043 75CDFF     529            mov     (_TMR2 >> 8),#0xFF
+0046            530   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:82: ET2=1;         // Enable Timer2 interrupts
+0046 D2AD       531            setb    _ET2
+0048            532   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:83: TR2=1;         // Start Timer2
+0048 D2CA       533            setb    _TR2
+004A            534   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:85: EA=1; // Enable interrupts
+004A D2AF       535            setb    _EA
+004C            536   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:87: return 0;
+004C 758200     537            mov     dpl,#0x00
+004F 22         538            ret
+0050            539   ;------------------------------------------------------------
+0050            540   ;Allocation info for local variables in function 'Timer2_ISR'
+0050            541   ;------------------------------------------------------------
+0050            542   ;------------------------------------------------------------
+0050            543   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:91: void Timer2_ISR (void) interrupt 5
+0050            544   ;        -----------------------------------------
+0050            545   ;         function Timer2_ISR
+0050            546   ;        -----------------------------------------
+0050            547   _Timer2_ISR:
+0050 C0E0       548            push    acc
+0052 C0F0       549            push    b
+0054 C0D0       550            push    psw
+0056 75D000     551            mov     psw,#0x00
+0059            552   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:93: TF2H = 0; // Clear Timer2 interrupt flag
+0059 C2CF       553            clr     _TF2H
+005B            554   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:95: pwm_count++;
+005B 0558       555            inc     _pwm_count
+005D            556   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:96: if(pwm_count>100) pwm_count=0;
+005D C3         557            clr     c
+005E 74E4       558            mov     a,#(0x64 ^ 0x80)
+0060 8558F0     559            mov     b,_pwm_count
+0063 63F080     560            xrl     b,#0x80
+0066 95F0       561            subb    a,b
+0068 5001       562            jnc     L003002?
+006A 755800     563            mov     _pwm_count,#0x00
+006D            564   L003002?:
+006D            565   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:99: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
+006D C3         566            clr     c
+006E E598       567            mov     a,_pwm_Left0
+0070 6480       568            xrl     a,#0x80
+0072 8558F0     569            mov     b,_pwm_count
+0075 63F080     570            xrl     b,#0x80
+0078 95F0       571            subb    a,b
+007A 92C8       572            mov  _Timer2_ISR_sloc0_1_0,c
+007C B3         573            cpl     c
+007D 9295       574            mov     _P1_5,c
+007F            575   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:100: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
+007F C3         576            clr     c
+0080 E558       577            mov     a,_pwm_Left1
+0082 6480       578            xrl     a,#0x80
+0084 8558F0     579            mov     b,_pwm_count
+0087 63F080     580            xrl     b,#0x80
+008A 95F0       581            subb    a,b
+008C 92C8       582            mov  _Timer2_ISR_sloc0_1_0,c
+008E B3         583            cpl     c
+008F 9296       584            mov     _P1_6,c
+0091            585   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:101: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
+0091 C3         586            clr     c
+0092 E518       587            mov     a,_pwm_Right0
+0094 6480       588            xrl     a,#0x80
+0096 8558F0     589            mov     b,_pwm_count
+0099 63F080     590            xrl     b,#0x80
+009C 95F0       591            subb    a,b
+009E 92C8       592            mov  _Timer2_ISR_sloc0_1_0,c
+00A0 B3         593            cpl     c
+00A1 92A0       594            mov     _P2_0,c
+00A3            595   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:102: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
+00A3 C3         596            clr     c
+00A4 E5D8       597            mov     a,_pwm_Right1
+00A6 6480       598            xrl     a,#0x80
+00A8 8558F0     599            mov     b,_pwm_count
+00AB 63F080     600            xrl     b,#0x80
+00AE 95F0       601            subb    a,b
+00B0 92C8       602            mov  _Timer2_ISR_sloc0_1_0,c
+00B2 B3         603            cpl     c
+00B3 92A1       604            mov     _P2_1,c
+00B5 D0D0       605            pop     psw
+00B7 D0F0       606            pop     b
+00B9 D0E0       607            pop     acc
+00BB 32         608            reti
+00BC            609   ;        eliminated unneeded push/pop dpl
+00BC            610   ;        eliminated unneeded push/pop dph
+00BC            611   ;------------------------------------------------------------
+00BC            612   ;Allocation info for local variables in function 'forward_backward'
+00BC            613   ;------------------------------------------------------------
+00BC            614   ;direction                 Allocated to registers r2 
+00BC            615   ;------------------------------------------------------------
+00BC            616   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:109: void forward_backward(unsigned char direction)
+00BC            617   ;        -----------------------------------------
+00BC            618   ;         function forward_backward
+00BC            619   ;        -----------------------------------------
+00BC            620   _forward_backward:
+00BC            621   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:112: if (direction == 0) { //p2.1,1.6 on
+00BC E582       622            mov     a,dpl
+00BE FA         623            mov     r2,a
+00BF 7001       624            jnz     L004004?
+00C1            625   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:113: pwm_Left0 = pwm_Right0 = -1;
+00C1 7518FF     626            mov     _pwm_Right0,#0xFF
+00C4 7598FF     627            mov     _pwm_Left0,#0xFF
+00C7            628   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:114: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
+00C7 85D8D8     629            mov     _pwm_Right1,_pwm_both
+00CA 85D858     630            mov     _pwm_Left1,_pwm_both
+00CD 22         631            ret
+00CE            632   L004004?:
+00CE            633   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:117: else if (direction == 1) { //p2.0,1.5 on
+00CE BA01C8     634            cjne    r2,#0x01,L004006?
+00D1            635   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:118: pwm_Left1 = pwm_Right1 = -1;
+00D1 75D8FF     636            mov     _pwm_Right1,#0xFF
+00D4 7558FF     637            mov     _pwm_Left1,#0xFF
+00D7            638   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:119: pwm_Left0 = pwm_Right0 = pwm_both; 
+00D7 85D818     639            mov     _pwm_Right0,_pwm_both
+00DA 85D898     640            mov     _pwm_Left0,_pwm_both
+00DD            641   L004006?:
+00DD 22         642            ret
+00DE            643   ;------------------------------------------------------------
+00DE            644   ;Allocation info for local variables in function 'InitADC'
+00DE            645   ;------------------------------------------------------------
+00DE            646   ;------------------------------------------------------------
+00DE            647   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:125: void InitADC (void)
+00DE            648   ;        -----------------------------------------
+00DE            649   ;         function InitADC
+00DE            650   ;        -----------------------------------------
+00DE            651   _InitADC:
+00DE            652   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:128: ADC0CF = 0xF8; // SAR clock = 31, Right-justified result
+00DE 75BCF8     653            mov     _ADC0CF,#0xF8
+00E1            654   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:129: ADC0CN = 0b_1000_0000; // AD0EN=1, AD0TM=0
+00E1 75E880     655            mov     _ADC0CN,#0x80
+00E4            656   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:130: REF0CN = 0b_0000_1000; //Select VDD as the voltage reference for the converter
+00E4 75D108     657            mov     _REF0CN,#0x08
+00E7 22         658            ret
+00E8            659   ;------------------------------------------------------------
+00E8            660   ;Allocation info for local variables in function 'InitPinADC'
+00E8            661   ;------------------------------------------------------------
+00E8            662   ;pinno                     Allocated with name '_InitPinADC_PARM_2'
+00E8            663   ;portno                    Allocated to registers r2 
+00E8            664   ;mask                      Allocated to registers r3 
+00E8            665   ;------------------------------------------------------------
+00E8            666   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:133: void InitPinADC (unsigned char portno, unsigned char pinno)
+00E8            667   ;        -----------------------------------------
+00E8            668   ;         function InitPinADC
+00E8            669   ;        -----------------------------------------
+00E8            670   _InitPinADC:
+00E8 AA82       671            mov     r2,dpl
+00EA            672   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:137: mask=1<<pinno;
+00EA 85F8F0     673            mov     b,_InitPinADC_PARM_2
+00ED 05F0       674            inc     b
+00EF 7401       675            mov     a,#0x01
+00F1 8001       676            sjmp    L006012?
+00F3            677   L006010?:
+00F3 25E0       678            add     a,acc
+00F5            679   L006012?:
+00F5 D5F048     680            djnz    b,L006010?
+00F8 FB         681            mov     r3,a
+00F9            682   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:139: switch (portno)
+00F9 EA         683            mov     a,r2
+00FA 24FC       684            add     a,#0xff - 0x03
+00FC 4001       685            jc      L006007?
+00FE EA         686            mov     a,r2
+00FF 2A         687            add     a,r2
+0100 2A         688            add     a,r2
+0101 9098C8     689            mov     dptr,#L006014?
+0104 73         690            jmp     @a+dptr
+0105            691   L006014?:
+0105 020100     692            ljmp    L006001?
+0108 020100     693            ljmp    L006002?
+010B 020100     694            ljmp    L006003?
+010E 020100     695            ljmp    L006004?
+0111            696   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:141: case 0:
+0111            697   L006001?:
+0111            698   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:142: P0MDIN &= (~mask); // Set pin as analog input
+0111 EB         699            mov     a,r3
+0112 F4         700            cpl     a
+0113 52F1       701            anl     _P0MDIN,a
+0115            702   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:143: P0SKIP |= mask; // Skip Crossbar decoding for this pin
+0115 EB         703            mov     a,r3
+0116 42D4       704            orl     _P0SKIP,a
+0118            705   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:144: break;
+0118            706   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:145: case 1:
+0118 22         707            ret
+0119            708   L006002?:
+0119            709   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:146: P1MDIN &= (~mask); // Set pin as analog input
+0119 EB         710            mov     a,r3
+011A F4         711            cpl     a
+011B 52F2       712            anl     _P1MDIN,a
+011D            713   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:147: P1SKIP |= mask; // Skip Crossbar decoding for this pin
+011D EB         714            mov     a,r3
+011E 42D5       715            orl     _P1SKIP,a
+0120            716   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:148: break;
+0120            717   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:149: case 2:
+0120 22         718            ret
+0121            719   L006003?:
+0121            720   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:150: P2MDIN &= (~mask); // Set pin as analog input
+0121 EB         721            mov     a,r3
+0122 F4         722            cpl     a
+0123 52F3       723            anl     _P2MDIN,a
+0125            724   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:151: P2SKIP |= mask; // Skip Crossbar decoding for this pin
+0125 EB         725            mov     a,r3
+0126 42D6       726            orl     _P2SKIP,a
+0128            727   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:152: break;
+0128            728   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:153: case 3:
+0128 22         729            ret
+0129            730   L006004?:
+0129            731   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:154: P3MDIN &= (~mask); // Set pin as analog input
+0129 EB         732            mov     a,r3
+012A F4         733            cpl     a
+012B FA         734            mov     r2,a
+012C 52F4       735            anl     _P3MDIN,a
+012E            736   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:155: P3SKIP |= mask; // Skip Crossbar decoding for this pin
+012E EB         737            mov     a,r3
+012F 42DF       738            orl     _P3SKIP,a
+0131            739   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:159: }
+0131            740   L006007?:
+0131 22         741            ret
+0132            742   ;------------------------------------------------------------
+0132            743   ;Allocation info for local variables in function 'ADC_at_Pin'
+0132            744   ;------------------------------------------------------------
+0132            745   ;pin                       Allocated to registers 
+0132            746   ;------------------------------------------------------------
+0132            747   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:162: unsigned int ADC_at_Pin(unsigned char pin)
+0132            748   ;        -----------------------------------------
+0132            749   ;         function ADC_at_Pin
+0132            750   ;        -----------------------------------------
+0132            751   _ADC_at_Pin:
+0132 8582BB     752            mov     _AMX0P,dpl
+0135            753   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:165: AMX0N = LQFP32_MUX_GND;  // GND is negative input (Single-ended Mode)
+0135 75BA1F     754            mov     _AMX0N,#0x1F
+0138            755   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:167: AD0BUSY=1;
+0138 D2EC       756            setb    _AD0BUSY
+013A            757   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:168: while (AD0BUSY); // Wait for dummy conversion to finish
+013A            758   L007001?:
+013A 20EC08     759            jb      _AD0BUSY,L007001?
+013D            760   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:170: AD0BUSY = 1;
+013D D2EC       761            setb    _AD0BUSY
+013F            762   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:171: while (AD0BUSY); // Wait for conversion to complete
+013F            763   L007004?:
+013F 20EC48     764            jb      _AD0BUSY,L007004?
+0142            765   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:172: return (ADC0L+(ADC0H*0x100));
+0142 AABD       766            mov     r2,_ADC0L
+0144 7B00       767            mov     r3,#0x00
+0146 ADBE       768            mov     r5,_ADC0H
+0148 7C00       769            mov     r4,#0x00
+014A EC         770            mov     a,r4
+014B 2A         771            add     a,r2
+014C F582       772            mov     dpl,a
+014E ED         773            mov     a,r5
+014F 3B         774            addc    a,r3
+0150 F583       775            mov     dph,a
+0152 22         776            ret
+0153            777   ;------------------------------------------------------------
+0153            778   ;Allocation info for local variables in function 'Volts_at_Pin'
+0153            779   ;------------------------------------------------------------
+0153            780   ;pin                       Allocated to registers r2 
+0153            781   ;------------------------------------------------------------
+0153            782   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:175: float Volts_at_Pin(unsigned char pin)
+0153            783   ;        -----------------------------------------
+0153            784   ;         function Volts_at_Pin
+0153            785   ;        -----------------------------------------
+0153            786   _Volts_at_Pin:
+0153            787   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:177: return ((ADC_at_Pin(pin)*3.30)/1024.0);
+0153 120100     788            lcall   _ADC_at_Pin
+0156 120100     789            lcall   ___uint2fs
+0159 AA82       790            mov     r2,dpl
+015B AB83       791            mov     r3,dph
+015D ACF0       792            mov     r4,b
+015F FD         793            mov     r5,a
+0160 C002       794            push    ar2
+0162 C003       795            push    ar3
+0164 C004       796            push    ar4
+0166 C005       797            push    ar5
+0168 903333     798            mov     dptr,#0x3333
+016B 75F053     799            mov     b,#0x53
+016E 7440       800            mov     a,#0x40
+0170 120100     801            lcall   ___fsmul
+0173 AA82       802            mov     r2,dpl
+0175 AB83       803            mov     r3,dph
+0177 ACF0       804            mov     r4,b
+0179 FD         805            mov     r5,a
+017A E581       806            mov     a,sp
+017C 24FC       807            add     a,#0xfc
+017E F581       808            mov     sp,a
+0180 E4         809            clr     a
+0181 C0E0       810            push    acc
+0183 C0E0       811            push    acc
+0185 7480       812            mov     a,#0x80
+0187 C0E0       813            push    acc
+0189 7444       814            mov     a,#0x44
+018B C0E0       815            push    acc
+018D 8A82       816            mov     dpl,r2
+018F 8B83       817            mov     dph,r3
+0191 8CF0       818            mov     b,r4
+0193 ED         819            mov     a,r5
+0194 120100     820            lcall   ___fsdiv
+0197 AA82       821            mov     r2,dpl
+0199 AB83       822            mov     r3,dph
+019B ACF0       823            mov     r4,b
+019D FD         824            mov     r5,a
+019E E581       825            mov     a,sp
+01A0 24FC       826            add     a,#0xfc
+01A2 F581       827            mov     sp,a
+01A4 8A82       828            mov     dpl,r2
+01A6 8B83       829            mov     dph,r3
+01A8 8CF0       830            mov     b,r4
+01AA ED         831            mov     a,r5
+01AB 22         832            ret
+01AC            833   ;------------------------------------------------------------
+01AC            834   ;Allocation info for local variables in function 'linetrack'
+01AC            835   ;------------------------------------------------------------
+01AC            836   ;vleft                     Allocated with name '_linetrack_vleft_1_60'
+01AC            837   ;vright                    Allocated with name '_linetrack_vright_1_60'
+01AC            838   ;------------------------------------------------------------
+01AC            839   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:181: void linetrack (void) {
+01AC            840   ;        -----------------------------------------
+01AC            841   ;         function linetrack
+01AC            842   ;        -----------------------------------------
+01AC            843   _linetrack:
+01AC            844   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:185: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+01AC 75820B     845            mov     dpl,#0x0B
+01AF 120100     846            lcall   _Volts_at_Pin
+01B2 858228     847            mov     _linetrack_vleft_1_60,dpl
+01B5 858329     848            mov     (_linetrack_vleft_1_60 + 1),dph
+01B8 85F02A     849            mov     (_linetrack_vleft_1_60 + 2),b
+01BB F52B       850            mov     (_linetrack_vleft_1_60 + 3),a
+01BD            851   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:186: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+01BD 75820C     852            mov     dpl,#0x0C
+01C0 120100     853            lcall   _Volts_at_Pin
+01C3 858278     854            mov     _linetrack_vright_1_60,dpl
+01C6 858379     855            mov     (_linetrack_vright_1_60 + 1),dph
+01C9 85F07A     856            mov     (_linetrack_vright_1_60 + 2),b
+01CC F57B       857            mov     (_linetrack_vright_1_60 + 3),a
+01CE            858   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:188: pwm_Left0 = -1;
+01CE 7598FF     859            mov     _pwm_Left0,#0xFF
+01D1            860   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:189: pwm_Left1 = (vright*100/(vleft+vright));
+01D1 C078       861            push    _linetrack_vright_1_60
+01D3 C079       862            push    (_linetrack_vright_1_60 + 1)
+01D5 C07A       863            push    (_linetrack_vright_1_60 + 2)
+01D7 C07B       864            push    (_linetrack_vright_1_60 + 3)
+01D9 900000     865            mov     dptr,#0x0000
+01DC 75F0C8     866            mov     b,#0xC8
+01DF 7442       867            mov     a,#0x42
+01E1 120100     868            lcall   ___fsmul
+01E4 AA82       869            mov     r2,dpl
+01E6 AB83       870            mov     r3,dph
+01E8 ACF0       871            mov     r4,b
+01EA FD         872            mov     r5,a
+01EB E581       873            mov     a,sp
+01ED 24FC       874            add     a,#0xfc
+01EF F581       875            mov     sp,a
+01F1 C002       876            push    ar2
+01F3 C003       877            push    ar3
+01F5 C004       878            push    ar4
+01F7 C005       879            push    ar5
+01F9 C078       880            push    _linetrack_vright_1_60
+01FB C079       881            push    (_linetrack_vright_1_60 + 1)
+01FD C07A       882            push    (_linetrack_vright_1_60 + 2)
+01FF C07B       883            push    (_linetrack_vright_1_60 + 3)
+0201 852882     884            mov     dpl,_linetrack_vleft_1_60
+0204 852983     885            mov     dph,(_linetrack_vleft_1_60 + 1)
+0207 852AF0     886            mov     b,(_linetrack_vleft_1_60 + 2)
+020A E52B       887            mov     a,(_linetrack_vleft_1_60 + 3)
+020C 120100     888            lcall   ___fsadd
+020F AE82       889            mov     r6,dpl
+0211 AF83       890            mov     r7,dph
+0213 A8F0       891            mov     r0,b
+0215 F9         892            mov     r1,a
+0216 E581       893            mov     a,sp
+0218 24FC       894            add     a,#0xfc
+021A F581       895            mov     sp,a
+021C D005       896            pop     ar5
+021E D004       897            pop     ar4
+0220 D003       898            pop     ar3
+0222 D002       899            pop     ar2
+0224 C006       900            push    ar6
+0226 C007       901            push    ar7
+0228 C000       902            push    ar0
+022A C001       903            push    ar1
+022C 8A82       904            mov     dpl,r2
+022E 8B83       905            mov     dph,r3
+0230 8CF0       906            mov     b,r4
+0232 ED         907            mov     a,r5
+0233 120100     908            lcall   ___fsdiv
+0236 AA82       909            mov     r2,dpl
+0238 AB83       910            mov     r3,dph
+023A ACF0       911            mov     r4,b
+023C FD         912            mov     r5,a
+023D E581       913            mov     a,sp
+023F 24FC       914            add     a,#0xfc
+0241 F581       915            mov     sp,a
+0243 8A82       916            mov     dpl,r2
+0245 8B83       917            mov     dph,r3
+0247 8CF0       918            mov     b,r4
+0249 ED         919            mov     a,r5
+024A 120100     920            lcall   ___fs2schar
+024D 858258     921            mov     _pwm_Left1,dpl
+0250            922   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:190: pwm_Right0 = -1;
+0250 7518FF     923            mov     _pwm_Right0,#0xFF
+0253            924   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:191: pwm_Right1 = (vleft*100/(vleft+vright));
+0253 C028       925            push    _linetrack_vleft_1_60
+0255 C029       926            push    (_linetrack_vleft_1_60 + 1)
+0257 C02A       927            push    (_linetrack_vleft_1_60 + 2)
+0259 C02B       928            push    (_linetrack_vleft_1_60 + 3)
+025B 900000     929            mov     dptr,#0x0000
+025E 75F0C8     930            mov     b,#0xC8
+0261 7442       931            mov     a,#0x42
+0263 120100     932            lcall   ___fsmul
+0266 AA82       933            mov     r2,dpl
+0268 AB83       934            mov     r3,dph
+026A ACF0       935            mov     r4,b
+026C FD         936            mov     r5,a
+026D E581       937            mov     a,sp
+026F 24FC       938            add     a,#0xfc
+0271 F581       939            mov     sp,a
+0273 C002       940            push    ar2
+0275 C003       941            push    ar3
+0277 C004       942            push    ar4
+0279 C005       943            push    ar5
+027B C078       944            push    _linetrack_vright_1_60
+027D C079       945            push    (_linetrack_vright_1_60 + 1)
+027F C07A       946            push    (_linetrack_vright_1_60 + 2)
+0281 C07B       947            push    (_linetrack_vright_1_60 + 3)
+0283 852882     948            mov     dpl,_linetrack_vleft_1_60
+0286 852983     949            mov     dph,(_linetrack_vleft_1_60 + 1)
+0289 852AF0     950            mov     b,(_linetrack_vleft_1_60 + 2)
+028C E52B       951            mov     a,(_linetrack_vleft_1_60 + 3)
+028E 120100     952            lcall   ___fsadd
+0291 AE82       953            mov     r6,dpl
+0293 AF83       954            mov     r7,dph
+0295 A8F0       955            mov     r0,b
+0297 F9         956            mov     r1,a
+0298 E581       957            mov     a,sp
+029A 24FC       958            add     a,#0xfc
+029C F581       959            mov     sp,a
+029E D005       960            pop     ar5
+02A0 D004       961            pop     ar4
+02A2 D003       962            pop     ar3
+02A4 D002       963            pop     ar2
+02A6 C006       964            push    ar6
+02A8 C007       965            push    ar7
+02AA C000       966            push    ar0
+02AC C001       967            push    ar1
+02AE 8A82       968            mov     dpl,r2
+02B0 8B83       969            mov     dph,r3
+02B2 8CF0       970            mov     b,r4
+02B4 ED         971            mov     a,r5
+02B5 120100     972            lcall   ___fsdiv
+02B8 AA82       973            mov     r2,dpl
+02BA AB83       974            mov     r3,dph
+02BC ACF0       975            mov     r4,b
+02BE FD         976            mov     r5,a
+02BF E581       977            mov     a,sp
+02C1 24FC       978            add     a,#0xfc
+02C3 F581       979            mov     sp,a
+02C5 8A82       980            mov     dpl,r2
+02C7 8B83       981            mov     dph,r3
+02C9 8CF0       982            mov     b,r4
+02CB ED         983            mov     a,r5
+02CC 120100     984            lcall   ___fs2schar
+02CF 8582D8     985            mov     _pwm_Right1,dpl
+02D2 22         986            ret
+02D3            987   ;------------------------------------------------------------
+02D3            988   ;Allocation info for local variables in function 'main'
+02D3            989   ;------------------------------------------------------------
+02D3            990   ;------------------------------------------------------------
+02D3            991   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:195: void main (void)
+02D3            992   ;        -----------------------------------------
+02D3            993   ;         function main
+02D3            994   ;        -----------------------------------------
+02D3            995   _main:
+02D3            996   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:198: MOTOR_LEFT0 =0;
+02D3 C295       997            clr     _P1_5
+02D5            998   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:199: MOTOR_LEFT1 =0;
+02D5 C296       999            clr     _P1_6
+02D7           1000   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:200: MOTOR_RIGHT0 =0;
+02D7 C2A0      1001            clr     _P2_0
+02D9           1002   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:201: MOTOR_RIGHT1 =0;
+02D9 C2A1      1003            clr     _P2_1
+02DB           1004   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:204: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+02DB 7448      1005            mov     a,#__str_0
+02DD C0E0      1006            push    acc
+02DF 749C      1007            mov     a,#(__str_0 >> 8)
+02E1 C0E0      1008            push    acc
+02E3 7480      1009            mov     a,#0x80
+02E5 C0E0      1010            push    acc
+02E7 120100    1011            lcall   _printf
+02EA 1581      1012            dec     sp
+02EC 1581      1013            dec     sp
+02EE 1581      1014            dec     sp
+02F0           1015   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:206: "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
+02F0 74C8      1016            mov     a,#__str_1
+02F2 C0E0      1017            push    acc
+02F4 749C      1018            mov     a,#(__str_1 >> 8)
+02F6 C0E0      1019            push    acc
+02F8 7480      1020            mov     a,#0x80
+02FA C0E0      1021            push    acc
+02FC 120100    1022            lcall   _printf
+02FF 1581      1023            dec     sp
+0301 1581      1024            dec     sp
+0303 1581      1025            dec     sp
+0305           1026   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:207: printf("Please enter motors mode 1-6\n");
+0305 7408      1027            mov     a,#__str_2
+0307 C0E0      1028            push    acc
+0309 749D      1029            mov     a,#(__str_2 >> 8)
+030B C0E0      1030            push    acc
+030D 7480      1031            mov     a,#0x80
+030F C0E0      1032            push    acc
+0311 120100    1033            lcall   _printf
+0314 1581      1034            dec     sp
+0316 1581      1035            dec     sp
+0318 1581      1036            dec     sp
+031A           1037   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:208: scanf("%d \n",&mode);
+031A 7418      1038            mov     a,#_mode
+031C C0E0      1039            push    acc
+031E 7445      1040            mov     a,#(_mode >> 8)
+0320 C0E0      1041            push    acc
+0322 7440      1042            mov     a,#0x40
+0324 C0E0      1043            push    acc
+0326 7448      1044            mov     a,#__str_3
+0328 C0E0      1045            push    acc
+032A 749D      1046            mov     a,#(__str_3 >> 8)
+032C C0E0      1047            push    acc
+032E 7480      1048            mov     a,#0x80
+0330 C0E0      1049            push    acc
+0332 120100    1050            lcall   _scanf
+0335 E581      1051            mov     a,sp
+0337 24FA      1052            add     a,#0xfa
+0339 F581      1053            mov     sp,a
+033B           1054   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:209: if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
+033B 7401      1055            mov     a,#0x01
+033D B518C8    1056            cjne    a,_mode,L010002?
+0340 7408      1057            mov     a,#__str_4
+0342 C0E0      1058            push    acc
+0344 749E      1059            mov     a,#(__str_4 >> 8)
+0346 C0E0      1060            push    acc
+0348 7480      1061            mov     a,#0x80
+034A C0E0      1062            push    acc
+034C 120100    1063            lcall   _printf
+034F 1581      1064            dec     sp
+0351 1581      1065            dec     sp
+0353 1581      1066            dec     sp
+0355 7498      1067            mov     a,#_direction
+0357 C0E0      1068            push    acc
+0359 7443      1069            mov     a,#(_direction >> 8)
+035B C0E0      1070            push    acc
+035D 7440      1071            mov     a,#0x40
+035F C0E0      1072            push    acc
+0361 74D8      1073            mov     a,#_pwm_both
+0363 C0E0      1074            push    acc
+0365 7444      1075            mov     a,#(_pwm_both >> 8)
+0367 C0E0      1076            push    acc
+0369 7440      1077            mov     a,#0x40
+036B C0E0      1078            push    acc
+036D 7448      1079            mov     a,#__str_5
+036F C0E0      1080            push    acc
+0371 749E      1081            mov     a,#(__str_5 >> 8)
+0373 C0E0      1082            push    acc
+0375 7480      1083            mov     a,#0x80
+0377 C0E0      1084            push    acc
+0379 120100    1085            lcall   _scanf
+037C E581      1086            mov     a,sp
+037E 24F7      1087            add     a,#0xf7
+0380 F581      1088            mov     sp,a
+0382 859882    1089            mov     dpl,_direction
+0385 120100    1090            lcall   _forward_backward
+0388           1091   L010002?:
+0388           1092   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:210: if(mode == 2) {printf("Stop mode triggered"); pwm_both = -1;forward_backward(direction); }
+0388 7402      1093            mov     a,#0x02
+038A B51888    1094            cjne    a,_mode,L010004?
+038D 74C8      1095            mov     a,#__str_6
+038F C0E0      1096            push    acc
+0391 749E      1097            mov     a,#(__str_6 >> 8)
+0393 C0E0      1098            push    acc
+0395 7480      1099            mov     a,#0x80
+0397 C0E0      1100            push    acc
+0399 120100    1101            lcall   _printf
+039C 1581      1102            dec     sp
+039E 1581      1103            dec     sp
+03A0 1581      1104            dec     sp
+03A2 75D8FF    1105            mov     _pwm_both,#0xFF
+03A5 859882    1106            mov     dpl,_direction
+03A8 120100    1107            lcall   _forward_backward
+03AB           1108   L010004?:
+03AB           1109   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:213: InitPinADC(2, 3); // Configure P2.3 as analog input
+03AB 75F803    1110            mov     _InitPinADC_PARM_2,#0x03
+03AE 758202    1111            mov     dpl,#0x02
+03B1 120100    1112            lcall   _InitPinADC
+03B4           1113   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:214: InitPinADC(2, 4); // Configure P2.4 as analog input
+03B4 75F804    1114            mov     _InitPinADC_PARM_2,#0x04
+03B7 758202    1115            mov     dpl,#0x02
+03BA 120100    1116            lcall   _InitPinADC
+03BD           1117   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:215: InitADC();
+03BD 120100    1118            lcall   _InitADC
+03C0           1119   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:217: while(1)
+03C0           1120   L010006?:
+03C0 8001      1121            sjmp    L010006?
+03C2           1122            rseg R_CSEG
+03C2           1123   
+0000           1124            rseg R_XINIT
+0000           1125   
+0000           1126            rseg R_CONST
+0000           1127   __str_0:
+0000 1B        1128            db 0x1B
+0001 5B324A    1129            db '[2J'
+0004 00        1130            db 0x00
+0005           1131   __str_1:
+0005 53717561  1132            db 'Square wave generator for the F38x.'
      72652077
      61766520
      67656E65
@@ -769,58 +1138,58 @@
      72207468
      65204633
      38782E
-0028 0D         764            db 0x0D
-0029 0A         765            db 0x0A
-002A 43686563   766            db 'Check pins P2.1 and P2.'
+0028 0D        1133            db 0x0D
+0029 0A        1134            db 0x0A
+002A 43686563  1135            db 'Check pins P2.1 and P2.'
      6B207069
      6E732050
      322E3120
      616E6420
      50322E
-0041 32207769   767            db '2 with the oscilloscope.'
+0041 32207769  1136            db '2 with the oscilloscope.'
      74682074
      6865206F
      7363696C
      6C6F7363
      6F70652E
-0059 0D         768            db 0x0D
-005A 0A         769            db 0x0A
-005B 00         770            db 0x00
-005C            771   __str_2:
-005C 506C6561   772            db 'Please enter motors mode 1-6'
+0059 0D        1137            db 0x0D
+005A 0A        1138            db 0x0A
+005B 00        1139            db 0x00
+005C           1140   __str_2:
+005C 506C6561  1141            db 'Please enter motors mode 1-6'
      73652065
      6E746572
      206D6F74
      6F727320
      6D6F6465
      20312D36
-0078 0A         773            db 0x0A
-0079 00         774            db 0x00
-007A            775   __str_3:
-007A 256420     776            db '%d '
-007D 0A         777            db 0x0A
-007E 00         778            db 0x00
-007F            779   __str_4:
-007F 456E7465   780            db 'Enter pwm and direction'
+0078 0A        1142            db 0x0A
+0079 00        1143            db 0x00
+007A           1144   __str_3:
+007A 256420    1145            db '%d '
+007D 0A        1146            db 0x0A
+007E 00        1147            db 0x00
+007F           1148   __str_4:
+007F 456E7465  1149            db 'Enter pwm and direction'
      72207077
      6D20616E
      64206469
      72656374
      696F6E
-0096 0A         781            db 0x0A
-0097 00         782            db 0x00
-0098            783   __str_5:
-0098 25642025   784            db '%d %d'
+0096 0A        1150            db 0x0A
+0097 00        1151            db 0x00
+0098           1152   __str_5:
+0098 25642025  1153            db '%d %d'
      64
-009D 00         785            db 0x00
-009E            786   __str_6:
-009E 53746F70   787            db 'Stop mode triggered'
+009D 00        1154            db 0x00
+009E           1155   __str_6:
+009E 53746F70  1156            db 'Stop mode triggered'
      206D6F64
      65207472
      69676765
      726564
-00B1 00         788            db 0x00
-00B2            789   
-002E            790            CSEG
-002E            791   
-002E            792   end
+00B1 00        1157            db 0x00
+00B2           1158   
+002E           1159            CSEG
+002E           1160   
+002E           1161   end

@@ -22,7 +22,9 @@ volatile  char pwm_Left0 = 0; //p1.5
 volatile  char pwm_Left1 = 0; //p1.6
 volatile  char pwm_Right0 = 0; //p2.0
 volatile  char pwm_Right1 = 0; //p2.1
-volatile char direction = 0; // 1 for back 0 for forward
+volatile  char direction = 0; // 1 for back 0 for forward
+
+
 
 char _c51_external_startup (void)
 {
@@ -120,6 +122,74 @@ void forward_backward(unsigned char direction)
 	}
 
 }
+void InitADC (void)
+{
+	// Init ADC
+	ADC0CF = 0xF8; // SAR clock = 31, Right-justified result
+	ADC0CN = 0b_1000_0000; // AD0EN=1, AD0TM=0
+  	REF0CN = 0b_0000_1000; //Select VDD as the voltage reference for the converter
+}
+
+void InitPinADC (unsigned char portno, unsigned char pinno)
+{
+	unsigned char mask;
+	
+	mask=1<<pinno;
+	
+	switch (portno)
+	{
+		case 0:
+			P0MDIN &= (~mask); // Set pin as analog input
+			P0SKIP |= mask; // Skip Crossbar decoding for this pin
+		break;
+		case 1:
+			P1MDIN &= (~mask); // Set pin as analog input
+			P1SKIP |= mask; // Skip Crossbar decoding for this pin
+		break;
+		case 2:
+			P2MDIN &= (~mask); // Set pin as analog input
+			P2SKIP |= mask; // Skip Crossbar decoding for this pin
+		break;
+		case 3:
+			P3MDIN &= (~mask); // Set pin as analog input
+			P3SKIP |= mask; // Skip Crossbar decoding for this pin
+		break;
+		default:
+		break;
+	}
+}
+
+unsigned int ADC_at_Pin(unsigned char pin)
+{
+	AMX0P = pin;             // Select positive input from pin
+	AMX0N = LQFP32_MUX_GND;  // GND is negative input (Single-ended Mode)
+	// Dummy conversion first to select new pin
+	AD0BUSY=1;
+	while (AD0BUSY); // Wait for dummy conversion to finish
+	// Convert voltage at the pin
+	AD0BUSY = 1;
+	while (AD0BUSY); // Wait for conversion to complete
+	return (ADC0L+(ADC0H*0x100));
+}
+
+float Volts_at_Pin(unsigned char pin)
+{
+	 return ((ADC_at_Pin(pin)*3.30)/1024.0);
+}
+
+
+void linetrack (void) {
+	volatile float vleft;
+	volatile float vright;
+	
+	vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+	vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	
+	pwm_Left0 = -1;
+	pwm_Left1 = (vright*100/(vleft+vright));
+	pwm_Right0 = -1;
+	pwm_Right1 = (vleft*100/(vleft+vright));
+}
 
 
 void main (void)
@@ -139,9 +209,15 @@ void main (void)
 	if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
     if(mode == 2) {printf("Stop mode triggered"); pwm_both = -1;forward_backward(direction); }
     //printf("%d\n", pwm_Left1);
+    
+    InitPinADC(2, 3); // Configure P2.3 as analog input
+	InitPinADC(2, 4); // Configure P2.4 as analog input
+	InitADC();
 
 	while(1)
 	{	
+	
+		linetrack();
 	  //	switch(mode)
 	  //	{
 	  //		//forward_backward mode
