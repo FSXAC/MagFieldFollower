@@ -6,7 +6,7 @@
 #include "main_header.h"
 
 // global constants
-unsigned char magDataBuffer = 0x00;
+uint8_t magDataBuffer = 0x55;
 
 // ===[starting vector]===
 int main(void) {setup(); while (1) loop();}
@@ -30,13 +30,15 @@ void setup(void) {
 void loop(void) {
 
     // send some bits
-    setMagData(magDataBuffer); //1000 0001
-    transmit();
-    delay(10000);
+    // setMagData(magDataBuffer); //1000 0001
+    // transmit();
+    // magDataBuffer++;
+    // delay(500);
+
 }
 
 // set pin output
-void pinMode(char port, unsigned char pin) {
+void pinMode(char port, uint8_t pin) {
     switch (port) {
         case 'B':
         case 'b': DDRB |= (1<<pin); return;
