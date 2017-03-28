@@ -24,10 +24,15 @@ void setup(void) {
 
     // Turn on timer 0 for square output
     timer_init();
+
+    // turn on ADC
+    adc_init();
 }
 
 // runs forever
 void loop(void) {
+    uint8_t iter = 0;
+    uint16_t adc_value;
 
     // send some bits
     // setMagData(magDataBuffer); //1000 0001
@@ -35,6 +40,12 @@ void loop(void) {
     // magDataBuffer++;
     // delay(500);
 
+    // read adc and print to screen
+    adc_value = adc_read(0);
+    printf("ADC reading: %4d\t", adc_value);
+    for (; iter < adc_value / 40; iter++) printf("#");
+    printf("\n");
+    delay(50);
 }
 
 // set pin output

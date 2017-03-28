@@ -39,5 +39,10 @@ void usart_pstr(char *s);
 unsigned char usart_kbhit(void);
 int usart_putchar_printf(char var, FILE *stream);
 
+// adc functions
+uint16_t adc_read(uint8_t adcx);
+void adc_init(void);
+
 // user functions
 void pinMode(char port, unsigned char pin);
+
