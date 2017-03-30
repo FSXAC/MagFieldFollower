@@ -7,7 +7,7 @@
 
 // global constants
 uint8_t magDataBuffer = 0x55;
-uint16_t adc_controller_x, adc_controller_y;
+uint8_t controller_x, controller_y;
 
 // ===[starting vector]===
 int main(void) {setup(); while (1) loop();}
@@ -32,9 +32,37 @@ void setup(void) {
 
 // runs forever
 void loop(void) {
-    adc_controller_x = adc_read(0);
-    adc_controller_y = adc_read(1);
-    magDataBuffer = (adc_controller_x < 50) ? 0x55 : (adc_controller_x > 700) ? 0x0F : 0;
+    controller_x = mapDigital(adc_read(0), 180, 800);
+    controller_y = mapDigital(adc_read(1), 300, 700);
+    magDataBuffer = 0;
+        
+    // parse control into commands
+    // L/R has more dominance control
+    if (controller_x == 0) {
+        magDataBuffer = 1;
+    } else if (controller_x == 1) {
+        magDataBuffer = 2;
+    }
+
+    // F/W second priority
+    if (!magDataBuffer) {
+        if (controller_y == 0) {
+            magDataBuffer = 4;
+        } else if (controller_y == 1) {
+            magDataBuffer = 3;
+        }        
+    }
+
+    // printf("%d\n", controller_x);
+    // if (magDataBuffer) printf("\nTransmission: 0b_" BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(magDataBuffer));
+    // else printf("\n");
+    switch (magDataBuffer) {
+        case 1: printf("LEFT\n"); break;
+        case 2: printf("RIGHT\n"); break;
+        case 3: printf("FORWARD\n"); break;
+        case 4: printf("BACK\n"); break;
+        default: printf("\n");
+    }
 
     // send some bits
     setMagData(magDataBuffer); 
@@ -56,4 +84,15 @@ void pinMode(char port, uint8_t pin) {
         case 'd': DDRD |= (1<<pin); return;
         default: return;
     }
+}
+
+// convert adc into a digital signal
+uint8_t mapDigital(uint16_t adc, uint16_t low, uint16_t high) {
+    // printf("adc: %4d\t", adc);
+    return (adc < low) ? 0 : (adc > high) ? 1 : 2;
+}
+
+// parse ADC into direction
+void parseDirection(void) {
+    
 }
