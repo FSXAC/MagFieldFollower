@@ -15,6 +15,8 @@
 #define MOTOR_RIGHT0 P2_0
 #define MOTOR_RIGHT1 P2_1
 
+#define COMMAND_PIN P1_0
+
 volatile  char pwm_count=0;
 volatile  char mode = 0;
 volatile  char pwm_both =0;
@@ -23,6 +25,8 @@ volatile  char pwm_Left1 = 0; //p1.6
 volatile  char pwm_Right0 = 0; //p2.0
 volatile  char pwm_Right1 = 0; //p2.1
 volatile  char direction = 0; // 1 for back 0 for forward
+
+volatile  char currentcmd = 0;
 
 
 
@@ -191,6 +195,52 @@ void linetrack (void) {
 	pwm_Right1 = (vleft*100/(vleft+vright));
 }
 
+void readData (void) {
+	
+	if (COMMAND_PIN == 0) {					//0---
+		waitms(6);
+		if (COMMAND_PIN == 1) {				//01--
+			waitms(4);
+			if (COMMAND_PIN == 0) {			//010-
+				waitms(4);
+				if (COMMAND_PIN == 0) {		//0100	
+					currentcmd = 4;
+				}
+				else {						//0101
+					currentcmd = 5;
+				}
+			}
+			else {							//011-
+				waitms(4);
+				if (COMMAND_PIN == 0) {		//0110
+					currentcmd = 6;
+				}
+			}
+		else {								//00--
+			waitms(4);
+			if (COMMAND_PIN == 1) {			//001-
+				waitms(4);
+				if (COMMAND_PIN == 1) {		//0011
+					currentcmd = 3;
+				}
+				else {						//0010
+					currentcmd = 2;
+				}
+			}
+			else {							//000-
+				waitms(4);
+				if (COMMAND_PIN == 1) {		//0001	
+					currentcmd == 1;
+				}
+			}
+		}
+	}
+	
+	while (COMMAND_PIN == 0) {}
+}
+					
+		
+	
 
 void main (void)
 {
