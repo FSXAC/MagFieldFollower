@@ -1,7 +1,7 @@
 0000              1   ;--------------------------------------------------------
 0000              2   ; File Created by C51
 0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-0000              4   ; This file was generated Thu Mar 30 12:40:34 2017
+0000              4   ; This file was generated Thu Mar 30 12:52:44 2017
 0000              5   ;--------------------------------------------------------
                   5   $name motors
                   6   $optc51 --model-small
@@ -395,843 +395,942 @@
 0007            395            ds 1
 0008            396   _currentcmd:
 0008            397            ds 1
-0009            398   _linetrack_vleft_1_82:
-0009            399            ds 4
-000D            400   _linetrack_vright_1_82:
-000D            401            ds 4
-0011            402   ;--------------------------------------------------------
-0011            403   ; overlayable items in internal ram 
-0011            404   ;--------------------------------------------------------
-0000            405            rseg    R_OSEG
-0000            406            rseg    R_OSEG
+0009            398   _linetrack_forwardbackward_1_81:
+0009            399            ds 2
+000B            400   _linetrack_vleft_1_82:
+000B            401            ds 4
+000F            402   _linetrack_vright_1_82:
+000F            403            ds 4
+0013            404   ;--------------------------------------------------------
+0013            405   ; overlayable items in internal ram 
+0013            406   ;--------------------------------------------------------
 0000            407            rseg    R_OSEG
-0000            408   _InitPinADC_PARM_2:
-0000            409            ds 1
-0001            410            rseg    R_OSEG
-0001            411   ;--------------------------------------------------------
-0001            412   ; indirectly addressable internal ram data
+0000            408            rseg    R_OSEG
+0000            409            rseg    R_OSEG
+0000            410   _InitPinADC_PARM_2:
+0000            411            ds 1
+0001            412            rseg    R_OSEG
 0001            413   ;--------------------------------------------------------
-0000            414            rseg R_ISEG
-0000            415   ;--------------------------------------------------------
-0000            416   ; absolute internal ram data
+0001            414   ; indirectly addressable internal ram data
+0001            415   ;--------------------------------------------------------
+0000            416            rseg R_ISEG
 0000            417   ;--------------------------------------------------------
-0000            418            DSEG
+0000            418   ; absolute internal ram data
 0000            419   ;--------------------------------------------------------
-0000            420   ; bit data
+0000            420            DSEG
 0000            421   ;--------------------------------------------------------
-0000            422            rseg R_BSEG
-0000            423   _Timer2_ISR_sloc0_1_0:
-0000            424            DBIT    1
-0001            425   ;--------------------------------------------------------
-0001            426   ; paged external ram data
+0000            422   ; bit data
+0000            423   ;--------------------------------------------------------
+0000            424            rseg R_BSEG
+0000            425   _Timer2_ISR_sloc0_1_0:
+0000            426            DBIT    1
 0001            427   ;--------------------------------------------------------
-0000            428            rseg R_PSEG
-0000            429   ;--------------------------------------------------------
-0000            430   ; external ram data
+0001            428   ; paged external ram data
+0001            429   ;--------------------------------------------------------
+0000            430            rseg R_PSEG
 0000            431   ;--------------------------------------------------------
-0000            432            rseg R_XSEG
+0000            432   ; external ram data
 0000            433   ;--------------------------------------------------------
-0000            434   ; absolute external ram data
+0000            434            rseg R_XSEG
 0000            435   ;--------------------------------------------------------
-0000            436            XSEG
+0000            436   ; absolute external ram data
 0000            437   ;--------------------------------------------------------
-0000            438   ; external initialized ram data
+0000            438            XSEG
 0000            439   ;--------------------------------------------------------
-0000            440            rseg R_IXSEG
-0000            441            rseg R_HOME
-0000            442            rseg R_GSINIT
-0000            443            rseg R_CSEG
-0000            444   ;--------------------------------------------------------
-0000            445   ; Reset entry point and interrupt vectors
+0000            440   ; external initialized ram data
+0000            441   ;--------------------------------------------------------
+0000            442            rseg R_IXSEG
+0000            443            rseg R_HOME
+0000            444            rseg R_GSINIT
+0000            445            rseg R_CSEG
 0000            446   ;--------------------------------------------------------
-0000            447            CSEG at 0x0000
-0000 020100     448            ljmp    _crt0
-002B            449            CSEG at 0x002b
-002B 020100     450            ljmp    _Timer2_ISR
-002E            451   ;--------------------------------------------------------
-002E            452   ; global & static initialisations
+0000            447   ; Reset entry point and interrupt vectors
+0000            448   ;--------------------------------------------------------
+0000            449            CSEG at 0x0000
+0000 020100     450            ljmp    _crt0
+002B            451            CSEG at 0x002b
+002B 020100     452            ljmp    _Timer2_ISR
 002E            453   ;--------------------------------------------------------
-0000            454            rseg R_HOME
-0000            455            rseg R_GSINIT
-0000            456            rseg R_GSINIT
-0000            457   ;--------------------------------------------------------
-0000            458   ; data variables initialization
+002E            454   ; global & static initialisations
+002E            455   ;--------------------------------------------------------
+0000            456            rseg R_HOME
+0000            457            rseg R_GSINIT
+0000            458            rseg R_GSINIT
 0000            459   ;--------------------------------------------------------
-0000            460            rseg R_DINIT
-0000            461   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:20: volatile  char pwm_count=0;
-0000 755800     462            mov     _pwm_count,#0x00
-0003            463   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:21: volatile  char mode = 0;
-0003 751800     464            mov     _mode,#0x00
-0006            465   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:22: volatile  char pwm_both =0;
-0006 75D800     466            mov     _pwm_both,#0x00
-0009            467   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:23: volatile  char pwm_Left0 = 0; //p1.5
-0009 759800     468            mov     _pwm_Left0,#0x00
-000C            469   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:24: volatile  char pwm_Left1 = 0; //p1.6
-000C 755800     470            mov     _pwm_Left1,#0x00
-000F            471   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:25: volatile  char pwm_Right0 = 0; //p2.0
-000F 751800     472            mov     _pwm_Right0,#0x00
-0012            473   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:26: volatile  char pwm_Right1 = 0; //p2.1
-0012 75D800     474            mov     _pwm_Right1,#0x00
-0015            475   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:27: volatile  char direction = 0; // 1 for back 0 for forward
-0015 759800     476            mov     _direction,#0x00
-0018            477   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:29: volatile  char currentcmd = 0;
-0018 755800     478            mov     _currentcmd,#0x00
-001B            479            ; The linker places a 'ret' at the end of segment R_DINIT.
-001B            480   ;--------------------------------------------------------
-001B            481   ; code
+0000            460   ; data variables initialization
+0000            461   ;--------------------------------------------------------
+0000            462            rseg R_DINIT
+0000            463   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:20: volatile  char pwm_count=0;
+0000 755800     464            mov     _pwm_count,#0x00
+0003            465   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:21: volatile  char mode = 0;
+0003 751800     466            mov     _mode,#0x00
+0006            467   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:22: volatile  char pwm_both =0;
+0006 75D800     468            mov     _pwm_both,#0x00
+0009            469   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:23: volatile  char pwm_Left0 = 0; //p1.5
+0009 759800     470            mov     _pwm_Left0,#0x00
+000C            471   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:24: volatile  char pwm_Left1 = 0; //p1.6
+000C 755800     472            mov     _pwm_Left1,#0x00
+000F            473   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:25: volatile  char pwm_Right0 = 0; //p2.0
+000F 751800     474            mov     _pwm_Right0,#0x00
+0012            475   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:26: volatile  char pwm_Right1 = 0; //p2.1
+0012 75D800     476            mov     _pwm_Right1,#0x00
+0015            477   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:27: volatile  char direction = 0; // 1 for back 0 for forward
+0015 759800     478            mov     _direction,#0x00
+0018            479   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:29: volatile  char currentcmd = 3;
+0018 755803     480            mov     _currentcmd,#0x03
+001B            481            ; The linker places a 'ret' at the end of segment R_DINIT.
 001B            482   ;--------------------------------------------------------
-0000            483            rseg R_CSEG
-0000            484   ;------------------------------------------------------------
-0000            485   ;Allocation info for local variables in function '_c51_external_startup'
+001B            483   ; code
+001B            484   ;--------------------------------------------------------
+0000            485            rseg R_CSEG
 0000            486   ;------------------------------------------------------------
-0000            487   ;------------------------------------------------------------
-0000            488   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:33: char _c51_external_startup (void)
-0000            489   ;        -----------------------------------------
-0000            490   ;         function _c51_external_startup
+0000            487   ;Allocation info for local variables in function '_c51_external_startup'
+0000            488   ;------------------------------------------------------------
+0000            489   ;------------------------------------------------------------
+0000            490   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:33: char _c51_external_startup (void)
 0000            491   ;        -----------------------------------------
-0000            492   __c51_external_startup:
-0000            493            using   0
-0000            494   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:35: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
-0000 53D9BF     495            anl     _PCA0MD,#0xBF
-0003            496   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:36: VDM0CN=0x80; // enable VDD monitor
-0003 75FF80     497            mov     _VDM0CN,#0x80
-0006            498   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:37: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
-0006 75EF06     499            mov     _RSTSRC,#0x06
-0009            500   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:45: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
-0009 43A903     501            orl     _CLKSEL,#0x03
-000C            502   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:49: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
-000C 43B203     503            orl     _OSCICN,#0x03
-000F            504   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:52: SCON0 = 0x10;
-000F 759810     505            mov     _SCON0,#0x10
-0012            506   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:54: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
-0012 758D30     507            mov     _TH1,#0x30
-0015            508   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:55: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
-0015 538EF4     509            anl     _CKCON,#0xF4
-0018            510   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:56: CKCON |=  0x08;
-0018 438E08     511            orl     _CKCON,#0x08
-001B            512   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:69: TL1 = TH1;      // Init Timer1
-001B 858D8B     513            mov     _TL1,_TH1
-001E            514   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:70: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
-001E 53890F     515            anl     _TMOD,#0x0F
-0021            516   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:71: TMOD |=  0x20;
-0021 438920     517            orl     _TMOD,#0x20
-0024            518   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:72: TR1 = 1; // START Timer1
-0024 D28E       519            setb    _TR1
-0026            520   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:73: TI = 1;  // Indicate TX0 ready
-0026 D299       521            setb    _TI
-0028            522   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:76: P2MDOUT|=0b_0000_0011;
-0028 43A603     523            orl     _P2MDOUT,#0x03
-002B            524   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:77: P0MDOUT |= 0x10; // Enable UTX as push-pull output
-002B 43A410     525            orl     _P0MDOUT,#0x10
-002E            526   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:78: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
-002E 75E101     527            mov     _XBR0,#0x01
-0031            528   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:79: XBR1     = 0x40; // Enable crossbar and weak pull-ups
-0031 75E240     529            mov     _XBR1,#0x40
-0034            530   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:82: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
-0034 75C800     531            mov     _TMR2CN,#0x00
-0037            532   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:83: CKCON|=0b_0001_0000;
-0037 438E10     533            orl     _CKCON,#0x10
-003A            534   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:84: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
-003A 75CA78     535            mov     _TMR2RL,#0x78
-003D 75CBEC     536            mov     (_TMR2RL >> 8),#0xEC
-0040            537   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:85: TMR2=0xffff;   // Set to reload immediately
-0040 75CCFF     538            mov     _TMR2,#0xFF
-0043 75CDFF     539            mov     (_TMR2 >> 8),#0xFF
-0046            540   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:86: ET2=1;         // Enable Timer2 interrupts
-0046 D2AD       541            setb    _ET2
-0048            542   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:87: TR2=1;         // Start Timer2
-0048 D2CA       543            setb    _TR2
-004A            544   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:89: EA=1; // Enable interrupts
-004A D2AF       545            setb    _EA
-004C            546   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:91: return 0;
-004C 758200     547            mov     dpl,#0x00
-004F 22         548            ret
-0050            549   ;------------------------------------------------------------
-0050            550   ;Allocation info for local variables in function 'Timer3us'
+0000            492   ;         function _c51_external_startup
+0000            493   ;        -----------------------------------------
+0000            494   __c51_external_startup:
+0000            495            using   0
+0000            496   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:35: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
+0000 53D9BF     497            anl     _PCA0MD,#0xBF
+0003            498   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:36: VDM0CN=0x80; // enable VDD monitor
+0003 75FF80     499            mov     _VDM0CN,#0x80
+0006            500   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:37: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
+0006 75EF06     501            mov     _RSTSRC,#0x06
+0009            502   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:45: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
+0009 43A903     503            orl     _CLKSEL,#0x03
+000C            504   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:49: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
+000C 43B203     505            orl     _OSCICN,#0x03
+000F            506   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:52: SCON0 = 0x10;
+000F 759810     507            mov     _SCON0,#0x10
+0012            508   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:54: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
+0012 758D30     509            mov     _TH1,#0x30
+0015            510   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:55: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
+0015 538EF4     511            anl     _CKCON,#0xF4
+0018            512   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:56: CKCON |=  0x08;
+0018 438E08     513            orl     _CKCON,#0x08
+001B            514   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:69: TL1 = TH1;      // Init Timer1
+001B 858D8B     515            mov     _TL1,_TH1
+001E            516   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:70: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
+001E 53890F     517            anl     _TMOD,#0x0F
+0021            518   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:71: TMOD |=  0x20;
+0021 438920     519            orl     _TMOD,#0x20
+0024            520   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:72: TR1 = 1; // START Timer1
+0024 D28E       521            setb    _TR1
+0026            522   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:73: TI = 1;  // Indicate TX0 ready
+0026 D299       523            setb    _TI
+0028            524   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:76: P2MDOUT|=0b_0000_0011;
+0028 43A603     525            orl     _P2MDOUT,#0x03
+002B            526   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:77: P0MDOUT |= 0x10; // Enable UTX as push-pull output
+002B 43A410     527            orl     _P0MDOUT,#0x10
+002E            528   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:78: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
+002E 75E101     529            mov     _XBR0,#0x01
+0031            530   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:79: XBR1     = 0x40; // Enable crossbar and weak pull-ups
+0031 75E240     531            mov     _XBR1,#0x40
+0034            532   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:82: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
+0034 75C800     533            mov     _TMR2CN,#0x00
+0037            534   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:83: CKCON|=0b_0001_0000;
+0037 438E10     535            orl     _CKCON,#0x10
+003A            536   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:84: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
+003A 75CA78     537            mov     _TMR2RL,#0x78
+003D 75CBEC     538            mov     (_TMR2RL >> 8),#0xEC
+0040            539   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:85: TMR2=0xffff;   // Set to reload immediately
+0040 75CCFF     540            mov     _TMR2,#0xFF
+0043 75CDFF     541            mov     (_TMR2 >> 8),#0xFF
+0046            542   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:86: ET2=1;         // Enable Timer2 interrupts
+0046 D2AD       543            setb    _ET2
+0048            544   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:87: TR2=1;         // Start Timer2
+0048 D2CA       545            setb    _TR2
+004A            546   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:89: EA=1; // Enable interrupts
+004A D2AF       547            setb    _EA
+004C            548   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:91: return 0;
+004C 758200     549            mov     dpl,#0x00
+004F 22         550            ret
 0050            551   ;------------------------------------------------------------
-0050            552   ;us                        Allocated to registers r2 
-0050            553   ;i                         Allocated to registers r3 
-0050            554   ;------------------------------------------------------------
-0050            555   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:95: void Timer3us(unsigned char us)
-0050            556   ;        -----------------------------------------
-0050            557   ;         function Timer3us
+0050            552   ;Allocation info for local variables in function 'Timer3us'
+0050            553   ;------------------------------------------------------------
+0050            554   ;us                        Allocated to registers r2 
+0050            555   ;i                         Allocated to registers r3 
+0050            556   ;------------------------------------------------------------
+0050            557   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:95: void Timer3us(unsigned char us)
 0050            558   ;        -----------------------------------------
-0050            559   _Timer3us:
-0050 AA82       560            mov     r2,dpl
-0052            561   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:100: CKCON|=0b_0100_0000;
-0052 438E40     562            orl     _CKCON,#0x40
-0055            563   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:102: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
-0055 7592D0     564            mov     _TMR3RL,#0xD0
-0058 7593FF     565            mov     (_TMR3RL >> 8),#0xFF
-005B            566   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:103: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
-005B 859294     567            mov     _TMR3,_TMR3RL
-005E 859395     568            mov     (_TMR3 >> 8),(_TMR3RL >> 8)
-0061            569   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:105: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
-0061 759104     570            mov     _TMR3CN,#0x04
-0064            571   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:106: for (i = 0; i < us; i++)       // Count <us> overflows
-0064 7B00       572            mov     r3,#0x00
-0066            573   L003004?:
-0066 C3         574            clr     c
-0067 EB         575            mov     a,r3
-0068 9A         576            subb    a,r2
-0069 5001       577            jnc     L003007?
-006B            578   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:108: while (!(TMR3CN & 0x80));  // Wait for overflow
-006B            579   L003001?:
-006B E591       580            mov     a,_TMR3CN
-006D 30E708     581            jnb     acc.7,L003001?
-0070            582   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:109: TMR3CN &= ~(0x80);         // Clear overflow indicator
-0070 53917F     583            anl     _TMR3CN,#0x7F
-0073            584   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:106: for (i = 0; i < us; i++)       // Count <us> overflows
-0073 0B         585            inc     r3
-0074 8001       586            sjmp    L003004?
-0076            587   L003007?:
-0076            588   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:111: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
-0076 759100     589            mov     _TMR3CN,#0x00
-0079 22         590            ret
-007A            591   ;------------------------------------------------------------
-007A            592   ;Allocation info for local variables in function 'waitms'
+0050            559   ;         function Timer3us
+0050            560   ;        -----------------------------------------
+0050            561   _Timer3us:
+0050 AA82       562            mov     r2,dpl
+0052            563   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:100: CKCON|=0b_0100_0000;
+0052 438E40     564            orl     _CKCON,#0x40
+0055            565   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:102: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+0055 7592D0     566            mov     _TMR3RL,#0xD0
+0058 7593FF     567            mov     (_TMR3RL >> 8),#0xFF
+005B            568   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:103: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+005B 859294     569            mov     _TMR3,_TMR3RL
+005E 859395     570            mov     (_TMR3 >> 8),(_TMR3RL >> 8)
+0061            571   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:105: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
+0061 759104     572            mov     _TMR3CN,#0x04
+0064            573   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:106: for (i = 0; i < us; i++)       // Count <us> overflows
+0064 7B00       574            mov     r3,#0x00
+0066            575   L003004?:
+0066 C3         576            clr     c
+0067 EB         577            mov     a,r3
+0068 9A         578            subb    a,r2
+0069 5001       579            jnc     L003007?
+006B            580   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:108: while (!(TMR3CN & 0x80));  // Wait for overflow
+006B            581   L003001?:
+006B E591       582            mov     a,_TMR3CN
+006D 30E758     583            jnb     acc.7,L003001?
+0070            584   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:109: TMR3CN &= ~(0x80);         // Clear overflow indicator
+0070 53917F     585            anl     _TMR3CN,#0x7F
+0073            586   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:106: for (i = 0; i < us; i++)       // Count <us> overflows
+0073 0B         587            inc     r3
+0074 8001       588            sjmp    L003004?
+0076            589   L003007?:
+0076            590   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:111: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
+0076 759100     591            mov     _TMR3CN,#0x00
+0079 22         592            ret
 007A            593   ;------------------------------------------------------------
-007A            594   ;ms                        Allocated to registers r2 r3 
-007A            595   ;j                         Allocated to registers r2 r3 
-007A            596   ;------------------------------------------------------------
-007A            597   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:114: void waitms (unsigned int ms)
-007A            598   ;        -----------------------------------------
-007A            599   ;         function waitms
+007A            594   ;Allocation info for local variables in function 'waitms'
+007A            595   ;------------------------------------------------------------
+007A            596   ;ms                        Allocated to registers r2 r3 
+007A            597   ;j                         Allocated to registers r2 r3 
+007A            598   ;------------------------------------------------------------
+007A            599   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:114: void waitms (unsigned int ms)
 007A            600   ;        -----------------------------------------
-007A            601   _waitms:
-007A AA82       602            mov     r2,dpl
-007C AB83       603            mov     r3,dph
-007E            604   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:117: for(j=ms; j!=0; j--)
-007E            605   L004001?:
-007E BA0008     606            cjne    r2,#0x00,L004010?
-0081 BB0008     607            cjne    r3,#0x00,L004010?
-0084 22         608            ret
-0085            609   L004010?:
-0085            610   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:119: Timer3us(249);
-0085 7582F9     611            mov     dpl,#0xF9
-0088 C002       612            push    ar2
-008A C003       613            push    ar3
-008C 120100     614            lcall   _Timer3us
-008F            615   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:120: Timer3us(249);
-008F 7582F9     616            mov     dpl,#0xF9
-0092 120100     617            lcall   _Timer3us
-0095            618   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:121: Timer3us(249);
-0095 7582F9     619            mov     dpl,#0xF9
-0098 120100     620            lcall   _Timer3us
-009B            621   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:122: Timer3us(250);
-009B 7582FA     622            mov     dpl,#0xFA
-009E 120100     623            lcall   _Timer3us
-00A1 D003       624            pop     ar3
-00A3 D002       625            pop     ar2
-00A5            626   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:117: for(j=ms; j!=0; j--)
-00A5 1A         627            dec     r2
-00A6 BAFF48     628            cjne    r2,#0xff,L004011?
-00A9 1B         629            dec     r3
-00AA            630   L004011?:
-00AA 8001       631            sjmp    L004001?
-00AC            632   ;------------------------------------------------------------
-00AC            633   ;Allocation info for local variables in function 'Timer2_ISR'
+007A            601   ;         function waitms
+007A            602   ;        -----------------------------------------
+007A            603   _waitms:
+007A AA82       604            mov     r2,dpl
+007C AB83       605            mov     r3,dph
+007E            606   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:117: for(j=ms; j!=0; j--)
+007E            607   L004001?:
+007E BA0058     608            cjne    r2,#0x00,L004010?
+0081 BB0058     609            cjne    r3,#0x00,L004010?
+0084 22         610            ret
+0085            611   L004010?:
+0085            612   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:119: Timer3us(249);
+0085 7582F9     613            mov     dpl,#0xF9
+0088 C002       614            push    ar2
+008A C003       615            push    ar3
+008C 120100     616            lcall   _Timer3us
+008F            617   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:120: Timer3us(249);
+008F 7582F9     618            mov     dpl,#0xF9
+0092 120100     619            lcall   _Timer3us
+0095            620   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:121: Timer3us(249);
+0095 7582F9     621            mov     dpl,#0xF9
+0098 120100     622            lcall   _Timer3us
+009B            623   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:122: Timer3us(250);
+009B 7582FA     624            mov     dpl,#0xFA
+009E 120100     625            lcall   _Timer3us
+00A1 D003       626            pop     ar3
+00A3 D002       627            pop     ar2
+00A5            628   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:117: for(j=ms; j!=0; j--)
+00A5 1A         629            dec     r2
+00A6 BAFF98     630            cjne    r2,#0xff,L004011?
+00A9 1B         631            dec     r3
+00AA            632   L004011?:
+00AA 8001       633            sjmp    L004001?
 00AC            634   ;------------------------------------------------------------
-00AC            635   ;------------------------------------------------------------
-00AC            636   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:127: void Timer2_ISR (void) interrupt 5
-00AC            637   ;        -----------------------------------------
-00AC            638   ;         function Timer2_ISR
+00AC            635   ;Allocation info for local variables in function 'Timer2_ISR'
+00AC            636   ;------------------------------------------------------------
+00AC            637   ;------------------------------------------------------------
+00AC            638   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:127: void Timer2_ISR (void) interrupt 5
 00AC            639   ;        -----------------------------------------
-00AC            640   _Timer2_ISR:
-00AC C0E0       641            push    acc
-00AE C0F0       642            push    b
-00B0 C0D0       643            push    psw
-00B2 75D000     644            mov     psw,#0x00
-00B5            645   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:129: TF2H = 0; // Clear Timer2 interrupt flag
-00B5 C2CF       646            clr     _TF2H
-00B7            647   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:131: pwm_count++;
-00B7 0558       648            inc     _pwm_count
-00B9            649   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:132: if(pwm_count>100) pwm_count=0;
-00B9 C3         650            clr     c
-00BA 74E4       651            mov     a,#(0x64 ^ 0x80)
-00BC 8558F0     652            mov     b,_pwm_count
-00BF 63F080     653            xrl     b,#0x80
-00C2 95F0       654            subb    a,b
-00C4 5001       655            jnc     L005002?
-00C6 755800     656            mov     _pwm_count,#0x00
-00C9            657   L005002?:
-00C9            658   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:135: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
-00C9 C3         659            clr     c
-00CA E598       660            mov     a,_pwm_Left0
-00CC 6480       661            xrl     a,#0x80
-00CE 8558F0     662            mov     b,_pwm_count
-00D1 63F080     663            xrl     b,#0x80
-00D4 95F0       664            subb    a,b
-00D6 92C8       665            mov  _Timer2_ISR_sloc0_1_0,c
-00D8 B3         666            cpl     c
-00D9 9295       667            mov     _P1_5,c
-00DB            668   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:136: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
-00DB C3         669            clr     c
-00DC E558       670            mov     a,_pwm_Left1
-00DE 6480       671            xrl     a,#0x80
-00E0 8558F0     672            mov     b,_pwm_count
-00E3 63F080     673            xrl     b,#0x80
-00E6 95F0       674            subb    a,b
-00E8 92C8       675            mov  _Timer2_ISR_sloc0_1_0,c
-00EA B3         676            cpl     c
-00EB 9296       677            mov     _P1_6,c
-00ED            678   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:137: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
-00ED C3         679            clr     c
-00EE E518       680            mov     a,_pwm_Right0
-00F0 6480       681            xrl     a,#0x80
-00F2 8558F0     682            mov     b,_pwm_count
-00F5 63F080     683            xrl     b,#0x80
-00F8 95F0       684            subb    a,b
-00FA 92C8       685            mov  _Timer2_ISR_sloc0_1_0,c
-00FC B3         686            cpl     c
-00FD 92A0       687            mov     _P2_0,c
-00FF            688   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:138: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
-00FF C3         689            clr     c
-0100 E5D8       690            mov     a,_pwm_Right1
-0102 6480       691            xrl     a,#0x80
-0104 8558F0     692            mov     b,_pwm_count
-0107 63F080     693            xrl     b,#0x80
-010A 95F0       694            subb    a,b
-010C 92C8       695            mov  _Timer2_ISR_sloc0_1_0,c
-010E B3         696            cpl     c
-010F 92A1       697            mov     _P2_1,c
-0111 D0D0       698            pop     psw
-0113 D0F0       699            pop     b
-0115 D0E0       700            pop     acc
-0117 32         701            reti
-0118            702   ;        eliminated unneeded push/pop dpl
-0118            703   ;        eliminated unneeded push/pop dph
-0118            704   ;------------------------------------------------------------
-0118            705   ;Allocation info for local variables in function 'forward_backward'
+00AC            640   ;         function Timer2_ISR
+00AC            641   ;        -----------------------------------------
+00AC            642   _Timer2_ISR:
+00AC C0E0       643            push    acc
+00AE C0F0       644            push    b
+00B0 C0D0       645            push    psw
+00B2 75D000     646            mov     psw,#0x00
+00B5            647   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:129: TF2H = 0; // Clear Timer2 interrupt flag
+00B5 C2CF       648            clr     _TF2H
+00B7            649   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:131: pwm_count++;
+00B7 0558       650            inc     _pwm_count
+00B9            651   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:132: if(pwm_count>100) pwm_count=0;
+00B9 C3         652            clr     c
+00BA 74E4       653            mov     a,#(0x64 ^ 0x80)
+00BC 8558F0     654            mov     b,_pwm_count
+00BF 63F080     655            xrl     b,#0x80
+00C2 95F0       656            subb    a,b
+00C4 5001       657            jnc     L005002?
+00C6 755800     658            mov     _pwm_count,#0x00
+00C9            659   L005002?:
+00C9            660   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:135: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
+00C9 C3         661            clr     c
+00CA E598       662            mov     a,_pwm_Left0
+00CC 6480       663            xrl     a,#0x80
+00CE 8558F0     664            mov     b,_pwm_count
+00D1 63F080     665            xrl     b,#0x80
+00D4 95F0       666            subb    a,b
+00D6 9218       667            mov  _Timer2_ISR_sloc0_1_0,c
+00D8 B3         668            cpl     c
+00D9 9295       669            mov     _P1_5,c
+00DB            670   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:136: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
+00DB C3         671            clr     c
+00DC E558       672            mov     a,_pwm_Left1
+00DE 6480       673            xrl     a,#0x80
+00E0 8558F0     674            mov     b,_pwm_count
+00E3 63F080     675            xrl     b,#0x80
+00E6 95F0       676            subb    a,b
+00E8 9218       677            mov  _Timer2_ISR_sloc0_1_0,c
+00EA B3         678            cpl     c
+00EB 9296       679            mov     _P1_6,c
+00ED            680   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:137: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
+00ED C3         681            clr     c
+00EE E518       682            mov     a,_pwm_Right0
+00F0 6480       683            xrl     a,#0x80
+00F2 8558F0     684            mov     b,_pwm_count
+00F5 63F080     685            xrl     b,#0x80
+00F8 95F0       686            subb    a,b
+00FA 9218       687            mov  _Timer2_ISR_sloc0_1_0,c
+00FC B3         688            cpl     c
+00FD 92A0       689            mov     _P2_0,c
+00FF            690   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:138: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
+00FF C3         691            clr     c
+0100 E5D8       692            mov     a,_pwm_Right1
+0102 6480       693            xrl     a,#0x80
+0104 8558F0     694            mov     b,_pwm_count
+0107 63F080     695            xrl     b,#0x80
+010A 95F0       696            subb    a,b
+010C 9218       697            mov  _Timer2_ISR_sloc0_1_0,c
+010E B3         698            cpl     c
+010F 92A1       699            mov     _P2_1,c
+0111 D0D0       700            pop     psw
+0113 D0F0       701            pop     b
+0115 D0E0       702            pop     acc
+0117 32         703            reti
+0118            704   ;        eliminated unneeded push/pop dpl
+0118            705   ;        eliminated unneeded push/pop dph
 0118            706   ;------------------------------------------------------------
-0118            707   ;direction                 Allocated to registers r2 
+0118            707   ;Allocation info for local variables in function 'forward_backward'
 0118            708   ;------------------------------------------------------------
-0118            709   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:145: void forward_backward(unsigned char direction)
-0118            710   ;        -----------------------------------------
-0118            711   ;         function forward_backward
+0118            709   ;direction                 Allocated to registers r2 
+0118            710   ;------------------------------------------------------------
+0118            711   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:145: void forward_backward(unsigned char direction)
 0118            712   ;        -----------------------------------------
-0118            713   _forward_backward:
-0118            714   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:148: if (direction == 0) { //p2.1,1.6 on
-0118 E582       715            mov     a,dpl
-011A FA         716            mov     r2,a
-011B 7001       717            jnz     L006004?
-011D            718   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:149: pwm_Left0 = pwm_Right0 = -1;
-011D 7518FF     719            mov     _pwm_Right0,#0xFF
-0120 7598FF     720            mov     _pwm_Left0,#0xFF
-0123            721   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:150: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
-0123 85D8D8     722            mov     _pwm_Right1,_pwm_both
-0126 85D858     723            mov     _pwm_Left1,_pwm_both
-0129 22         724            ret
-012A            725   L006004?:
-012A            726   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:153: else if (direction == 1) { //p2.0,1.5 on
-012A BA0188     727            cjne    r2,#0x01,L006006?
-012D            728   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:154: pwm_Left1 = pwm_Right1 = -1;
-012D 75D8FF     729            mov     _pwm_Right1,#0xFF
-0130 7558FF     730            mov     _pwm_Left1,#0xFF
-0133            731   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:155: pwm_Left0 = pwm_Right0 = pwm_both; 
-0133 85D818     732            mov     _pwm_Right0,_pwm_both
-0136 85D898     733            mov     _pwm_Left0,_pwm_both
-0139            734   L006006?:
-0139 22         735            ret
-013A            736   ;------------------------------------------------------------
-013A            737   ;Allocation info for local variables in function 'InitADC'
+0118            713   ;         function forward_backward
+0118            714   ;        -----------------------------------------
+0118            715   _forward_backward:
+0118            716   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:148: if (direction == 0) { //p2.1,1.6 on
+0118 E582       717            mov     a,dpl
+011A FA         718            mov     r2,a
+011B 7001       719            jnz     L006004?
+011D            720   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:149: pwm_Left0 = pwm_Right0 = -1;
+011D 7518FF     721            mov     _pwm_Right0,#0xFF
+0120 7598FF     722            mov     _pwm_Left0,#0xFF
+0123            723   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:150: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
+0123 85D8D8     724            mov     _pwm_Right1,_pwm_both
+0126 85D858     725            mov     _pwm_Left1,_pwm_both
+0129 22         726            ret
+012A            727   L006004?:
+012A            728   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:153: else if (direction == 1) { //p2.0,1.5 on
+012A BA01D8     729            cjne    r2,#0x01,L006006?
+012D            730   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:154: pwm_Left1 = pwm_Right1 = -1;
+012D 75D8FF     731            mov     _pwm_Right1,#0xFF
+0130 7558FF     732            mov     _pwm_Left1,#0xFF
+0133            733   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:155: pwm_Left0 = pwm_Right0 = pwm_both; 
+0133 85D818     734            mov     _pwm_Right0,_pwm_both
+0136 85D898     735            mov     _pwm_Left0,_pwm_both
+0139            736   L006006?:
+0139 22         737            ret
 013A            738   ;------------------------------------------------------------
-013A            739   ;------------------------------------------------------------
-013A            740   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:161: void InitADC (void)
-013A            741   ;        -----------------------------------------
-013A            742   ;         function InitADC
+013A            739   ;Allocation info for local variables in function 'InitADC'
+013A            740   ;------------------------------------------------------------
+013A            741   ;------------------------------------------------------------
+013A            742   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:161: void InitADC (void)
 013A            743   ;        -----------------------------------------
-013A            744   _InitADC:
-013A            745   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:164: ADC0CF = 0xF8; // SAR clock = 31, Right-justified result
-013A 75BCF8     746            mov     _ADC0CF,#0xF8
-013D            747   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:165: ADC0CN = 0b_1000_0000; // AD0EN=1, AD0TM=0
-013D 75E880     748            mov     _ADC0CN,#0x80
-0140            749   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:166: REF0CN = 0b_0000_1000; //Select VDD as the voltage reference for the converter
-0140 75D108     750            mov     _REF0CN,#0x08
-0143 22         751            ret
-0144            752   ;------------------------------------------------------------
-0144            753   ;Allocation info for local variables in function 'InitPinADC'
+013A            744   ;         function InitADC
+013A            745   ;        -----------------------------------------
+013A            746   _InitADC:
+013A            747   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:164: ADC0CF = 0xF8; // SAR clock = 31, Right-justified result
+013A 75BCF8     748            mov     _ADC0CF,#0xF8
+013D            749   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:165: ADC0CN = 0b_1000_0000; // AD0EN=1, AD0TM=0
+013D 75E880     750            mov     _ADC0CN,#0x80
+0140            751   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:166: REF0CN = 0b_0000_1000; //Select VDD as the voltage reference for the converter
+0140 75D108     752            mov     _REF0CN,#0x08
+0143 22         753            ret
 0144            754   ;------------------------------------------------------------
-0144            755   ;pinno                     Allocated with name '_InitPinADC_PARM_2'
-0144            756   ;portno                    Allocated to registers r2 
-0144            757   ;mask                      Allocated to registers r3 
-0144            758   ;------------------------------------------------------------
-0144            759   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:169: void InitPinADC (unsigned char portno, unsigned char pinno)
-0144            760   ;        -----------------------------------------
-0144            761   ;         function InitPinADC
+0144            755   ;Allocation info for local variables in function 'InitPinADC'
+0144            756   ;------------------------------------------------------------
+0144            757   ;pinno                     Allocated with name '_InitPinADC_PARM_2'
+0144            758   ;portno                    Allocated to registers r2 
+0144            759   ;mask                      Allocated to registers r3 
+0144            760   ;------------------------------------------------------------
+0144            761   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:169: void InitPinADC (unsigned char portno, unsigned char pinno)
 0144            762   ;        -----------------------------------------
-0144            763   _InitPinADC:
-0144 AA82       764            mov     r2,dpl
-0146            765   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:173: mask=1<<pinno;
-0146 85F8F0     766            mov     b,_InitPinADC_PARM_2
-0149 05F0       767            inc     b
-014B 7401       768            mov     a,#0x01
-014D 8001       769            sjmp    L008012?
-014F            770   L008010?:
-014F 25E0       771            add     a,acc
-0151            772   L008012?:
-0151 D5F008     773            djnz    b,L008010?
-0154 FB         774            mov     r3,a
-0155            775   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:175: switch (portno)
-0155 EA         776            mov     a,r2
-0156 24FC       777            add     a,#0xff - 0x03
-0158 4001       778            jc      L008007?
-015A EA         779            mov     a,r2
-015B 2A         780            add     a,r2
-015C 2A         781            add     a,r2
-015D 909B88     782            mov     dptr,#L008014?
-0160 73         783            jmp     @a+dptr
-0161            784   L008014?:
-0161 020100     785            ljmp    L008001?
-0164 020100     786            ljmp    L008002?
-0167 020100     787            ljmp    L008003?
-016A 020100     788            ljmp    L008004?
-016D            789   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:177: case 0:
-016D            790   L008001?:
-016D            791   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:178: P0MDIN &= (~mask); // Set pin as analog input
-016D EB         792            mov     a,r3
-016E F4         793            cpl     a
-016F 52F1       794            anl     _P0MDIN,a
-0171            795   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:179: P0SKIP |= mask; // Skip Crossbar decoding for this pin
-0171 EB         796            mov     a,r3
-0172 42D4       797            orl     _P0SKIP,a
-0174            798   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:180: break;
-0174            799   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:181: case 1:
-0174 22         800            ret
-0175            801   L008002?:
-0175            802   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:182: P1MDIN &= (~mask); // Set pin as analog input
-0175 EB         803            mov     a,r3
-0176 F4         804            cpl     a
-0177 52F2       805            anl     _P1MDIN,a
-0179            806   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:183: P1SKIP |= mask; // Skip Crossbar decoding for this pin
-0179 EB         807            mov     a,r3
-017A 42D5       808            orl     _P1SKIP,a
-017C            809   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:184: break;
-017C            810   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:185: case 2:
-017C 22         811            ret
-017D            812   L008003?:
-017D            813   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:186: P2MDIN &= (~mask); // Set pin as analog input
-017D EB         814            mov     a,r3
-017E F4         815            cpl     a
-017F 52F3       816            anl     _P2MDIN,a
-0181            817   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:187: P2SKIP |= mask; // Skip Crossbar decoding for this pin
-0181 EB         818            mov     a,r3
-0182 42D6       819            orl     _P2SKIP,a
-0184            820   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:188: break;
-0184            821   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:189: case 3:
-0184 22         822            ret
-0185            823   L008004?:
-0185            824   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:190: P3MDIN &= (~mask); // Set pin as analog input
-0185 EB         825            mov     a,r3
-0186 F4         826            cpl     a
-0187 FA         827            mov     r2,a
-0188 52F4       828            anl     _P3MDIN,a
-018A            829   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:191: P3SKIP |= mask; // Skip Crossbar decoding for this pin
-018A EB         830            mov     a,r3
-018B 42DF       831            orl     _P3SKIP,a
-018D            832   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:195: }
-018D            833   L008007?:
-018D 22         834            ret
-018E            835   ;------------------------------------------------------------
-018E            836   ;Allocation info for local variables in function 'ADC_at_Pin'
+0144            763   ;         function InitPinADC
+0144            764   ;        -----------------------------------------
+0144            765   _InitPinADC:
+0144 AA82       766            mov     r2,dpl
+0146            767   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:173: mask=1<<pinno;
+0146 85F8F0     768            mov     b,_InitPinADC_PARM_2
+0149 05F0       769            inc     b
+014B 7401       770            mov     a,#0x01
+014D 8001       771            sjmp    L008012?
+014F            772   L008010?:
+014F 25E0       773            add     a,acc
+0151            774   L008012?:
+0151 D5F058     775            djnz    b,L008010?
+0154 FB         776            mov     r3,a
+0155            777   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:175: switch (portno)
+0155 EA         778            mov     a,r2
+0156 24FC       779            add     a,#0xff - 0x03
+0158 4001       780            jc      L008007?
+015A EA         781            mov     a,r2
+015B 2A         782            add     a,r2
+015C 2A         783            add     a,r2
+015D 909BD8     784            mov     dptr,#L008014?
+0160 73         785            jmp     @a+dptr
+0161            786   L008014?:
+0161 020100     787            ljmp    L008001?
+0164 020100     788            ljmp    L008002?
+0167 020100     789            ljmp    L008003?
+016A 020100     790            ljmp    L008004?
+016D            791   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:177: case 0:
+016D            792   L008001?:
+016D            793   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:178: P0MDIN &= (~mask); // Set pin as analog input
+016D EB         794            mov     a,r3
+016E F4         795            cpl     a
+016F 52F1       796            anl     _P0MDIN,a
+0171            797   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:179: P0SKIP |= mask; // Skip Crossbar decoding for this pin
+0171 EB         798            mov     a,r3
+0172 42D4       799            orl     _P0SKIP,a
+0174            800   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:180: break;
+0174            801   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:181: case 1:
+0174 22         802            ret
+0175            803   L008002?:
+0175            804   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:182: P1MDIN &= (~mask); // Set pin as analog input
+0175 EB         805            mov     a,r3
+0176 F4         806            cpl     a
+0177 52F2       807            anl     _P1MDIN,a
+0179            808   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:183: P1SKIP |= mask; // Skip Crossbar decoding for this pin
+0179 EB         809            mov     a,r3
+017A 42D5       810            orl     _P1SKIP,a
+017C            811   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:184: break;
+017C            812   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:185: case 2:
+017C 22         813            ret
+017D            814   L008003?:
+017D            815   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:186: P2MDIN &= (~mask); // Set pin as analog input
+017D EB         816            mov     a,r3
+017E F4         817            cpl     a
+017F 52F3       818            anl     _P2MDIN,a
+0181            819   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:187: P2SKIP |= mask; // Skip Crossbar decoding for this pin
+0181 EB         820            mov     a,r3
+0182 42D6       821            orl     _P2SKIP,a
+0184            822   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:188: break;
+0184            823   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:189: case 3:
+0184 22         824            ret
+0185            825   L008004?:
+0185            826   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:190: P3MDIN &= (~mask); // Set pin as analog input
+0185 EB         827            mov     a,r3
+0186 F4         828            cpl     a
+0187 FA         829            mov     r2,a
+0188 52F4       830            anl     _P3MDIN,a
+018A            831   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:191: P3SKIP |= mask; // Skip Crossbar decoding for this pin
+018A EB         832            mov     a,r3
+018B 42DF       833            orl     _P3SKIP,a
+018D            834   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:195: }
+018D            835   L008007?:
+018D 22         836            ret
 018E            837   ;------------------------------------------------------------
-018E            838   ;pin                       Allocated to registers 
+018E            838   ;Allocation info for local variables in function 'ADC_at_Pin'
 018E            839   ;------------------------------------------------------------
-018E            840   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:198: unsigned int ADC_at_Pin(unsigned char pin)
-018E            841   ;        -----------------------------------------
-018E            842   ;         function ADC_at_Pin
+018E            840   ;pin                       Allocated to registers 
+018E            841   ;------------------------------------------------------------
+018E            842   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:198: unsigned int ADC_at_Pin(unsigned char pin)
 018E            843   ;        -----------------------------------------
-018E            844   _ADC_at_Pin:
-018E 8582BB     845            mov     _AMX0P,dpl
-0191            846   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:201: AMX0N = LQFP32_MUX_GND;  // GND is negative input (Single-ended Mode)
-0191 75BA1F     847            mov     _AMX0N,#0x1F
-0194            848   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:203: AD0BUSY=1;
-0194 D2EC       849            setb    _AD0BUSY
-0196            850   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:204: while (AD0BUSY); // Wait for dummy conversion to finish
-0196            851   L009001?:
-0196 20ECC8     852            jb      _AD0BUSY,L009001?
-0199            853   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:206: AD0BUSY = 1;
-0199 D2EC       854            setb    _AD0BUSY
-019B            855   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:207: while (AD0BUSY); // Wait for conversion to complete
-019B            856   L009004?:
-019B 20EC08     857            jb      _AD0BUSY,L009004?
-019E            858   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:208: return (ADC0L+(ADC0H*0x100));
-019E AABD       859            mov     r2,_ADC0L
-01A0 7B00       860            mov     r3,#0x00
-01A2 ADBE       861            mov     r5,_ADC0H
-01A4 7C00       862            mov     r4,#0x00
-01A6 EC         863            mov     a,r4
-01A7 2A         864            add     a,r2
-01A8 F582       865            mov     dpl,a
-01AA ED         866            mov     a,r5
-01AB 3B         867            addc    a,r3
-01AC F583       868            mov     dph,a
-01AE 22         869            ret
-01AF            870   ;------------------------------------------------------------
-01AF            871   ;Allocation info for local variables in function 'Volts_at_Pin'
+018E            844   ;         function ADC_at_Pin
+018E            845   ;        -----------------------------------------
+018E            846   _ADC_at_Pin:
+018E 8582BB     847            mov     _AMX0P,dpl
+0191            848   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:201: AMX0N = LQFP32_MUX_GND;  // GND is negative input (Single-ended Mode)
+0191 75BA1F     849            mov     _AMX0N,#0x1F
+0194            850   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:203: AD0BUSY=1;
+0194 D2EC       851            setb    _AD0BUSY
+0196            852   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:204: while (AD0BUSY); // Wait for dummy conversion to finish
+0196            853   L009001?:
+0196 20EC18     854            jb      _AD0BUSY,L009001?
+0199            855   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:206: AD0BUSY = 1;
+0199 D2EC       856            setb    _AD0BUSY
+019B            857   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:207: while (AD0BUSY); // Wait for conversion to complete
+019B            858   L009004?:
+019B 20EC58     859            jb      _AD0BUSY,L009004?
+019E            860   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:208: return (ADC0L+(ADC0H*0x100));
+019E AABD       861            mov     r2,_ADC0L
+01A0 7B00       862            mov     r3,#0x00
+01A2 ADBE       863            mov     r5,_ADC0H
+01A4 7C00       864            mov     r4,#0x00
+01A6 EC         865            mov     a,r4
+01A7 2A         866            add     a,r2
+01A8 F582       867            mov     dpl,a
+01AA ED         868            mov     a,r5
+01AB 3B         869            addc    a,r3
+01AC F583       870            mov     dph,a
+01AE 22         871            ret
 01AF            872   ;------------------------------------------------------------
-01AF            873   ;pin                       Allocated to registers r2 
+01AF            873   ;Allocation info for local variables in function 'Volts_at_Pin'
 01AF            874   ;------------------------------------------------------------
-01AF            875   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:211: float Volts_at_Pin(unsigned char pin)
-01AF            876   ;        -----------------------------------------
-01AF            877   ;         function Volts_at_Pin
+01AF            875   ;pin                       Allocated to registers r2 
+01AF            876   ;------------------------------------------------------------
+01AF            877   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:211: float Volts_at_Pin(unsigned char pin)
 01AF            878   ;        -----------------------------------------
-01AF            879   _Volts_at_Pin:
-01AF            880   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:213: return ((ADC_at_Pin(pin)*3.30)/1024.0);
-01AF 120100     881            lcall   _ADC_at_Pin
-01B2 120100     882            lcall   ___uint2fs
-01B5 AA82       883            mov     r2,dpl
-01B7 AB83       884            mov     r3,dph
-01B9 ACF0       885            mov     r4,b
-01BB FD         886            mov     r5,a
-01BC C002       887            push    ar2
-01BE C003       888            push    ar3
-01C0 C004       889            push    ar4
-01C2 C005       890            push    ar5
-01C4 903333     891            mov     dptr,#0x3333
-01C7 75F053     892            mov     b,#0x53
-01CA 7440       893            mov     a,#0x40
-01CC 120100     894            lcall   ___fsmul
-01CF AA82       895            mov     r2,dpl
-01D1 AB83       896            mov     r3,dph
-01D3 ACF0       897            mov     r4,b
-01D5 FD         898            mov     r5,a
-01D6 E581       899            mov     a,sp
-01D8 24FC       900            add     a,#0xfc
-01DA F581       901            mov     sp,a
-01DC E4         902            clr     a
-01DD C0E0       903            push    acc
-01DF C0E0       904            push    acc
-01E1 7480       905            mov     a,#0x80
-01E3 C0E0       906            push    acc
-01E5 7444       907            mov     a,#0x44
-01E7 C0E0       908            push    acc
-01E9 8A82       909            mov     dpl,r2
-01EB 8B83       910            mov     dph,r3
-01ED 8CF0       911            mov     b,r4
-01EF ED         912            mov     a,r5
-01F0 120100     913            lcall   ___fsdiv
-01F3 AA82       914            mov     r2,dpl
-01F5 AB83       915            mov     r3,dph
-01F7 ACF0       916            mov     r4,b
-01F9 FD         917            mov     r5,a
-01FA E581       918            mov     a,sp
-01FC 24FC       919            add     a,#0xfc
-01FE F581       920            mov     sp,a
-0200 8A82       921            mov     dpl,r2
-0202 8B83       922            mov     dph,r3
-0204 8CF0       923            mov     b,r4
-0206 ED         924            mov     a,r5
-0207 22         925            ret
-0208            926   ;------------------------------------------------------------
-0208            927   ;Allocation info for local variables in function 'readData'
+01AF            879   ;         function Volts_at_Pin
+01AF            880   ;        -----------------------------------------
+01AF            881   _Volts_at_Pin:
+01AF            882   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:213: return ((ADC_at_Pin(pin)*3.30)/1024.0);
+01AF 120100     883            lcall   _ADC_at_Pin
+01B2 120100     884            lcall   ___uint2fs
+01B5 AA82       885            mov     r2,dpl
+01B7 AB83       886            mov     r3,dph
+01B9 ACF0       887            mov     r4,b
+01BB FD         888            mov     r5,a
+01BC C002       889            push    ar2
+01BE C003       890            push    ar3
+01C0 C004       891            push    ar4
+01C2 C005       892            push    ar5
+01C4 903333     893            mov     dptr,#0x3333
+01C7 75F053     894            mov     b,#0x53
+01CA 7440       895            mov     a,#0x40
+01CC 120100     896            lcall   ___fsmul
+01CF AA82       897            mov     r2,dpl
+01D1 AB83       898            mov     r3,dph
+01D3 ACF0       899            mov     r4,b
+01D5 FD         900            mov     r5,a
+01D6 E581       901            mov     a,sp
+01D8 24FC       902            add     a,#0xfc
+01DA F581       903            mov     sp,a
+01DC E4         904            clr     a
+01DD C0E0       905            push    acc
+01DF C0E0       906            push    acc
+01E1 7480       907            mov     a,#0x80
+01E3 C0E0       908            push    acc
+01E5 7444       909            mov     a,#0x44
+01E7 C0E0       910            push    acc
+01E9 8A82       911            mov     dpl,r2
+01EB 8B83       912            mov     dph,r3
+01ED 8CF0       913            mov     b,r4
+01EF ED         914            mov     a,r5
+01F0 120100     915            lcall   ___fsdiv
+01F3 AA82       916            mov     r2,dpl
+01F5 AB83       917            mov     r3,dph
+01F7 ACF0       918            mov     r4,b
+01F9 FD         919            mov     r5,a
+01FA E581       920            mov     a,sp
+01FC 24FC       921            add     a,#0xfc
+01FE F581       922            mov     sp,a
+0200 8A82       923            mov     dpl,r2
+0202 8B83       924            mov     dph,r3
+0204 8CF0       925            mov     b,r4
+0206 ED         926            mov     a,r5
+0207 22         927            ret
 0208            928   ;------------------------------------------------------------
-0208            929   ;------------------------------------------------------------
-0208            930   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:217: void readData (void) {
-0208            931   ;        -----------------------------------------
-0208            932   ;         function readData
+0208            929   ;Allocation info for local variables in function 'readData'
+0208            930   ;------------------------------------------------------------
+0208            931   ;------------------------------------------------------------
+0208            932   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:217: void readData (void) {
 0208            933   ;        -----------------------------------------
-0208            934   _readData:
-0208            935   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:219: if (COMMAND_PIN == 0) {                                  //0---
-0208 209048     936            jb      _P1_0,L011022?
-020B            937   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:220: waitms(6);
-020B 900006     938            mov     dptr,#0x0006
-020E 120100     939            lcall   _waitms
-0211            940   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:221: if (COMMAND_PIN == 1) {                          //01--
-0211 309088     941            jnb     _P1_0,L011018?
-0214            942   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:222: waitms(4);
-0214 900004     943            mov     dptr,#0x0004
-0217 120100     944            lcall   _waitms
-021A            945   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:223: if (COMMAND_PIN == 0) {                  //010-
-021A 2090C8     946            jb      _P1_0,L011007?
-021D            947   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:224: waitms(4);
-021D 900004     948            mov     dptr,#0x0004
-0220 120100     949            lcall   _waitms
-0223            950   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:225: if (COMMAND_PIN == 0) {          //0100  
-0223 209008     951            jb      _P1_0,L011002?
-0226            952   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:226: currentcmd = 4;
-0226 755804     953            mov     _currentcmd,#0x04
-0229 8001       954            sjmp    L011022?
-022B            955   L011002?:
-022B            956   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:229: currentcmd = 5;
-022B 755805     957            mov     _currentcmd,#0x05
-022E 8001       958            sjmp    L011022?
-0230            959   L011007?:
-0230            960   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:233: waitms(4);
-0230 900004     961            mov     dptr,#0x0004
-0233 120100     962            lcall   _waitms
-0236            963   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:234: if (COMMAND_PIN == 0) {          //0110
-0236 209048     964            jb      _P1_0,L011022?
-0239            965   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:235: currentcmd = 6;
-0239 755806     966            mov     _currentcmd,#0x06
-023C 8001       967            sjmp    L011022?
-023E            968   L011018?:
-023E            969   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:240: waitms(4);
-023E 900004     970            mov     dptr,#0x0004
-0241 120100     971            lcall   _waitms
-0244            972   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:241: if (COMMAND_PIN == 1) {                  //001-
-0244 309048     973            jnb     _P1_0,L011015?
-0247            974   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:242: waitms(4);
-0247 900004     975            mov     dptr,#0x0004
-024A 120100     976            lcall   _waitms
-024D            977   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:243: if (COMMAND_PIN == 1) {          //0011
-024D 309088     978            jnb     _P1_0,L011010?
-0250            979   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:244: currentcmd = 3;
-0250 755803     980            mov     _currentcmd,#0x03
-0253 8001       981            sjmp    L011022?
-0255            982   L011010?:
-0255            983   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:247: currentcmd = 2;
-0255 755802     984            mov     _currentcmd,#0x02
-0258 8001       985            sjmp    L011022?
-025A            986   L011015?:
-025A            987   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:251: waitms(4);
-025A 900004     988            mov     dptr,#0x0004
-025D 120100     989            lcall   _waitms
-0260            990   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:252: if (COMMAND_PIN == 1) {          //0001  
-0260 309048     991            jnb     _P1_0,L011022?
-0263            992   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:253: currentcmd == 1;
-0263 E558       993            mov     a,_currentcmd
-0265            994   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:259: while (COMMAND_PIN == 0) {}
-0265            995   L011022?:
-0265 309048     996            jnb     _P1_0,L011022?
-0268 22         997            ret
-0269            998   ;------------------------------------------------------------
-0269            999   ;Allocation info for local variables in function 'linetrack'
+0208            934   ;         function readData
+0208            935   ;        -----------------------------------------
+0208            936   _readData:
+0208            937   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:219: if (COMMAND_PIN == 0) {                                  //0---
+0208 209098     938            jb      _P1_0,L011022?
+020B            939   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:220: waitms(6);
+020B 900006     940            mov     dptr,#0x0006
+020E 120100     941            lcall   _waitms
+0211            942   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:221: if (COMMAND_PIN == 1) {                          //01--
+0211 3090D8     943            jnb     _P1_0,L011018?
+0214            944   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:222: waitms(4);
+0214 900004     945            mov     dptr,#0x0004
+0217 120100     946            lcall   _waitms
+021A            947   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:223: if (COMMAND_PIN == 0) {                  //010-
+021A 209018     948            jb      _P1_0,L011007?
+021D            949   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:224: waitms(4);
+021D 900004     950            mov     dptr,#0x0004
+0220 120100     951            lcall   _waitms
+0223            952   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:225: if (COMMAND_PIN == 0) {          //0100  
+0223 209058     953            jb      _P1_0,L011002?
+0226            954   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:226: currentcmd = 4;
+0226 755804     955            mov     _currentcmd,#0x04
+0229 8001       956            sjmp    L011022?
+022B            957   L011002?:
+022B            958   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:229: currentcmd = 5;
+022B 755805     959            mov     _currentcmd,#0x05
+022E 8001       960            sjmp    L011022?
+0230            961   L011007?:
+0230            962   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:233: waitms(4);
+0230 900004     963            mov     dptr,#0x0004
+0233 120100     964            lcall   _waitms
+0236            965   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:234: if (COMMAND_PIN == 0) {          //0110
+0236 209098     966            jb      _P1_0,L011022?
+0239            967   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:235: currentcmd = 6;
+0239 755806     968            mov     _currentcmd,#0x06
+023C 8001       969            sjmp    L011022?
+023E            970   L011018?:
+023E            971   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:240: waitms(4);
+023E 900004     972            mov     dptr,#0x0004
+0241 120100     973            lcall   _waitms
+0244            974   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:241: if (COMMAND_PIN == 1) {                  //001-
+0244 309098     975            jnb     _P1_0,L011015?
+0247            976   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:242: waitms(4);
+0247 900004     977            mov     dptr,#0x0004
+024A 120100     978            lcall   _waitms
+024D            979   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:243: if (COMMAND_PIN == 1) {          //0011
+024D 3090D8     980            jnb     _P1_0,L011010?
+0250            981   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:244: currentcmd = 3;
+0250 755803     982            mov     _currentcmd,#0x03
+0253 8001       983            sjmp    L011022?
+0255            984   L011010?:
+0255            985   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:247: currentcmd = 2;
+0255 755802     986            mov     _currentcmd,#0x02
+0258 8001       987            sjmp    L011022?
+025A            988   L011015?:
+025A            989   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:251: waitms(4);
+025A 900004     990            mov     dptr,#0x0004
+025D 120100     991            lcall   _waitms
+0260            992   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:252: if (COMMAND_PIN == 1) {          //0001  
+0260 309098     993            jnb     _P1_0,L011022?
+0263            994   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:253: currentcmd == 1;
+0263 E558       995            mov     a,_currentcmd
+0265            996   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:259: while (COMMAND_PIN == 0) {}
+0265            997   L011022?:
+0265 309098     998            jnb     _P1_0,L011022?
+0268 22         999            ret
 0269           1000   ;------------------------------------------------------------
-0269           1001   ;vleft                     Allocated with name '_linetrack_vleft_1_82'
-0269           1002   ;vright                    Allocated with name '_linetrack_vright_1_82'
-0269           1003   ;------------------------------------------------------------
-0269           1004   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:263: void linetrack (void) {
-0269           1005   ;        -----------------------------------------
-0269           1006   ;         function linetrack
-0269           1007   ;        -----------------------------------------
-0269           1008   _linetrack:
-0269           1009   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:267: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
-0269 75820B    1010            mov     dpl,#0x0B
-026C 120100    1011            lcall   _Volts_at_Pin
-026F 858228    1012            mov     _linetrack_vleft_1_82,dpl
-0272 858329    1013            mov     (_linetrack_vleft_1_82 + 1),dph
-0275 85F02A    1014            mov     (_linetrack_vleft_1_82 + 2),b
-0278 F52B      1015            mov     (_linetrack_vleft_1_82 + 3),a
-027A           1016   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:268: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
-027A 75820C    1017            mov     dpl,#0x0C
-027D 120100    1018            lcall   _Volts_at_Pin
-0280 858278    1019            mov     _linetrack_vright_1_82,dpl
-0283 858379    1020            mov     (_linetrack_vright_1_82 + 1),dph
-0286 85F07A    1021            mov     (_linetrack_vright_1_82 + 2),b
-0289 F57B      1022            mov     (_linetrack_vright_1_82 + 3),a
-028B           1023   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:270: pwm_Left0 = -1;
-028B 7598FF    1024            mov     _pwm_Left0,#0xFF
-028E           1025   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:271: pwm_Left1 = ((float)vright*100.0/((float)(vleft+vright)));
-028E C078      1026            push    _linetrack_vright_1_82
-0290 C079      1027            push    (_linetrack_vright_1_82 + 1)
-0292 C07A      1028            push    (_linetrack_vright_1_82 + 2)
-0294 C07B      1029            push    (_linetrack_vright_1_82 + 3)
-0296 900000    1030            mov     dptr,#0x0000
-0299 75F0C8    1031            mov     b,#0xC8
-029C 7442      1032            mov     a,#0x42
-029E 120100    1033            lcall   ___fsmul
-02A1 AA82      1034            mov     r2,dpl
-02A3 AB83      1035            mov     r3,dph
-02A5 ACF0      1036            mov     r4,b
-02A7 FD        1037            mov     r5,a
-02A8 E581      1038            mov     a,sp
-02AA 24FC      1039            add     a,#0xfc
-02AC F581      1040            mov     sp,a
-02AE C002      1041            push    ar2
-02B0 C003      1042            push    ar3
-02B2 C004      1043            push    ar4
-02B4 C005      1044            push    ar5
-02B6 C078      1045            push    _linetrack_vright_1_82
-02B8 C079      1046            push    (_linetrack_vright_1_82 + 1)
-02BA C07A      1047            push    (_linetrack_vright_1_82 + 2)
-02BC C07B      1048            push    (_linetrack_vright_1_82 + 3)
-02BE 852882    1049            mov     dpl,_linetrack_vleft_1_82
-02C1 852983    1050            mov     dph,(_linetrack_vleft_1_82 + 1)
-02C4 852AF0    1051            mov     b,(_linetrack_vleft_1_82 + 2)
-02C7 E52B      1052            mov     a,(_linetrack_vleft_1_82 + 3)
-02C9 120100    1053            lcall   ___fsadd
-02CC AE82      1054            mov     r6,dpl
-02CE AF83      1055            mov     r7,dph
-02D0 A8F0      1056            mov     r0,b
-02D2 F9        1057            mov     r1,a
-02D3 E581      1058            mov     a,sp
-02D5 24FC      1059            add     a,#0xfc
-02D7 F581      1060            mov     sp,a
-02D9 D005      1061            pop     ar5
-02DB D004      1062            pop     ar4
-02DD D003      1063            pop     ar3
-02DF D002      1064            pop     ar2
-02E1 C006      1065            push    ar6
-02E3 C007      1066            push    ar7
-02E5 C000      1067            push    ar0
-02E7 C001      1068            push    ar1
-02E9 8A82      1069            mov     dpl,r2
-02EB 8B83      1070            mov     dph,r3
-02ED 8CF0      1071            mov     b,r4
-02EF ED        1072            mov     a,r5
-02F0 120100    1073            lcall   ___fsdiv
-02F3 AA82      1074            mov     r2,dpl
-02F5 AB83      1075            mov     r3,dph
-02F7 ACF0      1076            mov     r4,b
-02F9 FD        1077            mov     r5,a
-02FA E581      1078            mov     a,sp
-02FC 24FC      1079            add     a,#0xfc
-02FE F581      1080            mov     sp,a
-0300 8A82      1081            mov     dpl,r2
-0302 8B83      1082            mov     dph,r3
-0304 8CF0      1083            mov     b,r4
-0306 ED        1084            mov     a,r5
-0307 120100    1085            lcall   ___fs2schar
-030A 858258    1086            mov     _pwm_Left1,dpl
-030D           1087   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:272: pwm_Right0 = -1;
-030D 7518FF    1088            mov     _pwm_Right0,#0xFF
-0310           1089   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:273: pwm_Right1 = (vleft*100.0/(vleft+vright));
-0310 C028      1090            push    _linetrack_vleft_1_82
-0312 C029      1091            push    (_linetrack_vleft_1_82 + 1)
-0314 C02A      1092            push    (_linetrack_vleft_1_82 + 2)
-0316 C02B      1093            push    (_linetrack_vleft_1_82 + 3)
-0318 900000    1094            mov     dptr,#0x0000
-031B 75F0C8    1095            mov     b,#0xC8
-031E 7442      1096            mov     a,#0x42
-0320 120100    1097            lcall   ___fsmul
-0323 AA82      1098            mov     r2,dpl
-0325 AB83      1099            mov     r3,dph
-0327 ACF0      1100            mov     r4,b
-0329 FD        1101            mov     r5,a
-032A E581      1102            mov     a,sp
-032C 24FC      1103            add     a,#0xfc
-032E F581      1104            mov     sp,a
-0330 C002      1105            push    ar2
-0332 C003      1106            push    ar3
-0334 C004      1107            push    ar4
-0336 C005      1108            push    ar5
-0338 C078      1109            push    _linetrack_vright_1_82
-033A C079      1110            push    (_linetrack_vright_1_82 + 1)
-033C C07A      1111            push    (_linetrack_vright_1_82 + 2)
-033E C07B      1112            push    (_linetrack_vright_1_82 + 3)
-0340 852882    1113            mov     dpl,_linetrack_vleft_1_82
-0343 852983    1114            mov     dph,(_linetrack_vleft_1_82 + 1)
-0346 852AF0    1115            mov     b,(_linetrack_vleft_1_82 + 2)
-0349 E52B      1116            mov     a,(_linetrack_vleft_1_82 + 3)
-034B 120100    1117            lcall   ___fsadd
-034E AE82      1118            mov     r6,dpl
-0350 AF83      1119            mov     r7,dph
-0352 A8F0      1120            mov     r0,b
-0354 F9        1121            mov     r1,a
-0355 E581      1122            mov     a,sp
-0357 24FC      1123            add     a,#0xfc
-0359 F581      1124            mov     sp,a
-035B D005      1125            pop     ar5
-035D D004      1126            pop     ar4
-035F D003      1127            pop     ar3
-0361 D002      1128            pop     ar2
-0363 C006      1129            push    ar6
-0365 C007      1130            push    ar7
-0367 C000      1131            push    ar0
-0369 C001      1132            push    ar1
-036B 8A82      1133            mov     dpl,r2
-036D 8B83      1134            mov     dph,r3
-036F 8CF0      1135            mov     b,r4
-0371 ED        1136            mov     a,r5
-0372 120100    1137            lcall   ___fsdiv
-0375 AA82      1138            mov     r2,dpl
-0377 AB83      1139            mov     r3,dph
-0379 ACF0      1140            mov     r4,b
-037B FD        1141            mov     r5,a
-037C E581      1142            mov     a,sp
-037E 24FC      1143            add     a,#0xfc
-0380 F581      1144            mov     sp,a
-0382 8A82      1145            mov     dpl,r2
-0384 8B83      1146            mov     dph,r3
-0386 8CF0      1147            mov     b,r4
-0388 ED        1148            mov     a,r5
-0389 120100    1149            lcall   ___fs2schar
-038C 8582D8    1150            mov     _pwm_Right1,dpl
-038F           1151   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:275: printf("2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d\r", vleft, vright, pwm_Left1, pwm_Right1);
-038F AAD8      1152            mov     r2,_pwm_Right1
-0391 E5D8      1153            mov     a,_pwm_Right1
-0393 33        1154            rlc     a
-0394 95E0      1155            subb    a,acc
-0396 FB        1156            mov     r3,a
-0397 AC58      1157            mov     r4,_pwm_Left1
-0399 E558      1158            mov     a,_pwm_Left1
-039B 33        1159            rlc     a
-039C 95E0      1160            subb    a,acc
-039E FD        1161            mov     r5,a
-039F C002      1162            push    ar2
-03A1 C003      1163            push    ar3
-03A3 C004      1164            push    ar4
-03A5 C005      1165            push    ar5
-03A7 C078      1166            push    _linetrack_vright_1_82
-03A9 C079      1167            push    (_linetrack_vright_1_82 + 1)
-03AB C07A      1168            push    (_linetrack_vright_1_82 + 2)
-03AD C07B      1169            push    (_linetrack_vright_1_82 + 3)
-03AF C028      1170            push    _linetrack_vleft_1_82
-03B1 C029      1171            push    (_linetrack_vleft_1_82 + 1)
-03B3 C02A      1172            push    (_linetrack_vleft_1_82 + 2)
-03B5 C02B      1173            push    (_linetrack_vleft_1_82 + 3)
-03B7 7448      1174            mov     a,#__str_0
-03B9 C0E0      1175            push    acc
-03BB 74A0      1176            mov     a,#(__str_0 >> 8)
-03BD C0E0      1177            push    acc
-03BF 7480      1178            mov     a,#0x80
-03C1 C0E0      1179            push    acc
-03C3 120100    1180            lcall   _printf
-03C6 E581      1181            mov     a,sp
-03C8 24F1      1182            add     a,#0xf1
-03CA F581      1183            mov     sp,a
-03CC 22        1184            ret
-03CD           1185   ;------------------------------------------------------------
-03CD           1186   ;Allocation info for local variables in function 'main'
-03CD           1187   ;------------------------------------------------------------
-03CD           1188   ;------------------------------------------------------------
-03CD           1189   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:281: void main (void)
-03CD           1190   ;        -----------------------------------------
-03CD           1191   ;         function main
-03CD           1192   ;        -----------------------------------------
-03CD           1193   _main:
-03CD           1194   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:284: MOTOR_LEFT0 =0;
-03CD C295      1195            clr     _P1_5
-03CF           1196   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:285: MOTOR_LEFT1 =0;
-03CF C296      1197            clr     _P1_6
-03D1           1198   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:286: MOTOR_RIGHT0 =0;
-03D1 C2A0      1199            clr     _P2_0
-03D3           1200   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:287: MOTOR_RIGHT1 =0;
-03D3 C2A1      1201            clr     _P2_1
-03D5           1202   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:290: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
-03D5 74C8      1203            mov     a,#__str_1
-03D7 C0E0      1204            push    acc
-03D9 74A0      1205            mov     a,#(__str_1 >> 8)
-03DB C0E0      1206            push    acc
-03DD 7480      1207            mov     a,#0x80
-03DF C0E0      1208            push    acc
-03E1 120100    1209            lcall   _printf
-03E4 1581      1210            dec     sp
-03E6 1581      1211            dec     sp
-03E8 1581      1212            dec     sp
-03EA           1213   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:299: InitPinADC(2, 3); // Configure P2.3 as analog input
-03EA 75F803    1214            mov     _InitPinADC_PARM_2,#0x03
-03ED 758202    1215            mov     dpl,#0x02
-03F0 120100    1216            lcall   _InitPinADC
-03F3           1217   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:300: InitPinADC(2, 4); // Configure P2.4 as analog input
-03F3 75F804    1218            mov     _InitPinADC_PARM_2,#0x04
-03F6 758202    1219            mov     dpl,#0x02
-03F9 120100    1220            lcall   _InitPinADC
-03FC           1221   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:301: InitADC();
-03FC 120100    1222            lcall   _InitADC
-03FF           1223   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:303: while(1)
-03FF           1224   L013002?:
-03FF           1225   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:306: linetrack();
-03FF 120100    1226            lcall   _linetrack
-0402 8001      1227            sjmp    L013002?
-0404           1228            rseg R_CSEG
-0404           1229   
-0000           1230            rseg R_XINIT
-0000           1231   
-0000           1232            rseg R_CONST
-0000           1233   __str_0:
-0000 322E3320  1234            db '2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d'
+0269           1001   ;Allocation info for local variables in function 'linetrack'
+0269           1002   ;------------------------------------------------------------
+0269           1003   ;forwardbackward           Allocated with name '_linetrack_forwardbackward_1_81'
+0269           1004   ;vleft                     Allocated with name '_linetrack_vleft_1_82'
+0269           1005   ;vright                    Allocated with name '_linetrack_vright_1_82'
+0269           1006   ;------------------------------------------------------------
+0269           1007   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:263: void linetrack (int forwardbackward) {
+0269           1008   ;        -----------------------------------------
+0269           1009   ;         function linetrack
+0269           1010   ;        -----------------------------------------
+0269           1011   _linetrack:
+0269 858228    1012            mov     _linetrack_forwardbackward_1_81,dpl
+026C 858329    1013            mov     (_linetrack_forwardbackward_1_81 + 1),dph
+026F           1014   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:267: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+026F 75820B    1015            mov     dpl,#0x0B
+0272 120100    1016            lcall   _Volts_at_Pin
+0275 858278    1017            mov     _linetrack_vleft_1_82,dpl
+0278 858379    1018            mov     (_linetrack_vleft_1_82 + 1),dph
+027B 85F07A    1019            mov     (_linetrack_vleft_1_82 + 2),b
+027E F57B      1020            mov     (_linetrack_vleft_1_82 + 3),a
+0280           1021   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:268: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+0280 75820C    1022            mov     dpl,#0x0C
+0283 120100    1023            lcall   _Volts_at_Pin
+0286 8582C8    1024            mov     _linetrack_vright_1_82,dpl
+0289 8583C9    1025            mov     (_linetrack_vright_1_82 + 1),dph
+028C 85F0CA    1026            mov     (_linetrack_vright_1_82 + 2),b
+028F F5CB      1027            mov     (_linetrack_vright_1_82 + 3),a
+0291           1028   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:270: pwm_Left0 = -1;
+0291 7598FF    1029            mov     _pwm_Left0,#0xFF
+0294           1030   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:271: pwm_Left1 = ((float)vright*100.0/((float)(vleft+vright)));
+0294 C0C8      1031            push    _linetrack_vright_1_82
+0296 C0C9      1032            push    (_linetrack_vright_1_82 + 1)
+0298 C0CA      1033            push    (_linetrack_vright_1_82 + 2)
+029A C0CB      1034            push    (_linetrack_vright_1_82 + 3)
+029C 900000    1035            mov     dptr,#0x0000
+029F 75F0C8    1036            mov     b,#0xC8
+02A2 7442      1037            mov     a,#0x42
+02A4 120100    1038            lcall   ___fsmul
+02A7 AC82      1039            mov     r4,dpl
+02A9 AD83      1040            mov     r5,dph
+02AB AEF0      1041            mov     r6,b
+02AD FF        1042            mov     r7,a
+02AE E581      1043            mov     a,sp
+02B0 24FC      1044            add     a,#0xfc
+02B2 F581      1045            mov     sp,a
+02B4 C004      1046            push    ar4
+02B6 C005      1047            push    ar5
+02B8 C006      1048            push    ar6
+02BA C007      1049            push    ar7
+02BC C0C8      1050            push    _linetrack_vright_1_82
+02BE C0C9      1051            push    (_linetrack_vright_1_82 + 1)
+02C0 C0CA      1052            push    (_linetrack_vright_1_82 + 2)
+02C2 C0CB      1053            push    (_linetrack_vright_1_82 + 3)
+02C4 857882    1054            mov     dpl,_linetrack_vleft_1_82
+02C7 857983    1055            mov     dph,(_linetrack_vleft_1_82 + 1)
+02CA 857AF0    1056            mov     b,(_linetrack_vleft_1_82 + 2)
+02CD E57B      1057            mov     a,(_linetrack_vleft_1_82 + 3)
+02CF 120100    1058            lcall   ___fsadd
+02D2 A882      1059            mov     r0,dpl
+02D4 A983      1060            mov     r1,dph
+02D6 AAF0      1061            mov     r2,b
+02D8 FB        1062            mov     r3,a
+02D9 E581      1063            mov     a,sp
+02DB 24FC      1064            add     a,#0xfc
+02DD F581      1065            mov     sp,a
+02DF D007      1066            pop     ar7
+02E1 D006      1067            pop     ar6
+02E3 D005      1068            pop     ar5
+02E5 D004      1069            pop     ar4
+02E7 C000      1070            push    ar0
+02E9 C001      1071            push    ar1
+02EB C002      1072            push    ar2
+02ED C003      1073            push    ar3
+02EF 8C82      1074            mov     dpl,r4
+02F1 8D83      1075            mov     dph,r5
+02F3 8EF0      1076            mov     b,r6
+02F5 EF        1077            mov     a,r7
+02F6 120100    1078            lcall   ___fsdiv
+02F9 AA82      1079            mov     r2,dpl
+02FB AB83      1080            mov     r3,dph
+02FD ACF0      1081            mov     r4,b
+02FF FD        1082            mov     r5,a
+0300 E581      1083            mov     a,sp
+0302 24FC      1084            add     a,#0xfc
+0304 F581      1085            mov     sp,a
+0306 8A82      1086            mov     dpl,r2
+0308 8B83      1087            mov     dph,r3
+030A 8CF0      1088            mov     b,r4
+030C ED        1089            mov     a,r5
+030D 120100    1090            lcall   ___fs2schar
+0310 858258    1091            mov     _pwm_Left1,dpl
+0313           1092   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:272: pwm_Right0 = -1;
+0313 7518FF    1093            mov     _pwm_Right0,#0xFF
+0316           1094   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:273: pwm_Right1 = (vleft*100.0/(vleft+vright));
+0316 C078      1095            push    _linetrack_vleft_1_82
+0318 C079      1096            push    (_linetrack_vleft_1_82 + 1)
+031A C07A      1097            push    (_linetrack_vleft_1_82 + 2)
+031C C07B      1098            push    (_linetrack_vleft_1_82 + 3)
+031E 900000    1099            mov     dptr,#0x0000
+0321 75F0C8    1100            mov     b,#0xC8
+0324 7442      1101            mov     a,#0x42
+0326 120100    1102            lcall   ___fsmul
+0329 AA82      1103            mov     r2,dpl
+032B AB83      1104            mov     r3,dph
+032D ACF0      1105            mov     r4,b
+032F FD        1106            mov     r5,a
+0330 E581      1107            mov     a,sp
+0332 24FC      1108            add     a,#0xfc
+0334 F581      1109            mov     sp,a
+0336 C002      1110            push    ar2
+0338 C003      1111            push    ar3
+033A C004      1112            push    ar4
+033C C005      1113            push    ar5
+033E C0C8      1114            push    _linetrack_vright_1_82
+0340 C0C9      1115            push    (_linetrack_vright_1_82 + 1)
+0342 C0CA      1116            push    (_linetrack_vright_1_82 + 2)
+0344 C0CB      1117            push    (_linetrack_vright_1_82 + 3)
+0346 857882    1118            mov     dpl,_linetrack_vleft_1_82
+0349 857983    1119            mov     dph,(_linetrack_vleft_1_82 + 1)
+034C 857AF0    1120            mov     b,(_linetrack_vleft_1_82 + 2)
+034F E57B      1121            mov     a,(_linetrack_vleft_1_82 + 3)
+0351 120100    1122            lcall   ___fsadd
+0354 AE82      1123            mov     r6,dpl
+0356 AF83      1124            mov     r7,dph
+0358 A8F0      1125            mov     r0,b
+035A F9        1126            mov     r1,a
+035B E581      1127            mov     a,sp
+035D 24FC      1128            add     a,#0xfc
+035F F581      1129            mov     sp,a
+0361 D005      1130            pop     ar5
+0363 D004      1131            pop     ar4
+0365 D003      1132            pop     ar3
+0367 D002      1133            pop     ar2
+0369 C006      1134            push    ar6
+036B C007      1135            push    ar7
+036D C000      1136            push    ar0
+036F C001      1137            push    ar1
+0371 8A82      1138            mov     dpl,r2
+0373 8B83      1139            mov     dph,r3
+0375 8CF0      1140            mov     b,r4
+0377 ED        1141            mov     a,r5
+0378 120100    1142            lcall   ___fsdiv
+037B AA82      1143            mov     r2,dpl
+037D AB83      1144            mov     r3,dph
+037F ACF0      1145            mov     r4,b
+0381 FD        1146            mov     r5,a
+0382 E581      1147            mov     a,sp
+0384 24FC      1148            add     a,#0xfc
+0386 F581      1149            mov     sp,a
+0388 8A82      1150            mov     dpl,r2
+038A 8B83      1151            mov     dph,r3
+038C 8CF0      1152            mov     b,r4
+038E ED        1153            mov     a,r5
+038F 120100    1154            lcall   ___fs2schar
+0392 8582D8    1155            mov     _pwm_Right1,dpl
+0395           1156   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:275: if (forwardbackward) {
+0395 E528      1157            mov     a,_linetrack_forwardbackward_1_81
+0397 4529      1158            orl     a,(_linetrack_forwardbackward_1_81 + 1)
+0399 7001      1159            jnz     L012006?
+039B 020100    1160            ljmp    L012002?
+039E           1161   L012006?:
+039E           1162   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:276: pwm_Left1 = pwm_Right1;
+039E 85D858    1163            mov     _pwm_Left1,_pwm_Right1
+03A1           1164   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:277: pwm_Right1 = ((float)vright*100.0/((float)(vleft+vright)));
+03A1 C0C8      1165            push    _linetrack_vright_1_82
+03A3 C0C9      1166            push    (_linetrack_vright_1_82 + 1)
+03A5 C0CA      1167            push    (_linetrack_vright_1_82 + 2)
+03A7 C0CB      1168            push    (_linetrack_vright_1_82 + 3)
+03A9 900000    1169            mov     dptr,#0x0000
+03AC 75F0C8    1170            mov     b,#0xC8
+03AF 7442      1171            mov     a,#0x42
+03B1 120100    1172            lcall   ___fsmul
+03B4 AA82      1173            mov     r2,dpl
+03B6 AB83      1174            mov     r3,dph
+03B8 ACF0      1175            mov     r4,b
+03BA FD        1176            mov     r5,a
+03BB E581      1177            mov     a,sp
+03BD 24FC      1178            add     a,#0xfc
+03BF F581      1179            mov     sp,a
+03C1 C002      1180            push    ar2
+03C3 C003      1181            push    ar3
+03C5 C004      1182            push    ar4
+03C7 C005      1183            push    ar5
+03C9 C0C8      1184            push    _linetrack_vright_1_82
+03CB C0C9      1185            push    (_linetrack_vright_1_82 + 1)
+03CD C0CA      1186            push    (_linetrack_vright_1_82 + 2)
+03CF C0CB      1187            push    (_linetrack_vright_1_82 + 3)
+03D1 857882    1188            mov     dpl,_linetrack_vleft_1_82
+03D4 857983    1189            mov     dph,(_linetrack_vleft_1_82 + 1)
+03D7 857AF0    1190            mov     b,(_linetrack_vleft_1_82 + 2)
+03DA E57B      1191            mov     a,(_linetrack_vleft_1_82 + 3)
+03DC 120100    1192            lcall   ___fsadd
+03DF AE82      1193            mov     r6,dpl
+03E1 AF83      1194            mov     r7,dph
+03E3 A8F0      1195            mov     r0,b
+03E5 F9        1196            mov     r1,a
+03E6 E581      1197            mov     a,sp
+03E8 24FC      1198            add     a,#0xfc
+03EA F581      1199            mov     sp,a
+03EC D005      1200            pop     ar5
+03EE D004      1201            pop     ar4
+03F0 D003      1202            pop     ar3
+03F2 D002      1203            pop     ar2
+03F4 C006      1204            push    ar6
+03F6 C007      1205            push    ar7
+03F8 C000      1206            push    ar0
+03FA C001      1207            push    ar1
+03FC 8A82      1208            mov     dpl,r2
+03FE 8B83      1209            mov     dph,r3
+0400 8CF0      1210            mov     b,r4
+0402 ED        1211            mov     a,r5
+0403 120100    1212            lcall   ___fsdiv
+0406 AA82      1213            mov     r2,dpl
+0408 AB83      1214            mov     r3,dph
+040A ACF0      1215            mov     r4,b
+040C FD        1216            mov     r5,a
+040D E581      1217            mov     a,sp
+040F 24FC      1218            add     a,#0xfc
+0411 F581      1219            mov     sp,a
+0413 8A82      1220            mov     dpl,r2
+0415 8B83      1221            mov     dph,r3
+0417 8CF0      1222            mov     b,r4
+0419 ED        1223            mov     a,r5
+041A 120100    1224            lcall   ___fs2schar
+041D 8582D8    1225            mov     _pwm_Right1,dpl
+0420           1226   L012002?:
+0420           1227   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:280: printf("2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d\r", vleft, vright, pwm_Left1, pwm_Right1);
+0420 AAD8      1228            mov     r2,_pwm_Right1
+0422 E5D8      1229            mov     a,_pwm_Right1
+0424 33        1230            rlc     a
+0425 95E0      1231            subb    a,acc
+0427 FB        1232            mov     r3,a
+0428 AC58      1233            mov     r4,_pwm_Left1
+042A E558      1234            mov     a,_pwm_Left1
+042C 33        1235            rlc     a
+042D 95E0      1236            subb    a,acc
+042F FD        1237            mov     r5,a
+0430 C002      1238            push    ar2
+0432 C003      1239            push    ar3
+0434 C004      1240            push    ar4
+0436 C005      1241            push    ar5
+0438 C0C8      1242            push    _linetrack_vright_1_82
+043A C0C9      1243            push    (_linetrack_vright_1_82 + 1)
+043C C0CA      1244            push    (_linetrack_vright_1_82 + 2)
+043E C0CB      1245            push    (_linetrack_vright_1_82 + 3)
+0440 C078      1246            push    _linetrack_vleft_1_82
+0442 C079      1247            push    (_linetrack_vleft_1_82 + 1)
+0444 C07A      1248            push    (_linetrack_vleft_1_82 + 2)
+0446 C07B      1249            push    (_linetrack_vleft_1_82 + 3)
+0448 7418      1250            mov     a,#__str_0
+044A C0E0      1251            push    acc
+044C 74A1      1252            mov     a,#(__str_0 >> 8)
+044E C0E0      1253            push    acc
+0450 7480      1254            mov     a,#0x80
+0452 C0E0      1255            push    acc
+0454 120100    1256            lcall   _printf
+0457 E581      1257            mov     a,sp
+0459 24F1      1258            add     a,#0xf1
+045B F581      1259            mov     sp,a
+045D 22        1260            ret
+045E           1261   ;------------------------------------------------------------
+045E           1262   ;Allocation info for local variables in function 'main'
+045E           1263   ;------------------------------------------------------------
+045E           1264   ;------------------------------------------------------------
+045E           1265   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:286: void main (void)
+045E           1266   ;        -----------------------------------------
+045E           1267   ;         function main
+045E           1268   ;        -----------------------------------------
+045E           1269   _main:
+045E           1270   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:289: MOTOR_LEFT0 =0;
+045E C295      1271            clr     _P1_5
+0460           1272   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:290: MOTOR_LEFT1 =0;
+0460 C296      1273            clr     _P1_6
+0462           1274   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:291: MOTOR_RIGHT0 =0;
+0462 C2A0      1275            clr     _P2_0
+0464           1276   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:292: MOTOR_RIGHT1 =0;
+0464 C2A1      1277            clr     _P2_1
+0466           1278   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:295: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+0466 7498      1279            mov     a,#__str_1
+0468 C0E0      1280            push    acc
+046A 74A1      1281            mov     a,#(__str_1 >> 8)
+046C C0E0      1282            push    acc
+046E 7480      1283            mov     a,#0x80
+0470 C0E0      1284            push    acc
+0472 120100    1285            lcall   _printf
+0475 1581      1286            dec     sp
+0477 1581      1287            dec     sp
+0479 1581      1288            dec     sp
+047B           1289   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:304: InitPinADC(2, 3); // Configure P2.3 as analog input
+047B 75F803    1290            mov     _InitPinADC_PARM_2,#0x03
+047E 758202    1291            mov     dpl,#0x02
+0481 120100    1292            lcall   _InitPinADC
+0484           1293   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:305: InitPinADC(2, 4); // Configure P2.4 as analog input
+0484 75F804    1294            mov     _InitPinADC_PARM_2,#0x04
+0487 758202    1295            mov     dpl,#0x02
+048A 120100    1296            lcall   _InitPinADC
+048D           1297   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:306: InitADC();
+048D 120100    1298            lcall   _InitADC
+0490           1299   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:308: while(1)
+0490           1300   L013006?:
+0490           1301   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:310: readData();
+0490 120100    1302            lcall   _readData
+0493           1303   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:312: switch (currentcmd) {
+0493 AA58      1304            mov     r2,_currentcmd
+0495 BA0318    1305            cjne    r2,#0x03,L013013?
+0498 8001      1306            sjmp    L013001?
+049A           1307   L013013?:
+049A           1308   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:318: case 3 :
+049A BA0498    1309            cjne    r2,#0x04,L013003?
+049D 8001      1310            sjmp    L013002?
+049F           1311   L013001?:
+049F           1312   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:319: linetrack(0);
+049F 900000    1313            mov     dptr,#0x0000
+04A2 120100    1314            lcall   _linetrack
+04A5           1315   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:321: case 4 :
+04A5           1316   L013002?:
+04A5           1317   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:322: linetrack(1);
+04A5 900001    1318            mov     dptr,#0x0001
+04A8 120100    1319            lcall   _linetrack
+04AB           1320   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:327: default: 
+04AB           1321   L013003?:
+04AB           1322   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:328: linetrack(0);
+04AB 900000    1323            mov     dptr,#0x0000
+04AE 120100    1324            lcall   _linetrack
+04B1           1325   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:329: }
+04B1 8001      1326            sjmp    L013006?
+04B3           1327            rseg R_CSEG
+04B3           1328   
+0000           1329            rseg R_XINIT
+0000           1330   
+0000           1331            rseg R_CONST
+0000           1332   __str_0:
+0000 322E3320  1333            db '2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d'
      3D202566
      2C20322E
      34203D20
@@ -1244,13 +1343,13 @@
      744D6F74
      6F72203D
      202564
-0033 0D        1235            db 0x0D
-0034 00        1236            db 0x00
-0035           1237   __str_1:
-0035 1B        1238            db 0x1B
-0036 5B324A    1239            db '[2J'
-0039 00        1240            db 0x00
-003A           1241   
-002E           1242            CSEG
-002E           1243   
-002E           1244   end
+0033 0D        1334            db 0x0D
+0034 00        1335            db 0x00
+0035           1336   __str_1:
+0035 1B        1337            db 0x1B
+0036 5B324A    1338            db '[2J'
+0039 00        1339            db 0x00
+003A           1340   
+002E           1341            CSEG
+002E           1342   
+002E           1343   end

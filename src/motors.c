@@ -26,7 +26,7 @@ volatile  char pwm_Right0 = 0; //p2.0
 volatile  char pwm_Right1 = 0; //p2.1
 volatile  char direction = 0; // 1 for back 0 for forward
 
-volatile  char currentcmd = 0;
+volatile  char currentcmd = 3;
 
 
 
@@ -260,7 +260,7 @@ void readData (void) {
 }
 
 
-void linetrack (void) {
+void linetrack (int forwardbackward) {
 	volatile float vleft;
 	volatile float vright;
 	
@@ -271,6 +271,11 @@ void linetrack (void) {
 	pwm_Left1 = ((float)vright*100.0/((float)(vleft+vright)));
 	pwm_Right0 = -1;
 	pwm_Right1 = (vleft*100.0/(vleft+vright));
+	
+	if (forwardbackward) {
+		pwm_Left1 = pwm_Right1;
+		pwm_Right1 = ((float)vright*100.0/((float)(vleft+vright)));
+	}
 	
 	printf("2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d\r", vleft, vright, pwm_Left1, pwm_Right1);
 	
@@ -302,8 +307,29 @@ void main (void)
 
 	while(1)
 	{	
-	
-		linetrack();
+		readData();
+		//forwards just line tracking i guess
+		switch (currentcmd) {
+			//case for left turn
+		//	case 1 :
+			//case for right turn
+		//	case 2 :
+			//case for forwards
+			case 3 :
+				linetrack(0);
+			//case for backwards...
+			case 4 :
+				linetrack(1);
+			//case for stop
+		//	case 5 :
+			//case for 180 turn 
+		//	case 6 :
+			default: 
+				linetrack(0);
+		}
+			
+		
+		
 	  //	switch(mode)
 	  //	{
 	  //		//forward_backward mode
