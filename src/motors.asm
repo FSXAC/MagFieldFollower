@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Thu Mar 30 12:36:40 2017
+; This file was generated Thu Mar 30 12:40:34 2017
 ;--------------------------------------------------------
 $name motors
 $optc51 --model-small
@@ -1022,7 +1022,7 @@ _linetrack:
 	mov	(_linetrack_vright_1_82 + 3),a
 ;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:270: pwm_Left0 = -1;
 	mov	_pwm_Left0,#0xFF
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:271: pwm_Left1 = (vright*100/(vleft+vright));
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:271: pwm_Left1 = ((float)vright*100.0/((float)(vleft+vright)));
 	push	_linetrack_vright_1_82
 	push	(_linetrack_vright_1_82 + 1)
 	push	(_linetrack_vright_1_82 + 2)
@@ -1086,7 +1086,7 @@ _linetrack:
 	mov	_pwm_Left1,dpl
 ;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:272: pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:273: pwm_Right1 = (vleft*100/(vleft+vright));
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:273: pwm_Right1 = (vleft*100.0/(vleft+vright));
 	push	_linetrack_vleft_1_82
 	push	(_linetrack_vleft_1_82 + 1)
 	push	(_linetrack_vleft_1_82 + 2)
@@ -1148,7 +1148,7 @@ _linetrack:
 	mov	a,r5
 	lcall	___fs2schar
 	mov	_pwm_Right1,dpl
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:275: printf("2.3 = %f, 2.4 = %f, LeftMotor = %f, RightMotor = %f\r", vleft, vright, pwm_Left1, pwm_Right1);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:275: printf("2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d\r", vleft, vright, pwm_Left1, pwm_Right1);
 	mov	r2,_pwm_Right1
 	mov	a,_pwm_Right1
 	rlc	a
@@ -1231,7 +1231,7 @@ L013002?:
 
 	rseg R_CONST
 __str_0:
-	db '2.3 = %f, 2.4 = %f, LeftMotor = %f, RightMotor = %f'
+	db '2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d'
 	db 0x0D
 	db 0x00
 __str_1:

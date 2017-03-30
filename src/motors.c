@@ -268,11 +268,11 @@ void linetrack (void) {
 	vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	
 	pwm_Left0 = -1;
-	pwm_Left1 = (vright*100/(vleft+vright));
+	pwm_Left1 = ((float)vright*100.0/((float)(vleft+vright)));
 	pwm_Right0 = -1;
-	pwm_Right1 = (vleft*100/(vleft+vright));
+	pwm_Right1 = (vleft*100.0/(vleft+vright));
 	
-	printf("2.3 = %f, 2.4 = %f, LeftMotor = %f, RightMotor = %f\r", vleft, vright, pwm_Left1, pwm_Right1);
+	printf("2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d\r", vleft, vright, pwm_Left1, pwm_Right1);
 	
 }
 

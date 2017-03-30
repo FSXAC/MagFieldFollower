@@ -1,7 +1,7 @@
 0000              1   ;--------------------------------------------------------
 0000              2   ; File Created by C51
 0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-0000              4   ; This file was generated Thu Mar 30 12:36:40 2017
+0000              4   ; This file was generated Thu Mar 30 12:40:34 2017
 0000              5   ;--------------------------------------------------------
                   5   $name motors
                   6   $optc51 --model-small
@@ -1022,7 +1022,7 @@
 0289 F57B      1022            mov     (_linetrack_vright_1_82 + 3),a
 028B           1023   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:270: pwm_Left0 = -1;
 028B 7598FF    1024            mov     _pwm_Left0,#0xFF
-028E           1025   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:271: pwm_Left1 = (vright*100/(vleft+vright));
+028E           1025   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:271: pwm_Left1 = ((float)vright*100.0/((float)(vleft+vright)));
 028E C078      1026            push    _linetrack_vright_1_82
 0290 C079      1027            push    (_linetrack_vright_1_82 + 1)
 0292 C07A      1028            push    (_linetrack_vright_1_82 + 2)
@@ -1086,7 +1086,7 @@
 030A 858258    1086            mov     _pwm_Left1,dpl
 030D           1087   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:272: pwm_Right0 = -1;
 030D 7518FF    1088            mov     _pwm_Right0,#0xFF
-0310           1089   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:273: pwm_Right1 = (vleft*100/(vleft+vright));
+0310           1089   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:273: pwm_Right1 = (vleft*100.0/(vleft+vright));
 0310 C028      1090            push    _linetrack_vleft_1_82
 0312 C029      1091            push    (_linetrack_vleft_1_82 + 1)
 0314 C02A      1092            push    (_linetrack_vleft_1_82 + 2)
@@ -1148,7 +1148,7 @@
 0388 ED        1148            mov     a,r5
 0389 120100    1149            lcall   ___fs2schar
 038C 8582D8    1150            mov     _pwm_Right1,dpl
-038F           1151   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:275: printf("2.3 = %f, 2.4 = %f, LeftMotor = %f, RightMotor = %f\r", vleft, vright, pwm_Left1, pwm_Right1);
+038F           1151   ;        C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:275: printf("2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d\r", vleft, vright, pwm_Left1, pwm_Right1);
 038F AAD8      1152            mov     r2,_pwm_Right1
 0391 E5D8      1153            mov     a,_pwm_Right1
 0393 33        1154            rlc     a
@@ -1231,7 +1231,7 @@
 0000           1231   
 0000           1232            rseg R_CONST
 0000           1233   __str_0:
-0000 322E3320  1234            db '2.3 = %f, 2.4 = %f, LeftMotor = %f, RightMotor = %f'
+0000 322E3320  1234            db '2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d'
      3D202566
      2C20322E
      34203D20
@@ -1239,11 +1239,11 @@
      4C656674
      4D6F746F
      72203D20
-     25662C20
+     25642C20
      52696768
      744D6F74
      6F72203D
-     202566
+     202564
 0033 0D        1235            db 0x0D
 0034 00        1236            db 0x00
 0035           1237   __str_1:
