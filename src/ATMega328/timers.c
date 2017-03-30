@@ -8,20 +8,19 @@
 #define TIMER1_ENABLED
 
 // ===[global variables]===
-volatile unsigned char counter = 0;
-volatile unsigned char magEnabled = 1;
-volatile unsigned char magData = 0x01;
-volatile unsigned char magDataBit = 0;
-volatile unsigned char flag = 1;
+volatile uint8_t counter = 0;
+volatile uint8_t magEnabled = 1;
+volatile uint8_t magData = 0x01;
+volatile uint8_t magDataBit = 0;
+volatile uint8_t flag = 1;
 
 // ===[interrupt service routine]===
 // Timer 0
 #ifdef TIMER0_ENABLED
 ISR(TIMER0_OVF_vect) {
 	// toggle pin 15 on and off
-	counter++;
+	counter++;	
 	if (counter % 2) {
-		counter = 0;
 		if (magEnabled) PORTB turnOff(1);
 		else PORTB toggle(1);
 	}
@@ -35,6 +34,8 @@ ISR(TIMER1_OVF_vect) {
 	if (magDataBit < 8) {
 		// toggle square wave vs non
 		magEnabled = magData & (1<<magDataBit++);
+		if (magEnabled) PORTB turnOn(0);
+		else PORTB turnOff(0);
 	}
 }
 #endif
@@ -74,4 +75,5 @@ void transmit(void) {
 	TCCR1B |= 0x01;
 	TCNT1L = 0;
 	TCNT1H = 0;
+	// printf("Transmitting: %04x\n", magData);
 }
