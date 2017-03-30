@@ -33,7 +33,7 @@ ISR(TIMER1_OVF_vect) {
 	// if the bit at magDatabit is 1, turn the modulation on; otherwise, off
 	if (magDataBit < 8) {
 		// toggle square wave vs non
-		magEnabled = magData & (1<<magDataBit++);
+		magEnabled = (magData>>(8-magDataBit++)) & 1;
 		if (magEnabled) PORTB turnOn(0);
 		else PORTB turnOff(0);
 	}
@@ -75,5 +75,5 @@ void transmit(void) {
 	TCCR1B |= 0x01;
 	TCNT1L = 0;
 	TCNT1H = 0;
-	// printf("Transmitting: %04x\n", magData);
+	printf("Transmitting: %04x\n", magData);
 }
