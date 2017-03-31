@@ -27,6 +27,7 @@ volatile  char pwm_Right1 = 0; //p2.1
 volatile  char direction = 0; // 1 for back 0 for forward
 
 volatile  char currentcmd = 3;
+volatile  char currentstate = 1;
 
 
 
@@ -273,15 +274,87 @@ void linetrack (int forwardbackward) {
 	pwm_Right1 = (vleft*100.0/(vleft+vright));
 	
 	if (forwardbackward) {
-		pwm_Left1 = pwm_Right1;
-		pwm_Right1 = ((float)vright*100.0/((float)(vleft+vright)));
+		pwm_Left0 = pwm_Left1;
+		pwm_Left1 = -1;
+		pwm_Right0 = pwm_Right1;
+		pwm_Right1 = -1;
 	}
 	
 	printf("2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d\r", vleft, vright, pwm_Left1, pwm_Right1);
 	
 }
 
+void stopcar () {
+	pwm_Left1 = -1;
+	pwm_Right1 = -1;
+	pwm_Left0 = -1;
+	pwm_Right0 = -1;
+}
+
+void turncar (int leftright) {
+	volatile float vleft;
+	volatile float vright;
+			
+	pwm_Left0 = -1;
+	pwm_Left1 = -1;
+	pwm_Right0 = -1;
+	pwm_Right1 = -1;
+
+
+	if (leftright == 0) {
+		//turn left
+		pwm_Right1 = 100;
+		
+		waitms(500);
 	
+		vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+		
+		while (((vleft - vright) < 0.1) || ((vleft - vright) > (-0.1))) {
+			//get voltages
+			vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+			vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+		}
+	
+		pwm_Right1 = -1; 		
+	}
+	
+	else if (leftright == 1) {
+		//turn right
+		pwm_Left1 = 100;
+				
+		waitms(500);
+	
+		vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+		
+		while (((vleft - vright) < 0.1) || ((vleft - vright) > (-0.1))) {
+			//get voltages
+			vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+			vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+		}
+	
+		pwm_Left1 = -1; 
+	}
+}
+
+void uturn () {
+	volatile float vleft;
+	volatile float vright;
+	
+	vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+	vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	
+	if (vleft >= vright) {
+		//if close to left side of the car, uturn right
+		turncar(1);
+	}
+	
+	else {
+		//if close to right side of the car, uturn left
+		turncar(0);
+	}
+}	
 
 void main (void)
 {
@@ -290,6 +363,9 @@ void main (void)
    MOTOR_LEFT1 =0;
    MOTOR_RIGHT0 =0;
    MOTOR_RIGHT1 =0;
+   
+   currentstate = 3;  	//initialize the car to be stopped
+   currentcmd = 0;		//initialize the command to be null
 
 
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
@@ -307,25 +383,66 @@ void main (void)
 
 	while(1)
 	{	
-		readData();
-		//forwards just line tracking i guess
+		readData(); //check for incoming commands
+		
+		switch (currentstate) {
+			case 1:
+				linetrack(0);	//forwards
+				break;
+			case 2:
+				linetrack(1);	//backwards
+				break;
+			case 3:
+				stopcar();		//stop car
+				break;
+		}
+				
 		switch (currentcmd) {
 			//case for left turn
-		//	case 1 :
-			//case for right turn
-		//	case 2 :
+			case 0 :
+				break;
+			case 1 :
+				//check for intersections
+					//if at intersection {
+						turncar(0); //0 = left
+						currentcmd = 0;
+					//}
+				break;
+			//---------------------------------//	
+			//case for right turn			
+			case 2 :
+				//check for intersections
+					//if at intersection {
+						turncar(1); //1 = right
+						currentcmd = 0;
+					//}
+				break;
+			//---------------------------------//
 			//case for forwards
 			case 3 :
-				linetrack(0);
-			//case for backwards...
+				currentstate = 1;
+				currentcmd = 0;
+				break;
+			//---------------------------------//
+			//case for backwards
 			case 4 :
-				linetrack(1);
+				currentstate = 2;
+				currentcmd = 0;
+				break;
+			//---------------------------------//
 			//case for stop
-		//	case 5 :
+			case 5 :
+				currentstate = 3;
+				currentcmd = 0;
+				break;
+			//---------------------------------//	
 			//case for 180 turn 
-		//	case 6 :
+			case 6 :
+				uturn();  //uturn
+				currentcmd = 0;
+				break;
 			default: 
-				linetrack(0);
+				currentstate = 1;
 		}
 			
 		

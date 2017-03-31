@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Thu Mar 30 12:52:44 2017
+; This file was generated Thu Mar 30 21:04:22 2017
 ;--------------------------------------------------------
 $name motors
 $optc51 --model-small
@@ -26,6 +26,9 @@ $printf_float
 ;--------------------------------------------------------
 	public _InitPinADC_PARM_2
 	public _main
+	public _uturn
+	public _turncar
+	public _stopcar
 	public _linetrack
 	public _readData
 	public _Volts_at_Pin
@@ -37,6 +40,7 @@ $printf_float
 	public _waitms
 	public _Timer3us
 	public __c51_external_startup
+	public _currentstate
 	public _currentcmd
 	public _direction
 	public _pwm_Right1
@@ -395,11 +399,21 @@ _direction:
 	ds 1
 _currentcmd:
 	ds 1
+_currentstate:
+	ds 1
 _linetrack_forwardbackward_1_81:
 	ds 2
 _linetrack_vleft_1_82:
 	ds 4
 _linetrack_vright_1_82:
+	ds 4
+_turncar_vleft_1_86:
+	ds 4
+_turncar_vright_1_86:
+	ds 4
+_uturn_vleft_1_91:
+	ds 4
+_uturn_vright_1_91:
 	ds 4
 ;--------------------------------------------------------
 ; overlayable items in internal ram 
@@ -478,6 +492,8 @@ _Timer2_ISR_sloc0_1_0:
 	mov	_direction,#0x00
 ;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:29: volatile  char currentcmd = 3;
 	mov	_currentcmd,#0x03
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:30: volatile  char currentstate = 1;
+	mov	_currentstate,#0x01
 	; The linker places a 'ret' at the end of segment R_DINIT.
 ;--------------------------------------------------------
 ; code
@@ -487,65 +503,65 @@ _Timer2_ISR_sloc0_1_0:
 ;Allocation info for local variables in function '_c51_external_startup'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:33: char _c51_external_startup (void)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:34: char _c51_external_startup (void)
 ;	-----------------------------------------
 ;	 function _c51_external_startup
 ;	-----------------------------------------
 __c51_external_startup:
 	using	0
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:35: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:36: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
 	anl	_PCA0MD,#0xBF
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:36: VDM0CN=0x80; // enable VDD monitor
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:37: VDM0CN=0x80; // enable VDD monitor
 	mov	_VDM0CN,#0x80
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:37: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:38: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
 	mov	_RSTSRC,#0x06
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:45: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:46: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
 	orl	_CLKSEL,#0x03
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:49: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:50: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
 	orl	_OSCICN,#0x03
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:52: SCON0 = 0x10;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:53: SCON0 = 0x10;
 	mov	_SCON0,#0x10
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:54: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:55: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
 	mov	_TH1,#0x30
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:55: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:56: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
 	anl	_CKCON,#0xF4
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:56: CKCON |=  0x08;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:57: CKCON |=  0x08;
 	orl	_CKCON,#0x08
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:69: TL1 = TH1;      // Init Timer1
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:70: TL1 = TH1;      // Init Timer1
 	mov	_TL1,_TH1
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:70: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:71: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
 	anl	_TMOD,#0x0F
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:71: TMOD |=  0x20;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:72: TMOD |=  0x20;
 	orl	_TMOD,#0x20
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:72: TR1 = 1; // START Timer1
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:73: TR1 = 1; // START Timer1
 	setb	_TR1
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:73: TI = 1;  // Indicate TX0 ready
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:74: TI = 1;  // Indicate TX0 ready
 	setb	_TI
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:76: P2MDOUT|=0b_0000_0011;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:77: P2MDOUT|=0b_0000_0011;
 	orl	_P2MDOUT,#0x03
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:77: P0MDOUT |= 0x10; // Enable UTX as push-pull output
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:78: P0MDOUT |= 0x10; // Enable UTX as push-pull output
 	orl	_P0MDOUT,#0x10
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:78: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:79: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
 	mov	_XBR0,#0x01
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:79: XBR1     = 0x40; // Enable crossbar and weak pull-ups
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:80: XBR1     = 0x40; // Enable crossbar and weak pull-ups
 	mov	_XBR1,#0x40
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:82: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:83: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
 	mov	_TMR2CN,#0x00
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:83: CKCON|=0b_0001_0000;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:84: CKCON|=0b_0001_0000;
 	orl	_CKCON,#0x10
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:84: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:85: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
 	mov	_TMR2RL,#0x78
 	mov	(_TMR2RL >> 8),#0xEC
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:85: TMR2=0xffff;   // Set to reload immediately
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:86: TMR2=0xffff;   // Set to reload immediately
 	mov	_TMR2,#0xFF
 	mov	(_TMR2 >> 8),#0xFF
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:86: ET2=1;         // Enable Timer2 interrupts
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:87: ET2=1;         // Enable Timer2 interrupts
 	setb	_ET2
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:87: TR2=1;         // Start Timer2
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:88: TR2=1;         // Start Timer2
 	setb	_TR2
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:89: EA=1; // Enable interrupts
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:90: EA=1; // Enable interrupts
 	setb	_EA
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:91: return 0;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:92: return 0;
 	mov	dpl,#0x00
 	ret
 ;------------------------------------------------------------
@@ -554,40 +570,40 @@ __c51_external_startup:
 ;us                        Allocated to registers r2 
 ;i                         Allocated to registers r3 
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:95: void Timer3us(unsigned char us)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:96: void Timer3us(unsigned char us)
 ;	-----------------------------------------
 ;	 function Timer3us
 ;	-----------------------------------------
 _Timer3us:
 	mov	r2,dpl
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:100: CKCON|=0b_0100_0000;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:101: CKCON|=0b_0100_0000;
 	orl	_CKCON,#0x40
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:102: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:103: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
 	mov	_TMR3RL,#0xD0
 	mov	(_TMR3RL >> 8),#0xFF
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:103: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:104: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
 	mov	_TMR3,_TMR3RL
 	mov	(_TMR3 >> 8),(_TMR3RL >> 8)
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:105: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:106: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
 	mov	_TMR3CN,#0x04
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:106: for (i = 0; i < us; i++)       // Count <us> overflows
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:107: for (i = 0; i < us; i++)       // Count <us> overflows
 	mov	r3,#0x00
 L003004?:
 	clr	c
 	mov	a,r3
 	subb	a,r2
 	jnc	L003007?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:108: while (!(TMR3CN & 0x80));  // Wait for overflow
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:109: while (!(TMR3CN & 0x80));  // Wait for overflow
 L003001?:
 	mov	a,_TMR3CN
 	jnb	acc.7,L003001?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:109: TMR3CN &= ~(0x80);         // Clear overflow indicator
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:110: TMR3CN &= ~(0x80);         // Clear overflow indicator
 	anl	_TMR3CN,#0x7F
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:106: for (i = 0; i < us; i++)       // Count <us> overflows
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:107: for (i = 0; i < us; i++)       // Count <us> overflows
 	inc	r3
 	sjmp	L003004?
 L003007?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:111: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:112: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
 	mov	_TMR3CN,#0x00
 	ret
 ;------------------------------------------------------------
@@ -596,36 +612,36 @@ L003007?:
 ;ms                        Allocated to registers r2 r3 
 ;j                         Allocated to registers r2 r3 
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:114: void waitms (unsigned int ms)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:115: void waitms (unsigned int ms)
 ;	-----------------------------------------
 ;	 function waitms
 ;	-----------------------------------------
 _waitms:
 	mov	r2,dpl
 	mov	r3,dph
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:117: for(j=ms; j!=0; j--)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:118: for(j=ms; j!=0; j--)
 L004001?:
 	cjne	r2,#0x00,L004010?
 	cjne	r3,#0x00,L004010?
 	ret
 L004010?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:119: Timer3us(249);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:120: Timer3us(249);
 	mov	dpl,#0xF9
 	push	ar2
 	push	ar3
 	lcall	_Timer3us
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:120: Timer3us(249);
-	mov	dpl,#0xF9
-	lcall	_Timer3us
 ;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:121: Timer3us(249);
 	mov	dpl,#0xF9
 	lcall	_Timer3us
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:122: Timer3us(250);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:122: Timer3us(249);
+	mov	dpl,#0xF9
+	lcall	_Timer3us
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:123: Timer3us(250);
 	mov	dpl,#0xFA
 	lcall	_Timer3us
 	pop	ar3
 	pop	ar2
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:117: for(j=ms; j!=0; j--)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:118: for(j=ms; j!=0; j--)
 	dec	r2
 	cjne	r2,#0xff,L004011?
 	dec	r3
@@ -635,7 +651,7 @@ L004011?:
 ;Allocation info for local variables in function 'Timer2_ISR'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:127: void Timer2_ISR (void) interrupt 5
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:128: void Timer2_ISR (void) interrupt 5
 ;	-----------------------------------------
 ;	 function Timer2_ISR
 ;	-----------------------------------------
@@ -644,11 +660,11 @@ _Timer2_ISR:
 	push	b
 	push	psw
 	mov	psw,#0x00
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:129: TF2H = 0; // Clear Timer2 interrupt flag
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:130: TF2H = 0; // Clear Timer2 interrupt flag
 	clr	_TF2H
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:131: pwm_count++;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:132: pwm_count++;
 	inc	_pwm_count
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:132: if(pwm_count>100) pwm_count=0;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:133: if(pwm_count>100) pwm_count=0;
 	clr	c
 	mov	a,#(0x64 ^ 0x80)
 	mov	b,_pwm_count
@@ -657,7 +673,7 @@ _Timer2_ISR:
 	jnc	L005002?
 	mov	_pwm_count,#0x00
 L005002?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:135: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:136: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
 	clr	c
 	mov	a,_pwm_Left0
 	xrl	a,#0x80
@@ -667,7 +683,7 @@ L005002?:
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P1_5,c
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:136: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:137: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
 	clr	c
 	mov	a,_pwm_Left1
 	xrl	a,#0x80
@@ -677,7 +693,7 @@ L005002?:
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P1_6,c
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:137: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:138: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
 	clr	c
 	mov	a,_pwm_Right0
 	xrl	a,#0x80
@@ -687,7 +703,7 @@ L005002?:
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P2_0,c
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:138: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:139: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
 	clr	c
 	mov	a,_pwm_Right1
 	xrl	a,#0x80
@@ -708,29 +724,29 @@ L005002?:
 ;------------------------------------------------------------
 ;direction                 Allocated to registers r2 
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:145: void forward_backward(unsigned char direction)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:146: void forward_backward(unsigned char direction)
 ;	-----------------------------------------
 ;	 function forward_backward
 ;	-----------------------------------------
 _forward_backward:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:148: if (direction == 0) { //p2.1,1.6 on
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:149: if (direction == 0) { //p2.1,1.6 on
 	mov	a,dpl
 	mov	r2,a
 	jnz	L006004?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:149: pwm_Left0 = pwm_Right0 = -1;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:150: pwm_Left0 = pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
 	mov	_pwm_Left0,#0xFF
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:150: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:151: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
 	mov	_pwm_Right1,_pwm_both
 	mov	_pwm_Left1,_pwm_both
 	ret
 L006004?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:153: else if (direction == 1) { //p2.0,1.5 on
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:154: else if (direction == 1) { //p2.0,1.5 on
 	cjne	r2,#0x01,L006006?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:154: pwm_Left1 = pwm_Right1 = -1;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:155: pwm_Left1 = pwm_Right1 = -1;
 	mov	_pwm_Right1,#0xFF
 	mov	_pwm_Left1,#0xFF
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:155: pwm_Left0 = pwm_Right0 = pwm_both; 
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:156: pwm_Left0 = pwm_Right0 = pwm_both; 
 	mov	_pwm_Right0,_pwm_both
 	mov	_pwm_Left0,_pwm_both
 L006006?:
@@ -739,16 +755,16 @@ L006006?:
 ;Allocation info for local variables in function 'InitADC'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:161: void InitADC (void)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:162: void InitADC (void)
 ;	-----------------------------------------
 ;	 function InitADC
 ;	-----------------------------------------
 _InitADC:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:164: ADC0CF = 0xF8; // SAR clock = 31, Right-justified result
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:165: ADC0CF = 0xF8; // SAR clock = 31, Right-justified result
 	mov	_ADC0CF,#0xF8
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:165: ADC0CN = 0b_1000_0000; // AD0EN=1, AD0TM=0
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:166: ADC0CN = 0b_1000_0000; // AD0EN=1, AD0TM=0
 	mov	_ADC0CN,#0x80
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:166: REF0CN = 0b_0000_1000; //Select VDD as the voltage reference for the converter
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:167: REF0CN = 0b_0000_1000; //Select VDD as the voltage reference for the converter
 	mov	_REF0CN,#0x08
 	ret
 ;------------------------------------------------------------
@@ -758,13 +774,13 @@ _InitADC:
 ;portno                    Allocated to registers r2 
 ;mask                      Allocated to registers r3 
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:169: void InitPinADC (unsigned char portno, unsigned char pinno)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:170: void InitPinADC (unsigned char portno, unsigned char pinno)
 ;	-----------------------------------------
 ;	 function InitPinADC
 ;	-----------------------------------------
 _InitPinADC:
 	mov	r2,dpl
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:173: mask=1<<pinno;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:174: mask=1<<pinno;
 	mov	b,_InitPinADC_PARM_2
 	inc	b
 	mov	a,#0x01
@@ -774,7 +790,7 @@ L008010?:
 L008012?:
 	djnz	b,L008010?
 	mov	r3,a
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:175: switch (portno)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:176: switch (portno)
 	mov	a,r2
 	add	a,#0xff - 0x03
 	jc	L008007?
@@ -788,50 +804,50 @@ L008014?:
 	ljmp	L008002?
 	ljmp	L008003?
 	ljmp	L008004?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:177: case 0:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:178: case 0:
 L008001?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:178: P0MDIN &= (~mask); // Set pin as analog input
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:179: P0MDIN &= (~mask); // Set pin as analog input
 	mov	a,r3
 	cpl	a
 	anl	_P0MDIN,a
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:179: P0SKIP |= mask; // Skip Crossbar decoding for this pin
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:180: P0SKIP |= mask; // Skip Crossbar decoding for this pin
 	mov	a,r3
 	orl	_P0SKIP,a
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:180: break;
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:181: case 1:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:181: break;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:182: case 1:
 	ret
 L008002?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:182: P1MDIN &= (~mask); // Set pin as analog input
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:183: P1MDIN &= (~mask); // Set pin as analog input
 	mov	a,r3
 	cpl	a
 	anl	_P1MDIN,a
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:183: P1SKIP |= mask; // Skip Crossbar decoding for this pin
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:184: P1SKIP |= mask; // Skip Crossbar decoding for this pin
 	mov	a,r3
 	orl	_P1SKIP,a
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:184: break;
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:185: case 2:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:185: break;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:186: case 2:
 	ret
 L008003?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:186: P2MDIN &= (~mask); // Set pin as analog input
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:187: P2MDIN &= (~mask); // Set pin as analog input
 	mov	a,r3
 	cpl	a
 	anl	_P2MDIN,a
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:187: P2SKIP |= mask; // Skip Crossbar decoding for this pin
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:188: P2SKIP |= mask; // Skip Crossbar decoding for this pin
 	mov	a,r3
 	orl	_P2SKIP,a
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:188: break;
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:189: case 3:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:189: break;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:190: case 3:
 	ret
 L008004?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:190: P3MDIN &= (~mask); // Set pin as analog input
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:191: P3MDIN &= (~mask); // Set pin as analog input
 	mov	a,r3
 	cpl	a
 	mov	r2,a
 	anl	_P3MDIN,a
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:191: P3SKIP |= mask; // Skip Crossbar decoding for this pin
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:192: P3SKIP |= mask; // Skip Crossbar decoding for this pin
 	mov	a,r3
 	orl	_P3SKIP,a
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:195: }
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:196: }
 L008007?:
 	ret
 ;------------------------------------------------------------
@@ -839,25 +855,25 @@ L008007?:
 ;------------------------------------------------------------
 ;pin                       Allocated to registers 
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:198: unsigned int ADC_at_Pin(unsigned char pin)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:199: unsigned int ADC_at_Pin(unsigned char pin)
 ;	-----------------------------------------
 ;	 function ADC_at_Pin
 ;	-----------------------------------------
 _ADC_at_Pin:
 	mov	_AMX0P,dpl
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:201: AMX0N = LQFP32_MUX_GND;  // GND is negative input (Single-ended Mode)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:202: AMX0N = LQFP32_MUX_GND;  // GND is negative input (Single-ended Mode)
 	mov	_AMX0N,#0x1F
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:203: AD0BUSY=1;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:204: AD0BUSY=1;
 	setb	_AD0BUSY
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:204: while (AD0BUSY); // Wait for dummy conversion to finish
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:205: while (AD0BUSY); // Wait for dummy conversion to finish
 L009001?:
 	jb	_AD0BUSY,L009001?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:206: AD0BUSY = 1;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:207: AD0BUSY = 1;
 	setb	_AD0BUSY
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:207: while (AD0BUSY); // Wait for conversion to complete
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:208: while (AD0BUSY); // Wait for conversion to complete
 L009004?:
 	jb	_AD0BUSY,L009004?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:208: return (ADC0L+(ADC0H*0x100));
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:209: return (ADC0L+(ADC0H*0x100));
 	mov	r2,_ADC0L
 	mov	r3,#0x00
 	mov	r5,_ADC0H
@@ -874,12 +890,12 @@ L009004?:
 ;------------------------------------------------------------
 ;pin                       Allocated to registers r2 
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:211: float Volts_at_Pin(unsigned char pin)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:212: float Volts_at_Pin(unsigned char pin)
 ;	-----------------------------------------
 ;	 function Volts_at_Pin
 ;	-----------------------------------------
 _Volts_at_Pin:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:213: return ((ADC_at_Pin(pin)*3.30)/1024.0);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:214: return ((ADC_at_Pin(pin)*3.30)/1024.0);
 	lcall	_ADC_at_Pin
 	lcall	___uint2fs
 	mov	r2,dpl
@@ -929,71 +945,71 @@ _Volts_at_Pin:
 ;Allocation info for local variables in function 'readData'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:217: void readData (void) {
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:218: void readData (void) {
 ;	-----------------------------------------
 ;	 function readData
 ;	-----------------------------------------
 _readData:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:219: if (COMMAND_PIN == 0) {					//0---
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:220: if (COMMAND_PIN == 0) {					//0---
 	jb	_P1_0,L011022?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:220: waitms(6);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:221: waitms(6);
 	mov	dptr,#0x0006
 	lcall	_waitms
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:221: if (COMMAND_PIN == 1) {				//01--
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:222: if (COMMAND_PIN == 1) {				//01--
 	jnb	_P1_0,L011018?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:222: waitms(4);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:223: waitms(4);
 	mov	dptr,#0x0004
 	lcall	_waitms
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:223: if (COMMAND_PIN == 0) {			//010-
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:224: if (COMMAND_PIN == 0) {			//010-
 	jb	_P1_0,L011007?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:224: waitms(4);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:225: waitms(4);
 	mov	dptr,#0x0004
 	lcall	_waitms
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:225: if (COMMAND_PIN == 0) {		//0100	
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:226: if (COMMAND_PIN == 0) {		//0100	
 	jb	_P1_0,L011002?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:226: currentcmd = 4;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:227: currentcmd = 4;
 	mov	_currentcmd,#0x04
 	sjmp	L011022?
 L011002?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:229: currentcmd = 5;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:230: currentcmd = 5;
 	mov	_currentcmd,#0x05
 	sjmp	L011022?
 L011007?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:233: waitms(4);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:234: waitms(4);
 	mov	dptr,#0x0004
 	lcall	_waitms
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:234: if (COMMAND_PIN == 0) {		//0110
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:235: if (COMMAND_PIN == 0) {		//0110
 	jb	_P1_0,L011022?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:235: currentcmd = 6;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:236: currentcmd = 6;
 	mov	_currentcmd,#0x06
 	sjmp	L011022?
 L011018?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:240: waitms(4);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:241: waitms(4);
 	mov	dptr,#0x0004
 	lcall	_waitms
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:241: if (COMMAND_PIN == 1) {			//001-
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:242: if (COMMAND_PIN == 1) {			//001-
 	jnb	_P1_0,L011015?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:242: waitms(4);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:243: waitms(4);
 	mov	dptr,#0x0004
 	lcall	_waitms
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:243: if (COMMAND_PIN == 1) {		//0011
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:244: if (COMMAND_PIN == 1) {		//0011
 	jnb	_P1_0,L011010?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:244: currentcmd = 3;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:245: currentcmd = 3;
 	mov	_currentcmd,#0x03
 	sjmp	L011022?
 L011010?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:247: currentcmd = 2;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:248: currentcmd = 2;
 	mov	_currentcmd,#0x02
 	sjmp	L011022?
 L011015?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:251: waitms(4);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:252: waitms(4);
 	mov	dptr,#0x0004
 	lcall	_waitms
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:252: if (COMMAND_PIN == 1) {		//0001	
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:253: if (COMMAND_PIN == 1) {		//0001	
 	jnb	_P1_0,L011022?
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:253: currentcmd == 1;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:254: currentcmd == 1;
 	mov	a,_currentcmd
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:259: while (COMMAND_PIN == 0) {}
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:260: while (COMMAND_PIN == 0) {}
 L011022?:
 	jnb	_P1_0,L011022?
 	ret
@@ -1004,30 +1020,30 @@ L011022?:
 ;vleft                     Allocated with name '_linetrack_vleft_1_82'
 ;vright                    Allocated with name '_linetrack_vright_1_82'
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:263: void linetrack (int forwardbackward) {
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:264: void linetrack (int forwardbackward) {
 ;	-----------------------------------------
 ;	 function linetrack
 ;	-----------------------------------------
 _linetrack:
 	mov	_linetrack_forwardbackward_1_81,dpl
 	mov	(_linetrack_forwardbackward_1_81 + 1),dph
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:267: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:268: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
 	mov	_linetrack_vleft_1_82,dpl
 	mov	(_linetrack_vleft_1_82 + 1),dph
 	mov	(_linetrack_vleft_1_82 + 2),b
 	mov	(_linetrack_vleft_1_82 + 3),a
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:268: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:269: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
 	mov	_linetrack_vright_1_82,dpl
 	mov	(_linetrack_vright_1_82 + 1),dph
 	mov	(_linetrack_vright_1_82 + 2),b
 	mov	(_linetrack_vright_1_82 + 3),a
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:270: pwm_Left0 = -1;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:271: pwm_Left0 = -1;
 	mov	_pwm_Left0,#0xFF
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:271: pwm_Left1 = ((float)vright*100.0/((float)(vleft+vright)));
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:272: pwm_Left1 = ((float)vright*100.0/((float)(vleft+vright)));
 	push	_linetrack_vright_1_82
 	push	(_linetrack_vright_1_82 + 1)
 	push	(_linetrack_vright_1_82 + 2)
@@ -1089,9 +1105,9 @@ _linetrack:
 	mov	a,r5
 	lcall	___fs2schar
 	mov	_pwm_Left1,dpl
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:272: pwm_Right0 = -1;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:273: pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:273: pwm_Right1 = (vleft*100.0/(vleft+vright));
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:274: pwm_Right1 = (vleft*100.0/(vleft+vright));
 	push	_linetrack_vleft_1_82
 	push	(_linetrack_vleft_1_82 + 1)
 	push	(_linetrack_vleft_1_82 + 2)
@@ -1153,78 +1169,20 @@ _linetrack:
 	mov	a,r5
 	lcall	___fs2schar
 	mov	_pwm_Right1,dpl
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:275: if (forwardbackward) {
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:276: if (forwardbackward) {
 	mov	a,_linetrack_forwardbackward_1_81
 	orl	a,(_linetrack_forwardbackward_1_81 + 1)
-	jnz	L012006?
-	ljmp	L012002?
-L012006?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:276: pwm_Left1 = pwm_Right1;
-	mov	_pwm_Left1,_pwm_Right1
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:277: pwm_Right1 = ((float)vright*100.0/((float)(vleft+vright)));
-	push	_linetrack_vright_1_82
-	push	(_linetrack_vright_1_82 + 1)
-	push	(_linetrack_vright_1_82 + 2)
-	push	(_linetrack_vright_1_82 + 3)
-	mov	dptr,#0x0000
-	mov	b,#0xC8
-	mov	a,#0x42
-	lcall	___fsmul
-	mov	r2,dpl
-	mov	r3,dph
-	mov	r4,b
-	mov	r5,a
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	push	ar2
-	push	ar3
-	push	ar4
-	push	ar5
-	push	_linetrack_vright_1_82
-	push	(_linetrack_vright_1_82 + 1)
-	push	(_linetrack_vright_1_82 + 2)
-	push	(_linetrack_vright_1_82 + 3)
-	mov	dpl,_linetrack_vleft_1_82
-	mov	dph,(_linetrack_vleft_1_82 + 1)
-	mov	b,(_linetrack_vleft_1_82 + 2)
-	mov	a,(_linetrack_vleft_1_82 + 3)
-	lcall	___fsadd
-	mov	r6,dpl
-	mov	r7,dph
-	mov	r0,b
-	mov	r1,a
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	pop	ar5
-	pop	ar4
-	pop	ar3
-	pop	ar2
-	push	ar6
-	push	ar7
-	push	ar0
-	push	ar1
-	mov	dpl,r2
-	mov	dph,r3
-	mov	b,r4
-	mov	a,r5
-	lcall	___fsdiv
-	mov	r2,dpl
-	mov	r3,dph
-	mov	r4,b
-	mov	r5,a
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	mov	dpl,r2
-	mov	dph,r3
-	mov	b,r4
-	mov	a,r5
-	lcall	___fs2schar
-	mov	_pwm_Right1,dpl
+	jz	L012002?
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:277: pwm_Left0 = pwm_Left1;
+	mov	_pwm_Left0,_pwm_Left1
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:278: pwm_Left1 = -1;
+	mov	_pwm_Left1,#0xFF
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:279: pwm_Right0 = pwm_Right1;
+	mov	_pwm_Right0,_pwm_Right1
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:280: pwm_Right1 = -1;
+	mov	_pwm_Right1,#0xFF
 L012002?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:280: printf("2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d\r", vleft, vright, pwm_Left1, pwm_Right1);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:283: printf("2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d\r", vleft, vright, pwm_Left1, pwm_Right1);
 	mov	r2,_pwm_Right1
 	mov	a,_pwm_Right1
 	rlc	a
@@ -1259,23 +1217,347 @@ L012002?:
 	mov	sp,a
 	ret
 ;------------------------------------------------------------
+;Allocation info for local variables in function 'stopcar'
+;------------------------------------------------------------
+;------------------------------------------------------------
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:287: void stopcar () {
+;	-----------------------------------------
+;	 function stopcar
+;	-----------------------------------------
+_stopcar:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:288: pwm_Left1 = -1;
+	mov	_pwm_Left1,#0xFF
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:289: pwm_Right1 = -1;
+	mov	_pwm_Right1,#0xFF
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:290: pwm_Left0 = -1;
+	mov	_pwm_Left0,#0xFF
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:291: pwm_Right0 = -1;
+	mov	_pwm_Right0,#0xFF
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'turncar'
+;------------------------------------------------------------
+;leftright                 Allocated to registers r2 r3 
+;vleft                     Allocated with name '_turncar_vleft_1_86'
+;vright                    Allocated with name '_turncar_vright_1_86'
+;------------------------------------------------------------
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:294: void turncar (int leftright) {
+;	-----------------------------------------
+;	 function turncar
+;	-----------------------------------------
+_turncar:
+	mov	r2,dpl
+	mov	r3,dph
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:298: pwm_Left0 = -1;
+	mov	_pwm_Left0,#0xFF
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:299: pwm_Left1 = -1;
+	mov	_pwm_Left1,#0xFF
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:300: pwm_Right0 = -1;
+	mov	_pwm_Right0,#0xFF
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:301: pwm_Right1 = -1;
+	mov	_pwm_Right1,#0xFF
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:304: if (leftright == 0) {
+	mov	a,r2
+	orl	a,r3
+	jz	L014022?
+	ljmp	L014012?
+L014022?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:306: pwm_Right1 = 100;
+	mov	_pwm_Right1,#0x64
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:308: waitms(500);
+	mov	dptr,#0x01F4
+	lcall	_waitms
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:310: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+	mov	dpl,#0x0B
+	lcall	_Volts_at_Pin
+	mov	_turncar_vleft_1_86,dpl
+	mov	(_turncar_vleft_1_86 + 1),dph
+	mov	(_turncar_vleft_1_86 + 2),b
+	mov	(_turncar_vleft_1_86 + 3),a
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:311: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	mov	dpl,#0x0C
+	lcall	_Volts_at_Pin
+	mov	_turncar_vright_1_86,dpl
+	mov	(_turncar_vright_1_86 + 1),dph
+	mov	(_turncar_vright_1_86 + 2),b
+	mov	(_turncar_vright_1_86 + 3),a
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:313: while (((vleft - vright) < 0.1) || ((vleft - vright) > (-0.1))) {
+L014002?:
+	push	_turncar_vright_1_86
+	push	(_turncar_vright_1_86 + 1)
+	push	(_turncar_vright_1_86 + 2)
+	push	(_turncar_vright_1_86 + 3)
+	mov	dpl,_turncar_vleft_1_86
+	mov	dph,(_turncar_vleft_1_86 + 1)
+	mov	b,(_turncar_vleft_1_86 + 2)
+	mov	a,(_turncar_vleft_1_86 + 3)
+	lcall	___fssub
+	mov	r4,dpl
+	mov	r5,dph
+	mov	r6,b
+	mov	r7,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,#0xCD
+	push	acc
+	mov	a,#0xCC
+	push	acc
+	push	acc
+	mov	a,#0x3D
+	push	acc
+	mov	dpl,r4
+	mov	dph,r5
+	mov	b,r6
+	mov	a,r7
+	lcall	___fslt
+	mov	r4,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r4
+	jnz	L014003?
+	push	_turncar_vright_1_86
+	push	(_turncar_vright_1_86 + 1)
+	push	(_turncar_vright_1_86 + 2)
+	push	(_turncar_vright_1_86 + 3)
+	mov	dpl,_turncar_vleft_1_86
+	mov	dph,(_turncar_vleft_1_86 + 1)
+	mov	b,(_turncar_vleft_1_86 + 2)
+	mov	a,(_turncar_vleft_1_86 + 3)
+	lcall	___fssub
+	mov	r4,dpl
+	mov	r5,dph
+	mov	r6,b
+	mov	r7,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,#0xCD
+	push	acc
+	mov	a,#0xCC
+	push	acc
+	push	acc
+	mov	a,#0xBD
+	push	acc
+	mov	dpl,r4
+	mov	dph,r5
+	mov	b,r6
+	mov	a,r7
+	lcall	___fsgt
+	mov	r4,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r4
+	jz	L014004?
+L014003?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:315: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+	mov	dpl,#0x0B
+	lcall	_Volts_at_Pin
+	mov	_turncar_vleft_1_86,dpl
+	mov	(_turncar_vleft_1_86 + 1),dph
+	mov	(_turncar_vleft_1_86 + 2),b
+	mov	(_turncar_vleft_1_86 + 3),a
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:316: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	mov	dpl,#0x0C
+	lcall	_Volts_at_Pin
+	mov	_turncar_vright_1_86,dpl
+	mov	(_turncar_vright_1_86 + 1),dph
+	mov	(_turncar_vright_1_86 + 2),b
+	mov	(_turncar_vright_1_86 + 3),a
+	ljmp	L014002?
+L014004?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:319: pwm_Right1 = -1; 		
+	mov	_pwm_Right1,#0xFF
+	ret
+L014012?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:322: else if (leftright == 1) {
+	cjne	r2,#0x01,L014025?
+	cjne	r3,#0x00,L014025?
+	sjmp	L014026?
+L014025?:
+	ret
+L014026?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:324: pwm_Left1 = 100;
+	mov	_pwm_Left1,#0x64
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:326: waitms(500);
+	mov	dptr,#0x01F4
+	lcall	_waitms
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:328: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+	mov	dpl,#0x0B
+	lcall	_Volts_at_Pin
+	mov	_turncar_vleft_1_86,dpl
+	mov	(_turncar_vleft_1_86 + 1),dph
+	mov	(_turncar_vleft_1_86 + 2),b
+	mov	(_turncar_vleft_1_86 + 3),a
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:329: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	mov	dpl,#0x0C
+	lcall	_Volts_at_Pin
+	mov	_turncar_vright_1_86,dpl
+	mov	(_turncar_vright_1_86 + 1),dph
+	mov	(_turncar_vright_1_86 + 2),b
+	mov	(_turncar_vright_1_86 + 3),a
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:331: while (((vleft - vright) < 0.1) || ((vleft - vright) > (-0.1))) {
+L014006?:
+	push	_turncar_vright_1_86
+	push	(_turncar_vright_1_86 + 1)
+	push	(_turncar_vright_1_86 + 2)
+	push	(_turncar_vright_1_86 + 3)
+	mov	dpl,_turncar_vleft_1_86
+	mov	dph,(_turncar_vleft_1_86 + 1)
+	mov	b,(_turncar_vleft_1_86 + 2)
+	mov	a,(_turncar_vleft_1_86 + 3)
+	lcall	___fssub
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,#0xCD
+	push	acc
+	mov	a,#0xCC
+	push	acc
+	push	acc
+	mov	a,#0x3D
+	push	acc
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fslt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jnz	L014007?
+	push	_turncar_vright_1_86
+	push	(_turncar_vright_1_86 + 1)
+	push	(_turncar_vright_1_86 + 2)
+	push	(_turncar_vright_1_86 + 3)
+	mov	dpl,_turncar_vleft_1_86
+	mov	dph,(_turncar_vleft_1_86 + 1)
+	mov	b,(_turncar_vleft_1_86 + 2)
+	mov	a,(_turncar_vleft_1_86 + 3)
+	lcall	___fssub
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,#0xCD
+	push	acc
+	mov	a,#0xCC
+	push	acc
+	push	acc
+	mov	a,#0xBD
+	push	acc
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fsgt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jz	L014008?
+L014007?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:333: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+	mov	dpl,#0x0B
+	lcall	_Volts_at_Pin
+	mov	_turncar_vleft_1_86,dpl
+	mov	(_turncar_vleft_1_86 + 1),dph
+	mov	(_turncar_vleft_1_86 + 2),b
+	mov	(_turncar_vleft_1_86 + 3),a
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:334: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	mov	dpl,#0x0C
+	lcall	_Volts_at_Pin
+	mov	_turncar_vright_1_86,dpl
+	mov	(_turncar_vright_1_86 + 1),dph
+	mov	(_turncar_vright_1_86 + 2),b
+	mov	(_turncar_vright_1_86 + 3),a
+	ljmp	L014006?
+L014008?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:337: pwm_Left1 = -1; 
+	mov	_pwm_Left1,#0xFF
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'uturn'
+;------------------------------------------------------------
+;vleft                     Allocated with name '_uturn_vleft_1_91'
+;vright                    Allocated with name '_uturn_vright_1_91'
+;------------------------------------------------------------
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:341: void uturn () {
+;	-----------------------------------------
+;	 function uturn
+;	-----------------------------------------
+_uturn:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:345: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+	mov	dpl,#0x0B
+	lcall	_Volts_at_Pin
+	mov	_uturn_vleft_1_91,dpl
+	mov	(_uturn_vleft_1_91 + 1),dph
+	mov	(_uturn_vleft_1_91 + 2),b
+	mov	(_uturn_vleft_1_91 + 3),a
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:346: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	mov	dpl,#0x0C
+	lcall	_Volts_at_Pin
+	mov	_uturn_vright_1_91,dpl
+	mov	(_uturn_vright_1_91 + 1),dph
+	mov	(_uturn_vright_1_91 + 2),b
+	mov	(_uturn_vright_1_91 + 3),a
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:348: if (vleft >= vright) {
+	push	_uturn_vright_1_91
+	push	(_uturn_vright_1_91 + 1)
+	push	(_uturn_vright_1_91 + 2)
+	push	(_uturn_vright_1_91 + 3)
+	mov	dpl,_uturn_vleft_1_91
+	mov	dph,(_uturn_vleft_1_91 + 1)
+	mov	b,(_uturn_vleft_1_91 + 2)
+	mov	a,(_uturn_vleft_1_91 + 3)
+	lcall	___fslt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jnz	L015002?
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:350: turncar(1);
+	mov	dptr,#0x0001
+	ljmp	_turncar
+L015002?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:355: turncar(0);
+	mov	dptr,#0x0000
+	ljmp	_turncar
+;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:286: void main (void)
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:359: void main (void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:289: MOTOR_LEFT0 =0;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:362: MOTOR_LEFT0 =0;
 	clr	_P1_5
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:290: MOTOR_LEFT1 =0;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:363: MOTOR_LEFT1 =0;
 	clr	_P1_6
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:291: MOTOR_RIGHT0 =0;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:364: MOTOR_RIGHT0 =0;
 	clr	_P2_0
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:292: MOTOR_RIGHT1 =0;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:365: MOTOR_RIGHT1 =0;
 	clr	_P2_1
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:295: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:367: currentstate = 3;  	//initialize the car to be stopped
+	mov	_currentstate,#0x03
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:368: currentcmd = 0;		//initialize the command to be null
+	mov	_currentcmd,#0x00
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:371: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 	mov	a,#__str_1
 	push	acc
 	mov	a,#(__str_1 >> 8)
@@ -1286,44 +1568,133 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:304: InitPinADC(2, 3); // Configure P2.3 as analog input
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:380: InitPinADC(2, 3); // Configure P2.3 as analog input
 	mov	_InitPinADC_PARM_2,#0x03
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:305: InitPinADC(2, 4); // Configure P2.4 as analog input
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:381: InitPinADC(2, 4); // Configure P2.4 as analog input
 	mov	_InitPinADC_PARM_2,#0x04
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:306: InitADC();
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:382: InitADC();
 	lcall	_InitADC
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:308: while(1)
-L013006?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:310: readData();
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:384: while(1)
+L016015?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:386: readData(); //check for incoming commands
 	lcall	_readData
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:312: switch (currentcmd) {
-	mov	r2,_currentcmd
-	cjne	r2,#0x03,L013013?
-	sjmp	L013001?
-L013013?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:318: case 3 :
-	cjne	r2,#0x04,L013003?
-	sjmp	L013002?
-L013001?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:319: linetrack(0);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:388: switch (currentstate) {
+	mov	r2,_currentstate
+	cjne	r2,#0x01,L016025?
+	sjmp	L016001?
+L016025?:
+	cjne	r2,#0x02,L016026?
+	sjmp	L016002?
+L016026?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:389: case 1:
+	cjne	r2,#0x03,L016004?
+	sjmp	L016003?
+L016001?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:390: linetrack(0);	//forwards
 	mov	dptr,#0x0000
 	lcall	_linetrack
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:321: case 4 :
-L013002?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:322: linetrack(1);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:391: break;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:392: case 2:
+	sjmp	L016004?
+L016002?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:393: linetrack(1);	//backwards
 	mov	dptr,#0x0001
 	lcall	_linetrack
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:327: default: 
-L013003?:
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:328: linetrack(0);
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:394: break;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:395: case 3:
+	sjmp	L016004?
+L016003?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:396: stopcar();		//stop car
+	lcall	_stopcar
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:398: }
+L016004?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:400: switch (currentcmd) {
+	mov	a,_currentcmd
+	mov	r2,a
+	jb	acc.7,L016012?
+	clr	c
+	mov	a,#(0x06 ^ 0x80)
+	mov	b,r2
+	xrl	b,#0x80
+	subb	a,b
+	jc	L016012?
+	mov	a,r2
+	add	a,r2
+	add	a,r2
+	mov	dptr,#L016030?
+	jmp	@a+dptr
+L016030?:
+	ljmp	L016005?
+	ljmp	L016006?
+	ljmp	L016007?
+	ljmp	L016008?
+	ljmp	L016009?
+	ljmp	L016010?
+	ljmp	L016011?
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:402: case 0 :
+L016005?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:403: break;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:404: case 1 :
+	sjmp	L016015?
+L016006?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:407: turncar(0); //0 = left
 	mov	dptr,#0x0000
-	lcall	_linetrack
-;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:329: }
-	sjmp	L013006?
+	lcall	_turncar
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:408: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:410: break;
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:413: case 2 :
+	sjmp	L016015?
+L016007?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:416: turncar(1); //1 = right
+	mov	dptr,#0x0001
+	lcall	_turncar
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:417: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:419: break;
+	ljmp	L016015?
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:422: case 3 :
+L016008?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:423: currentstate = 1;
+	mov	_currentstate,#0x01
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:424: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:425: break;
+	ljmp	L016015?
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:428: case 4 :
+L016009?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:429: currentstate = 2;
+	mov	_currentstate,#0x02
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:430: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:431: break;
+	ljmp	L016015?
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:434: case 5 :
+L016010?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:435: currentstate = 3;
+	mov	_currentstate,#0x03
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:436: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:437: break;
+	ljmp	L016015?
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:440: case 6 :
+L016011?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:441: uturn();  //uturn
+	lcall	_uturn
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:442: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:443: break;
+	ljmp	L016015?
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:444: default: 
+L016012?:
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:445: currentstate = 1;
+	mov	_currentstate,#0x01
+;	C:\Users\Lucy\Documents\2016-2017\ELEC 291\ELEC291P2\src\motors.c:446: }
+	ljmp	L016015?
 	rseg R_CSEG
 
 	rseg R_XINIT
