@@ -282,7 +282,7 @@ void linetrack (int forwardbackward) {
 		pwm_Right0 = -1;
 	}
 	
-	printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d\r", vleft, vright, pwm_Left1, pwm_Right0);
+	printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r", vleft, vright, pwm_Left1, pwm_Right0, currentcmd);
 	
 }
 
@@ -307,15 +307,16 @@ void turncar (int leftright) {
 		//turn left
 		pwm_Right0 = 50;
 		
-		waitms(500);
+		waitms(1000);
 	
 		vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 		
-		while (((vleft - vright) < 0.4) || ((vleft - vright) > (-0.4))) {
+		while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
 			//get voltages
 			vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 			vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+			//linetrack(0); this worked but only for left and right turns
 		}
 	
 		pwm_Right0 = -1; 		
@@ -325,15 +326,16 @@ void turncar (int leftright) {
 		//turn right
 		pwm_Left1 = 50;
 				
-		waitms(500);
+		waitms(1000);
 	
 		vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 		
-		while (((vleft - vright) < 0.4) || ((vleft - vright) > (-0.4))) {
+		while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
 			//get voltages
 			vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 			vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+			//linetrack(0); 
 		}
 	
 		pwm_Left1 = -1; 
@@ -347,14 +349,17 @@ void uturn () {
 	vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	
-	if (vleft >= vright) {
-		//if close to left side of the car, uturn right
-		turncar(1);
-	}
+	pwm_Left0 = -1;
+	pwm_Left1 = 50;
+	pwm_Right0 = -1;
+	pwm_Right1 = 50;
 	
-	else {
-		//if close to right side of the car, uturn left
-		turncar(0);
+	waitms(4000);
+	
+	while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
+			//get voltages
+		vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	}
 }	
 
@@ -404,9 +409,14 @@ void main (void)
 			case 0 :
 				break;
 			case 1 :
-				if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1) {
-						waitms(1500);
 				//check for intersections
+				if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 || Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
+						printf("\n\r reached intersection :D");
+						pwm_Left1 = 35;
+						pwm_Left0 = -1;
+						pwm_Right0 = 35;
+						pwm_Right1 = -1;						
+						waitms(1500);
 					//if at intersection {
 						turncar(0); //0 = left
 						currentcmd = 0;
@@ -416,11 +426,18 @@ void main (void)
 			//---------------------------------//	
 			//case for right turn			
 			case 2 :
-				//check for intersections
+				//check for intersection
+				if (Volts_at_Pin(LQFP32_MUX_P2_4) > 1 || Volts_at_Pin(LQFP32_MUX_P2_3) > 1) {
+						printf("\n\r reached intersection :D");
+						pwm_Left1 = 35;
+						pwm_Left0 = -1;
+						pwm_Right0 = 35;
+						pwm_Right1 = -1;
+						waitms(1500);
 					//if at intersection {
 						turncar(1); //1 = right
 						currentcmd = 0;
-					//}
+					} 
 				break;
 			//---------------------------------//
 			//case for forwards
