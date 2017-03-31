@@ -26,7 +26,7 @@ volatile  char pwm_Right0 = 0; //p2.0
 volatile  char pwm_Right1 = 0; //p2.1
 volatile  char direction = 0; // 1 for back 0 for forward
 
-volatile  char currentcmd = 3;
+volatile  char currentcmd = 0;
 volatile  char currentstate = 1;
 
 
@@ -269,18 +269,20 @@ void linetrack (int forwardbackward) {
 	vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	
 	pwm_Left0 = -1;
-	pwm_Left1 = ((float)vright*100.0/((float)(vleft+vright)));
-	pwm_Right0 = -1;
-	pwm_Right1 = (vleft*100.0/(vleft+vright));
+//	pwm_Left1 = vright*100/(vright+vleft);
+	pwm_Left1 = vright*vright*75/(vright*vright+vleft*vleft);
+	pwm_Right1 = -1;
+//	pwm_Right0 = vleft*100/(vright+vleft);
+	pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
 	
 	if (forwardbackward) {
 		pwm_Left0 = pwm_Left1;
 		pwm_Left1 = -1;
-		pwm_Right0 = pwm_Right1;
-		pwm_Right1 = -1;
+		pwm_Right1 = pwm_Right1;
+		pwm_Right0 = -1;
 	}
 	
-	printf("2.3 = %f, 2.4 = %f, LeftMotor = %d, RightMotor = %d\r", vleft, vright, pwm_Left1, pwm_Right1);
+	printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d\r", vleft, vright, pwm_Left1, pwm_Right0);
 	
 }
 
@@ -303,32 +305,32 @@ void turncar (int leftright) {
 
 	if (leftright == 0) {
 		//turn left
-		pwm_Right1 = 100;
+		pwm_Right0 = 50;
 		
 		waitms(500);
 	
 		vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 		
-		while (((vleft - vright) < 0.1) || ((vleft - vright) > (-0.1))) {
+		while (((vleft - vright) < 0.4) || ((vleft - vright) > (-0.4))) {
 			//get voltages
 			vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 			vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 		}
 	
-		pwm_Right1 = -1; 		
+		pwm_Right0 = -1; 		
 	}
 	
 	else if (leftright == 1) {
 		//turn right
-		pwm_Left1 = 100;
+		pwm_Left1 = 50;
 				
 		waitms(500);
 	
 		vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 		
-		while (((vleft - vright) < 0.1) || ((vleft - vright) > (-0.1))) {
+		while (((vleft - vright) < 0.4) || ((vleft - vright) > (-0.4))) {
 			//get voltages
 			vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 			vright=Volts_at_Pin(LQFP32_MUX_P2_4);
@@ -364,13 +366,13 @@ void main (void)
    MOTOR_RIGHT0 =0;
    MOTOR_RIGHT1 =0;
    
-   currentstate = 3;  	//initialize the car to be stopped
-   currentcmd = 0;		//initialize the command to be null
+   currentstate = 1;  	//initialize the car to be stopped
+   currentcmd = 1;		//initialize the command to be null
 
 
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
-//	printf("Square wave generator for the F38x.\r\n"
-//	       "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
+	printf("Square wave generator for the F38x.\r\n"
+	       "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
 //	printf("Please enter motors mode 1-6\n");
 //	scanf("%d \n",&mode);
 //	if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
@@ -383,7 +385,7 @@ void main (void)
 
 	while(1)
 	{	
-		readData(); //check for incoming commands
+		//readData(); //check for incoming commands
 		
 		switch (currentstate) {
 			case 1:
@@ -402,11 +404,14 @@ void main (void)
 			case 0 :
 				break;
 			case 1 :
+				if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1) {
+						waitms(1500);
 				//check for intersections
 					//if at intersection {
 						turncar(0); //0 = left
 						currentcmd = 0;
 					//}
+					} 
 				break;
 			//---------------------------------//	
 			//case for right turn			
