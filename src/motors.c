@@ -216,6 +216,7 @@ float Volts_at_Pin(unsigned char pin)
 
 
 void readData (void) {
+	int commandflag = 0;					//determines if there's a real command coming in or not
 	
 	if (COMMAND_PIN == 0) {					//0---
 		waitms(6);
@@ -253,11 +254,17 @@ void readData (void) {
 				if (COMMAND_PIN == 1) {		//0001	
 					currentcmd == 1;
 				}
+				else {						//0000 this is no signal, set commandflag to 1 and go back to main loop
+					commandflag = 1;
+				}
 			}
 		}
 	}
+	if (commandflag == 0) {					//only wait for signal to end if a command has been received. 
+		while (COMMAND_PIN == 0) {}
+	}
 	
-	while (COMMAND_PIN == 0) {}
+	printf("current command is %d\r\n", currentcmd);		
 }
 
 
@@ -282,7 +289,7 @@ void linetrack (int forwardbackward) {
 		pwm_Right0 = -1;
 	}
 	
-	printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r", vleft, vright, pwm_Left1, pwm_Right0, currentcmd);
+	//printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r", vleft, vright, pwm_Left1, pwm_Right0, currentcmd);
 	
 }
 
@@ -376,8 +383,8 @@ void main (void)
 
 
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
-	printf("Square wave generator for the F38x.\r\n"
-	       "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
+//	printf("Square wave generator for the F38x.\r\n"
+//	       "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
 //	printf("Please enter motors mode 1-6\n");
 //	scanf("%d \n",&mode);
 //	if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
@@ -386,11 +393,14 @@ void main (void)
     
     InitPinADC(2, 3); // Configure P2.3 as analog input
 	InitPinADC(2, 4); // Configure P2.4 as analog input
+	InitPinADC(1, 0);
 	InitADC();
 
 	while(1)
 	{	
 		//readData(); //check for incoming commands
+		
+		printf("adc readings = %f\r\n", Volts_at_Pin(LQFP32_MUX_P1_0));
 		
 		switch (currentstate) {
 			case 1:
@@ -407,11 +417,22 @@ void main (void)
 		switch (currentcmd) {
 			//case for left turn
 			case 0 :
+				//if moving forward, and hits an intersection with no commands, move forwards. 
+				if (currentstate == 1) {
+					if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
+						//printf("\n\r reached intersection :D");
+						pwm_Left1 = 35;
+						pwm_Left0 = -1;
+						pwm_Right0 = 35;
+						pwm_Right1 = -1;						
+						waitms(1500);
+					}
+				}
 				break;
 			case 1 :
 				//check for intersections
-				if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 || Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
-						printf("\n\r reached intersection :D");
+				if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
+						//printf("\n\r reached intersection :D");
 						pwm_Left1 = 35;
 						pwm_Left0 = -1;
 						pwm_Right0 = 35;
