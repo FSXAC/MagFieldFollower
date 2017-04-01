@@ -34,23 +34,25 @@ void setup(void) {
 // runs forever
 void loop(void) {
     // get control direction        
-    // getInput();
+    getInput();
 
     switch (magDataBuffer) {
-        case 1: printf("LEFT\n"); break;
-        case 2: printf("RIGHT\n"); break;
-        case 3: printf("FORWARD\n"); break;
-        case 4: printf("BACK\n"); break;
+        case CMD_LEFT: printf("LEFT\n"); break;
+        case CMD_RIGHT: printf("RIGHT\n"); break;
+        case CMD_FORWARD: printf("FORWARD\n"); break;
+        case CMD_BACK: printf("BACK\n"); break;
         case 5: printf("BUTTON\b"); break;
         default: printf("\n");
     }
 
     // send some bits
     // setMagData(magDataBuffer);
-    setMagData(0x8C);
-    transmit();
+    // setMagData(0x8C);
+    // transmit();
+    delay(30);
+    magToggle();
 
-    delay(250);
+    // delay(250);
 }
 
 // set pin output
@@ -89,18 +91,18 @@ void getInput(void) {
     // L/R has more dominance control
     if (!magDataBuffer) {
         if (controller_x == 0) {
-            magDataBuffer = 0x01;
+            magDataBuffer = CMD_LEFT;
         } else if (controller_x == 1) {
-            magDataBuffer = 0x02;
+            magDataBuffer = CMD_RIGHT;
         }
     }
 
     // F/W second priority
     if (!magDataBuffer) {
         if (controller_y == 0) {
-            magDataBuffer = 0x04;
+            magDataBuffer = CMD_BACK;
         } else if (controller_y == 1) {
-            magDataBuffer = 0x03;
+            magDataBuffer = CMD_FORWARD;
         }        
     }
 }

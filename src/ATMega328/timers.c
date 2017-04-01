@@ -75,5 +75,9 @@ void transmit(void) {
 	TCCR1B |= 0x01;
 	TCNT1L = 0;
 	TCNT1H = 0;
-	printf("Transmitting: %04x\n", magData);
+	// printf("Transmitting: %04x\n", magData);
+}
+
+void magToggle(void) {
+	magEnabled = !magEnabled;
 }

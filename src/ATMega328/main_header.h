@@ -30,6 +30,12 @@
   (byte & 0x02 ? '1' : '0'), \
   (byte & 0x01 ? '1' : '0') 
 
+// commands
+#define CMD_LEFT 0xE0
+#define CMD_RIGHT 0xD0
+#define CMD_FORWARD 0xC0
+#define CMD_BACK 0xB0
+
 // main functions
 void setup(void);
 void loop(void);
@@ -40,6 +46,7 @@ void timer_init(void);
 // mag functions
 void setMagData(unsigned char new_data);
 void transmit(void);
+void magToggle(void);
 
 // usart function prototypes for serial
 void usart_init(void);
