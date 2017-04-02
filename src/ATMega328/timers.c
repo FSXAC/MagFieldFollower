@@ -9,6 +9,7 @@
 
 // ===[global variables]===
 volatile uint8_t counter = 0;
+volatile uint8_t counter1 = 0;
 volatile uint8_t magEnabled = 1;
 volatile uint8_t magData = 0x01;
 volatile uint8_t magDataBit = 0;
@@ -31,11 +32,17 @@ ISR(TIMER0_OVF_vect) {
 #ifdef TIMER1_ENABLED
 ISR(TIMER1_OVF_vect) {
 	// if the bit at magDatabit is 1, turn the modulation on; otherwise, off
-	if (magDataBit < 8) {
-		// toggle square wave vs non
-		magEnabled = (magData>>(8-magDataBit++)) & 1;
-		if (magEnabled) PORTB turnOn(0);
-		else PORTB turnOff(0);
+
+	counter1++;
+	if (counter1 >8) {
+		counter1 = 0;
+		if (magDataBit < 8) {
+			// toggle square wave vs non
+			magEnabled = (magData>>(8-magDataBit++)) & 1;
+			if (magEnabled) PORTB turnOn(0);
+			else PORTB turnOff(0);
+		}
+		// PORTB toggle(0);
 	}
 }
 #endif

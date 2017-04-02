@@ -35,6 +35,8 @@
 #define CMD_RIGHT 0xD0
 #define CMD_FORWARD 0xC0
 #define CMD_BACK 0xB0
+#define CMD_STOP 0xA0
+#define CMD_180 0x90
 
 // main functions
 void setup(void);
@@ -64,4 +66,4 @@ void adc_init(void);
 void pinMode(char port, unsigned char pin);
 uint8_t mapDigital(uint16_t adc, uint16_t low, uint16_t high);
 void getInput(void);
-
+uint8_t digitalRead(char port, uint8_t pin);
