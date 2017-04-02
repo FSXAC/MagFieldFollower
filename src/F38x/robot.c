@@ -17,6 +17,135 @@ volatile  char direction = 0; // 1 for back 0 for forward
 volatile  char currentcmd = 0;
 volatile  char currentstate = 1;
 
+void main(void) {
+   MOTOR_LEFT0 =0;
+   MOTOR_LEFT1 =0;
+   MOTOR_RIGHT0 =0;
+   MOTOR_RIGHT1 =0;
+   
+   currentstate = 1;  	//initialize the car to be stopped
+   currentcmd = 1;		//initialize the command to be null
+
+
+	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+//	printf("Square wave generator for the F38x.\r\n"
+//	       "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
+//	printf("Please enter motors mode 1-6\n");
+//	scanf("%d \n",&mode);
+//	if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
+ //   if(mode == 2) {printf("Stop mode triggered"); pwm_both = -1;forward_backward(direction); }
+    //printf("%d\n", pwm_Left1);
+    
+    InitPinADC(2, 3); // Configure P2.3 as analog input
+	InitPinADC(2, 4); // Configure P2.4 as analog input
+	InitPinADC(1, 0);
+	InitADC();
+
+	while(1)
+	{	
+		//readData(); //check for incoming commands
+		
+		printf("adc readings = %f\r\n", Volts_at_Pin(LQFP32_MUX_P1_0));
+		
+		switch (currentstate) {
+			case 1:
+				linetrack(0);	//forwards
+				break;
+			case 2:
+				linetrack(1);	//backwards
+				break;
+			case 3:
+				stopcar();		//stop car
+				break;
+		}
+				
+		switch (currentcmd) {
+			//case for left turn
+			case 0 :
+				//if moving forward, and hits an intersection with no commands, move forwards. 
+				if (currentstate == 1) {
+					if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
+						//printf("\n\r reached intersection :D");
+						pwm_Left1 = 35;
+						pwm_Left0 = -1;
+						pwm_Right0 = 35;
+						pwm_Right1 = -1;						
+						waitms(1500);
+					}
+				}
+				break;
+			case 1 :
+				//check for intersections
+				if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
+						//printf("\n\r reached intersection :D");
+						pwm_Left1 = 35;
+						pwm_Left0 = -1;
+						pwm_Right0 = 35;
+						pwm_Right1 = -1;						
+						waitms(1500);
+					//if at intersection {
+						turncar(0); //0 = left
+						currentcmd = 0;
+					//}
+					} 
+				break;
+			//---------------------------------//	
+			//case for right turn			
+			case 2 :
+				//check for intersection
+				if (Volts_at_Pin(LQFP32_MUX_P2_4) > 1 || Volts_at_Pin(LQFP32_MUX_P2_3) > 1) {
+						printf("\n\r reached intersection :D");
+						pwm_Left1 = 35;
+						pwm_Left0 = -1;
+						pwm_Right0 = 35;
+						pwm_Right1 = -1;
+						waitms(1500);
+					//if at intersection {
+						turncar(1); //1 = right
+						currentcmd = 0;
+					} 
+				break;
+			//---------------------------------//
+			//case for forwards
+			case 3 :
+				currentstate = 1;
+				currentcmd = 0;
+				break;
+			//---------------------------------//
+			//case for backwards
+			case 4 :
+				currentstate = 2;
+				currentcmd = 0;
+				break;
+			//---------------------------------//
+			//case for stop
+			case 5 :
+				currentstate = 3;
+				currentcmd = 0;
+				break;
+			//---------------------------------//	
+			//case for 180 turn 
+			case 6 :
+				uturn();  //uturn
+				currentcmd = 0;
+				break;
+			default: 
+				currentstate = 1;
+		}
+			
+		
+		
+	  //	switch(mode)
+	  //	{
+	  //		//forward_backward mode
+      //			case 1 : forward_backward(direction);
+
+	  //	}
+	 //printf("%d\n",MOTOR_LEFT0);
+
+	}
+}
+
 void Timer2_ISR (void) interrupt 5 {
 	TF2H = 0; // Clear Timer2 interrupt flag
 
@@ -203,132 +332,3 @@ void uturn(void) {
 		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	}
 }	
-
-void main(void) {
-   MOTOR_LEFT0 =0;
-   MOTOR_LEFT1 =0;
-   MOTOR_RIGHT0 =0;
-   MOTOR_RIGHT1 =0;
-   
-   currentstate = 1;  	//initialize the car to be stopped
-   currentcmd = 1;		//initialize the command to be null
-
-
-	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
-//	printf("Square wave generator for the F38x.\r\n"
-//	       "Check pins P2.1 and P2.2 with the oscilloscope.\r\n");
-//	printf("Please enter motors mode 1-6\n");
-//	scanf("%d \n",&mode);
-//	if(mode == 1) {printf("Enter pwm and direction\n"); scanf("%d %d",&pwm_both, &direction);forward_backward(direction); }
- //   if(mode == 2) {printf("Stop mode triggered"); pwm_both = -1;forward_backward(direction); }
-    //printf("%d\n", pwm_Left1);
-    
-    InitPinADC(2, 3); // Configure P2.3 as analog input
-	InitPinADC(2, 4); // Configure P2.4 as analog input
-	InitPinADC(1, 0);
-	InitADC();
-
-	while(1)
-	{	
-		//readData(); //check for incoming commands
-		
-		printf("adc readings = %f\r\n", Volts_at_Pin(LQFP32_MUX_P1_0));
-		
-		switch (currentstate) {
-			case 1:
-				linetrack(0);	//forwards
-				break;
-			case 2:
-				linetrack(1);	//backwards
-				break;
-			case 3:
-				stopcar();		//stop car
-				break;
-		}
-				
-		switch (currentcmd) {
-			//case for left turn
-			case 0 :
-				//if moving forward, and hits an intersection with no commands, move forwards. 
-				if (currentstate == 1) {
-					if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
-						//printf("\n\r reached intersection :D");
-						pwm_Left1 = 35;
-						pwm_Left0 = -1;
-						pwm_Right0 = 35;
-						pwm_Right1 = -1;						
-						waitms(1500);
-					}
-				}
-				break;
-			case 1 :
-				//check for intersections
-				if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
-						//printf("\n\r reached intersection :D");
-						pwm_Left1 = 35;
-						pwm_Left0 = -1;
-						pwm_Right0 = 35;
-						pwm_Right1 = -1;						
-						waitms(1500);
-					//if at intersection {
-						turncar(0); //0 = left
-						currentcmd = 0;
-					//}
-					} 
-				break;
-			//---------------------------------//	
-			//case for right turn			
-			case 2 :
-				//check for intersection
-				if (Volts_at_Pin(LQFP32_MUX_P2_4) > 1 || Volts_at_Pin(LQFP32_MUX_P2_3) > 1) {
-						printf("\n\r reached intersection :D");
-						pwm_Left1 = 35;
-						pwm_Left0 = -1;
-						pwm_Right0 = 35;
-						pwm_Right1 = -1;
-						waitms(1500);
-					//if at intersection {
-						turncar(1); //1 = right
-						currentcmd = 0;
-					} 
-				break;
-			//---------------------------------//
-			//case for forwards
-			case 3 :
-				currentstate = 1;
-				currentcmd = 0;
-				break;
-			//---------------------------------//
-			//case for backwards
-			case 4 :
-				currentstate = 2;
-				currentcmd = 0;
-				break;
-			//---------------------------------//
-			//case for stop
-			case 5 :
-				currentstate = 3;
-				currentcmd = 0;
-				break;
-			//---------------------------------//	
-			//case for 180 turn 
-			case 6 :
-				uturn();  //uturn
-				currentcmd = 0;
-				break;
-			default: 
-				currentstate = 1;
-		}
-			
-		
-		
-	  //	switch(mode)
-	  //	{
-	  //		//forward_backward mode
-      //			case 1 : forward_backward(direction);
-
-	  //	}
-	 //printf("%d\n",MOTOR_LEFT0);
-
-	}
-}
