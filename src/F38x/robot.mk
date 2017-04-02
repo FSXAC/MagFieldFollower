@@ -23,7 +23,7 @@ robot.obj: robot.c robot_header.h
 # clean directory
 CLEAN:
 	@del $(OBJS) *.asm *.lkr *.lst *.map *.hex *.map 2>nul
-	@Directory Cleaned!
+	@echo Directory Cleaned!
 
 # flash the program to F38x
 FLASH:
@@ -31,7 +31,7 @@ FLASH:
 	@echo Flash Complete!
 
 # Dummy
-DUMMY: robot.hex robot.map
+DUMMY: robot.hex
 	@echo Test 1 2 3
 
 # open containing folder
