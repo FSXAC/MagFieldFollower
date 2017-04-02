@@ -8,17 +8,19 @@ CC=c51
 # specify microcontroller
 
 # objects
-OBJS=robot.obj
+OBJS=robot.obj adc.obj
 
 # default target
 robot.hex: $(OBJS)
 	$(CC) $(OBJS)
-	@echo Link Complete!
+	@echo Compile and Link Complete!
 
 # target object files depend on c files
 robot.obj: robot.c robot_header.h
 	$(CC) -c robot.c
-	@echo Compilation Complete!
+adc.obj: adc.c robot_header.h
+	$(CC) -c adc.c
+
 
 # clean directory
 CLEAN:
