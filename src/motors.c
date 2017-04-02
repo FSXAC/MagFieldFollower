@@ -236,7 +236,7 @@ void readData (void) {
 				}
 			}
 			else {							//011-
-				waitms(4);
+				waitms(CMDFRQ);
 				if (COMMAND_PIN == 0) {		//0110
 					currentcmd = 6;
 					commandflag = 0;
@@ -267,12 +267,15 @@ void readData (void) {
 				}
 			}
 		}
+		printf("current command is %d, commandflag = %d\r\n", currentcmd, commandflag);		
 	}
+	
+	
+	//if (COMMAND_PIN) printf("TRIGGERED!\n");
+	
 	if (commandflag == 0) {					//only wait for signal to end if a command has been received. 
 		while (COMMAND_PIN == 0) {}
 	}
-	
-	printf("current command is %d, commandflag = %d\r\n", currentcmd, commandflag);		
 }
 
 
@@ -291,21 +294,67 @@ void linetrack (int forwardbackward) {
 	pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
 	
 	if (forwardbackward) {
-		pwm_Left0 = vleft*75/(vleft+vright);
-		pwm_Left1 = -1;
-		pwm_Right1 = vright*75/(vleft+vright);
-		pwm_Right0 = -1;
-		if (pwm_Left0 > 40) {
-			pwm_Right0 = pwm_Right1;
-			pwm_Right1 = -1;
-		}
-		if (pwm_Right1 > 40) {
-			pwm_Left1 = pwm_Left0;
+//		pwm_Left0 = vleft*75/(vleft+vright);
+//		pwm_Left1 = -1;
+//		pwm_Right1 = vright*75/(vleft+vright);
+//		pwm_Right0 = -1;
+//		if (pwm_Left0 > 40) {
+//			pwm_Right0 = pwm_Right1;
+//			pwm_Right1 = -1;
+//		}
+//		if (pwm_Right1 > 40) {
+//			pwm_Left1 = pwm_Left0;
+//			pwm_Left0 = -1;
+//		}
+
+//		if ((vleft - vright) < 0.2 && (vleft - vright) > -0.2) {
+//			pwm_Left1 = -1;
+//			pwm_Left0 = 25;
+//			pwm_Right1 = 25;
+//			pwm_Right0 = -1;
+//			waitms(300);
+//		}
+//				
+//		else if (vleft > vright) {
+//			pwm_Left1 = -1;
+//			pwm_Left0 = 25;
+//			pwm_Right1 = -1;
+//			pwm_Right0 = -1;
+//			waitms(300);
+//		}
+//		else {
+//			pwm_Left1 = -1;
+//			pwm_Left0 = -1;
+//			pwm_Right1 = 25;
+//			pwm_Right0 = -1;
+//			waitms(300);
+//		} 
+
+		if (vleft > 1) {
+			pwm_Left1 = -1;
 			pwm_Left0 = -1;
+			pwm_Right1 = 25;
+			pwm_Right0 = -1;
+			waitms(200);
+			while (vright < 1);
+		}
+		else if (vright > 1) {
+			pwm_Left1 = -1;
+			pwm_Left0 = 25;
+			pwm_Right1 = -1;
+			pwm_Right0 = -1;
+			waitms(400);
+			while (vleft < 1);
+		}		
+		else {
+			pwm_Left1 = -1;
+			pwm_Left0 = 25;
+			pwm_Right1 = 25;
+			pwm_Right0 = -1;
 		}
 	}
 	
-	printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r", vleft, vright, pwm_Left0, pwm_Right1, currentcmd);
+	printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r\n", vleft, vright, pwm_Left0, pwm_Right1, currentcmd);
 	
 }
 
@@ -414,7 +463,7 @@ void main (void)
 
 	while(1)
 	{	
-		//readData(); //check for incoming commands
+		readData(); //check for incoming commands
 		
 		//printf("adc readings = %f\r\n", Volts_at_Pin(LQFP32_MUX_P1_0));
 	   	//printf("%d\r\n",(P1_1 ? 1 : 0));
