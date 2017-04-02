@@ -37,9 +37,6 @@ void setup(void) {
 }
 
 // runs forever
-// void loop(void) {
-//     // get control direction        
-//     getInput();
 
 //     switch (magDataBuffer) {
 //         case CMD_LEFT: printf("LEFT\n"); break;
@@ -51,15 +48,8 @@ void setup(void) {
 //         default: printf("\n");
 //     }
 
-//     // send some bits
 //     setMagData(magDataBuffer);
-//     // setMagData(0x8C);
 //     transmit();
-//     // delay(30);
-//     // magToggle();
-
-//     delay(1000);
-// }
 
 //  if (magDataBit < 8) {
 //      // toggle square wave vs non
@@ -88,13 +78,10 @@ void loop(void) {
 // set pin output
 void pinMode(char port, uint8_t pin) {
     switch (port) {
-        case 'B':
         case 'b': DDRB |= (1<<pin); return;
-        case 'C':
         case 'c':
             if (pin < 7) DDRC |= (1<<pin); 
             return;
-        case 'D':
         case 'd': DDRD |= (1<<pin); return;
         default: return;
     }
@@ -102,7 +89,6 @@ void pinMode(char port, uint8_t pin) {
 
 // convert adc into a digital signal
 uint8_t mapDigital(uint16_t adc, uint16_t low, uint16_t high) {
-    // printf("adc: %4d\t", adc);
     return (adc < low) ? 0 : (adc > high) ? 1 : 2;
 }
 
