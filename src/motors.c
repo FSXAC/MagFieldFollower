@@ -17,7 +17,7 @@
 
 #define COMMAND_PIN P1_1
 
-#define	CMDFRQ 40  				//frequency of signal, time to wait in between each bit of received signal
+#define	CMDFRQ 70  				//frequency of signal, time to wait in between each bit of received signal
 
 volatile  char pwm_count=0;
 volatile  char mode = 0;
@@ -291,13 +291,21 @@ void linetrack (int forwardbackward) {
 	pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
 	
 	if (forwardbackward) {
-		pwm_Left0 = vright*vright*75/(vright*vright+vleft*vleft);
+		pwm_Left0 = vleft*75/(vleft+vright);
 		pwm_Left1 = -1;
-		pwm_Right1 = vleft*vleft*75/(vright*vright+vleft*vleft);
+		pwm_Right1 = vright*75/(vleft+vright);
 		pwm_Right0 = -1;
+		if (pwm_Left0 > 40) {
+			pwm_Right0 = pwm_Right1;
+			pwm_Right1 = -1;
+		}
+		if (pwm_Right1 > 40) {
+			pwm_Left1 = pwm_Left0;
+			pwm_Left0 = -1;
+		}
 	}
 	
-	printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r", vleft, vright, pwm_Left1, pwm_Right0, currentcmd);
+	printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r", vleft, vright, pwm_Left0, pwm_Right1, currentcmd);
 	
 }
 
