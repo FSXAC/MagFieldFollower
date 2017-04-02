@@ -1,10 +1,11 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Sat Apr 01 20:29:25 2017
+; This file was generated Sat Apr 01 21:47:28 2017
 ;--------------------------------------------------------
 $name motors
 $optc51 --model-small
+$printf_float
 	R_DSEG    segment data
 	R_CSEG    segment code
 	R_BSEG    segment bit
@@ -475,25 +476,25 @@ _Timer2_ISR_sloc0_1_0:
 ; data variables initialization
 ;--------------------------------------------------------
 	rseg R_DINIT
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:20: volatile  char pwm_count=0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:22: volatile  char pwm_count=0;
 	mov	_pwm_count,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:21: volatile  char mode = 0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:23: volatile  char mode = 0;
 	mov	_mode,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:22: volatile  char pwm_both =0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:24: volatile  char pwm_both =0;
 	mov	_pwm_both,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:23: volatile  char pwm_Left0 = 0; //p1.5
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:25: volatile  char pwm_Left0 = 0; //p1.5
 	mov	_pwm_Left0,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:24: volatile  char pwm_Left1 = 0; //p1.6
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:26: volatile  char pwm_Left1 = 0; //p1.6
 	mov	_pwm_Left1,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:25: volatile  char pwm_Right0 = 0; //p2.0
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:27: volatile  char pwm_Right0 = 0; //p2.0
 	mov	_pwm_Right0,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:26: volatile  char pwm_Right1 = 0; //p2.1
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:28: volatile  char pwm_Right1 = 0; //p2.1
 	mov	_pwm_Right1,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:27: volatile  char direction = 0; // 1 for back 0 for forward
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:29: volatile  char direction = 0; // 1 for back 0 for forward
 	mov	_direction,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:29: volatile  char currentcmd = 0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:31: volatile  char currentcmd = 0;
 	mov	_currentcmd,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:30: volatile  char currentstate = 1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:32: volatile  char currentstate = 1;
 	mov	_currentstate,#0x01
 	; The linker places a 'ret' at the end of segment R_DINIT.
 ;--------------------------------------------------------
@@ -504,65 +505,65 @@ _Timer2_ISR_sloc0_1_0:
 ;Allocation info for local variables in function '_c51_external_startup'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:34: char _c51_external_startup (void)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:36: char _c51_external_startup (void)
 ;	-----------------------------------------
 ;	 function _c51_external_startup
 ;	-----------------------------------------
 __c51_external_startup:
 	using	0
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:36: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:38: PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
 	anl	_PCA0MD,#0xBF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:37: VDM0CN=0x80; // enable VDD monitor
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:39: VDM0CN=0x80; // enable VDD monitor
 	mov	_VDM0CN,#0x80
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:38: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:40: RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
 	mov	_RSTSRC,#0x06
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:46: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:48: CLKSEL|=0b_0000_0011; // SYSCLK derived from the Internal High-Frequency Oscillator / 1.
 	orl	_CLKSEL,#0x03
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:50: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:52: OSCICN |= 0x03; // Configure internal oscillator for its maximum frequency
 	orl	_OSCICN,#0x03
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:53: SCON0 = 0x10;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:55: SCON0 = 0x10;
 	mov	_SCON0,#0x10
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:55: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:57: TH1 = 0x10000-((SYSCLK/BAUDRATE)/2L);
 	mov	_TH1,#0x30
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:56: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:58: CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
 	anl	_CKCON,#0xF4
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:57: CKCON |=  0x08;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:59: CKCON |=  0x08;
 	orl	_CKCON,#0x08
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:70: TL1 = TH1;      // Init Timer1
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:72: TL1 = TH1;      // Init Timer1
 	mov	_TL1,_TH1
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:71: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:73: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit autoreload
 	anl	_TMOD,#0x0F
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:72: TMOD |=  0x20;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:74: TMOD |=  0x20;
 	orl	_TMOD,#0x20
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:73: TR1 = 1; // START Timer1
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:75: TR1 = 1; // START Timer1
 	setb	_TR1
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:74: TI = 1;  // Indicate TX0 ready
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:76: TI = 1;  // Indicate TX0 ready
 	setb	_TI
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:77: P2MDOUT|=0b_0000_0011;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:79: P2MDOUT|=0b_0000_0011;
 	orl	_P2MDOUT,#0x03
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:78: P0MDOUT |= 0x10; // Enable UTX as push-pull output
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:80: P0MDOUT |= 0x10; // Enable UTX as push-pull output
 	orl	_P0MDOUT,#0x10
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:79: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:81: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
 	mov	_XBR0,#0x01
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:80: XBR1     = 0x40; // Enable crossbar and weak pull-ups
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:82: XBR1     = 0x40; // Enable crossbar and weak pull-ups
 	mov	_XBR1,#0x40
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:83: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:85: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
 	mov	_TMR2CN,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:84: CKCON|=0b_0001_0000;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:86: CKCON|=0b_0001_0000;
 	orl	_CKCON,#0x10
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:85: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:87: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
 	mov	_TMR2RL,#0x78
 	mov	(_TMR2RL >> 8),#0xEC
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:86: TMR2=0xffff;   // Set to reload immediately
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:88: TMR2=0xffff;   // Set to reload immediately
 	mov	_TMR2,#0xFF
 	mov	(_TMR2 >> 8),#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:87: ET2=1;         // Enable Timer2 interrupts
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:89: ET2=1;         // Enable Timer2 interrupts
 	setb	_ET2
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:88: TR2=1;         // Start Timer2
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:90: TR2=1;         // Start Timer2
 	setb	_TR2
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:90: EA=1; // Enable interrupts
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:92: EA=1; // Enable interrupts
 	setb	_EA
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:92: return 0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:94: return 0;
 	mov	dpl,#0x00
 	ret
 ;------------------------------------------------------------
@@ -571,40 +572,40 @@ __c51_external_startup:
 ;us                        Allocated to registers r2 
 ;i                         Allocated to registers r3 
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:96: void Timer3us(unsigned char us)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:98: void Timer3us(unsigned char us)
 ;	-----------------------------------------
 ;	 function Timer3us
 ;	-----------------------------------------
 _Timer3us:
 	mov	r2,dpl
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:101: CKCON|=0b_0100_0000;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:103: CKCON|=0b_0100_0000;
 	orl	_CKCON,#0x40
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:103: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:105: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
 	mov	_TMR3RL,#0xD0
 	mov	(_TMR3RL >> 8),#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:104: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:106: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
 	mov	_TMR3,_TMR3RL
 	mov	(_TMR3 >> 8),(_TMR3RL >> 8)
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:106: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:108: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
 	mov	_TMR3CN,#0x04
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:107: for (i = 0; i < us; i++)       // Count <us> overflows
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:109: for (i = 0; i < us; i++)       // Count <us> overflows
 	mov	r3,#0x00
 L003004?:
 	clr	c
 	mov	a,r3
 	subb	a,r2
 	jnc	L003007?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:109: while (!(TMR3CN & 0x80));  // Wait for overflow
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:111: while (!(TMR3CN & 0x80));  // Wait for overflow
 L003001?:
 	mov	a,_TMR3CN
 	jnb	acc.7,L003001?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:110: TMR3CN &= ~(0x80);         // Clear overflow indicator
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:112: TMR3CN &= ~(0x80);         // Clear overflow indicator
 	anl	_TMR3CN,#0x7F
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:107: for (i = 0; i < us; i++)       // Count <us> overflows
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:109: for (i = 0; i < us; i++)       // Count <us> overflows
 	inc	r3
 	sjmp	L003004?
 L003007?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:112: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:114: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
 	mov	_TMR3CN,#0x00
 	ret
 ;------------------------------------------------------------
@@ -613,36 +614,36 @@ L003007?:
 ;ms                        Allocated to registers r2 r3 
 ;j                         Allocated to registers r2 r3 
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:115: void waitms (unsigned int ms)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:117: void waitms (unsigned int ms)
 ;	-----------------------------------------
 ;	 function waitms
 ;	-----------------------------------------
 _waitms:
 	mov	r2,dpl
 	mov	r3,dph
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:118: for(j=ms; j!=0; j--)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:120: for(j=ms; j!=0; j--)
 L004001?:
 	cjne	r2,#0x00,L004010?
 	cjne	r3,#0x00,L004010?
 	ret
 L004010?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:120: Timer3us(249);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:122: Timer3us(249);
 	mov	dpl,#0xF9
 	push	ar2
 	push	ar3
 	lcall	_Timer3us
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:121: Timer3us(249);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:123: Timer3us(249);
 	mov	dpl,#0xF9
 	lcall	_Timer3us
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:122: Timer3us(249);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:124: Timer3us(249);
 	mov	dpl,#0xF9
 	lcall	_Timer3us
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:123: Timer3us(250);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:125: Timer3us(250);
 	mov	dpl,#0xFA
 	lcall	_Timer3us
 	pop	ar3
 	pop	ar2
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:118: for(j=ms; j!=0; j--)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:120: for(j=ms; j!=0; j--)
 	dec	r2
 	cjne	r2,#0xff,L004011?
 	dec	r3
@@ -652,7 +653,7 @@ L004011?:
 ;Allocation info for local variables in function 'Timer2_ISR'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:128: void Timer2_ISR (void) interrupt 5
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:130: void Timer2_ISR (void) interrupt 5
 ;	-----------------------------------------
 ;	 function Timer2_ISR
 ;	-----------------------------------------
@@ -661,11 +662,11 @@ _Timer2_ISR:
 	push	b
 	push	psw
 	mov	psw,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:130: TF2H = 0; // Clear Timer2 interrupt flag
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:132: TF2H = 0; // Clear Timer2 interrupt flag
 	clr	_TF2H
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:132: pwm_count++;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:134: pwm_count++;
 	inc	_pwm_count
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:133: if(pwm_count>100) pwm_count=0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:135: if(pwm_count>100) pwm_count=0;
 	clr	c
 	mov	a,#(0x64 ^ 0x80)
 	mov	b,_pwm_count
@@ -674,7 +675,7 @@ _Timer2_ISR:
 	jnc	L005002?
 	mov	_pwm_count,#0x00
 L005002?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:136: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:138: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
 	clr	c
 	mov	a,_pwm_Left0
 	xrl	a,#0x80
@@ -684,7 +685,7 @@ L005002?:
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P1_5,c
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:137: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:139: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
 	clr	c
 	mov	a,_pwm_Left1
 	xrl	a,#0x80
@@ -694,7 +695,7 @@ L005002?:
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P1_6,c
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:138: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:140: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
 	clr	c
 	mov	a,_pwm_Right0
 	xrl	a,#0x80
@@ -704,7 +705,7 @@ L005002?:
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P2_0,c
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:139: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:141: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
 	clr	c
 	mov	a,_pwm_Right1
 	xrl	a,#0x80
@@ -725,29 +726,29 @@ L005002?:
 ;------------------------------------------------------------
 ;direction                 Allocated to registers r2 
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:146: void forward_backward(unsigned char direction)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:148: void forward_backward(unsigned char direction)
 ;	-----------------------------------------
 ;	 function forward_backward
 ;	-----------------------------------------
 _forward_backward:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:149: if (direction == 0) { //p2.1,1.6 on
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:151: if (direction == 0) { //p2.1,1.6 on
 	mov	a,dpl
 	mov	r2,a
 	jnz	L006004?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:150: pwm_Left0 = pwm_Right0 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:152: pwm_Left0 = pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
 	mov	_pwm_Left0,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:151: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:153: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
 	mov	_pwm_Right1,_pwm_both
 	mov	_pwm_Left1,_pwm_both
 	ret
 L006004?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:154: else if (direction == 1) { //p2.0,1.5 on
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:156: else if (direction == 1) { //p2.0,1.5 on
 	cjne	r2,#0x01,L006006?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:155: pwm_Left1 = pwm_Right1 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:157: pwm_Left1 = pwm_Right1 = -1;
 	mov	_pwm_Right1,#0xFF
 	mov	_pwm_Left1,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:156: pwm_Left0 = pwm_Right0 = pwm_both; 
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:158: pwm_Left0 = pwm_Right0 = pwm_both; 
 	mov	_pwm_Right0,_pwm_both
 	mov	_pwm_Left0,_pwm_both
 L006006?:
@@ -756,16 +757,16 @@ L006006?:
 ;Allocation info for local variables in function 'InitADC'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:162: void InitADC (void)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:164: void InitADC (void)
 ;	-----------------------------------------
 ;	 function InitADC
 ;	-----------------------------------------
 _InitADC:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:165: ADC0CF = 0xF8; // SAR clock = 31, Right-justified result
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:167: ADC0CF = 0xF8; // SAR clock = 31, Right-justified result
 	mov	_ADC0CF,#0xF8
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:166: ADC0CN = 0b_1000_0000; // AD0EN=1, AD0TM=0
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:168: ADC0CN = 0b_1000_0000; // AD0EN=1, AD0TM=0
 	mov	_ADC0CN,#0x80
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:167: REF0CN = 0b_0000_1000; //Select VDD as the voltage reference for the converter
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:169: REF0CN = 0b_0000_1000; //Select VDD as the voltage reference for the converter
 	mov	_REF0CN,#0x08
 	ret
 ;------------------------------------------------------------
@@ -775,13 +776,13 @@ _InitADC:
 ;portno                    Allocated to registers r2 
 ;mask                      Allocated to registers r3 
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:170: void InitPinADC (unsigned char portno, unsigned char pinno)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:172: void InitPinADC (unsigned char portno, unsigned char pinno)
 ;	-----------------------------------------
 ;	 function InitPinADC
 ;	-----------------------------------------
 _InitPinADC:
 	mov	r2,dpl
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:174: mask=1<<pinno;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:176: mask=1<<pinno;
 	mov	b,_InitPinADC_PARM_2
 	inc	b
 	mov	a,#0x01
@@ -791,7 +792,7 @@ L008010?:
 L008012?:
 	djnz	b,L008010?
 	mov	r3,a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:176: switch (portno)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:178: switch (portno)
 	mov	a,r2
 	add	a,#0xff - 0x03
 	jc	L008007?
@@ -805,50 +806,50 @@ L008014?:
 	ljmp	L008002?
 	ljmp	L008003?
 	ljmp	L008004?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:178: case 0:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:180: case 0:
 L008001?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:179: P0MDIN &= (~mask); // Set pin as analog input
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:181: P0MDIN &= (~mask); // Set pin as analog input
 	mov	a,r3
 	cpl	a
 	anl	_P0MDIN,a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:180: P0SKIP |= mask; // Skip Crossbar decoding for this pin
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:182: P0SKIP |= mask; // Skip Crossbar decoding for this pin
 	mov	a,r3
 	orl	_P0SKIP,a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:181: break;
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:182: case 1:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:183: break;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:184: case 1:
 	ret
 L008002?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:183: P1MDIN &= (~mask); // Set pin as analog input
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:185: P1MDIN &= (~mask); // Set pin as analog input
 	mov	a,r3
 	cpl	a
 	anl	_P1MDIN,a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:184: P1SKIP |= mask; // Skip Crossbar decoding for this pin
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:186: P1SKIP |= mask; // Skip Crossbar decoding for this pin
 	mov	a,r3
 	orl	_P1SKIP,a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:185: break;
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:186: case 2:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:187: break;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:188: case 2:
 	ret
 L008003?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:187: P2MDIN &= (~mask); // Set pin as analog input
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:189: P2MDIN &= (~mask); // Set pin as analog input
 	mov	a,r3
 	cpl	a
 	anl	_P2MDIN,a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:188: P2SKIP |= mask; // Skip Crossbar decoding for this pin
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:190: P2SKIP |= mask; // Skip Crossbar decoding for this pin
 	mov	a,r3
 	orl	_P2SKIP,a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:189: break;
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:190: case 3:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:191: break;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:192: case 3:
 	ret
 L008004?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:191: P3MDIN &= (~mask); // Set pin as analog input
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:193: P3MDIN &= (~mask); // Set pin as analog input
 	mov	a,r3
 	cpl	a
 	mov	r2,a
 	anl	_P3MDIN,a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:192: P3SKIP |= mask; // Skip Crossbar decoding for this pin
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:194: P3SKIP |= mask; // Skip Crossbar decoding for this pin
 	mov	a,r3
 	orl	_P3SKIP,a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:196: }
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:198: }
 L008007?:
 	ret
 ;------------------------------------------------------------
@@ -856,25 +857,25 @@ L008007?:
 ;------------------------------------------------------------
 ;pin                       Allocated to registers 
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:199: unsigned int ADC_at_Pin(unsigned char pin)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:201: unsigned int ADC_at_Pin(unsigned char pin)
 ;	-----------------------------------------
 ;	 function ADC_at_Pin
 ;	-----------------------------------------
 _ADC_at_Pin:
 	mov	_AMX0P,dpl
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:202: AMX0N = LQFP32_MUX_GND;  // GND is negative input (Single-ended Mode)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:204: AMX0N = LQFP32_MUX_GND;  // GND is negative input (Single-ended Mode)
 	mov	_AMX0N,#0x1F
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:204: AD0BUSY=1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:206: AD0BUSY=1;
 	setb	_AD0BUSY
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:205: while (AD0BUSY); // Wait for dummy conversion to finish
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:207: while (AD0BUSY); // Wait for dummy conversion to finish
 L009001?:
 	jb	_AD0BUSY,L009001?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:207: AD0BUSY = 1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:209: AD0BUSY = 1;
 	setb	_AD0BUSY
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:208: while (AD0BUSY); // Wait for conversion to complete
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:210: while (AD0BUSY); // Wait for conversion to complete
 L009004?:
 	jb	_AD0BUSY,L009004?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:209: return (ADC0L+(ADC0H*0x100));
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:211: return (ADC0L+(ADC0H*0x100));
 	mov	r2,_ADC0L
 	mov	r3,#0x00
 	mov	r5,_ADC0H
@@ -891,12 +892,12 @@ L009004?:
 ;------------------------------------------------------------
 ;pin                       Allocated to registers r2 
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:212: float Volts_at_Pin(unsigned char pin)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:214: float Volts_at_Pin(unsigned char pin)
 ;	-----------------------------------------
 ;	 function Volts_at_Pin
 ;	-----------------------------------------
 _Volts_at_Pin:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:214: return ((ADC_at_Pin(pin)*3.30)/1024.0);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:216: return ((ADC_at_Pin(pin)*3.30)/1024.0);
 	lcall	_ADC_at_Pin
 	lcall	___uint2fs
 	mov	r2,dpl
@@ -947,125 +948,129 @@ _Volts_at_Pin:
 ;------------------------------------------------------------
 ;commandflag               Allocated to registers r2 r3 
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:218: void readData (void) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:220: void readData (void) {
 ;	-----------------------------------------
 ;	 function readData
 ;	-----------------------------------------
 _readData:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:219: int commandflag = 0;					//determines if there's a real command coming in or not
-	mov	r2,#0x00
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:221: int commandflag = 1;					//determines if there's a real command coming in or not
+	mov	r2,#0x01
 	mov	r3,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:221: if (COMMAND_PIN == 0) {					//0---
-	jnb	_P1_0,L011039?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:223: if (COMMAND_PIN == 0) {					//0---
+	jnb	_P1_1,L011039?
 	ljmp	L011022?
 L011039?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:222: waitms(6);
-	mov	dptr,#0x0006
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:224: waitms(CMDFRQ*1.5);
+	mov	dptr,#0x003C
 	push	ar2
 	push	ar3
 	lcall	_waitms
 	pop	ar3
 	pop	ar2
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:223: if (COMMAND_PIN == 1) {				//01--
-	jnb	_P1_0,L011019?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:224: waitms(4);
-	mov	dptr,#0x0004
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:225: if (COMMAND_PIN == 1) {				//01--
+	jnb	_P1_1,L011019?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:226: waitms(CMDFRQ);
+	mov	dptr,#0x0028
 	push	ar2
 	push	ar3
 	lcall	_waitms
 	pop	ar3
 	pop	ar2
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:225: if (COMMAND_PIN == 0) {			//010-
-	jb	_P1_0,L011007?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:226: waitms(4);
-	mov	dptr,#0x0004
-	push	ar2
-	push	ar3
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:227: if (COMMAND_PIN == 0) {			//010-
+	jb	_P1_1,L011007?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:228: waitms(CMDFRQ);
+	mov	dptr,#0x0028
 	lcall	_waitms
-	pop	ar3
-	pop	ar2
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:227: if (COMMAND_PIN == 0) {		//0100	
-	jb	_P1_0,L011002?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:228: currentcmd = 4;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:229: if (COMMAND_PIN == 0) {		//0100	
+	jb	_P1_1,L011002?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:230: currentcmd = 4;
 	mov	_currentcmd,#0x04
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:231: commandflag = 0;
+	mov	r2,#0x00
+	mov	r3,#0x00
 	sjmp	L011022?
 L011002?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:231: currentcmd = 5;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:234: currentcmd = 5;
 	mov	_currentcmd,#0x05
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:235: commandflag = 0;
+	mov	r2,#0x00
+	mov	r3,#0x00
 	sjmp	L011022?
 L011007?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:235: waitms(4);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:239: waitms(4);
 	mov	dptr,#0x0004
 	push	ar2
 	push	ar3
 	lcall	_waitms
 	pop	ar3
 	pop	ar2
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:236: if (COMMAND_PIN == 0) {		//0110
-	jb	_P1_0,L011022?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:237: currentcmd = 6;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:240: if (COMMAND_PIN == 0) {		//0110
+	jb	_P1_1,L011022?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:241: currentcmd = 6;
 	mov	_currentcmd,#0x06
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:242: commandflag = 0;
+	mov	r2,#0x00
+	mov	r3,#0x00
 	sjmp	L011022?
 L011019?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:242: waitms(4);
-	mov	dptr,#0x0004
-	push	ar2
-	push	ar3
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:247: waitms(CMDFRQ);
+	mov	dptr,#0x0028
 	lcall	_waitms
-	pop	ar3
-	pop	ar2
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:243: if (COMMAND_PIN == 1) {			//001-
-	jnb	_P1_0,L011016?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:244: waitms(4);
-	mov	dptr,#0x0004
-	push	ar2
-	push	ar3
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:248: if (COMMAND_PIN == 1) {			//001-
+	jnb	_P1_1,L011016?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:249: waitms(CMDFRQ);
+	mov	dptr,#0x0028
 	lcall	_waitms
-	pop	ar3
-	pop	ar2
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:245: if (COMMAND_PIN == 1) {		//0011
-	jnb	_P1_0,L011010?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:246: currentcmd = 3;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:250: if (COMMAND_PIN == 1) {		//0011
+	jnb	_P1_1,L011010?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:251: currentcmd = 3;
 	mov	_currentcmd,#0x03
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:252: commandflag = 0;
+	mov	r2,#0x00
+	mov	r3,#0x00
 	sjmp	L011022?
 L011010?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:249: currentcmd = 2;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:255: currentcmd = 2;
 	mov	_currentcmd,#0x02
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:256: commandflag = 0;
+	mov	r2,#0x00
+	mov	r3,#0x00
 	sjmp	L011022?
 L011016?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:253: waitms(4);
-	mov	dptr,#0x0004
-	push	ar2
-	push	ar3
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:260: waitms(CMDFRQ);
+	mov	dptr,#0x0028
 	lcall	_waitms
-	pop	ar3
-	pop	ar2
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:254: if (COMMAND_PIN == 1) {		//0001	
-	jnb	_P1_0,L011013?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:255: currentcmd == 1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:261: if (COMMAND_PIN == 1) {		//0001	
+	jnb	_P1_1,L011013?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:262: currentcmd == 1;
 	mov	a,_currentcmd
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:263: commandflag = 0;
+	mov	r2,#0x00
+	mov	r3,#0x00
 	sjmp	L011022?
 L011013?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:258: commandflag = 1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:266: commandflag = 1;
 	mov	r2,#0x01
 	mov	r3,#0x00
 L011022?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:263: if (commandflag == 0) {					//only wait for signal to end if a command has been received. 
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:271: if (commandflag == 0) {					//only wait for signal to end if a command has been received. 
 	mov	a,r2
 	orl	a,r3
 	jnz	L011027?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:264: while (COMMAND_PIN == 0) {}
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:272: while (COMMAND_PIN == 0) {}
 L011023?:
-	jnb	_P1_0,L011023?
+	jnb	_P1_1,L011023?
 L011027?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:267: printf("current command is %d\r\n", currentcmd);		
-	mov	r2,_currentcmd
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:275: printf("current command is %d, commandflag = %d\r\n", currentcmd, commandflag);		
+	mov	r4,_currentcmd
 	mov	a,_currentcmd
 	rlc	a
 	subb	a,acc
-	mov	r3,a
+	mov	r5,a
 	push	ar2
 	push	ar3
+	push	ar4
+	push	ar5
 	mov	a,#__str_0
 	push	acc
 	mov	a,#(__str_0 >> 8)
@@ -1074,7 +1079,7 @@ L011027?:
 	push	acc
 	lcall	_printf
 	mov	a,sp
-	add	a,#0xfb
+	add	a,#0xf9
 	mov	sp,a
 	ret
 ;------------------------------------------------------------
@@ -1085,30 +1090,30 @@ L011027?:
 ;vright                    Allocated with name '_linetrack_vright_1_84'
 ;sloc0                     Allocated with name '_linetrack_sloc0_1_0'
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:271: void linetrack (int forwardbackward) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:279: void linetrack (int forwardbackward) {
 ;	-----------------------------------------
 ;	 function linetrack
 ;	-----------------------------------------
 _linetrack:
 	mov	_linetrack_forwardbackward_1_83,dpl
 	mov	(_linetrack_forwardbackward_1_83 + 1),dph
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:275: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:283: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
 	mov	_linetrack_vleft_1_84,dpl
 	mov	(_linetrack_vleft_1_84 + 1),dph
 	mov	(_linetrack_vleft_1_84 + 2),b
 	mov	(_linetrack_vleft_1_84 + 3),a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:276: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:284: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
 	mov	_linetrack_vright_1_84,dpl
 	mov	(_linetrack_vright_1_84 + 1),dph
 	mov	(_linetrack_vright_1_84 + 2),b
 	mov	(_linetrack_vright_1_84 + 3),a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:278: pwm_Left0 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:286: pwm_Left0 = -1;
 	mov	_pwm_Left0,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:280: pwm_Left1 = vright*vright*75/(vright*vright+vleft*vleft);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:288: pwm_Left1 = vright*vright*75/(vright*vright+vleft*vleft);
 	push	_linetrack_vright_1_84
 	push	(_linetrack_vright_1_84 + 1)
 	push	(_linetrack_vright_1_84 + 2)
@@ -1218,9 +1223,9 @@ _linetrack:
 	mov	a,r5
 	lcall	___fs2schar
 	mov	_pwm_Left1,dpl
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:281: pwm_Right1 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:289: pwm_Right1 = -1;
 	mov	_pwm_Right1,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:283: pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:291: pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
 	push	_linetrack_vleft_1_84
 	push	(_linetrack_vleft_1_84 + 1)
 	push	(_linetrack_vleft_1_84 + 2)
@@ -1330,36 +1335,294 @@ _linetrack:
 	mov	a,r5
 	lcall	___fs2schar
 	mov	_pwm_Right0,dpl
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:285: if (forwardbackward) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:293: if (forwardbackward) {
 	mov	a,_linetrack_forwardbackward_1_83
 	orl	a,(_linetrack_forwardbackward_1_83 + 1)
-	jz	L012003?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:286: pwm_Left0 = pwm_Left1;
-	mov	_pwm_Left0,_pwm_Left1
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:287: pwm_Left1 = -1;
+	jnz	L012006?
+	ljmp	L012002?
+L012006?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:294: pwm_Left0 = vright*vright*75/(vright*vright+vleft*vleft);
+	push	_linetrack_vright_1_84
+	push	(_linetrack_vright_1_84 + 1)
+	push	(_linetrack_vright_1_84 + 2)
+	push	(_linetrack_vright_1_84 + 3)
+	mov	dpl,_linetrack_vright_1_84
+	mov	dph,(_linetrack_vright_1_84 + 1)
+	mov	b,(_linetrack_vright_1_84 + 2)
+	mov	a,(_linetrack_vright_1_84 + 3)
+	lcall	___fsmul
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	push	ar2
+	push	ar3
+	push	ar4
+	push	ar5
+	mov	dptr,#0x0000
+	mov	b,#0x96
+	mov	a,#0x42
+	lcall	___fsmul
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	push	ar2
+	push	ar3
+	push	ar4
+	push	ar5
+	push	_linetrack_vright_1_84
+	push	(_linetrack_vright_1_84 + 1)
+	push	(_linetrack_vright_1_84 + 2)
+	push	(_linetrack_vright_1_84 + 3)
+	mov	dpl,_linetrack_vright_1_84
+	mov	dph,(_linetrack_vright_1_84 + 1)
+	mov	b,(_linetrack_vright_1_84 + 2)
+	mov	a,(_linetrack_vright_1_84 + 3)
+	lcall	___fsmul
+	mov	_linetrack_sloc0_1_0,dpl
+	mov	(_linetrack_sloc0_1_0 + 1),dph
+	mov	(_linetrack_sloc0_1_0 + 2),b
+	mov	(_linetrack_sloc0_1_0 + 3),a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	push	_linetrack_vleft_1_84
+	push	(_linetrack_vleft_1_84 + 1)
+	push	(_linetrack_vleft_1_84 + 2)
+	push	(_linetrack_vleft_1_84 + 3)
+	mov	dpl,_linetrack_vleft_1_84
+	mov	dph,(_linetrack_vleft_1_84 + 1)
+	mov	b,(_linetrack_vleft_1_84 + 2)
+	mov	a,(_linetrack_vleft_1_84 + 3)
+	lcall	___fsmul
+	mov	r6,dpl
+	mov	r7,dph
+	mov	r0,b
+	mov	r1,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	push	ar6
+	push	ar7
+	push	ar0
+	push	ar1
+	mov	dpl,_linetrack_sloc0_1_0
+	mov	dph,(_linetrack_sloc0_1_0 + 1)
+	mov	b,(_linetrack_sloc0_1_0 + 2)
+	mov	a,(_linetrack_sloc0_1_0 + 3)
+	lcall	___fsadd
+	mov	r6,dpl
+	mov	r7,dph
+	mov	r0,b
+	mov	r1,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	pop	ar5
+	pop	ar4
+	pop	ar3
+	pop	ar2
+	push	ar6
+	push	ar7
+	push	ar0
+	push	ar1
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fsdiv
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fs2schar
+	mov	_pwm_Left0,dpl
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:295: pwm_Left1 = -1;
 	mov	_pwm_Left1,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:288: pwm_Right1 = pwm_Right1;
-	mov	_pwm_Right1,_pwm_Right1
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:289: pwm_Right0 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:296: pwm_Right1 = vleft*vleft*75/(vright*vright+vleft*vleft);
+	push	_linetrack_vleft_1_84
+	push	(_linetrack_vleft_1_84 + 1)
+	push	(_linetrack_vleft_1_84 + 2)
+	push	(_linetrack_vleft_1_84 + 3)
+	mov	dpl,_linetrack_vleft_1_84
+	mov	dph,(_linetrack_vleft_1_84 + 1)
+	mov	b,(_linetrack_vleft_1_84 + 2)
+	mov	a,(_linetrack_vleft_1_84 + 3)
+	lcall	___fsmul
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	push	ar2
+	push	ar3
+	push	ar4
+	push	ar5
+	mov	dptr,#0x0000
+	mov	b,#0x96
+	mov	a,#0x42
+	lcall	___fsmul
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	push	ar2
+	push	ar3
+	push	ar4
+	push	ar5
+	push	_linetrack_vright_1_84
+	push	(_linetrack_vright_1_84 + 1)
+	push	(_linetrack_vright_1_84 + 2)
+	push	(_linetrack_vright_1_84 + 3)
+	mov	dpl,_linetrack_vright_1_84
+	mov	dph,(_linetrack_vright_1_84 + 1)
+	mov	b,(_linetrack_vright_1_84 + 2)
+	mov	a,(_linetrack_vright_1_84 + 3)
+	lcall	___fsmul
+	mov	_linetrack_sloc0_1_0,dpl
+	mov	(_linetrack_sloc0_1_0 + 1),dph
+	mov	(_linetrack_sloc0_1_0 + 2),b
+	mov	(_linetrack_sloc0_1_0 + 3),a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	push	_linetrack_vleft_1_84
+	push	(_linetrack_vleft_1_84 + 1)
+	push	(_linetrack_vleft_1_84 + 2)
+	push	(_linetrack_vleft_1_84 + 3)
+	mov	dpl,_linetrack_vleft_1_84
+	mov	dph,(_linetrack_vleft_1_84 + 1)
+	mov	b,(_linetrack_vleft_1_84 + 2)
+	mov	a,(_linetrack_vleft_1_84 + 3)
+	lcall	___fsmul
+	mov	r6,dpl
+	mov	r7,dph
+	mov	r0,b
+	mov	r1,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	push	ar6
+	push	ar7
+	push	ar0
+	push	ar1
+	mov	dpl,_linetrack_sloc0_1_0
+	mov	dph,(_linetrack_sloc0_1_0 + 1)
+	mov	b,(_linetrack_sloc0_1_0 + 2)
+	mov	a,(_linetrack_sloc0_1_0 + 3)
+	lcall	___fsadd
+	mov	r6,dpl
+	mov	r7,dph
+	mov	r0,b
+	mov	r1,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	pop	ar5
+	pop	ar4
+	pop	ar3
+	pop	ar2
+	push	ar6
+	push	ar7
+	push	ar0
+	push	ar1
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fsdiv
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fs2schar
+	mov	_pwm_Right1,dpl
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:297: pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
-L012003?:
+L012002?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:300: printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r", vleft, vright, pwm_Left1, pwm_Right0, currentcmd);
+	mov	r2,_currentcmd
+	mov	a,_currentcmd
+	rlc	a
+	subb	a,acc
+	mov	r3,a
+	mov	r4,_pwm_Right0
+	mov	a,_pwm_Right0
+	rlc	a
+	subb	a,acc
+	mov	r5,a
+	mov	r6,_pwm_Left1
+	mov	a,_pwm_Left1
+	rlc	a
+	subb	a,acc
+	mov	r7,a
+	push	ar2
+	push	ar3
+	push	ar4
+	push	ar5
+	push	ar6
+	push	ar7
+	push	_linetrack_vright_1_84
+	push	(_linetrack_vright_1_84 + 1)
+	push	(_linetrack_vright_1_84 + 2)
+	push	(_linetrack_vright_1_84 + 3)
+	push	_linetrack_vleft_1_84
+	push	(_linetrack_vleft_1_84 + 1)
+	push	(_linetrack_vleft_1_84 + 2)
+	push	(_linetrack_vleft_1_84 + 3)
+	mov	a,#__str_1
+	push	acc
+	mov	a,#(__str_1 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	mov	a,sp
+	add	a,#0xef
+	mov	sp,a
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'stopcar'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:296: void stopcar () {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:304: void stopcar () {
 ;	-----------------------------------------
 ;	 function stopcar
 ;	-----------------------------------------
 _stopcar:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:297: pwm_Left1 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:305: pwm_Left1 = -1;
 	mov	_pwm_Left1,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:298: pwm_Right1 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:306: pwm_Right1 = -1;
 	mov	_pwm_Right1,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:299: pwm_Left0 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:307: pwm_Left0 = -1;
 	mov	_pwm_Left0,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:300: pwm_Right0 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:308: pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
 	ret
 ;------------------------------------------------------------
@@ -1369,47 +1632,47 @@ _stopcar:
 ;vleft                     Allocated with name '_turncar_vleft_1_88'
 ;vright                    Allocated with name '_turncar_vright_1_88'
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:303: void turncar (int leftright) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:311: void turncar (int leftright) {
 ;	-----------------------------------------
 ;	 function turncar
 ;	-----------------------------------------
 _turncar:
 	mov	r2,dpl
 	mov	r3,dph
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:307: pwm_Left0 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:315: pwm_Left0 = -1;
 	mov	_pwm_Left0,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:308: pwm_Left1 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:316: pwm_Left1 = -1;
 	mov	_pwm_Left1,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:309: pwm_Right0 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:317: pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:310: pwm_Right1 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:318: pwm_Right1 = -1;
 	mov	_pwm_Right1,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:313: if (leftright == 0) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:321: if (leftright == 0) {
 	mov	a,r2
 	orl	a,r3
 	jz	L014022?
 	ljmp	L014012?
 L014022?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:315: pwm_Right0 = 50;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:323: pwm_Right0 = 50;
 	mov	_pwm_Right0,#0x32
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:317: waitms(1000);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:325: waitms(1000);
 	mov	dptr,#0x03E8
 	lcall	_waitms
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:319: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:327: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
 	mov	_turncar_vleft_1_88,dpl
 	mov	(_turncar_vleft_1_88 + 1),dph
 	mov	(_turncar_vleft_1_88 + 2),b
 	mov	(_turncar_vleft_1_88 + 3),a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:320: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:328: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
 	mov	_turncar_vright_1_88,dpl
 	mov	(_turncar_vright_1_88 + 1),dph
 	mov	(_turncar_vright_1_88 + 2),b
 	mov	(_turncar_vright_1_88 + 3),a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:322: while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:330: while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
 L014002?:
 	push	_turncar_vright_1_88
 	push	(_turncar_vright_1_88 + 1)
@@ -1482,14 +1745,14 @@ L014002?:
 	mov	a,r4
 	jz	L014004?
 L014003?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:324: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:332: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
 	mov	_turncar_vleft_1_88,dpl
 	mov	(_turncar_vleft_1_88 + 1),dph
 	mov	(_turncar_vleft_1_88 + 2),b
 	mov	(_turncar_vleft_1_88 + 3),a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:325: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:333: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
 	mov	_turncar_vright_1_88,dpl
@@ -1498,37 +1761,37 @@ L014003?:
 	mov	(_turncar_vright_1_88 + 3),a
 	ljmp	L014002?
 L014004?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:329: pwm_Right0 = -1; 		
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:337: pwm_Right0 = -1; 		
 	mov	_pwm_Right0,#0xFF
 	ret
 L014012?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:332: else if (leftright == 1) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:340: else if (leftright == 1) {
 	cjne	r2,#0x01,L014025?
 	cjne	r3,#0x00,L014025?
 	sjmp	L014026?
 L014025?:
 	ret
 L014026?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:334: pwm_Left1 = 50;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:342: pwm_Left1 = 50;
 	mov	_pwm_Left1,#0x32
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:336: waitms(1000);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:344: waitms(1000);
 	mov	dptr,#0x03E8
 	lcall	_waitms
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:338: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:346: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
 	mov	_turncar_vleft_1_88,dpl
 	mov	(_turncar_vleft_1_88 + 1),dph
 	mov	(_turncar_vleft_1_88 + 2),b
 	mov	(_turncar_vleft_1_88 + 3),a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:339: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:347: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
 	mov	_turncar_vright_1_88,dpl
 	mov	(_turncar_vright_1_88 + 1),dph
 	mov	(_turncar_vright_1_88 + 2),b
 	mov	(_turncar_vright_1_88 + 3),a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:341: while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:349: while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
 L014006?:
 	push	_turncar_vright_1_88
 	push	(_turncar_vright_1_88 + 1)
@@ -1601,14 +1864,14 @@ L014006?:
 	mov	a,r2
 	jz	L014008?
 L014007?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:343: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:351: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
 	mov	_turncar_vleft_1_88,dpl
 	mov	(_turncar_vleft_1_88 + 1),dph
 	mov	(_turncar_vleft_1_88 + 2),b
 	mov	(_turncar_vleft_1_88 + 3),a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:344: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:352: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
 	mov	_turncar_vright_1_88,dpl
@@ -1617,7 +1880,7 @@ L014007?:
 	mov	(_turncar_vright_1_88 + 3),a
 	ljmp	L014006?
 L014008?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:348: pwm_Left1 = -1; 
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:356: pwm_Left1 = -1; 
 	mov	_pwm_Left1,#0xFF
 	ret
 ;------------------------------------------------------------
@@ -1626,37 +1889,37 @@ L014008?:
 ;vleft                     Allocated with name '_uturn_vleft_1_93'
 ;vright                    Allocated with name '_uturn_vright_1_93'
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:352: void uturn () {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:360: void uturn () {
 ;	-----------------------------------------
 ;	 function uturn
 ;	-----------------------------------------
 _uturn:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:356: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:364: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
 	mov	_uturn_vleft_1_93,dpl
 	mov	(_uturn_vleft_1_93 + 1),dph
 	mov	(_uturn_vleft_1_93 + 2),b
 	mov	(_uturn_vleft_1_93 + 3),a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:357: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:365: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
 	mov	_uturn_vright_1_93,dpl
 	mov	(_uturn_vright_1_93 + 1),dph
 	mov	(_uturn_vright_1_93 + 2),b
 	mov	(_uturn_vright_1_93 + 3),a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:359: pwm_Left0 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:367: pwm_Left0 = -1;
 	mov	_pwm_Left0,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:360: pwm_Left1 = 50;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:368: pwm_Left1 = 50;
 	mov	_pwm_Left1,#0x32
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:361: pwm_Right0 = -1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:369: pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:362: pwm_Right1 = 50;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:370: pwm_Right1 = 50;
 	mov	_pwm_Right1,#0x32
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:364: waitms(4000);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:372: waitms(4000);
 	mov	dptr,#0x0FA0
 	lcall	_waitms
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:366: while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:374: while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
 L015002?:
 	push	_uturn_vright_1_93
 	push	(_uturn_vright_1_93 + 1)
@@ -1729,14 +1992,14 @@ L015002?:
 	mov	a,r2
 	jz	L015005?
 L015003?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:368: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:376: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
 	mov	_uturn_vleft_1_93,dpl
 	mov	(_uturn_vleft_1_93 + 1),dph
 	mov	(_uturn_vleft_1_93 + 2),b
 	mov	(_uturn_vleft_1_93 + 3),a
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:369: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:377: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
 	mov	_uturn_vright_1_93,dpl
@@ -1750,52 +2013,24 @@ L015005?:
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:373: void main (void)
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:381: void main (void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:376: MOTOR_LEFT0 =0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:384: MOTOR_LEFT0 =0;
 	clr	_P1_5
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:377: MOTOR_LEFT1 =0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:385: MOTOR_LEFT1 =0;
 	clr	_P1_6
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:378: MOTOR_RIGHT0 =0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:386: MOTOR_RIGHT0 =0;
 	clr	_P2_0
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:379: MOTOR_RIGHT1 =0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:387: MOTOR_RIGHT1 =0;
 	clr	_P2_1
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:381: currentstate = 1;  	//initialize the car to be stopped
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:389: currentstate = 1;  	//initialize the car to be stopped
 	mov	_currentstate,#0x01
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:382: currentcmd = 1;		//initialize the command to be null
-	mov	_currentcmd,#0x01
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:385: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
-	mov	a,#__str_1
-	push	acc
-	mov	a,#(__str_1 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:394: InitPinADC(2, 3); // Configure P2.3 as analog input
-	mov	_InitPinADC_PARM_2,#0x03
-	mov	dpl,#0x02
-	lcall	_InitPinADC
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:395: InitPinADC(2, 4); // Configure P2.4 as analog input
-	mov	_InitPinADC_PARM_2,#0x04
-	mov	dpl,#0x02
-	lcall	_InitPinADC
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:396: InitPinADC(1, 0);
-	mov	_InitPinADC_PARM_2,#0x00
-	mov	dpl,#0x01
-	lcall	_InitPinADC
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:397: InitADC();
-	lcall	_InitADC
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:406: while(P1_1 !=0);
-L016001?:
-	jb	_P1_1,L016001?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:407: printf("1\r\n");
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:390: currentcmd = 0;		//initialize the command to be null
+	mov	_currentcmd,#0x00
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:393: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 	mov	a,#__str_2
 	push	acc
 	mov	a,#(__str_2 >> 8)
@@ -1806,10 +2041,278 @@ L016001?:
 	dec	sp
 	dec	sp
 	dec	sp
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:408: while(P1_1 !=1);
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:402: InitPinADC(2, 3); // Configure P2.3 as analog input
+	mov	_InitPinADC_PARM_2,#0x03
+	mov	dpl,#0x02
+	lcall	_InitPinADC
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:403: InitPinADC(2, 4); // Configure P2.4 as analog input
+	mov	_InitPinADC_PARM_2,#0x04
+	mov	dpl,#0x02
+	lcall	_InitPinADC
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:404: InitPinADC(1, 0);
+	mov	_InitPinADC_PARM_2,#0x00
+	mov	dpl,#0x01
+	lcall	_InitPinADC
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:405: InitADC();
+	lcall	_InitADC
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:407: while(1)
+L016026?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:421: switch (currentstate) {
+	mov	r2,_currentstate
+	cjne	r2,#0x01,L016042?
+	sjmp	L016001?
+L016042?:
+	cjne	r2,#0x02,L016043?
+	sjmp	L016002?
+L016043?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:422: case 1:
+	cjne	r2,#0x03,L016004?
+	sjmp	L016003?
+L016001?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:423: linetrack(0);	//forwards
+	mov	dptr,#0x0000
+	lcall	_linetrack
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:424: break;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:425: case 2:
+	sjmp	L016004?
+L016002?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:426: linetrack(1);	//backwards
+	mov	dptr,#0x0001
+	lcall	_linetrack
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:427: break;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:428: case 3:
+	sjmp	L016004?
+L016003?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:429: stopcar();		//stop car
+	lcall	_stopcar
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:431: }
 L016004?:
-	jnb	_P1_1,L016004?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:409: printf("0\r\n");
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:433: switch (currentcmd) {
+	mov	a,_currentcmd
+	mov	r2,a
+	jnb	acc.7,L016045?
+	ljmp	L016023?
+L016045?:
+	clr	c
+	mov	a,#(0x06 ^ 0x80)
+	mov	b,r2
+	xrl	b,#0x80
+	subb	a,b
+	jnc	L016046?
+	ljmp	L016023?
+L016046?:
+	mov	a,r2
+	add	a,r2
+	add	a,r2
+	mov	dptr,#L016047?
+	jmp	@a+dptr
+L016047?:
+	ljmp	L016005?
+	ljmp	L016011?
+	ljmp	L016015?
+	ljmp	L016019?
+	ljmp	L016020?
+	ljmp	L016021?
+	ljmp	L016022?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:435: case 0 :
+L016005?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:437: if (currentstate == 1) {
+	mov	a,#0x01
+	cjne	a,_currentstate,L016026?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:438: if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
+	mov	dpl,#0x0B
+	lcall	_Volts_at_Pin
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	clr	a
+	push	acc
+	push	acc
+	mov	a,#0x80
+	push	acc
+	mov	a,#0x3F
+	push	acc
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fsgt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jnz	L016050?
+	ljmp	L016026?
+L016050?:
+	mov	dpl,#0x0C
+	lcall	_Volts_at_Pin
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	clr	a
+	push	acc
+	push	acc
+	mov	a,#0x80
+	push	acc
+	mov	a,#0x3F
+	push	acc
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fsgt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jnz	L016051?
+	ljmp	L016026?
+L016051?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:440: pwm_Left1 = 35;
+	mov	_pwm_Left1,#0x23
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:441: pwm_Left0 = -1;
+	mov	_pwm_Left0,#0xFF
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:442: pwm_Right0 = 35;
+	mov	_pwm_Right0,#0x23
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:443: pwm_Right1 = -1;						
+	mov	_pwm_Right1,#0xFF
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:444: waitms(1500);
+	mov	dptr,#0x05DC
+	lcall	_waitms
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:447: break;
+	ljmp	L016026?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:448: case 1 :
+L016011?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:450: if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
+	mov	dpl,#0x0B
+	lcall	_Volts_at_Pin
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	clr	a
+	push	acc
+	push	acc
+	mov	a,#0x80
+	push	acc
+	mov	a,#0x3F
+	push	acc
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fsgt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jnz	L016052?
+	ljmp	L016026?
+L016052?:
+	mov	dpl,#0x0C
+	lcall	_Volts_at_Pin
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	clr	a
+	push	acc
+	push	acc
+	mov	a,#0x80
+	push	acc
+	mov	a,#0x3F
+	push	acc
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fsgt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jnz	L016053?
+	ljmp	L016026?
+L016053?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:452: pwm_Left1 = 35;
+	mov	_pwm_Left1,#0x23
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:453: pwm_Left0 = -1;
+	mov	_pwm_Left0,#0xFF
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:454: pwm_Right0 = 35;
+	mov	_pwm_Right0,#0x23
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:455: pwm_Right1 = -1;						
+	mov	_pwm_Right1,#0xFF
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:456: waitms(1500);
+	mov	dptr,#0x05DC
+	lcall	_waitms
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:458: turncar(0); //0 = left
+	mov	dptr,#0x0000
+	lcall	_turncar
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:459: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:462: break;
+	ljmp	L016026?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:465: case 2 :
+L016015?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:467: if (Volts_at_Pin(LQFP32_MUX_P2_4) > 1 || Volts_at_Pin(LQFP32_MUX_P2_3) > 1) {
+	mov	dpl,#0x0C
+	lcall	_Volts_at_Pin
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	clr	a
+	push	acc
+	push	acc
+	mov	a,#0x80
+	push	acc
+	mov	a,#0x3F
+	push	acc
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fsgt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jnz	L016016?
+	mov	dpl,#0x0B
+	lcall	_Volts_at_Pin
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	clr	a
+	push	acc
+	push	acc
+	mov	a,#0x80
+	push	acc
+	mov	a,#0x3F
+	push	acc
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fsgt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jnz	L016055?
+	ljmp	L016026?
+L016055?:
+L016016?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:468: printf("\n\r reached intersection :D");
 	mov	a,#__str_3
 	push	acc
 	mov	a,#(__str_3 >> 8)
@@ -1820,357 +2323,82 @@ L016004?:
 	dec	sp
 	dec	sp
 	dec	sp
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:413: switch (currentstate) {
-	mov	r2,_currentstate
-	cjne	r2,#0x01,L016053?
-	sjmp	L016007?
-L016053?:
-	cjne	r2,#0x02,L016054?
-	sjmp	L016008?
-L016054?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:414: case 1:
-	cjne	r2,#0x03,L016010?
-	sjmp	L016009?
-L016007?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:415: linetrack(0);	//forwards
-	mov	dptr,#0x0000
-	lcall	_linetrack
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:416: break;
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:417: case 2:
-	sjmp	L016010?
-L016008?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:418: linetrack(1);	//backwards
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:469: pwm_Left1 = 35;
+	mov	_pwm_Left1,#0x23
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:470: pwm_Left0 = -1;
+	mov	_pwm_Left0,#0xFF
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:471: pwm_Right0 = 35;
+	mov	_pwm_Right0,#0x23
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:472: pwm_Right1 = -1;
+	mov	_pwm_Right1,#0xFF
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:473: waitms(1500);
+	mov	dptr,#0x05DC
+	lcall	_waitms
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:475: turncar(1); //1 = right
 	mov	dptr,#0x0001
-	lcall	_linetrack
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:419: break;
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:420: case 3:
-	sjmp	L016010?
-L016009?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:421: stopcar();		//stop car
-	lcall	_stopcar
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:423: }
-L016010?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:425: switch (currentcmd) {
-	mov	a,_currentcmd
-	mov	r2,a
-	jnb	acc.7,L016056?
-	ljmp	L016029?
-L016056?:
-	clr	c
-	mov	a,#(0x06 ^ 0x80)
-	mov	b,r2
-	xrl	b,#0x80
-	subb	a,b
-	jnc	L016057?
-	ljmp	L016029?
-L016057?:
-	mov	a,r2
-	add	a,r2
-	add	a,r2
-	mov	dptr,#L016058?
-	jmp	@a+dptr
-L016058?:
-	ljmp	L016011?
-	ljmp	L016017?
-	ljmp	L016021?
-	ljmp	L016025?
+	lcall	_turncar
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:476: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:478: break;
 	ljmp	L016026?
-	ljmp	L016027?
-	ljmp	L016028?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:427: case 0 :
-L016011?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:429: if (currentstate == 1) {
-	mov	a,#0x01
-	cjne	a,_currentstate,L016059?
-	sjmp	L016060?
-L016059?:
-	ljmp	L016001?
-L016060?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:430: if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
-	mov	dpl,#0x0B
-	lcall	_Volts_at_Pin
-	mov	r2,dpl
-	mov	r3,dph
-	mov	r4,b
-	mov	r5,a
-	clr	a
-	push	acc
-	push	acc
-	mov	a,#0x80
-	push	acc
-	mov	a,#0x3F
-	push	acc
-	mov	dpl,r2
-	mov	dph,r3
-	mov	b,r4
-	mov	a,r5
-	lcall	___fsgt
-	mov	r2,dpl
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	mov	a,r2
-	jnz	L016061?
-	ljmp	L016001?
-L016061?:
-	mov	dpl,#0x0C
-	lcall	_Volts_at_Pin
-	mov	r2,dpl
-	mov	r3,dph
-	mov	r4,b
-	mov	r5,a
-	clr	a
-	push	acc
-	push	acc
-	mov	a,#0x80
-	push	acc
-	mov	a,#0x3F
-	push	acc
-	mov	dpl,r2
-	mov	dph,r3
-	mov	b,r4
-	mov	a,r5
-	lcall	___fsgt
-	mov	r2,dpl
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	mov	a,r2
-	jnz	L016062?
-	ljmp	L016001?
-L016062?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:432: pwm_Left1 = 35;
-	mov	_pwm_Left1,#0x23
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:433: pwm_Left0 = -1;
-	mov	_pwm_Left0,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:434: pwm_Right0 = 35;
-	mov	_pwm_Right0,#0x23
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:435: pwm_Right1 = -1;						
-	mov	_pwm_Right1,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:436: waitms(1500);
-	mov	dptr,#0x05DC
-	lcall	_waitms
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:439: break;
-	ljmp	L016001?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:440: case 1 :
-L016017?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:442: if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
-	mov	dpl,#0x0B
-	lcall	_Volts_at_Pin
-	mov	r2,dpl
-	mov	r3,dph
-	mov	r4,b
-	mov	r5,a
-	clr	a
-	push	acc
-	push	acc
-	mov	a,#0x80
-	push	acc
-	mov	a,#0x3F
-	push	acc
-	mov	dpl,r2
-	mov	dph,r3
-	mov	b,r4
-	mov	a,r5
-	lcall	___fsgt
-	mov	r2,dpl
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	mov	a,r2
-	jnz	L016063?
-	ljmp	L016001?
-L016063?:
-	mov	dpl,#0x0C
-	lcall	_Volts_at_Pin
-	mov	r2,dpl
-	mov	r3,dph
-	mov	r4,b
-	mov	r5,a
-	clr	a
-	push	acc
-	push	acc
-	mov	a,#0x80
-	push	acc
-	mov	a,#0x3F
-	push	acc
-	mov	dpl,r2
-	mov	dph,r3
-	mov	b,r4
-	mov	a,r5
-	lcall	___fsgt
-	mov	r2,dpl
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	mov	a,r2
-	jnz	L016064?
-	ljmp	L016001?
-L016064?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:444: pwm_Left1 = 35;
-	mov	_pwm_Left1,#0x23
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:445: pwm_Left0 = -1;
-	mov	_pwm_Left0,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:446: pwm_Right0 = 35;
-	mov	_pwm_Right0,#0x23
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:447: pwm_Right1 = -1;						
-	mov	_pwm_Right1,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:448: waitms(1500);
-	mov	dptr,#0x05DC
-	lcall	_waitms
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:450: turncar(0); //0 = left
-	mov	dptr,#0x0000
-	lcall	_turncar
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:451: currentcmd = 0;
-	mov	_currentcmd,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:454: break;
-	ljmp	L016001?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:457: case 2 :
-L016021?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:459: if (Volts_at_Pin(LQFP32_MUX_P2_4) > 1 || Volts_at_Pin(LQFP32_MUX_P2_3) > 1) {
-	mov	dpl,#0x0C
-	lcall	_Volts_at_Pin
-	mov	r2,dpl
-	mov	r3,dph
-	mov	r4,b
-	mov	r5,a
-	clr	a
-	push	acc
-	push	acc
-	mov	a,#0x80
-	push	acc
-	mov	a,#0x3F
-	push	acc
-	mov	dpl,r2
-	mov	dph,r3
-	mov	b,r4
-	mov	a,r5
-	lcall	___fsgt
-	mov	r2,dpl
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	mov	a,r2
-	jnz	L016022?
-	mov	dpl,#0x0B
-	lcall	_Volts_at_Pin
-	mov	r2,dpl
-	mov	r3,dph
-	mov	r4,b
-	mov	r5,a
-	clr	a
-	push	acc
-	push	acc
-	mov	a,#0x80
-	push	acc
-	mov	a,#0x3F
-	push	acc
-	mov	dpl,r2
-	mov	dph,r3
-	mov	b,r4
-	mov	a,r5
-	lcall	___fsgt
-	mov	r2,dpl
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	mov	a,r2
-	jnz	L016066?
-	ljmp	L016001?
-L016066?:
-L016022?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:460: printf("\n\r reached intersection :D");
-	mov	a,#__str_4
-	push	acc
-	mov	a,#(__str_4 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:461: pwm_Left1 = 35;
-	mov	_pwm_Left1,#0x23
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:462: pwm_Left0 = -1;
-	mov	_pwm_Left0,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:463: pwm_Right0 = 35;
-	mov	_pwm_Right0,#0x23
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:464: pwm_Right1 = -1;
-	mov	_pwm_Right1,#0xFF
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:465: waitms(1500);
-	mov	dptr,#0x05DC
-	lcall	_waitms
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:467: turncar(1); //1 = right
-	mov	dptr,#0x0001
-	lcall	_turncar
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:468: currentcmd = 0;
-	mov	_currentcmd,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:470: break;
-	ljmp	L016001?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:473: case 3 :
-L016025?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:474: currentstate = 1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:481: case 3 :
+L016019?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:482: currentstate = 1;
 	mov	_currentstate,#0x01
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:475: currentcmd = 0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:483: currentcmd = 0;
 	mov	_currentcmd,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:476: break;
-	ljmp	L016001?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:479: case 4 :
-L016026?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:480: currentstate = 2;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:484: break;
+	ljmp	L016026?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:487: case 4 :
+L016020?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:488: currentstate = 2;
 	mov	_currentstate,#0x02
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:481: currentcmd = 0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:489: currentcmd = 0;
 	mov	_currentcmd,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:482: break;
-	ljmp	L016001?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:485: case 5 :
-L016027?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:486: currentstate = 3;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:490: break;
+	ljmp	L016026?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:493: case 5 :
+L016021?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:494: currentstate = 3;
 	mov	_currentstate,#0x03
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:487: currentcmd = 0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:495: currentcmd = 0;
 	mov	_currentcmd,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:488: break;
-	ljmp	L016001?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:491: case 6 :
-L016028?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:492: uturn();  //uturn
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:496: break;
+	ljmp	L016026?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:499: case 6 :
+L016022?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:500: uturn();  //uturn
 	lcall	_uturn
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:493: currentcmd = 0;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:501: currentcmd = 0;
 	mov	_currentcmd,#0x00
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:494: break;
-	ljmp	L016001?
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:495: default: 
-L016029?:
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:496: currentstate = 1;
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:502: break;
+	ljmp	L016026?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:503: default: 
+L016023?:
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:504: currentstate = 1;
 	mov	_currentstate,#0x01
-;	C:\Users\Wenoa\Documents\GitHub\ELEC291P2\src\motors.c:497: }
-	ljmp	L016001?
+;	C:\Users\Larry\Documents\GitHub\ELEC291P2\src\motors.c:505: }
+	ljmp	L016026?
 	rseg R_CSEG
 
 	rseg R_XINIT
 
 	rseg R_CONST
 __str_0:
-	db 'current command is %d'
+	db 'current command is %d, commandflag = %d'
 	db 0x0D
 	db 0x0A
 	db 0x00
 __str_1:
+	db '2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, comma'
+	db 'nd: %d'
+	db 0x0D
+	db 0x00
+__str_2:
 	db 0x1B
 	db '[2J'
 	db 0x00
-__str_2:
-	db '1'
-	db 0x0D
-	db 0x0A
-	db 0x00
 __str_3:
-	db '0'
-	db 0x0D
-	db 0x0A
-	db 0x00
-__str_4:
 	db 0x0A
 	db 0x0D
 	db ' reached intersection :D'

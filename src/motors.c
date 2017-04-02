@@ -17,6 +17,8 @@
 
 #define COMMAND_PIN P1_1
 
+#define	CMDFRQ 40  				//frequency of signal, time to wait in between each bit of received signal
+
 volatile  char pwm_count=0;
 volatile  char mode = 0;
 volatile  char pwm_both =0;
@@ -216,43 +218,49 @@ float Volts_at_Pin(unsigned char pin)
 
 
 void readData (void) {
-	int commandflag = 0;					//determines if there's a real command coming in or not
+	int commandflag = 1;					//determines if there's a real command coming in or not
 	
 	if (COMMAND_PIN == 0) {					//0---
-		waitms(30);
+		waitms(CMDFRQ*1.5);
 		if (COMMAND_PIN == 1) {				//01--
-			waitms(4);
+			waitms(CMDFRQ);
 			if (COMMAND_PIN == 0) {			//010-
-				waitms(4);
+				waitms(CMDFRQ);
 				if (COMMAND_PIN == 0) {		//0100	
 					currentcmd = 4;
+					commandflag = 0;
 				}
 				else {						//0101
 					currentcmd = 5;
+					commandflag = 0;
 				}
 			}
 			else {							//011-
 				waitms(4);
 				if (COMMAND_PIN == 0) {		//0110
 					currentcmd = 6;
+					commandflag = 0;
 				}
 			}
 		}
 		else {								//00--
-			waitms(4);
+			waitms(CMDFRQ);
 			if (COMMAND_PIN == 1) {			//001-
-				waitms(4);
+				waitms(CMDFRQ);
 				if (COMMAND_PIN == 1) {		//0011
 					currentcmd = 3;
+					commandflag = 0;
 				}
 				else {						//0010
 					currentcmd = 2;
+					commandflag = 0;
 				}
 			}
 			else {							//000-
-				waitms(4);
+				waitms(CMDFRQ);
 				if (COMMAND_PIN == 1) {		//0001	
 					currentcmd == 1;
+					commandflag = 0;
 				}
 				else {						//0000 this is no signal, set commandflag to 1 and go back to main loop
 					commandflag = 1;
@@ -264,7 +272,7 @@ void readData (void) {
 		while (COMMAND_PIN == 0) {}
 	}
 	
-	printf("current command is %d\r\n", currentcmd);		
+	printf("current command is %d, commandflag = %d\r\n", currentcmd, commandflag);		
 }
 
 
@@ -283,13 +291,13 @@ void linetrack (int forwardbackward) {
 	pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
 	
 	if (forwardbackward) {
-		pwm_Left0 = pwm_Left1;
+		pwm_Left0 = vright*vright*75/(vright*vright+vleft*vleft);
 		pwm_Left1 = -1;
-		pwm_Right1 = pwm_Right1;
+		pwm_Right1 = vleft*vleft*75/(vright*vright+vleft*vleft);
 		pwm_Right0 = -1;
 	}
 	
-	//printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r", vleft, vright, pwm_Left1, pwm_Right0, currentcmd);
+	printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r", vleft, vright, pwm_Left1, pwm_Right0, currentcmd);
 	
 }
 
@@ -379,7 +387,7 @@ void main (void)
    MOTOR_RIGHT1 =0;
    
    currentstate = 1;  	//initialize the car to be stopped
-   currentcmd = 1;		//initialize the command to be null
+   currentcmd = 0;		//initialize the command to be null
 
 
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
@@ -398,15 +406,15 @@ void main (void)
 
 	while(1)
 	{	
-		readData(); //check for incoming commands
+		//readData(); //check for incoming commands
 		
 		//printf("adc readings = %f\r\n", Volts_at_Pin(LQFP32_MUX_P1_0));
 	   	//printf("%d\r\n",(P1_1 ? 1 : 0));
 	   	//puts(P1_0 ? '1' : '0');
-	   	while(P1_1 !=0);
-	   	printf("1\r\n");
-	   	while(P1_1 !=1);
-	   	printf("0\r\n");
+	   	//while(P1_1 !=0);
+	   	//printf("1\r\n");
+	   	//while(P1_1 !=1);
+	   	//printf("0\r\n");
 	   	
 	   	
 	   	
