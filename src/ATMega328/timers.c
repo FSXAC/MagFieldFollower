@@ -2,7 +2,7 @@
 // contains all functions that relating to timing
 
 // turning timer 1 or timer 0 on or off
-// #define TIMER0_ENABLED
+#define TIMER0_ENABLED
 #define TIMER1_ENABLED
 
 // clock
