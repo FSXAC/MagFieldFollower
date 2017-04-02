@@ -66,5 +66,5 @@ void adc_init(void);
 // user functions
 void pinMode(char port, unsigned char pin);
 uint8_t mapDigital(uint16_t adc, uint16_t low, uint16_t high);
-void getInput(void);
+uint8_t getInput(void);
 uint8_t digitalRead(char port, uint8_t pin);

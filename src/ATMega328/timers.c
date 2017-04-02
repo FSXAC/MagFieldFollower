@@ -40,17 +40,6 @@ ISR(TIMER0_OVF_vect) {
 
 // Timer 1
 #ifdef TIMER1_ENABLED
-// ISR(TIMER1_OVF_vect) {
-// 	// if the bit at magDatabit is 1, turn the modulation on; otherwise, off
-// 	if (magDataBit < 8) {
-// 		// toggle square wave vs non
-// 		magEnabled = (magData>>(8-magDataBit++)) & 1;
-// 		if (magEnabled) PORTB turnOn(0);
-// 		else PORTB turnOff(0);
-// 	}
-// }
-
-// CHANGED
 ISR(TIMER1_COMPA_vect) {
 	timer1_millis++;
 }
@@ -88,18 +77,7 @@ void timer_init(void) {
 
 // returns the number of milliseconds
 unsigned long millis() {
-	unsigned long millis_return;
-
-	// #ifdef ATOMIC_BLOCK
-	// // [UNDISRUPTED]
-	// ATOMIC_BLOCK(ATOMIC_FORCEON) {
-	// 	millis_return = timer1_millis;
-	// }
-	// #else
-	millis_return = timer1_millis;
-	// #endif
-
-	return millis_return;
+	return timer1_millis;
 }
 
 // set magnetic data

@@ -6,9 +6,9 @@
 #include "main_header.h"
 
 // global constants
-uint8_t magDataBuffer = 0x00;
+uint8_t magDataBuffer;
 uint8_t controller_x, controller_y, controller_sw;
-uint32_t ms_since;
+uint32_t ms_current, ms_since;
 
 // ===[starting vector]===
 int main(void) {setup(); while (1) loop();}
@@ -61,12 +61,28 @@ void setup(void) {
 //     delay(1000);
 // }
 
+//  if (magDataBit < 8) {
+//      // toggle square wave vs non
+//      magEnabled = (magData>>(8-magDataBit++)) & 1;
+//      if (magEnabled) PORTB turnOn(0);
+//      else PORTB turnOff(0);
+//  }
+
+// loop forever
 void loop(void) {
-    unsigned long ms_current = millis();
-    if (ms_current - ms_since > 500) {
+    // get milliseconds
+    ms_current = millis();
+
+    // get control inputs
+    magDataBuffer = getInput();
+    if (magDataBuffer) {
+
+    // executed every 70ms
+    if (ms_current - ms_since > 50) {
         PORTB toggle(0);
         ms_since = ms_current;
     }
+}
 }
 
 // set pin output
@@ -91,36 +107,28 @@ uint8_t mapDigital(uint16_t adc, uint16_t low, uint16_t high) {
 }
 
 // parse ADC into direction
-void getInput(void) {
+uint8_t getInput(void) {
     controller_x = mapDigital(adc_read(0), 180, 800);
     controller_y = mapDigital(adc_read(1), 300, 700);
     controller_sw = PORTD & 0x80;
-    magDataBuffer = 0;
 
     // parse control into commands
     if (digitalRead('b', 2)) {
         // stop
-        if (!controller_y) magDataBuffer = CMD_180;
-        else magDataBuffer = CMD_STOP;
+        if (!controller_y) return CMD_180;
+        else return CMD_STOP;
     }
 
     // L/R has more dominance control
-    if (!magDataBuffer) {
-        if (controller_x == 0) {
-            magDataBuffer = CMD_LEFT;
-        } else if (controller_x == 1) {
-            magDataBuffer = CMD_RIGHT;
-        }
-    }
+    if (controller_x == 0) return CMD_LEFT;
+    else if (controller_x == 1) return CMD_RIGHT;
 
     // F/W second priority
-    if (!magDataBuffer) {
-        if (controller_y == 0) {
-            magDataBuffer = CMD_BACK;
-        } else if (controller_y == 1) {
-            magDataBuffer = CMD_FORWARD;
-        }        
-    }
+    if (controller_y == 0) return CMD_BACK;
+    else if (controller_y == 1) return CMD_FORWARD;
+
+    // return 0 by default
+    return 0;
 }
 
 // get digital reading
