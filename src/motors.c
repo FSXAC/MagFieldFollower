@@ -15,7 +15,7 @@
 #define MOTOR_RIGHT0 P2_0
 #define MOTOR_RIGHT1 P2_1
 
-#define COMMAND_PIN P1_0
+#define COMMAND_PIN P1_1
 
 volatile  char pwm_count=0;
 volatile  char mode = 0;
@@ -219,7 +219,7 @@ void readData (void) {
 	int commandflag = 0;					//determines if there's a real command coming in or not
 	
 	if (COMMAND_PIN == 0) {					//0---
-		waitms(6);
+		waitms(30);
 		if (COMMAND_PIN == 1) {				//01--
 			waitms(4);
 			if (COMMAND_PIN == 0) {			//010-
@@ -398,10 +398,18 @@ void main (void)
 
 	while(1)
 	{	
-		//readData(); //check for incoming commands
+		readData(); //check for incoming commands
 		
-		printf("adc readings = %f\r\n", Volts_at_Pin(LQFP32_MUX_P1_0));
-		
+		//printf("adc readings = %f\r\n", Volts_at_Pin(LQFP32_MUX_P1_0));
+	   	//printf("%d\r\n",(P1_1 ? 1 : 0));
+	   	//puts(P1_0 ? '1' : '0');
+	   	while(P1_1 !=0);
+	   	printf("1\r\n");
+	   	while(P1_1 !=1);
+	   	printf("0\r\n");
+	   	
+	   	
+	   	
 		switch (currentstate) {
 			case 1:
 				linetrack(0);	//forwards
