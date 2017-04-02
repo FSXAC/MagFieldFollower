@@ -1,72 +1,74 @@
-// This is a experimental program designed 
-// based on gist.github.com/adnbr
+/* Counting Milliseconds with Timer1
+ * ---------------------------------
+ * For more information see
+ * http://www.adnbr.co.uk/articles/counting-milliseconds
+ *
+ * 620 bytes - ATmega168 - 16MHz
+ */
 
-// 16MHz clock
+// 16MHz Clock
 #define F_CPU 16000000UL
-
-// CTC match value in OCR1A
-#define CTC_MATCH_OVERFLOW ((F_CPU/1000)8)
-
-// libraries
+ 
+// Calculate the value needed for 
+// the CTC match value in OCR1A.
+#define CTC_MATCH_OVERFLOW ((F_CPU / 1000) / 8) 
+ 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <util/atomic.c>
-
-// used to keep track milliseconds
+#include <util/atomic.h>
+ 
 volatile unsigned long timer1_millis;
 long milliseconds_since;
-
-// ===[Interrupt Service Routine]===
-ISR(TIMER1_COMPA_vect) {
+ 
+ISR (TIMER1_COMPA_vect)
+{
     timer1_millis++;
 }
 
-// millis function
-unsigned long millis() {
+unsigned long millis ()
+{
     unsigned long millis_return;
 
-    // the following cannot be disrupted
+    // Ensure this cannot be disrupted
     ATOMIC_BLOCK(ATOMIC_FORCEON) {
         millis_return = timer1_millis;
     }
-
+ 
     return millis_return;
 }
 
-// this flashing LED function will execute every 1000 milliseconds
-void second(void) {
+void flash_led ()
+{
     unsigned long milliseconds_current = millis();
+
     if (milliseconds_current - milliseconds_since > 1000) {
-
-        // toggle LED on and off
-        PORTB ^= 0x01;
-
-        // update milliseconds
+        // LED connected to PC0/Analog 0
+        PORTC ^= (1 << PC0);
         milliseconds_since = milliseconds_current;
     }
 }
-
-// main function
-void main(void) {
-    // set pin mode
-    DDRB |= 0x01;
-
-    // ===[Initial timer 1]===
-    // CTC (Clear Timer on Compare) mode, Clk/8 prescaling
-    TCCR1B |= (1<<WGM12) | (1<<CS11);
-
-    // Load high byte and low byte
+ 
+int main(void)
+{
+    // CTC mode, Clock/8
+    TCCR1B |= (1 << WGM12) | (1 << CS11);
+ 
+    // Load the high byte, then the low byte
+    // into the output compare
     OCR1AH = (CTC_MATCH_OVERFLOW >> 8);
     OCR1AL = CTC_MATCH_OVERFLOW;
+ 
+    // Enable the compare match interrupt
+    TIMSK1 |= (1 << OCIE1A);
+    
+    // PC0/Analog 0 to Output
+    DDRC |= (1 << PC0);
 
-    // enable compare match interrupt
-    TIMSK1 |= (1<<OCIE1A);
-
-    // enable global interrupt
+    // Now enable global interrupts
     sei();
-
-    // forever loop
-    while (1) {
-        second();
+ 
+    while (1)
+    {
+        flash_led();
     }
 }

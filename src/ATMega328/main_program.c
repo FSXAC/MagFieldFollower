@@ -8,6 +8,7 @@
 // global constants
 uint8_t magDataBuffer = 0x00;
 uint8_t controller_x, controller_y, controller_sw;
+uint32_t ms_since;
 
 // ===[starting vector]===
 int main(void) {setup(); while (1) loop();}
@@ -36,28 +37,36 @@ void setup(void) {
 }
 
 // runs forever
+// void loop(void) {
+//     // get control direction        
+//     getInput();
+
+//     switch (magDataBuffer) {
+//         case CMD_LEFT: printf("LEFT\n"); break;
+//         case CMD_RIGHT: printf("RIGHT\n"); break;
+//         case CMD_FORWARD: printf("FORWARD\n"); break;
+//         case CMD_BACK: printf("BACK\n"); break;
+//         case CMD_STOP: printf("HALT\n"); break;
+//         case CMD_180: printf("180\n"); break;
+//         default: printf("\n");
+//     }
+
+//     // send some bits
+//     setMagData(magDataBuffer);
+//     // setMagData(0x8C);
+//     transmit();
+//     // delay(30);
+//     // magToggle();
+
+//     delay(1000);
+// }
+
 void loop(void) {
-    // get control direction        
-    getInput();
-
-    switch (magDataBuffer) {
-        case CMD_LEFT: printf("LEFT\n"); break;
-        case CMD_RIGHT: printf("RIGHT\n"); break;
-        case CMD_FORWARD: printf("FORWARD\n"); break;
-        case CMD_BACK: printf("BACK\n"); break;
-        case CMD_STOP: printf("HALT\n"); break;
-        case CMD_180: printf("180\n"); break;
-        default: printf("\n");
+    unsigned long ms_current = millis();
+    if (ms_current - ms_since > 500) {
+        PORTB toggle(0);
+        ms_since = ms_current;
     }
-
-    // send some bits
-    setMagData(magDataBuffer);
-    // setMagData(0x8C);
-    transmit();
-    // delay(30);
-    // magToggle();
-
-    delay(1000);
 }
 
 // set pin output

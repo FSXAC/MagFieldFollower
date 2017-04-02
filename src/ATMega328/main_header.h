@@ -44,6 +44,7 @@ void loop(void);
 
 // timer/isr functions
 void timer_init(void);
+unsigned long millis();
 
 // mag functions
 void setMagData(unsigned char new_data);
