@@ -267,7 +267,7 @@ void readData (void) {
 				}
 			}
 		}
-		printf("current command is %d, commandflag = %d\r\n", currentcmd, commandflag);		
+		printf("\n\r current command is %d, commandflag = %d\r\n", currentcmd, commandflag);		
 	}
 	
 	
@@ -294,67 +294,9 @@ void linetrack (int forwardbackward) {
 	pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
 	
 	if (forwardbackward) {
-//		pwm_Left0 = vleft*75/(vleft+vright);
-//		pwm_Left1 = -1;
-//		pwm_Right1 = vright*75/(vleft+vright);
-//		pwm_Right0 = -1;
-//		if (pwm_Left0 > 40) {
-//			pwm_Right0 = pwm_Right1;
-//			pwm_Right1 = -1;
-//		}
-//		if (pwm_Right1 > 40) {
-//			pwm_Left1 = pwm_Left0;
-//			pwm_Left0 = -1;
-//		}
-
-//		if ((vleft - vright) < 0.2 && (vleft - vright) > -0.2) {
-//			pwm_Left1 = -1;
-//			pwm_Left0 = 25;
-//			pwm_Right1 = 25;
-//			pwm_Right0 = -1;
-//			waitms(300);
-//		}
-//				
-//		else if (vleft > vright) {
-//			pwm_Left1 = -1;
-//			pwm_Left0 = 25;
-//			pwm_Right1 = -1;
-//			pwm_Right0 = -1;
-//			waitms(300);
-//		}
-//		else {
-//			pwm_Left1 = -1;
-//			pwm_Left0 = -1;
-//			pwm_Right1 = 25;
-//			pwm_Right0 = -1;
-//			waitms(300);
-//		} 
-
-		if (vleft > 1) {
-			pwm_Left1 = -1;
-			pwm_Left0 = -1;
-			pwm_Right1 = 25;
-			pwm_Right0 = -1;
-			waitms(200);
-			while (vright < 1);
-		}
-		else if (vright > 1) {
-			pwm_Left1 = -1;
-			pwm_Left0 = 25;
-			pwm_Right1 = -1;
-			pwm_Right0 = -1;
-			waitms(400);
-			while (vleft < 1);
-		}		
-		else {
-			pwm_Left1 = -1;
-			pwm_Left0 = 25;
-			pwm_Right1 = 25;
-			pwm_Right0 = -1;
-		}
 	}
 	
-	printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r\n", vleft, vright, pwm_Left0, pwm_Right1, currentcmd);
+	printf("2.3=%f, 2.4=%f, Left0=%4d, Right1=%4d, Left1=%4d, Right0=%4d, command:%d, state:%d\r", vleft, vright, pwm_Left0, pwm_Right1, pwm_Left1, pwm_Right0, currentcmd, currentstate);
 	
 }
 
@@ -484,6 +426,12 @@ void main (void)
 				break;
 			case 3:
 				stopcar();		//stop car
+				break;
+			case 4:  			//debugging
+				pwm_Left1 = 100;
+				pwm_Left0 = -1;
+				pwm_Right1 = -1;
+				pwm_Right0 = 100; 
 				break;
 		}
 				
