@@ -1,21 +1,9 @@
-//  square.c: Uses timer 2 interrupt to generate a square wave in pin
-//  P2.0 and a 75% duty cycle wave in pin P2.1
-//  Copyright (c) 2010-2015 Jesus Calvino-Fraga
-//  ~C51~
+// ELEC 291 Project 2
 
 #include <C8051F38x.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-#define SYSCLK    48000000L // SYSCLK frequency in Hz
-#define BAUDRATE  115200L   // Baud rate of UART in bps
-
-#define MOTOR_LEFT0 P1_5
-#define MOTOR_LEFT1 P1_6
-#define MOTOR_RIGHT0 P2_0
-#define MOTOR_RIGHT1 P2_1
-
-#define COMMAND_PIN P1_0
+#include "robot_header.h"
 
 volatile  char pwm_count=0;
 volatile  char mode = 0;
@@ -29,10 +17,7 @@ volatile  char direction = 0; // 1 for back 0 for forward
 volatile  char currentcmd = 0;
 volatile  char currentstate = 1;
 
-
-
-char _c51_external_startup (void)
-{
+char _c51_external_startup (void) {
 	PCA0MD&=(~0x40) ;    // DISABLE WDT: clear Watchdog Enable bit
 	VDM0CN=0x80; // enable VDD monitor
 	RSTSRC=0x02|0x04; // Enable reset on missing clock detector and VDD
@@ -92,9 +77,7 @@ char _c51_external_startup (void)
 	return 0;
 }
 
-
-void Timer3us(unsigned char us)
-{
+void Timer3us(unsigned char us) {
 	unsigned char i;               // usec counter
 	
 	// The input for Timer 3 is selected as SYSCLK by setting T3ML (bit 6) of CKCON:
@@ -112,8 +95,7 @@ void Timer3us(unsigned char us)
 	TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
 }
 
-void waitms (unsigned int ms)
-{
+void waitms (unsigned int ms) {
 	unsigned int j;
 	for(j=ms; j!=0; j--)
 	{
@@ -125,14 +107,13 @@ void waitms (unsigned int ms)
 }
 
 
-void Timer2_ISR (void) interrupt 5
-{
+void Timer2_ISR (void) interrupt 5 {
 	TF2H = 0; // Clear Timer2 interrupt flag
 
 	pwm_count++;
 	if(pwm_count>100) pwm_count=0;
 
-// To fully turn off one pin pass -1 to their pwm_***
+	// To fully turn off one pin pass -1 to their pwm_***
 	MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
 	MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
 	MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
@@ -143,9 +124,7 @@ void Timer2_ISR (void) interrupt 5
 	Parameters
 	pwm_both: the value of pwm that controls speed of motors
 	direction: flag to set whether robot goes forwards(0) or backwards(1). */
-void forward_backward(unsigned char direction)
-{
-
+void forward_backward(unsigned char direction) {
 	if (direction == 0) { //p2.1,1.6 on
 		pwm_Left0 = pwm_Right0 = -1;
 		pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
@@ -159,16 +138,14 @@ void forward_backward(unsigned char direction)
 	}
 
 }
-void InitADC (void)
-{
+void InitADC(void) {
 	// Init ADC
 	ADC0CF = 0xF8; // SAR clock = 31, Right-justified result
 	ADC0CN = 0b_1000_0000; // AD0EN=1, AD0TM=0
   	REF0CN = 0b_0000_1000; //Select VDD as the voltage reference for the converter
 }
 
-void InitPinADC (unsigned char portno, unsigned char pinno)
-{
+void InitPinADC (unsigned char portno, unsigned char pinno) {
 	unsigned char mask;
 	
 	mask=1<<pinno;
@@ -196,8 +173,7 @@ void InitPinADC (unsigned char portno, unsigned char pinno)
 	}
 }
 
-unsigned int ADC_at_Pin(unsigned char pin)
-{
+unsigned int ADC_at_Pin(unsigned char pin) {
 	AMX0P = pin;             // Select positive input from pin
 	AMX0N = LQFP32_MUX_GND;  // GND is negative input (Single-ended Mode)
 	// Dummy conversion first to select new pin
@@ -209,8 +185,7 @@ unsigned int ADC_at_Pin(unsigned char pin)
 	return (ADC0L+(ADC0H*0x100));
 }
 
-float Volts_at_Pin(unsigned char pin)
-{
+float Volts_at_Pin(unsigned char pin) {
 	 return ((ADC_at_Pin(pin)*3.30)/1024.0);
 }
 
@@ -293,7 +268,7 @@ void linetrack (int forwardbackward) {
 	
 }
 
-void stopcar () {
+void stopcar(void) {
 	pwm_Left1 = -1;
 	pwm_Right1 = -1;
 	pwm_Left0 = -1;
@@ -349,7 +324,7 @@ void turncar (int leftright) {
 	}
 }
 
-void uturn () {
+void uturn(void) {
 	volatile float vleft;
 	volatile float vright;
 	
@@ -370,9 +345,7 @@ void uturn () {
 	}
 }	
 
-void main (void)
-{
-	
+void main(void) {
    MOTOR_LEFT0 =0;
    MOTOR_LEFT1 =0;
    MOTOR_RIGHT0 =0;
