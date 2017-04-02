@@ -1,5 +1,9 @@
-// include libararies
 #define F_CPU 16000000UL
+#define TX_BITS 8
+#define TX_BIT_DELAY 70
+#define TX_PERIOD (TX_BIT_DELAY*TX_BITS*2)
+
+// include libararies
 #include <avr/io.h>
 #include <stdio.h>
 #include <util/delay.h>
@@ -36,28 +40,6 @@ void setup(void) {
     adc_init();
 }
 
-// runs forever
-
-//     switch (magDataBuffer) {
-//         case CMD_LEFT: printf("LEFT\n"); break;
-//         case CMD_RIGHT: printf("RIGHT\n"); break;
-//         case CMD_FORWARD: printf("FORWARD\n"); break;
-//         case CMD_BACK: printf("BACK\n"); break;
-//         case CMD_STOP: printf("HALT\n"); break;
-//         case CMD_180: printf("180\n"); break;
-//         default: printf("\n");
-//     }
-
-//     setMagData(magDataBuffer);
-//     transmit();
-
-//  if (magDataBit < 8) {
-//      // toggle square wave vs non
-//      magEnabled = (magData>>(8-magDataBit++)) & 1;
-//      if (magEnabled) PORTB turnOn(0);
-//      else PORTB turnOff(0);
-//  }
-
 // loop forever
 void loop(void) {
     // get milliseconds
@@ -66,13 +48,28 @@ void loop(void) {
     // get control inputs
     magDataBuffer = getInput();
     if (magDataBuffer) {
-
-    // executed every 70ms
-    if (ms_current - ms_since > 50) {
-        PORTB toggle(0);
-        ms_since = ms_current;
+        // executed every 1 seconds
+        if (ms_current - ms_since > TX_PERIOD) {
+            transmit(magDataBuffer);
+            ms_since = ms_current;
+        }
     }
 }
+
+// transmission function
+void transmit(uint8_t command) {
+    uint8_t i = 0;
+    for (; i < 8; i++) {
+        // set magnetic signal on or off
+        setMagEnabled((command >> (TX_BITS-i)) & 1);
+
+        // use the LED pin to indicate if transmission
+        if (getMagEnabled()) PORTB turnOn(0);
+        else PORTB turnOff(0);
+
+        // delay in the signal
+        delay(MAG_TRANSMISSION_BIT_DELAY);
+    }
 }
 
 // set pin output

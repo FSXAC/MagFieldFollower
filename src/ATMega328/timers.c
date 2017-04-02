@@ -80,20 +80,12 @@ unsigned long millis() {
 	return timer1_millis;
 }
 
-// set magnetic data
-void setMagData(unsigned char new_data) {
-	magData = new_data;
+// set magnetic signal
+void setMagEnabled(uint8_t enabled) {
+	magEnabled = enabled;
 }
 
-// start transmission
-void transmit(void) {
-	magDataBit = 0;
-	TCCR1B |= 0x01;
-	TCNT1L = 0;
-	TCNT1H = 0;
-	// printf("Transmitting: %04x\n", magData);
-}
-
-void magToggle(void) {
-	magEnabled = !magEnabled;
+// returns if magnetic signal is turned on or not
+uint8_t getMagEnabled(void) {
+	return magEnabled
 }
