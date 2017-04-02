@@ -44,12 +44,18 @@ void loop(void);
 
 // timer/isr functions
 void timer_init(void);
-unsigned long millis();
+unsigned long millis(void);
+void setMagEnabled(uint8_t enabled);
+uint8_t getMagEnabled(void);
 
 // mag functions
-void setMagData(unsigned char new_data);
-void transmit(void);
-void magToggle(void);
+void transmit(uint8_t command);
+
+// user functions
+void pinMode(char port, unsigned char pin);
+uint8_t getInput(void);
+uint8_t mapDigital(uint16_t adc, uint16_t low, uint16_t high);
+uint8_t digitalRead(char port, uint8_t pin);
 
 // usart function prototypes for serial
 void usart_init(void);
@@ -62,9 +68,3 @@ int usart_putchar_printf(char var, FILE *stream);
 // adc functions
 uint16_t adc_read(uint8_t adcx);
 void adc_init(void);
-
-// user functions
-void pinMode(char port, unsigned char pin);
-uint8_t mapDigital(uint16_t adc, uint16_t low, uint16_t high);
-uint8_t getInput(void);
-uint8_t digitalRead(char port, uint8_t pin);

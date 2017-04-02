@@ -68,7 +68,7 @@ void transmit(uint8_t command) {
         else PORTB turnOff(0);
 
         // delay in the signal
-        delay(MAG_TRANSMISSION_BIT_DELAY);
+        delay(TX_BIT_DELAY);
     }
 }
 

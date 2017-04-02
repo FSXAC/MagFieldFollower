@@ -76,7 +76,7 @@ void timer_init(void) {
 }
 
 // returns the number of milliseconds
-unsigned long millis() {
+unsigned long millis(void) {
 	return timer1_millis;
 }
 
@@ -87,5 +87,5 @@ void setMagEnabled(uint8_t enabled) {
 
 // returns if magnetic signal is turned on or not
 uint8_t getMagEnabled(void) {
-	return magEnabled
+	return magEnabled;
 }
