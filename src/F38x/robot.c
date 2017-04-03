@@ -23,7 +23,6 @@ void main(void) {
 	//VARIABLES FOR VOLTAGES
 	volatile float v1 = 0;
 	volatile float v2 = 0;
-	int i = 0;
 
   	MOTOR_LEFT0 = 0;
    	MOTOR_LEFT1 = 0;
@@ -44,20 +43,20 @@ void main(void) {
 	InitPinADC(2, 6); // Configure P2.6 as analog input (tank2)
 
 	//INITIALIZE ADC
-	InitADC();
-	
+	InitADC();	
 	
 	//MAIN CODE
 	while (1) {	
 
 		//RECEIVE COMMANDS
 		currentcmd = readData(); 
-
 		
 		// FOR DEBUGGING
 		// printf("frontL %f frontR %f backL %f backR %f command %1d\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6), currentcmd);
-		waitms(100);
-		continue;		
+		// waitms(100);
+		// continue;
+
+
 		// CURRENT STATE
 		switch (currentstate) {
 			case FORWARD_STATE:
@@ -82,80 +81,90 @@ void main(void) {
 			//case for left turn
 			case CMD_NONE:
 				// MOVE STRAIGHT THROUGH INTERSECTION WHEN NO COMMANDS
-				if (v1 > 0.6 && v2 >0.8) {
+				if ((currentstate-1) ? 
+					(v1 > 1.2 && v2 > 1.2) :
+					(v1 > 0.7 && v2 > 1)) {
 					printf("\nINTERSECTION\n");
+
 					if (currentstate == 1) {
 						if (Volts_at_Pin(LQFP32_MUX_P2_5)>Volts_at_Pin(LQFP32_MUX_P2_6)) {
-							pwm_Left1 = 25;
+							pwm_Left1 = 50;
+							pwm_Left0 = -1;
+							pwm_Right0 = 30;
+							pwm_Right1 = -1;
+						}
+						else {
+							pwm_Left1 = 30;
 							pwm_Left0 = -1;
 							pwm_Right0 = 50;
 							pwm_Right1 = -1;
 						}
+					} else if (currentstate == 2) {
+						if (Volts_at_Pin(TANK_FL)>Volts_at_Pin(TANK_FR)) {
+							pwm_Left0 = 50;
+							pwm_Left1 = -1;
+							pwm_Right0 = -1;
+							pwm_Right1 = 30;
+						}
 						else {
-							pwm_Left1 = 50;
-							pwm_Left0 = -1;
-							pwm_Right0 = 25;
-							pwm_Right1 = -1;
+							pwm_Left0 = 30;
+							pwm_Left1 = -1;
+							pwm_Right0 = -1;
+							pwm_Right1 = 50;
 						}
 					}												 
 			
-				//	movecar(currentstate, 35);
 					waitms(1500);
 				} 
 				break;
 			//--------------------------------------------------//	
-			case 1 :
-				///CHECK FOR INTERSECTION
+			case CMD_LEFT:
+				/// CHECK FOR INTERSECTION
 				if (v1 > 0.7 && v2 >1)  {
 						printf("\n\r INTERSECTION\n");
 						//MOVE FORWARDS UNTIL AT INTERSECTION
-					//	movecar(currentstate, 35);						
-					//	waitms(1500);
 					
 						//TURN
-						turncar(0); //0 = left
+						// 1 for forward left, 2 for reverse left
+						turncar(currentstate);
 						currentcmd = 0;
 				} 
 				break;
 			//---------------------------------//	
 			//case for right turn			
-			case 2 :
+			case CMD_RIGHT:
 				//CHECK FOR INTERSECTION
 				if (v1 > 0.7 && v2 >1) {
 						printf("\n\r INTERSECTION\n");
-						//MOVE FORWARDS UNTIL INTERSECTION
-					//	movecar(currentstate, 35);
-					//	waitms(1500);
-
 						//TURN
-						turncar(1); //1 = right
+						turncar(currentstate + 2); //1 = right
 						currentcmd = 0;
 					} 
 				break;
 			//---------------------------------//
 			//case for forwards
-			case 3 :
+			case CMD_FORWARD:
 				// CHANGE TO FORWARD STATE
 				currentstate = 1;
 				currentcmd = 0;
 				break;
 			//---------------------------------//
 			//case for backwards
-			case 4 :
+			case CMD_REVERSE:
 				//CHANGE TO BACKWARDS STATE
 				currentstate = 2;
 				currentcmd = 0;
 				break;
 			//---------------------------------//
 			//case for stop
-			case 5 :
+			case CMD_STOP:
 				//CHANGE TO STOPPED STATE
 				currentstate = 3;
 				currentcmd = 0;
 				break;
 			//---------------------------------//	
 			//case for 180 turn 
-			case 6 :
+			case CMD_UTURN:
 				uturn();
 				currentcmd = 0;
 				break;
@@ -184,20 +193,20 @@ void Timer2_ISR (void) interrupt 5 {
 	Parameters
 	pwm_both: the value of pwm that controls speed of motors
 	direction: flag to set whether robot goes forwards(0) or backwards(1). */
-void forward_backward(unsigned char direction) {
-	if (direction == 0) { //p2.1,1.6 on
-		pwm_Left0 = pwm_Right0 = -1;
-		pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
-	}
+// void forward_backward(unsigned char direction) {
+// 	if (direction == 0) { //p2.1,1.6 on
+// 		pwm_Left0 = pwm_Right0 = -1;
+// 		pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
+// 	}
 
-	else if (direction == 1) { //p2.0,1.5 on
-		pwm_Left1 = pwm_Right1 = -1;
-		pwm_Left0 = pwm_Right0 = pwm_both; 
-		//MOTOR_LEFT0 = MOTOR_RIGHT0 = pwm_both;
-		//MOTOR_LEFT1 = MOTOR_RIGHT1 = 0;
-	}
+// 	else if (direction == 1) { //p2.0,1.5 on
+// 		pwm_Left1 = pwm_Right1 = -1;
+// 		pwm_Left0 = pwm_Right0 = pwm_both; 
+// 		//MOTOR_LEFT0 = MOTOR_RIGHT0 = pwm_both;
+// 		//MOTOR_LEFT1 = MOTOR_RIGHT1 = 0;
+// 	}
 
-}
+// }
 
 
 //--------------------------------------------------//
@@ -274,6 +283,7 @@ unsigned char readData(void) {
 	unsigned char command = 0;
 	// FIXME!!! SEND 5 bits and sync time 
 	if (!COMMAND_PIN) {
+		while (!COMMAND_PIN);
 		P1_4 = 1;
 		waitms((int)(CMDFRQ + CMDFRQ/2));
 		P1_4 = 0;
@@ -300,44 +310,29 @@ void linetrack (int forwardbackward) {
 	volatile float vright;
 	
 	//GET ADC INPUT 
-	vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
-	vright=Volts_at_Pin(LQFP32_MUX_P2_4);
-	
-	//IF TRACKING FORWARDS WITH REAR INDUCTORS
-	if (forwardbackward == 2) {
-		vleft=Volts_at_Pin(LQFP32_MUX_P2_5);
-		vright=Volts_at_Pin(LQFP32_MUX_P2_6);
-	}
-		
-	//SET PWM DEPENDING ON TANK CIRCUIT VOLTAGES
-	pwm_Left0 = -1;
-	pwm_Left1 = vright*vright*75/(vright*vright+vleft*vleft);
-	pwm_Right1 = -1;
-	pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
-	
-	
-	//IF LINE TRACKING BACKWARDS
-	if ((forwardbackward == 1)||(forwardbackward == 3)) {
+
+	// line track forward
+	if (forwardbackward == 0) {
+		vleft=Volts_at_Pin(TANK_FL);
+		vright=Volts_at_Pin(TANK_FR);
+
+		// SET PWM DEPENDING ON TANK CIRCUIT VOLTAGES
+		pwm_Left0 = -1;
+		pwm_Left1 = vright*vright*75/(vright*vright+vleft*vleft);
+		pwm_Right1 = -1;
+		pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
+	} else if (forwardbackward == 1) {
+
 		//GET ADC INPUT 
-		vleft=Volts_at_Pin(LQFP32_MUX_P2_5);
-		vright=Volts_at_Pin(LQFP32_MUX_P2_6);
+		vleft=Volts_at_Pin(TANK_RL);
+		vright=Volts_at_Pin(TANK_RR);
 		
-		//IF TRACKING BACKWARDS WITH FRONT INDUCTORS
-		if (forwardbackward == 3) {
-			vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
-			vright=Volts_at_Pin(LQFP32_MUX_P2_4);
-		}			
-	
 		//SET PWM DEPENDING ON TANK CIRCUIT VOLTAGES
 		pwm_Left1 = -1;
 		pwm_Left0 = vright*vright*75/(vright*vright+vleft*vleft);
 		pwm_Right0 = -1;
 		pwm_Right1 = vleft*vleft*75/(vright*vright+vleft*vleft);
-	}
-	
-	//TRACK VOLTAGE, PWM, AND COMMANDS
-	//printf("2.3= %f, 2.4= %f, LeftF= %4d, RightF= %4d, LeftB= %4d, RightB= %4d, command:%1d, state:%1d\r", vleft, vright, pwm_Left1, pwm_Right0, pwm_Left0, pwm_Right1, currentcmd, currentstate);
-	
+	}	
 }
 
 
@@ -356,7 +351,10 @@ void stopcar(void) {
 // TURN AT INTERSECTION
 //--------------------------------------------------//
 void turncar (int leftright) {
-	//LEFT = 0, RIGHT = 1
+	// FLEFT: 1
+	// RLEFT: 2
+	// FRIGHT: 3
+	// RRIGHT: 4
 	volatile float 	v;
 	volatile char 	direction;
 		
@@ -369,48 +367,81 @@ void turncar (int leftright) {
 	direction = currentstate - 1;
 
 	//CODE FOR TURNING LEFT
-	if (leftright == 0) {
+	if (leftright == 1) {
 		//SET ONLY RIGHT MOTOR
 		pwm_Right0 = 100;
-	//	pwm_Left0 = 100;
 	
 		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
-		v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
+		v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
 				
-		while (v < 1.5) {
+		while (v < 1.3) {
 			//get voltage
-			v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
+			v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
 		}
-		
+
+		// turning
 		waitms(300);
 		
 		//STOP MOTOR AGAIN 
 		pwm_Right0 = -1; 
-		pwm_Left0 = -1;		
 	}
 	
-	//CODE FOR TURNING RIGHT
-	else if (leftright == 1) {
+	// CODE FOR TURNING RIGHT
+	else if (leftright == 3) {
 		//SET ONLY LEFT MOTOR
-		pwm_Left1 = 100;
-	//	pwm_Right1 = 100;
+		pwm_Left1 = 75;
+		waitms(200);
 	
-		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
-		v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
+		// CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
+		v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
 				
-		while (v < 1.5) {
+		while (v < 1.3) {
 			//get voltage
-			v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
+			v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
 		}
 		
-		waitms(300);
-	
 		//SET MOTOR BACK TO 0
 		pwm_Left1 = -1; 
+	}
+
+	// REVERSE TURN LEFT
+	else if (leftright == 2) {
+		//SET ONLY RIGHT MOTOR
+		pwm_Right1 = 100;
+	
+		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
+		v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+				
+		while (v < 0.9) {
+			//get voltage
+			v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+		}
+
+		// turning
+		waitms(300);
+		
+		//STOP MOTOR AGAIN 
 		pwm_Right1 = -1; 
 	}
+	
+	// CODE FOR TURNING RIGHT
+	else if (leftright == 4) {
+		//SET ONLY LEFT MOTOR
+		pwm_Left0 = 75;
+		waitms(200);
+	
+		// CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
+		v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+				
+		while (v < 0.9) {
+			//get voltage
+			v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+		}
+		
+		//SET MOTOR BACK TO 0
+		pwm_Left0 = -1; 
+	}
 }
-
 
 //--------------------------------------------------//
 // UTURN
@@ -419,8 +450,8 @@ void uturn(void) {
 	volatile float vleft;
 	volatile float vright;
 	
-	vleft = Volts_at_Pin(LQFP32_MUX_P2_3);
-	vright = Volts_at_Pin(LQFP32_MUX_P2_4);
+	vleft = Volts_at_Pin(TANK_FL);
+	vright = Volts_at_Pin(TANK_FR);
 	
 	//SET PWM TO SPIN CAR
 	pwm_Left0 = -1;
@@ -434,28 +465,28 @@ void uturn(void) {
 	//WAIT FOR WHEN VOLTAGES ARE EQUAL AGAIN
 	while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
 		// get voltages
-		vleft  = Volts_at_Pin(LQFP32_MUX_P2_3);
-		vright = Volts_at_Pin(LQFP32_MUX_P2_4);
+		vleft  = Volts_at_Pin(TANK_FL);
+		vright = Volts_at_Pin(TANK_FR);
 	}
 }	
 
 //--------------------------------------------------//
 // STRAIGHT LINE
 //--------------------------------------------------//
-void movecar (int forback, int power) {
-	//1 = forwards, 2 = backwards, power = PWM
-	if (forback == 1) {
-		pwm_Left1 = power;
-		pwm_Left0 = -1;
-		pwm_Right0 = power;
-		pwm_Right1 = -1;
-	}
-	else if (forback == 2) {
-		pwm_Left0 = power;
-		pwm_Left1 = -1;
-		pwm_Right1 = power;
-		pwm_Right0 = -1;
-	}
-}
+// void movecar (int forback, int power) {
+// 	//1 = forwards, 2 = backwards, power = PWM
+// 	if (forback == 1) {
+// 		pwm_Left1 = power;
+// 		pwm_Left0 = -1;
+// 		pwm_Right0 = power;
+// 		pwm_Right1 = -1;
+// 	}
+// 	else if (forback == 2) {
+// 		pwm_Left0 = power;
+// 		pwm_Left1 = -1;
+// 		pwm_Right1 = power;
+// 		pwm_Right0 = -1;
+// 	}
+// }
 		
-		
+// 		
