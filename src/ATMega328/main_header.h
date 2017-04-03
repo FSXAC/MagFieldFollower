@@ -47,6 +47,8 @@ void timer_init(void);
 unsigned long millis(void);
 void setMagEnabled(uint8_t enabled);
 uint8_t getMagEnabled(void);
+void delayms(uint16_t count);
+void delayus(uint16_t count);
 
 // mag functions
 void transmit(uint8_t command);
@@ -68,3 +70,7 @@ int usart_putchar_printf(char var, FILE *stream);
 // adc functions
 uint16_t adc_read(uint8_t adcx);
 void adc_init(void);
+
+// sound functions
+void buzz(float duration, float period);
+void alert(void);

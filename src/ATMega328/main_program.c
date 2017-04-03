@@ -45,6 +45,8 @@ void loop(void) {
     // get milliseconds
     ms_current = millis();
 
+    // if (!(ms_current % 3)) PORTD toggle(7);
+
     // get control inputs
     magDataBuffer = getInput();
     if (magDataBuffer) {
@@ -54,6 +56,16 @@ void loop(void) {
             ms_since = ms_current;
         }
     }
+}
+
+// delay milliseconds functions
+void delayms(uint16_t count) {
+    while(count--) delay(1);
+}
+
+// delay microseconds functions
+void delayus(uint16_t count) {
+    while(count--) _delay_us(1);
 }
 
 // transmission function
