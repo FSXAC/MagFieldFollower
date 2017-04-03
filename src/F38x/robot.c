@@ -51,11 +51,13 @@ void main(void) {
 	while (1) {	
 
 		//RECEIVE COMMANDS
-		readData(); 
+		currentcmd = readData(); 
+
 		
 		// FOR DEBUGGING
 		printf("frontL %f frontR %f backL %f backR %f command %1d\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6), currentcmd);
-		
+		waitms(100);
+		continue;		
 		// CURRENT STATE
 		switch (currentstate) {
 			case FORWARD_STATE:
@@ -201,7 +203,7 @@ void forward_backward(unsigned char direction) {
 //--------------------------------------------------//
 // RECEIVE COMMANDS
 //--------------------------------------------------//
-void readData (void) {
+/*void readData(void) {
 	int commandflag = 1;					//determines if there's a real command coming in or not
 	
 	//ENTER CODE ONLY IF TRIGGERED BY 0
@@ -239,9 +241,33 @@ void readData (void) {
 	
 	//STAYS IN READ DATA UNTIL END OF RECEIVE (IF A PROPER COMMAND IS RECEIVED)
 	if (commandflag == 0)	{while (COMMAND_PIN == 0);} 
-	
-	//PRINT INCOMING COMMAND 
-	//printf("\ncurrent command is %d\r\n", currentcmd);		
+}*/
+
+// returns the 4 bits that was transmitted
+unsigned char readData(void) {
+	unsigned char index = 1;
+	unsigned char command = 0;
+	if (!COMMAND_PIN) {
+		waitms(CMDFRQ*1.5);
+		for (; index < 4; index++) {
+			// read the next one
+			printf("*****%d:::%d*****\n", index, COMMAND_PIN);
+			command |= COMMAND_PIN << index;
+			waitms(CMDFRQ);
+		}
+	}
+
+	// check the validity of the command
+	if ((command == CMD_LEFT) ||
+		(command == CMD_RIGHT) ||
+		(command == CMD_FORWARD) ||
+		(command == CMD_REVERSE) ||
+		(command == CMD_STOP) ||
+		(command == CMD_UTURN))	{
+		printf("Command received: 0x%02x\n", command);
+		return command;
+	}
+	else return CMD_NONE;
 }
 
 

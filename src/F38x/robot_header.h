@@ -48,7 +48,7 @@ unsigned int ADC_at_Pin(unsigned char pin);
 float Volts_at_Pin(unsigned char pin);
 
 // robot control functions
-void readData(void);
+unsigned char readData(void);
 void forward_backward(unsigned char direction);
 void linetrack(int forwardbackward);
 void stopcar(void);

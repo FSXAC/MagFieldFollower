@@ -1,7 +1,7 @@
 0000              1   ;--------------------------------------------------------
 0000              2   ; File Created by C51
 0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-0000              4   ; This file was generated Sun Apr 02 19:44:50 2017
+0000              4   ; This file was generated Mon Apr 03 00:18:42 2017
 0000              5   ;--------------------------------------------------------
                   5   $name adc
                   6   $optc51 --model-small
@@ -446,7 +446,7 @@
 000A            446   _InitPinADC:
 000A AA82       447            mov     r2,dpl
 000C            448   ;        adc.c:19: mask=1<<pinno;
-000C 8568F0     449            mov     b,_InitPinADC_PARM_2
+000C 8580F0     449            mov     b,_InitPinADC_PARM_2
 000F 05F0       450            inc     b
 0011 7401       451            mov     a,#0x01
 0013 8001       452            sjmp    L003012?
@@ -462,7 +462,7 @@
 0020 EA         462            mov     a,r2
 0021 2A         463            add     a,r2
 0022 2A         464            add     a,r2
-0023 9093A8     465            mov     dptr,#L003014?
+0023 908FA8     465            mov     dptr,#L003014?
 0026 73         466            jmp     @a+dptr
 0027            467   L003014?:
 0027 020100     468            ljmp    L003001?
