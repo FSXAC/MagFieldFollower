@@ -55,7 +55,7 @@ void main(void) {
 
 		
 		// FOR DEBUGGING
-		printf("frontL %f frontR %f backL %f backR %f command %1d\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6), currentcmd);
+		// printf("frontL %f frontR %f backL %f backR %f command %1d\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6), currentcmd);
 		waitms(100);
 		continue;		
 		// CURRENT STATE
@@ -244,30 +244,50 @@ void forward_backward(unsigned char direction) {
 }*/
 
 // returns the 4 bits that was transmitted
+// unsigned char readData(void) {
+// 	unsigned char index = 1;
+// 	unsigned char command = 0;
+// 	if (!COMMAND_PIN) {
+// 		waitms(CMDFRQ*1.5);
+// 		for (; index < 4; index++) {
+// 			// read the next one
+// 			printf("*****%d:::%d*****\n", index, COMMAND_PIN);
+// 			command |= COMMAND_PIN << index;
+// 			waitms(CMDFRQ);
+// 		}
+// 	}
+
+// 	// check the validity of the command
+// 	if ((command == CMD_LEFT) ||
+// 		(command == CMD_RIGHT) ||
+// 		(command == CMD_FORWARD) ||
+// 		(command == CMD_REVERSE) ||
+// 		(command == CMD_STOP) ||
+// 		(command == CMD_UTURN))	{
+// 		printf("Command received: 0x%02x\n", command);
+// 		return command;
+// 	}
+// 	else return CMD_NONE;
+// }
+
 unsigned char readData(void) {
-	unsigned char index = 1;
 	unsigned char command = 0;
+	// FIXME!!! SEND 5 bits and sync time 
 	if (!COMMAND_PIN) {
-		waitms(CMDFRQ*1.5);
-		for (; index < 4; index++) {
-			// read the next one
-			printf("*****%d:::%d*****\n", index, COMMAND_PIN);
-			command |= COMMAND_PIN << index;
-			waitms(CMDFRQ);
-		}
+		P1_4 = 1;
+		waitms((int)(CMDFRQ + CMDFRQ/2));
+		P1_4 = 0;
+		command |= COMMAND_PIN<<1;
+		waitms(CMDFRQ);
+		P1_4 = 1;
+		command |= COMMAND_PIN<<2;
+		waitms(CMDFRQ);
+		P1_4 = 0;
+		command |= COMMAND_PIN<<3;
 	}
 
-	// check the validity of the command
-	if ((command == CMD_LEFT) ||
-		(command == CMD_RIGHT) ||
-		(command == CMD_FORWARD) ||
-		(command == CMD_REVERSE) ||
-		(command == CMD_STOP) ||
-		(command == CMD_UTURN))	{
-		printf("Command received: 0x%02x\n", command);
-		return command;
-	}
-	else return CMD_NONE;
+	printf("Command received: %d\n", command);
+	return command;
 }
 
 
