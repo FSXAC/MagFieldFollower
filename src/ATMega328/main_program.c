@@ -42,7 +42,6 @@ void setup(void) {
 
 // loop forever
 void loop(void) {
-    int n;
     // get milliseconds
     ms_current = millis();
 
@@ -53,11 +52,6 @@ void loop(void) {
         if (magDataBuffer) {
             transmit(magDataBuffer);
             ms_since = ms_current;
-            for (n=0; n<=12; n++) {
-                note(n, 4);
-                if (n!=4 && n!=11) n++;
-                delay(100);
-            }
         }
     }
 }
