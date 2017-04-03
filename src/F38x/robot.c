@@ -23,7 +23,6 @@ void main(void) {
 	//VARIABLES FOR VOLTAGES
 	volatile float v1 = 0;
 	volatile float v2 = 0;
-	int i = 0;
 
   	MOTOR_LEFT0 =0;
    	MOTOR_LEFT1 =0;
@@ -261,14 +260,9 @@ void linetrack (int forwardbackward) {
 	volatile float vright;
 	
 	//GET ADC INPUT 
-	vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
-	vright=Volts_at_Pin(LQFP32_MUX_P2_4);
-	
-	//IF TRACKING FORWARDS WITH REAR INDUCTORS
-	if (forwardbackward == 2) {
-		vleft=Volts_at_Pin(LQFP32_MUX_P2_5);
-		vright=Volts_at_Pin(LQFP32_MUX_P2_6);
-	}
+	if (forwardbackward == 0) {
+		vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 		
 	//SET PWM DEPENDING ON TANK CIRCUIT VOLTAGES
 	pwm_Left0 = -1;
@@ -276,18 +270,13 @@ void linetrack (int forwardbackward) {
 	pwm_Right1 = -1;
 	pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
 	
+	}
 	
 	//IF LINE TRACKING BACKWARDS
-	if ((forwardbackward == 1)||(forwardbackward == 3)) {
+	if ((forwardbackward == 1)) {
 		//GET ADC INPUT 
 		vleft=Volts_at_Pin(LQFP32_MUX_P2_5);
-		vright=Volts_at_Pin(LQFP32_MUX_P2_6);
-		
-		//IF TRACKING BACKWARDS WITH FRONT INDUCTORS
-		if (forwardbackward == 3) {
-			vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
-			vright=Volts_at_Pin(LQFP32_MUX_P2_4);
-		}			
+		vright=Volts_at_Pin(LQFP32_MUX_P2_6);			
 	
 		//SET PWM DEPENDING ON TANK CIRCUIT VOLTAGES
 		pwm_Left1 = -1;
@@ -319,7 +308,6 @@ void stopcar(void) {
 void turncar (int leftright) {
 	//LEFT = 0, RIGHT = 1
 	volatile float 	v;
-//	volatile float  trigger;
 	volatile char 	direction;
 		
 	//SET ALL PWM TO 0		
