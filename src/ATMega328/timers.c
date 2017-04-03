@@ -25,10 +25,10 @@ volatile uint8_t magDataBit = 0;
 // Timer 0
 #ifdef TIMER0_ENABLED
 ISR(TIMER0_OVF_vect) {
-	// toggle pin 15 on and off
-	counter++;	
+	// toggle pin 15 on and off (at 16kHz)
+	counter++;
 	if (counter % 2) {
-		if (magEnabled) PORTB turnOff(1);
+		if (!magEnabled) PORTB turnOff(1);
 		else PORTB toggle(1);
 	}
 }

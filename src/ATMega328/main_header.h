@@ -37,12 +37,12 @@
   (byte & 0x01 ? '1' : '0') 
 
 // commands
-#define CMD_LEFT 0xE0
-#define CMD_RIGHT 0xD0
-#define CMD_FORWARD 0xC0
-#define CMD_BACK 0xB0
-#define CMD_STOP 0xA0
-#define CMD_180 0x90
+#define CMD_LEFT 0x01
+#define CMD_RIGHT 0x02
+#define CMD_FORWARD 0x03
+#define CMD_BACK 0x04
+#define CMD_STOP 0x05
+#define CMD_180 0x06
 
 // main functions
 void setup(void);
