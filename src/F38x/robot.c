@@ -31,8 +31,8 @@ void main(void) {
    	MOTOR_RIGHT1 =0;
    
    	//INITIAL STATE
-   	currentstate = 1;  	//1-FORWARD, 2-BACKWARDS, 3-STOPPED, 4-DEBUGGER
-   	currentcmd = 0;		//0-NO COMMAND, 1-TURN LEFT, 2-TURN RIGHT, 3-FORWARDS, 4-BACKWARDS, 5-STOP, 6-UTURN
+   	currentstate = 2;  	//1-FORWARD, 2-BACKWARDS, 3-STOPPED, 4-DEBUGGER
+   	currentcmd = 2;		//0-NO COMMAND, 1-TURN LEFT, 2-TURN RIGHT, 3-FORWARDS, 4-BACKWARDS, 5-STOP, 6-UTURN
 
 	//CLEAR PUTTY SCREEN
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
@@ -56,7 +56,7 @@ void main(void) {
 		//RECEIVE COMMANDS
 		readData(); 
 		
-		printf("frontL %f frontR %f backL %f backR %f command %1d\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6), currentcmd);
+		printf("frontL %f frontR %f backL %f backR %f command %1d\r\n", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6), currentcmd);
 		
 		//CURRENT STATE
 		switch (currentstate) {
@@ -69,8 +69,8 @@ void main(void) {
 			case 2:
 				linetrack(1);	//backwards
 				//GET VOLTAGE
-				v2 = Volts_at_Pin(LQFP32_MUX_P2_5);
-				v1 = Volts_at_Pin(LQFP32_MUX_P2_6);
+				v1 = Volts_at_Pin(LQFP32_MUX_P2_5);
+				v2 = Volts_at_Pin(LQFP32_MUX_P2_6);
 				break;
 			case 3:
 				stopcar();		//stop car
@@ -82,24 +82,36 @@ void main(void) {
 			//case for left turn
 			case 0 :
 				//MOVE STRAIGHT THROUGH INTERSECTION WHEN NO COMMANDS
-				if (v1 > 0.6 && v2 >0.8) {
+				if ((currentstate-1)? (v1 > 1.2 && v2 > 1.2):(v1 > 0.7 && v2 > 1)) {
 					printf("\nINTERSECTION\n");
 					if (currentstate == 1) {
-						if (Volts_at_Pin(LQFP32_MUX_P2_5)>Volts_at_Pin(LQFP32_MUX_P2_6)+0.3) {
-							pwm_Left1 = 25;
+						if (Volts_at_Pin(LQFP32_MUX_P2_5)>Volts_at_Pin(LQFP32_MUX_P2_6)) {
+							pwm_Left1 = 50;
+							pwm_Left0 = -1;
+							pwm_Right0 = 30;
+							pwm_Right1 = -1;
+						}
+						else {
+							pwm_Left1 = 30;
 							pwm_Left0 = -1;
 							pwm_Right0 = 50;
 							pwm_Right1 = -1;
 						}
-						else {
-							pwm_Left1 = 50;
-							pwm_Left0 = -1;
-							pwm_Right0 = 25;
-							pwm_Right1 = -1;
+					}
+					if (currentstate == 2) {
+						if (Volts_at_Pin(LQFP32_MUX_P2_3)>Volts_at_Pin(LQFP32_MUX_P2_4)) {
+							pwm_Left0 = 50;
+							pwm_Left1 = -1;
+							pwm_Right1 = 30;
+							pwm_Right0 = -1;
 						}
-					}												 
-			
-				//	movecar(currentstate, 35);
+						else {
+							pwm_Left0 = 30;
+							pwm_Left1 = -1;
+							pwm_Right1 = 50;
+							pwm_Right0 = -1;
+						}
+					}																		 
 					waitms(1500);
 				} 
 				break;
@@ -108,12 +120,9 @@ void main(void) {
 				///CHECK FOR INTERSECTION
 				if (v1 > 0.7 && v2 >1)  {
 						printf("\n\r INTERSECTION\n");
-						//MOVE FORWARDS UNTIL AT INTERSECTION
-					//	movecar(currentstate, 35);						
-					//	waitms(1500);
 					
 						//TURN
-						turncar(0); //0 = left
+						turncar(currentstate); //1 = forward left, 2 = backward left
 						currentcmd = 0;
 				} 
 				break;
@@ -123,12 +132,9 @@ void main(void) {
 				//CHECK FOR INTERSECTION
 				if (v1 > 0.7 && v2 >1) {
 						printf("\n\r INTERSECTION\n");
-						//MOVE FORWARDS UNTIL INTERSECTION
-					//	movecar(currentstate, 35);
-					//	waitms(1500);
 
 						//TURN
-						turncar(1); //1 = right
+						turncar(currentstate+2); //3 = forward right, 4 = backward right
 						currentcmd = 0;
 					} 
 				break;
@@ -313,6 +319,7 @@ void stopcar(void) {
 void turncar (int leftright) {
 	//LEFT = 0, RIGHT = 1
 	volatile float 	v;
+//	volatile float  trigger;
 	volatile char 	direction;
 		
 	//SET ALL PWM TO 0		
@@ -324,17 +331,19 @@ void turncar (int leftright) {
 	direction = currentstate - 1;
 
 	//CODE FOR TURNING LEFT
-	if (leftright == 0) {
+	if (leftright == 1) {
 		//SET ONLY RIGHT MOTOR
 		pwm_Right0 = 100;
-	//	pwm_Left0 = 100;
 	
+		waitms(100);
+		
 		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
 		v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
-				
-		while (v < 1.5) {
+						
+		while (v < 1.3) {
 			//get voltage
 			v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
+			printf("Intersection voltage v = %f\r\n", v);
 		}
 		
 		waitms(300);
@@ -345,25 +354,69 @@ void turncar (int leftright) {
 	}
 	
 	//CODE FOR TURNING RIGHT
-	else if (leftright == 1) {
+	else if (leftright == 3) {
 		//SET ONLY LEFT MOTOR
-		pwm_Left1 = 100;
-	//	pwm_Right1 = 100;
+		pwm_Left1 = 75;
+		
+		waitms(200);
 	
 		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
 		v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
-				
-		while (v < 1.5) {
+
+		while (v < 1.3) {
 			//get voltage
 			v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
+			printf("Intersection voltage v = %f\r\n", v);
 		}
 		
-		waitms(300);
+		//waitms(300);
 	
 		//SET MOTOR BACK TO 0
 		pwm_Left1 = -1; 
 		pwm_Right1 = -1; 
 	}
+	else if (leftright == 2) {
+		//SET ONLY RIGHT MOTOR
+		pwm_Right1 = 100;
+	
+		waitms(100);
+		
+		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
+		v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
+		printf("Intersection voltage v = %f\r\n", v);
+						
+		while (v < 1) {
+			//get voltage
+			v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
+			printf("Intersection voltage v = %f\r\n", v);
+		}
+		
+		waitms(300);
+		
+		//STOP MOTOR AGAIN 
+		pwm_Right1 = -1; 
+	}
+	else if (leftright == 4) {
+		//SET ONLY LEFT MOTOR
+		pwm_Left0 = 75;
+		
+		waitms(200);
+	
+		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
+		v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
+				
+		while (v < 0.9) {
+			//get voltage
+			v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
+			printf("Intersection voltage v = %f\r\n", v);
+		}
+		
+		//waitms(300);
+	
+		//SET MOTOR BACK TO 0
+		pwm_Left0 = -1; 
+	} 		
+		
 }
 
 
