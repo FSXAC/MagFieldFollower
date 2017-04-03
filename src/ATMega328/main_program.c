@@ -42,18 +42,22 @@ void setup(void) {
 
 // loop forever
 void loop(void) {
+    int n;
     // get milliseconds
     ms_current = millis();
 
-    // if (!(ms_current % 3)) PORTD toggle(7);
-
-    // get control inputs
-    magDataBuffer = getInput();
-    if (magDataBuffer) {
-        // executed every 1 seconds
-        if (ms_current - ms_since > TX_PERIOD) {
+    // executed every 1 seconds
+    if (ms_current - ms_since > TX_PERIOD) {
+        // get control inputs
+        magDataBuffer = getInput();
+        if (magDataBuffer) {
             transmit(magDataBuffer);
             ms_since = ms_current;
+            for (n=0; n<=12; n++) {
+                note(n, 4);
+                if (n!=4 && n!=11) n++;
+                delay(100);
+            }
         }
     }
 }
