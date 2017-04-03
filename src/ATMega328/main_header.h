@@ -12,6 +12,12 @@
 #define turnOn(x) |=(1<<x)
 #define toggle(x) ^=(1<<x)
 
+// timer controls
+// turning timer 1 or timer 0 on or off
+#define TIMER0_ENABLED
+#define TIMER1_ENABLED
+// #define TIMER2_ENABLED
+
 // pin definitions
 #define LED_PIN 0x01
 #define WIRE_PIN 0x02
@@ -31,12 +37,12 @@
   (byte & 0x01 ? '1' : '0') 
 
 // commands
-#define CMD_LEFT 0xE0
-#define CMD_RIGHT 0xD0
-#define CMD_FORWARD 0xC0
-#define CMD_BACK 0xB0
-#define CMD_STOP 0xA0
-#define CMD_180 0x90
+#define CMD_LEFT 0x01
+#define CMD_RIGHT 0x02
+#define CMD_FORWARD 0x03
+#define CMD_BACK 0x04
+#define CMD_STOP 0x05
+#define CMD_180 0x06
 
 // main functions
 void setup(void);
@@ -47,6 +53,8 @@ void timer_init(void);
 unsigned long millis(void);
 void setMagEnabled(uint8_t enabled);
 uint8_t getMagEnabled(void);
+void delayms(uint16_t count);
+void delayus(uint16_t count);
 
 // mag functions
 void transmit(uint8_t command);
@@ -68,3 +76,8 @@ int usart_putchar_printf(char var, FILE *stream);
 // adc functions
 uint16_t adc_read(uint8_t adcx);
 void adc_init(void);
+
+// sound functions
+// void buzz(float duration, float period);
+// void alert(void);
+void note(int n, int octave);

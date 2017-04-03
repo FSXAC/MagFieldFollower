@@ -1,5 +1,5 @@
 #define F_CPU 16000000UL
-#define TX_BITS 8
+#define TX_BITS 3
 #define TX_BIT_DELAY 70
 #define TX_PERIOD (TX_BIT_DELAY*TX_BITS*2)
 
@@ -38,38 +38,61 @@ void setup(void) {
 
     // turn on ADC
     adc_init();
+    PORTB turnOff(1);
 }
 
 // loop forever
 void loop(void) {
     // get milliseconds
+
     ms_current = millis();
 
-    // get control inputs
-    magDataBuffer = getInput();
-    if (magDataBuffer) {
-        // executed every 1 seconds
-        if (ms_current - ms_since > TX_PERIOD) {
+    // executed every 1 seconds
+    if (ms_current - ms_since > TX_PERIOD) {
+        // get control inputs
+        magDataBuffer = getInput();
+        if (magDataBuffer) {
+            printf("TRANSMITTING COMMAND 0x%02x\n", magDataBuffer);
             transmit(magDataBuffer);
             ms_since = ms_current;
         }
     }
 }
 
+// delay milliseconds functions
+void delayms(uint16_t count) {
+    while(count--) delay(1);
+}
+
+// delay microseconds functions
+void delayus(uint16_t count) {
+    while(count--) _delay_us(1);
+}
+
 // transmission function
 void transmit(uint8_t command) {
     uint8_t i = 0;
-    for (; i < 8; i++) {
+    
+    // send initial bits
+    setMagEnabled(0);
+    delay(TX_BIT_DELAY);
+    setMagEnabled(1);
+    delay(TX_BIT_DELAY);
+
+    // send command bits
+    for (; i < TX_BITS; i++) {
         // set magnetic signal on or off
-        setMagEnabled((command >> (TX_BITS-i)) & 1);
+        setMagEnabled((command >> (TX_BITS-i-1)) & 1);
 
         // use the LED pin to indicate if transmission
-        if (getMagEnabled()) PORTB turnOn(0);
+        if (!getMagEnabled()) PORTB turnOn(0);
         else PORTB turnOff(0);
 
         // delay in the signal
         delay(TX_BIT_DELAY);
     }
+    setMagEnabled(1);
+    delay(TX_PERIOD);
 }
 
 // set pin output

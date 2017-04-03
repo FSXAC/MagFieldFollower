@@ -1,10 +1,6 @@
 // Timer C program
 // contains all functions that relating to timing
 
-// turning timer 1 or timer 0 on or off
-#define TIMER0_ENABLED
-#define TIMER1_ENABLED
-
 // clock
 #define F_CPU 16000000UL
 #define CTC_MATCH_OVERFLOW ((F_CPU/1000)/8)
@@ -29,10 +25,10 @@ volatile uint8_t magDataBit = 0;
 // Timer 0
 #ifdef TIMER0_ENABLED
 ISR(TIMER0_OVF_vect) {
-	// toggle pin 15 on and off
-	counter++;	
+	// toggle pin 15 on and off (at 16kHz)
+	counter++;
 	if (counter % 2) {
-		if (magEnabled) PORTB turnOff(1);
+		if (!magEnabled) PORTB turnOff(1);
 		else PORTB toggle(1);
 	}
 }
@@ -49,26 +45,35 @@ ISR(TIMER1_COMPA_vect) {
 void timer_init(void) {
 	// timer 0
 	#ifdef TIMER0_ENABLED
-		// prescaler
-		TCCR0B = 1<<CS00;
+	// prescaler
+	TCCR0B = 1<<CS00;
 
-		// clear overflow flag
-		TIFR0 = 1<<TOV0;
+	// clear overflow flag
+	TIFR0 = 1<<TOV0;
 
-		// enable overflow interrupt
-		TIMSK0 = 1<<TOIE0;
+	// enable overflow interrupt
+	TIMSK0 = 1<<TOIE0;
 	#endif
 
 	// initialize timer 1
 	#ifdef TIMER1_ENABLED
-		TCCR1B |= (1<<WGM12) | (1<<CS11);
+	TCCR1B |= (1<<WGM12) | (1<<CS11);
 
-		// load high and low
-		OCR1AH = (CTC_MATCH_OVERFLOW >> 8);
-		OCR1AL = CTC_MATCH_OVERFLOW;
+	// load high and low
+	OCR1AH = (CTC_MATCH_OVERFLOW >> 8);
+	OCR1AL = CTC_MATCH_OVERFLOW;
 
-		// enable compare match interrupt
-		TIMSK1 |= (1<<OCIE1A);
+	// enable compare match interrupt
+	TIMSK1 |= (1<<OCIE1A);
+	#endif
+
+	// initialize timer 2
+	#ifdef TIMER2_ENABLED
+    // initialize counter
+    TCNT2 = 0;
+
+	// enable overflow interrupt
+	TIMSK2 |= (1 << OCIE2A);
 	#endif
 
 	// enable global interrupt
