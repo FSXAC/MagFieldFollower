@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include "robot_header.h"
 
-#define CMDFRQ 70	
-
 volatile  char pwm_count=0;
 volatile  char mode = 0;
 volatile  char pwm_both =0;
@@ -120,6 +118,7 @@ void main(void) {
 			//--------------------------------------------------//	
 			case CMD_LEFT:
 				/// CHECK FOR INTERSECTION
+				printf("Turn left at the next intersection\n");
 				if (v1 > 0.7 && v2 >1)  {
 						printf("\n\r INTERSECTION\n");
 						//MOVE FORWARDS UNTIL AT INTERSECTION
@@ -134,6 +133,7 @@ void main(void) {
 			//case for right turn			
 			case CMD_RIGHT:
 				//CHECK FOR INTERSECTION
+				printf("Turn right at the next intersection\n");
 				if (v1 > 0.7 && v2 >1) {
 						printf("\n\r INTERSECTION\n");
 						//TURN
@@ -145,6 +145,7 @@ void main(void) {
 			//case for forwards
 			case CMD_FORWARD:
 				// CHANGE TO FORWARD STATE
+				printf("GO!\n");
 				currentstate = 1;
 				currentcmd = 0;
 				break;
@@ -152,6 +153,7 @@ void main(void) {
 			//case for backwards
 			case CMD_REVERSE:
 				//CHANGE TO BACKWARDS STATE
+				printf("Reverse Reverse!\n");
 				currentstate = 2;
 				currentcmd = 0;
 				break;
@@ -159,13 +161,15 @@ void main(void) {
 			//case for stop
 			case CMD_STOP:
 				//CHANGE TO STOPPED STATE
+				printf("HALT peasants!\n");
 				currentstate = 3;
 				currentcmd = 0;
 				break;
 			//---------------------------------//	
 			//case for 180 turn 
 			case CMD_UTURN:
-				uturn();
+				// uturn();
+				printf("UTURN\n");
 				currentcmd = 0;
 				break;
 				
@@ -281,22 +285,24 @@ void Timer2_ISR (void) interrupt 5 {
 
 unsigned char readData(void) {
 	unsigned char command = 0;
-	// FIXME!!! SEND 5 bits and sync time 
 	if (!COMMAND_PIN) {
 		while (!COMMAND_PIN);
 		P1_4 = 1;
 		waitms((int)(CMDFRQ + CMDFRQ/2));
 		P1_4 = 0;
-		command |= COMMAND_PIN<<1;
-		waitms(CMDFRQ);
-		P1_4 = 1;
 		command |= COMMAND_PIN<<2;
 		waitms(CMDFRQ);
+		P1_4 = 1;
+		command |= COMMAND_PIN<<1;
+		waitms(CMDFRQ);
 		P1_4 = 0;
-		command |= COMMAND_PIN<<3;
+		command |= COMMAND_PIN;
+		while (!COMMAND_PIN);
+		printf("Command received: 0b_0%c%c%c\n", 
+			(command & 0x04) ? '1' : '0',
+			(command & 0x02) ? '1' : '0',
+			(command & 0x01) ? '1' : '0');
 	}
-
-	printf("Command received: %d\n", command);
 	return command;
 }
 
