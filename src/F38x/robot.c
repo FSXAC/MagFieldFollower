@@ -30,7 +30,7 @@ void main(void) {
    	MOTOR_RIGHT1 =0;
    
    	//INITIAL STATE
-   	currentstate = 2;  	//1-FORWARD, 2-BACKWARDS, 3-STOPPED, 4-DEBUGGER
+   	currentstate = 1;  	//1-FORWARD, 2-BACKWARDS, 3-STOPPED, 4-DEBUGGER
    	currentcmd = 1;		//0-NO COMMAND, 1-TURN LEFT, 2-TURN RIGHT, 3-FORWARDS, 4-BACKWARDS, 5-STOP, 6-UTURN
 
 	//CLEAR PUTTY SCREEN
@@ -55,7 +55,7 @@ void main(void) {
 		//RECEIVE COMMANDS
 		readData(); 
 		
-		//printf("frontL %f frontR %f backL %f backR %f\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6));
+		printf("frontL %f frontR %f backL %f backR %f\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6));
 		
 		//CURRENT STATE
 		switch (currentstate) {
@@ -81,20 +81,21 @@ void main(void) {
 			//case for left turn
 			case 0 :
 				//MOVE STRAIGHT THROUGH INTERSECTION WHEN NO COMMANDS
-				if (v1 > 0.9 && v2 >1.2) {
+				if (v1 > 0.7 && v2 >1) {
 					printf("\nINTERSECTION\n"); 
-					movecar(currentstate, 35);
+					//movecar(currentstate, 35);
+					linetrack(currentstate*2);
 					waitms(1500);
 				} 
 				break;
 			//--------------------------------------------------//	
 			case 1 :
 				///CHECK FOR INTERSECTION
-				if (v1 > 0.9 && v2 >1.2)  {
+				if (v1 > 0.7 && v2 >1)  {
 						printf("\n\r INTERSECTION\n");
 						//MOVE FORWARDS UNTIL AT INTERSECTION
-						movecar(currentstate, 35);						
-						waitms(1500);
+					//	movecar(currentstate, 35);						
+					//	waitms(1500);
 					
 						//TURN
 						turncar(0); //0 = left
@@ -105,11 +106,11 @@ void main(void) {
 			//case for right turn			
 			case 2 :
 				//CHECK FOR INTERSECTION
-				if (v1 > 0.9 && v2 >1.2) {
+				if (v1 > 0.7 && v2 >1) {
 						printf("\n\r INTERSECTION\n");
 						//MOVE FORWARDS UNTIL INTERSECTION
-						movecar(currentstate, 35);
-						waitms(1500);
+					//	movecar(currentstate, 35);
+					//	waitms(1500);
 
 						//TURN
 						turncar(1); //1 = right
@@ -234,6 +235,7 @@ void readData (void) {
 // FOLLOW THE LINE
 //--------------------------------------------------//
 void linetrack (int forwardbackward) {
+	// 0 = forward with front, 1 = backward with rear, 2 = forward with rear, 3 = backward with front
 	volatile float vleft;
 	volatile float vright;
 	
@@ -241,6 +243,12 @@ void linetrack (int forwardbackward) {
 	vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	
+	//IF TRACKING FORWARDS WITH REAR INDUCTORS
+	if (forwardbackward == 2) {
+		vleft=Volts_at_Pin(LQFP32_MUX_P2_5);
+		vright=Volts_at_Pin(LQFP32_MUX_P2_6);
+	}
+		
 	//SET PWM DEPENDING ON TANK CIRCUIT VOLTAGES
 	pwm_Left0 = -1;
 	pwm_Left1 = vright*vright*75/(vright*vright+vleft*vleft);
@@ -249,10 +257,16 @@ void linetrack (int forwardbackward) {
 	
 	
 	//IF LINE TRACKING BACKWARDS
-	if (forwardbackward) {
+	if ((forwardbackward == 1)||(forwardbackward == 3)) {
 		//GET ADC INPUT 
 		vleft=Volts_at_Pin(LQFP32_MUX_P2_5);
 		vright=Volts_at_Pin(LQFP32_MUX_P2_6);
+		
+		//IF TRACKING BACKWARDS WITH FRONT INDUCTORS
+		if (forwardbackward == 3) {
+			vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+			vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+		}			
 	
 		//SET PWM DEPENDING ON TANK CIRCUIT VOLTAGES
 		pwm_Left1 = -1;
@@ -262,7 +276,7 @@ void linetrack (int forwardbackward) {
 	}
 	
 	//TRACK VOLTAGE, PWM, AND COMMANDS
-	printf("2.3= %f, 2.4= %f, LeftF= %4d, RightF= %4d, LeftB= %4d, RightB= %4d, command:%1d, state:%1d\r", vleft, vright, pwm_Left1, pwm_Right0, pwm_Left0, pwm_Right1, currentcmd, currentstate);
+	//printf("2.3= %f, 2.4= %f, LeftF= %4d, RightF= %4d, LeftB= %4d, RightB= %4d, command:%1d, state:%1d\r", vleft, vright, pwm_Left1, pwm_Right0, pwm_Left0, pwm_Right1, currentcmd, currentstate);
 	
 }
 
@@ -283,8 +297,7 @@ void stopcar(void) {
 //--------------------------------------------------//
 void turncar (int leftright) {
 	//LEFT = 0, RIGHT = 1
-	volatile float 	vleft;
-	volatile float 	vright;
+	volatile float 	v;
 	volatile char 	direction;
 		
 	//SET ALL PWM TO 0		
@@ -299,20 +312,14 @@ void turncar (int leftright) {
 	if (leftright == 0) {
 		//SET ONLY RIGHT MOTOR
 		pwm_Right0 = 100;
-		pwm_Left0 = 100;
-		
-		//TURN FOR AMOUNT OF TIME
-		waitms(1200);
+	//	pwm_Left0 = 100;
 	
-		//CHECK FOR VOLTAGES AND WAIT TILL EQUAL
-		vleft= direction ? Volts_at_Pin(LQFP32_MUX_P2_5) : Volts_at_Pin(LQFP32_MUX_P2_3);
-		vright=direction ? Volts_at_Pin(LQFP32_MUX_P2_6) : Volts_at_Pin(LQFP32_MUX_P2_4);
-		
-		while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
-			//get voltages
-			vleft= direction ? Volts_at_Pin(LQFP32_MUX_P2_5) : Volts_at_Pin(LQFP32_MUX_P2_3);
-			vright=direction ? Volts_at_Pin(LQFP32_MUX_P2_6) : Volts_at_Pin(LQFP32_MUX_P2_4);
-			//linetrack(0); this worked but only for left and right turns
+		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
+		v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
+				
+		while (v < 1.5) {
+			//get voltage
+			v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
 		}
 		
 		//STOP MOTOR AGAIN 
@@ -324,20 +331,17 @@ void turncar (int leftright) {
 	else if (leftright == 1) {
 		//SET ONLY LEFT MOTOR
 		pwm_Left1 = 100;
-		pwm_Right1 = 100;
+	//	pwm_Right1 = 100;
 		
 		//TURN FOR AMOUNT OF TIME		
-		waitms(1200);
+		waitms(1000);
 	
-		//CHECK FOR VOLTAGES AND WAIT UNTIL EQUAL
-		vleft= direction ? Volts_at_Pin(LQFP32_MUX_P2_5) : Volts_at_Pin(LQFP32_MUX_P2_3);
-		vright=direction ? Volts_at_Pin(LQFP32_MUX_P2_6) : Volts_at_Pin(LQFP32_MUX_P2_4);
-		
-		while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
-			//get voltages
-			vleft= direction ? Volts_at_Pin(LQFP32_MUX_P2_5) : Volts_at_Pin(LQFP32_MUX_P2_3);
-			vright=direction ? Volts_at_Pin(LQFP32_MUX_P2_6) : Volts_at_Pin(LQFP32_MUX_P2_4);
-			//linetrack(0); 
+		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
+		v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
+				
+		while (v < 1.5) {
+			//get voltage
+			v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
 		}
 	
 		//SET MOTOR BACK TO 0
