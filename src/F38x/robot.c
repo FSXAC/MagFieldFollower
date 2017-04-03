@@ -179,55 +179,64 @@ void forward_backward(unsigned char direction) {
 }
 
 void readData (void) {
-	int commandflag = 0;					//determines if there's a real command coming in or not
+	int commandflag = 1;					//determines if there's a real command coming in or not
 	
 	if (COMMAND_PIN == 0) {					//0---
-		waitms(6);
+		waitms(CMDFRQ*1.5);
 		if (COMMAND_PIN == 1) {				//01--
-			waitms(4);
+			waitms(CMDFRQ);
 			if (COMMAND_PIN == 0) {			//010-
-				waitms(4);
+				waitms(CMDFRQ);
 				if (COMMAND_PIN == 0) {		//0100	
 					currentcmd = 4;
+					commandflag = 0;
 				}
 				else {						//0101
 					currentcmd = 5;
+					commandflag = 0;
 				}
 			}
 			else {							//011-
-				waitms(4);
+				waitms(CMDFRQ);
 				if (COMMAND_PIN == 0) {		//0110
 					currentcmd = 6;
+					commandflag = 0;
 				}
 			}
 		}
 		else {								//00--
-			waitms(4);
+			waitms(CMDFRQ);
 			if (COMMAND_PIN == 1) {			//001-
-				waitms(4);
+				waitms(CMDFRQ);
 				if (COMMAND_PIN == 1) {		//0011
 					currentcmd = 3;
+					commandflag = 0;
 				}
 				else {						//0010
 					currentcmd = 2;
+					commandflag = 0;
 				}
 			}
 			else {							//000-
-				waitms(4);
+				waitms(CMDFRQ);
 				if (COMMAND_PIN == 1) {		//0001	
 					currentcmd == 1;
+					commandflag = 0;
 				}
 				else {						//0000 this is no signal, set commandflag to 1 and go back to main loop
 					commandflag = 1;
 				}
 			}
 		}
-	}
-	if (commandflag == 0) {					//only wait for signal to end if a command has been received. 
-		while (COMMAND_PIN == 0) {}
+		printf("\n\r current command is %d, commandflag = %d\r\n", currentcmd, commandflag);		
 	}
 	
-	printf("current command is %d\r\n", currentcmd);		
+	
+	//if (COMMAND_PIN) printf("TRIGGERED!\n");
+	
+	if (commandflag == 0) {					//only wait for signal to end if a command has been received. 
+		while (COMMAND_PIN == 0) {}
+	}		
 }
 
 
@@ -246,14 +255,9 @@ void linetrack (int forwardbackward) {
 	pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
 	
 	if (forwardbackward) {
-		pwm_Left0 = pwm_Left1;
-		pwm_Left1 = -1;
-		pwm_Right1 = pwm_Right1;
-		pwm_Right0 = -1;
 	}
 	
-	//printf("2.3 = %f, 2.4 = %f, LeftMotor = %4d, RightMotor = %4d, command: %d\r", vleft, vright, pwm_Left1, pwm_Right0, currentcmd);
-	
+	printf("2.3=%f, 2.4=%f, Left0=%4d, Right1=%4d, Left1=%4d, Right0=%4d, command:%d, state:%d\r", vleft, vright, pwm_Left0, pwm_Right1, pwm_Left1, pwm_Right0, currentcmd, currentstate);
 }
 
 void stopcar(void) {
@@ -316,8 +320,8 @@ void uturn(void) {
 	volatile float vleft;
 	volatile float vright;
 	
-	vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
-	vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	vleft = Volts_at_Pin(LQFP32_MUX_P2_3);
+	vright = Volts_at_Pin(LQFP32_MUX_P2_4);
 	
 	pwm_Left0 = -1;
 	pwm_Left1 = 50;
@@ -327,8 +331,8 @@ void uturn(void) {
 	waitms(4000);
 	
 	while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
-			//get voltages
-		vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
-		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+		// get voltages
+		vleft  = Volts_at_Pin(LQFP32_MUX_P2_3);
+		vright = Volts_at_Pin(LQFP32_MUX_P2_4);
 	}
 }	
