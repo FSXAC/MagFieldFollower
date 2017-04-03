@@ -25,10 +25,10 @@ void main(void) {
 	volatile float v2 = 0;
 	int i = 0;
 
-  	MOTOR_LEFT0 =0;
-   	MOTOR_LEFT1 =0;
-   	MOTOR_RIGHT0 =0;
-   	MOTOR_RIGHT1 =0;
+  	MOTOR_LEFT0 = 0;
+   	MOTOR_LEFT1 = 0;
+   	MOTOR_RIGHT0 = 0;
+   	MOTOR_RIGHT1 = 0;
    
    	//INITIAL STATE
    	currentstate = 1;  	//1-FORWARD, 2-BACKWARDS, 3-STOPPED, 4-DEBUGGER
@@ -48,7 +48,7 @@ void main(void) {
 	
 	
 	//MAIN CODE
-	while(1) {	
+	while (1) {	
 
 		//RECEIVE COMMANDS
 		readData(); 
@@ -56,30 +56,30 @@ void main(void) {
 		// FOR DEBUGGING
 		printf("frontL %f frontR %f backL %f backR %f command %1d\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6), currentcmd);
 		
-		//CURRENT STATE
+		// CURRENT STATE
 		switch (currentstate) {
-			case 1:
+			case FORWARD_STATE:
 				linetrack(0);	// forwards
-				//GET VOLTAGE FROM FRONT TANK CIRCUITS
-				v1 = Volts_at_Pin(LQFP32_MUX_P2_3);
-				v2 = Volts_at_Pin(LQFP32_MUX_P2_4);
+				// GET VOLTAGE FROM FRONT TANK CIRCUITS
+				v1 = Volts_at_Pin(TANK_FL);
+				v2 = Volts_at_Pin(TANK_FR);
 				break;
-			case 2:
+			case REVERSE_STATE:
 				linetrack(1);	// backwards
-				//GET VOLTAGE FROM REAR TANK CIRCUITS
-				v2 = Volts_at_Pin(LQFP32_MUX_P2_5);
-				v1 = Volts_at_Pin(LQFP32_MUX_P2_6);
+				// GET VOLTAGE FROM REAR TANK CIRCUITS
+				v2 = Volts_at_Pin(TANK_RL);
+				v1 = Volts_at_Pin(TANK_RR);
 				break;
-			case 3:
+			case STOP_STATE:
 				stopcar();		// stop car
 				break;
 		}
 		
-		//CURRENT COMMAND		
+		// CURRENT COMMAND		
 		switch (currentcmd) {
 			//case for left turn
-			case 0 :
-				//MOVE STRAIGHT THROUGH INTERSECTION WHEN NO COMMANDS
+			case CMD_NONE:
+				// MOVE STRAIGHT THROUGH INTERSECTION WHEN NO COMMANDS
 				if (v1 > 0.6 && v2 >0.8) {
 					printf("\nINTERSECTION\n");
 					if (currentstate == 1) {
@@ -133,7 +133,7 @@ void main(void) {
 			//---------------------------------//
 			//case for forwards
 			case 3 :
-				//CHANGE TO FORWARD STATE
+				// CHANGE TO FORWARD STATE
 				currentstate = 1;
 				currentcmd = 0;
 				break;
