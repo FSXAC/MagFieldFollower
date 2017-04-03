@@ -6,8 +6,11 @@
 #define MOTOR_RIGHT0 P2_0
 #define MOTOR_RIGHT1 P2_1
 
+// Command receiving
 #define COMMAND_PIN P1_1
 #define	CMDFRQ 70
+
+// Command
 
 // ===[FUNCTION PROTOTYPES]===
 // system functions
@@ -30,3 +33,4 @@ void linetrack(int forwardbackward);
 void stopcar(void);
 void turncar(int leftright);
 void uturn(void);
+void movecar (int forback, int power);
