@@ -6,7 +6,8 @@
 #define MOTOR_RIGHT0 P2_0
 #define MOTOR_RIGHT1 P2_1
 
-#define COMMAND_PIN P1_0
+#define COMMAND_PIN P1_1
+#define	CMDFRQ 70
 
 // ===[FUNCTION PROTOTYPES]===
 // system functions
