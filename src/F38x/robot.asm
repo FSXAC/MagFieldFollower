@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Sun Apr 02 22:11:08 2017
+; This file was generated Sun Apr 02 23:32:52 2017
 ;--------------------------------------------------------
 $name robot
 $optc51 --model-small
@@ -400,24 +400,26 @@ _main_v1_1_57:
 _main_v2_1_57:
 	ds 4
 _main_sloc0_1_0:
-	ds 4
+	ds 2
 _main_sloc1_1_0:
 	ds 4
-_linetrack_forwardbackward_1_81:
-	ds 2
-_linetrack_vleft_1_82:
+_main_sloc2_1_0:
 	ds 4
-_linetrack_vright_1_82:
+_linetrack_forwardbackward_1_84:
+	ds 2
+_linetrack_vleft_1_85:
+	ds 4
+_linetrack_vright_1_85:
 	ds 4
 _linetrack_sloc0_1_0:
 	ds 4
-_turncar_v_1_89:
+_turncar_v_1_92:
 	ds 4
-_turncar_direction_1_89:
+_turncar_direction_1_92:
 	ds 1
-_uturn_vleft_1_95:
+_uturn_vleft_1_98:
 	ds 4
-_uturn_vright_1_95:
+_uturn_vright_1_98:
 	ds 4
 ;--------------------------------------------------------
 ; overlayable items in internal ram 
@@ -506,8 +508,10 @@ _Timer2_ISR_sloc0_1_0:
 ;------------------------------------------------------------
 ;v1                        Allocated with name '_main_v1_1_57'
 ;v2                        Allocated with name '_main_v2_1_57'
+;i                         Allocated to registers 
 ;sloc0                     Allocated with name '_main_sloc0_1_0'
 ;sloc1                     Allocated with name '_main_sloc1_1_0'
+;sloc2                     Allocated with name '_main_sloc2_1_0'
 ;------------------------------------------------------------
 ;	robot.c:22: void main(void) {
 ;	-----------------------------------------
@@ -525,19 +529,19 @@ _main:
 	mov	(_main_v2_1_57 + 1),#0x00
 	mov	(_main_v2_1_57 + 2),#0x00
 	mov	(_main_v2_1_57 + 3),#0x00
-;	robot.c:27: MOTOR_LEFT0 =0;
+;	robot.c:28: MOTOR_LEFT0 =0;
 	clr	_P1_5
-;	robot.c:28: MOTOR_LEFT1 =0;
+;	robot.c:29: MOTOR_LEFT1 =0;
 	clr	_P1_6
-;	robot.c:29: MOTOR_RIGHT0 =0;
+;	robot.c:30: MOTOR_RIGHT0 =0;
 	clr	_P2_0
-;	robot.c:30: MOTOR_RIGHT1 =0;
+;	robot.c:31: MOTOR_RIGHT1 =0;
 	clr	_P2_1
-;	robot.c:33: currentstate = 1;  	//1-FORWARD, 2-BACKWARDS, 3-STOPPED, 4-DEBUGGER
+;	robot.c:34: currentstate = 1;  	//1-FORWARD, 2-BACKWARDS, 3-STOPPED, 4-DEBUGGER
 	mov	_currentstate,#0x01
-;	robot.c:34: currentcmd = 1;		//0-NO COMMAND, 1-TURN LEFT, 2-TURN RIGHT, 3-FORWARDS, 4-BACKWARDS, 5-STOP, 6-UTURN
-	mov	_currentcmd,#0x01
-;	robot.c:37: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+;	robot.c:35: currentcmd = 0;		//0-NO COMMAND, 1-TURN LEFT, 2-TURN RIGHT, 3-FORWARDS, 4-BACKWARDS, 5-STOP, 6-UTURN
+	mov	_currentcmd,#0x00
+;	robot.c:38: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 	mov	a,#__str_0
 	push	acc
 	mov	a,#(__str_0 >> 8)
@@ -548,67 +552,82 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	robot.c:40: InitPinADC(2, 3); // Configure P2.3 as analog input (tank1)
+;	robot.c:41: InitPinADC(2, 3); // Configure P2.3 as analog input (tank1)
 	mov	_InitPinADC_PARM_2,#0x03
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	robot.c:41: InitPinADC(2, 4); // Configure P2.4 as analog input	(tank1)
+;	robot.c:42: InitPinADC(2, 4); // Configure P2.4 as analog input	(tank1)
 	mov	_InitPinADC_PARM_2,#0x04
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	robot.c:42: InitPinADC(2, 5); // Configure P2.5 as analog input (tank2)
+;	robot.c:43: InitPinADC(2, 5); // Configure P2.5 as analog input (tank2)
 	mov	_InitPinADC_PARM_2,#0x05
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	robot.c:43: InitPinADC(2, 6); // Configure P2.6 as analog input (tank2)
+;	robot.c:44: InitPinADC(2, 6); // Configure P2.6 as analog input (tank2)
 	mov	_InitPinADC_PARM_2,#0x06
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	robot.c:49: InitADC();
+;	robot.c:50: InitADC();
 	lcall	_InitADC
-;	robot.c:53: while(1)
-L002024?:
-;	robot.c:56: readData(); 
+;	robot.c:54: while(1)
+L002029?:
+;	robot.c:57: readData(); 
 	lcall	_readData
-;	robot.c:58: printf("frontL %f frontR %f backL %f backR %f\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6));
+;	robot.c:59: printf("frontL %f frontR %f backL %f backR %f command %1d\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6), currentcmd);
+	mov	_main_sloc0_1_0,_currentcmd
+	mov	a,_currentcmd
+	rlc	a
+	subb	a,acc
+	mov	(_main_sloc0_1_0 + 1),a
 	mov	dpl,#0x0E
 	lcall	_Volts_at_Pin
-	mov	r2,dpl
-	mov	r3,dph
-	mov	r4,b
-	mov	r5,a
+	mov	r4,dpl
+	mov	r5,dph
+	mov	r6,b
+	mov	r7,a
 	mov	dpl,#0x0D
-	push	ar2
-	push	ar3
 	push	ar4
 	push	ar5
-	lcall	_Volts_at_Pin
-	mov	_main_sloc0_1_0,dpl
-	mov	(_main_sloc0_1_0 + 1),dph
-	mov	(_main_sloc0_1_0 + 2),b
-	mov	(_main_sloc0_1_0 + 3),a
-	mov	dpl,#0x0C
+	push	ar6
+	push	ar7
 	lcall	_Volts_at_Pin
 	mov	_main_sloc1_1_0,dpl
 	mov	(_main_sloc1_1_0 + 1),dph
 	mov	(_main_sloc1_1_0 + 2),b
 	mov	(_main_sloc1_1_0 + 3),a
+	mov	dpl,#0x0C
+	lcall	_Volts_at_Pin
+	mov	_main_sloc2_1_0,dpl
+	mov	(_main_sloc2_1_0 + 1),dph
+	mov	(_main_sloc2_1_0 + 2),b
+	mov	(_main_sloc2_1_0 + 3),a
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
-	mov	r6,dpl
-	mov	r7,dph
+	mov	r2,dpl
+	mov	r3,dph
 	mov	r0,b
 	mov	r1,a
+	pop	ar7
+	pop	ar6
+	pop	ar5
+	pop	ar4
 	push	_main_sloc0_1_0
 	push	(_main_sloc0_1_0 + 1)
-	push	(_main_sloc0_1_0 + 2)
-	push	(_main_sloc0_1_0 + 3)
+	push	ar4
+	push	ar5
+	push	ar6
+	push	ar7
 	push	_main_sloc1_1_0
 	push	(_main_sloc1_1_0 + 1)
 	push	(_main_sloc1_1_0 + 2)
 	push	(_main_sloc1_1_0 + 3)
-	push	ar6
-	push	ar7
+	push	_main_sloc2_1_0
+	push	(_main_sloc2_1_0 + 1)
+	push	(_main_sloc2_1_0 + 2)
+	push	(_main_sloc2_1_0 + 3)
+	push	ar2
+	push	ar3
 	push	ar0
 	push	ar1
 	mov	a,#__str_1
@@ -619,99 +638,101 @@ L002024?:
 	push	acc
 	lcall	_printf
 	mov	a,sp
-	add	a,#0xed
+	add	a,#0xeb
 	mov	sp,a
-;	robot.c:61: switch (currentstate) {
+;	robot.c:62: switch (currentstate) {
 	mov	r2,_currentstate
-	cjne	r2,#0x01,L002040?
+	cjne	r2,#0x01,L002047?
 	sjmp	L002001?
-L002040?:
-	cjne	r2,#0x02,L002041?
+L002047?:
+	cjne	r2,#0x02,L002048?
 	sjmp	L002002?
-L002041?:
-;	robot.c:62: case 1:
+L002048?:
+;	robot.c:63: case 1:
 	cjne	r2,#0x03,L002004?
 	sjmp	L002003?
 L002001?:
-;	robot.c:63: linetrack(0);	//forwards
+;	robot.c:64: linetrack(0);	//forwards
 	mov	dptr,#0x0000
 	lcall	_linetrack
-;	robot.c:65: v1 = Volts_at_Pin(LQFP32_MUX_P2_3);
+;	robot.c:66: v1 = Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
 	mov	_main_v1_1_57,dpl
 	mov	(_main_v1_1_57 + 1),dph
 	mov	(_main_v1_1_57 + 2),b
 	mov	(_main_v1_1_57 + 3),a
-;	robot.c:66: v2 = Volts_at_Pin(LQFP32_MUX_P2_4);
+;	robot.c:67: v2 = Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
 	mov	_main_v2_1_57,dpl
 	mov	(_main_v2_1_57 + 1),dph
 	mov	(_main_v2_1_57 + 2),b
 	mov	(_main_v2_1_57 + 3),a
-;	robot.c:67: break;
-;	robot.c:68: case 2:
+;	robot.c:68: break;
+;	robot.c:69: case 2:
 	sjmp	L002004?
 L002002?:
-;	robot.c:69: linetrack(1);	//backwards
+;	robot.c:70: linetrack(1);	//backwards
 	mov	dptr,#0x0001
 	lcall	_linetrack
-;	robot.c:71: v2 = Volts_at_Pin(LQFP32_MUX_P2_5);
+;	robot.c:72: v2 = Volts_at_Pin(LQFP32_MUX_P2_5);
 	mov	dpl,#0x0D
 	lcall	_Volts_at_Pin
 	mov	_main_v2_1_57,dpl
 	mov	(_main_v2_1_57 + 1),dph
 	mov	(_main_v2_1_57 + 2),b
 	mov	(_main_v2_1_57 + 3),a
-;	robot.c:72: v1 = Volts_at_Pin(LQFP32_MUX_P2_6);
+;	robot.c:73: v1 = Volts_at_Pin(LQFP32_MUX_P2_6);
 	mov	dpl,#0x0E
 	lcall	_Volts_at_Pin
 	mov	_main_v1_1_57,dpl
 	mov	(_main_v1_1_57 + 1),dph
 	mov	(_main_v1_1_57 + 2),b
 	mov	(_main_v1_1_57 + 3),a
-;	robot.c:73: break;
-;	robot.c:74: case 3:
+;	robot.c:74: break;
+;	robot.c:75: case 3:
 	sjmp	L002004?
 L002003?:
-;	robot.c:75: stopcar();		//stop car
+;	robot.c:76: stopcar();		//stop car
 	lcall	_stopcar
-;	robot.c:77: }
+;	robot.c:78: }
 L002004?:
-;	robot.c:80: switch (currentcmd) {
+;	robot.c:81: switch (currentcmd) {
 	mov	a,_currentcmd
 	mov	r2,a
-	jnb	acc.7,L002043?
-	ljmp	L002021?
-L002043?:
+	jnb	acc.7,L002050?
+	ljmp	L002026?
+L002050?:
 	clr	c
 	mov	a,#(0x06 ^ 0x80)
 	mov	b,r2
 	xrl	b,#0x80
 	subb	a,b
-	jnc	L002044?
-	ljmp	L002021?
-L002044?:
+	jnc	L002051?
+	ljmp	L002026?
+L002051?:
 	mov	a,r2
 	add	a,r2
 	add	a,r2
-	mov	dptr,#L002045?
+	mov	dptr,#L002052?
 	jmp	@a+dptr
-L002045?:
+L002052?:
 	ljmp	L002005?
-	ljmp	L002009?
-	ljmp	L002013?
-	ljmp	L002017?
+	ljmp	L002014?
 	ljmp	L002018?
-	ljmp	L002019?
-	ljmp	L002020?
-;	robot.c:82: case 0 :
+	ljmp	L002022?
+	ljmp	L002023?
+	ljmp	L002024?
+	ljmp	L002025?
+;	robot.c:83: case 0 :
 L002005?:
-;	robot.c:84: if (v1 > 0.7 && v2 >1) {
-	mov	a,#0x33
+;	robot.c:85: if (v1 > 0.6 && v2 >0.8) {
+	mov	a,#0x9A
 	push	acc
+	mov	a,#0x99
 	push	acc
+	mov	a,#0x19
 	push	acc
 	mov	a,#0x3F
 	push	acc
@@ -725,13 +746,14 @@ L002005?:
 	add	a,#0xfc
 	mov	sp,a
 	mov	a,r2
-	jnz	L002046?
-	ljmp	L002024?
-L002046?:
-	clr	a
+	jnz	L002053?
+	ljmp	L002029?
+L002053?:
+	mov	a,#0xCD
 	push	acc
+	mov	a,#0xCC
 	push	acc
-	mov	a,#0x80
+	mov	a,#0x4C
 	push	acc
 	mov	a,#0x3F
 	push	acc
@@ -745,10 +767,10 @@ L002046?:
 	add	a,#0xfc
 	mov	sp,a
 	mov	a,r2
-	jnz	L002047?
-	ljmp	L002024?
-L002047?:
-;	robot.c:85: printf("\nINTERSECTION\n"); 
+	jnz	L002054?
+	ljmp	L002029?
+L002054?:
+;	robot.c:86: printf("\nINTERSECTION\n");
 	mov	a,#__str_2
 	push	acc
 	mov	a,#(__str_2 >> 8)
@@ -759,35 +781,95 @@ L002047?:
 	dec	sp
 	dec	sp
 	dec	sp
-;	robot.c:87: linetrack(currentstate*2);
-	clr	F0
-	mov	b,#0x02
-	mov	a,_currentstate
-	jnb	acc.7,L002048?
-	cpl	F0
-	cpl	a
-	inc	a
-L002048?:
-	mul	ab
-	jnb	F0,L002049?
-	cpl	a
-	add	a,#0x01
-	xch	a,b
-	cpl	a
-	addc	a,#0x00
-	xch	a,b
-L002049?:
-	mov	dpl,a
-	mov	dph,b
-	lcall	_linetrack
-;	robot.c:88: waitms(1500);
+;	robot.c:87: if (currentstate == 1) {
+	mov	a,#0x01
+	cjne	a,_currentstate,L002055?
+	sjmp	L002056?
+L002055?:
+	ljmp	L002010?
+L002056?:
+;	robot.c:88: if (Volts_at_Pin(LQFP32_MUX_P2_5)>Volts_at_Pin(LQFP32_MUX_P2_6)+0.3) {
+	mov	dpl,#0x0D
+	lcall	_Volts_at_Pin
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	mov	dpl,#0x0E
+	push	ar2
+	push	ar3
+	push	ar4
+	push	ar5
+	lcall	_Volts_at_Pin
+	mov	r6,dpl
+	mov	r7,dph
+	mov	r0,b
+	mov	r1,a
+	mov	a,#0x9A
+	push	acc
+	mov	a,#0x99
+	push	acc
+	push	acc
+	mov	a,#0x3E
+	push	acc
+	mov	dpl,r6
+	mov	dph,r7
+	mov	b,r0
+	mov	a,r1
+	lcall	___fsadd
+	mov	r6,dpl
+	mov	r7,dph
+	mov	r0,b
+	mov	r1,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	pop	ar5
+	pop	ar4
+	pop	ar3
+	pop	ar2
+	push	ar6
+	push	ar7
+	push	ar0
+	push	ar1
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fsgt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jz	L002007?
+;	robot.c:89: pwm_Left1 = 25;
+	mov	_pwm_Left1,#0x19
+;	robot.c:90: pwm_Left0 = -1;
+	mov	_pwm_Left0,#0xFF
+;	robot.c:91: pwm_Right0 = 50;
+	mov	_pwm_Right0,#0x32
+;	robot.c:92: pwm_Right1 = -1;
+	mov	_pwm_Right1,#0xFF
+	sjmp	L002010?
+L002007?:
+;	robot.c:95: pwm_Left1 = 50;
+	mov	_pwm_Left1,#0x32
+;	robot.c:96: pwm_Left0 = -1;
+	mov	_pwm_Left0,#0xFF
+;	robot.c:97: pwm_Right0 = 25;
+	mov	_pwm_Right0,#0x19
+;	robot.c:98: pwm_Right1 = -1;
+	mov	_pwm_Right1,#0xFF
+L002010?:
+;	robot.c:103: waitms(1500);
 	mov	dptr,#0x05DC
 	lcall	_waitms
-;	robot.c:90: break;
-	ljmp	L002024?
-;	robot.c:92: case 1 :
-L002009?:
-;	robot.c:94: if (v1 > 0.7 && v2 >1)  {
+;	robot.c:105: break;
+	ljmp	L002029?
+;	robot.c:107: case 1 :
+L002014?:
+;	robot.c:109: if (v1 > 0.7 && v2 >1)  {
 	mov	a,#0x33
 	push	acc
 	push	acc
@@ -804,9 +886,9 @@ L002009?:
 	add	a,#0xfc
 	mov	sp,a
 	mov	a,r2
-	jnz	L002050?
-	ljmp	L002024?
-L002050?:
+	jnz	L002058?
+	ljmp	L002029?
+L002058?:
 	clr	a
 	push	acc
 	push	acc
@@ -824,69 +906,9 @@ L002050?:
 	add	a,#0xfc
 	mov	sp,a
 	mov	a,r2
-	jnz	L002051?
-	ljmp	L002024?
-L002051?:
-;	robot.c:95: printf("\n\r INTERSECTION\n");
-	mov	a,#__str_3
-	push	acc
-	mov	a,#(__str_3 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-;	robot.c:101: turncar(0); //0 = left
-	mov	dptr,#0x0000
-	lcall	_turncar
-;	robot.c:102: currentcmd = 0;
-	mov	_currentcmd,#0x00
-;	robot.c:104: break;
-	ljmp	L002024?
-;	robot.c:107: case 2 :
-L002013?:
-;	robot.c:109: if (v1 > 0.7 && v2 >1) {
-	mov	a,#0x33
-	push	acc
-	push	acc
-	push	acc
-	mov	a,#0x3F
-	push	acc
-	mov	dpl,_main_v1_1_57
-	mov	dph,(_main_v1_1_57 + 1)
-	mov	b,(_main_v1_1_57 + 2)
-	mov	a,(_main_v1_1_57 + 3)
-	lcall	___fsgt
-	mov	r2,dpl
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	mov	a,r2
-	jnz	L002052?
-	ljmp	L002024?
-L002052?:
-	clr	a
-	push	acc
-	push	acc
-	mov	a,#0x80
-	push	acc
-	mov	a,#0x3F
-	push	acc
-	mov	dpl,_main_v2_1_57
-	mov	dph,(_main_v2_1_57 + 1)
-	mov	b,(_main_v2_1_57 + 2)
-	mov	a,(_main_v2_1_57 + 3)
-	lcall	___fsgt
-	mov	r2,dpl
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	mov	a,r2
-	jnz	L002053?
-	ljmp	L002024?
-L002053?:
+	jnz	L002059?
+	ljmp	L002029?
+L002059?:
 ;	robot.c:110: printf("\n\r INTERSECTION\n");
 	mov	a,#__str_3
 	push	acc
@@ -898,56 +920,116 @@ L002053?:
 	dec	sp
 	dec	sp
 	dec	sp
-;	robot.c:116: turncar(1); //1 = right
-	mov	dptr,#0x0001
+;	robot.c:116: turncar(0); //0 = left
+	mov	dptr,#0x0000
 	lcall	_turncar
 ;	robot.c:117: currentcmd = 0;
 	mov	_currentcmd,#0x00
 ;	robot.c:119: break;
-	ljmp	L002024?
-;	robot.c:122: case 3 :
-L002017?:
-;	robot.c:124: currentstate = 1;
-	mov	_currentstate,#0x01
-;	robot.c:125: currentcmd = 0;
-	mov	_currentcmd,#0x00
-;	robot.c:126: break;
-	ljmp	L002024?
-;	robot.c:129: case 4 :
+	ljmp	L002029?
+;	robot.c:122: case 2 :
 L002018?:
-;	robot.c:131: currentstate = 2;
-	mov	_currentstate,#0x02
+;	robot.c:124: if (v1 > 0.7 && v2 >1) {
+	mov	a,#0x33
+	push	acc
+	push	acc
+	push	acc
+	mov	a,#0x3F
+	push	acc
+	mov	dpl,_main_v1_1_57
+	mov	dph,(_main_v1_1_57 + 1)
+	mov	b,(_main_v1_1_57 + 2)
+	mov	a,(_main_v1_1_57 + 3)
+	lcall	___fsgt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jnz	L002060?
+	ljmp	L002029?
+L002060?:
+	clr	a
+	push	acc
+	push	acc
+	mov	a,#0x80
+	push	acc
+	mov	a,#0x3F
+	push	acc
+	mov	dpl,_main_v2_1_57
+	mov	dph,(_main_v2_1_57 + 1)
+	mov	b,(_main_v2_1_57 + 2)
+	mov	a,(_main_v2_1_57 + 3)
+	lcall	___fsgt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jnz	L002061?
+	ljmp	L002029?
+L002061?:
+;	robot.c:125: printf("\n\r INTERSECTION\n");
+	mov	a,#__str_3
+	push	acc
+	mov	a,#(__str_3 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	robot.c:131: turncar(1); //1 = right
+	mov	dptr,#0x0001
+	lcall	_turncar
 ;	robot.c:132: currentcmd = 0;
 	mov	_currentcmd,#0x00
-;	robot.c:133: break;
-	ljmp	L002024?
-;	robot.c:136: case 5 :
-L002019?:
-;	robot.c:138: currentstate = 3;
-	mov	_currentstate,#0x03
-;	robot.c:139: currentcmd = 0;
-	mov	_currentcmd,#0x00
-;	robot.c:140: break;
-	ljmp	L002024?
-;	robot.c:143: case 6 :
-L002020?:
-;	robot.c:144: uturn();
-	lcall	_uturn
-;	robot.c:145: currentcmd = 0;
-	mov	_currentcmd,#0x00
-;	robot.c:146: break;
-	ljmp	L002024?
-;	robot.c:149: default: 
-L002021?:
-;	robot.c:150: currentstate = 1;
+;	robot.c:134: break;
+	ljmp	L002029?
+;	robot.c:137: case 3 :
+L002022?:
+;	robot.c:139: currentstate = 1;
 	mov	_currentstate,#0x01
-;	robot.c:151: }
-	ljmp	L002024?
+;	robot.c:140: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	robot.c:141: break;
+	ljmp	L002029?
+;	robot.c:144: case 4 :
+L002023?:
+;	robot.c:146: currentstate = 2;
+	mov	_currentstate,#0x02
+;	robot.c:147: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	robot.c:148: break;
+	ljmp	L002029?
+;	robot.c:151: case 5 :
+L002024?:
+;	robot.c:153: currentstate = 3;
+	mov	_currentstate,#0x03
+;	robot.c:154: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	robot.c:155: break;
+	ljmp	L002029?
+;	robot.c:158: case 6 :
+L002025?:
+;	robot.c:159: uturn();
+	lcall	_uturn
+;	robot.c:160: currentcmd = 0;
+	mov	_currentcmd,#0x00
+;	robot.c:161: break;
+	ljmp	L002029?
+;	robot.c:164: default: 
+L002026?:
+;	robot.c:165: currentstate = 1;
+	mov	_currentstate,#0x01
+;	robot.c:166: }
+	ljmp	L002029?
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'Timer2_ISR'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	robot.c:155: void Timer2_ISR (void) interrupt 5 {
+;	robot.c:170: void Timer2_ISR (void) interrupt 5 {
 ;	-----------------------------------------
 ;	 function Timer2_ISR
 ;	-----------------------------------------
@@ -956,11 +1038,11 @@ _Timer2_ISR:
 	push	b
 	push	psw
 	mov	psw,#0x00
-;	robot.c:156: TF2H = 0; // Clear Timer2 interrupt flag
+;	robot.c:171: TF2H = 0; // Clear Timer2 interrupt flag
 	clr	_TF2H
-;	robot.c:158: pwm_count++;
+;	robot.c:173: pwm_count++;
 	inc	_pwm_count
-;	robot.c:159: if(pwm_count>100) pwm_count=0;
+;	robot.c:174: if(pwm_count>100) pwm_count=0;
 	clr	c
 	mov	a,#(0x64 ^ 0x80)
 	mov	b,_pwm_count
@@ -969,7 +1051,7 @@ _Timer2_ISR:
 	jnc	L003002?
 	mov	_pwm_count,#0x00
 L003002?:
-;	robot.c:162: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
+;	robot.c:177: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
 	clr	c
 	mov	a,_pwm_Left0
 	xrl	a,#0x80
@@ -979,7 +1061,7 @@ L003002?:
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P1_5,c
-;	robot.c:163: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
+;	robot.c:178: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
 	clr	c
 	mov	a,_pwm_Left1
 	xrl	a,#0x80
@@ -989,7 +1071,7 @@ L003002?:
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P1_6,c
-;	robot.c:164: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
+;	robot.c:179: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
 	clr	c
 	mov	a,_pwm_Right0
 	xrl	a,#0x80
@@ -999,7 +1081,7 @@ L003002?:
 	mov  _Timer2_ISR_sloc0_1_0,c
 	cpl	c
 	mov	_P2_0,c
-;	robot.c:165: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
+;	robot.c:180: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
 	clr	c
 	mov	a,_pwm_Right1
 	xrl	a,#0x80
@@ -1020,29 +1102,29 @@ L003002?:
 ;------------------------------------------------------------
 ;direction                 Allocated to registers r2 
 ;------------------------------------------------------------
-;	robot.c:172: void forward_backward(unsigned char direction) {
+;	robot.c:187: void forward_backward(unsigned char direction) {
 ;	-----------------------------------------
 ;	 function forward_backward
 ;	-----------------------------------------
 _forward_backward:
-;	robot.c:173: if (direction == 0) { //p2.1,1.6 on
+;	robot.c:188: if (direction == 0) { //p2.1,1.6 on
 	mov	a,dpl
 	mov	r2,a
 	jnz	L004004?
-;	robot.c:174: pwm_Left0 = pwm_Right0 = -1;
+;	robot.c:189: pwm_Left0 = pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
 	mov	_pwm_Left0,#0xFF
-;	robot.c:175: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
+;	robot.c:190: pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
 	mov	_pwm_Right1,_pwm_both
 	mov	_pwm_Left1,_pwm_both
 	ret
 L004004?:
-;	robot.c:178: else if (direction == 1) { //p2.0,1.5 on
+;	robot.c:193: else if (direction == 1) { //p2.0,1.5 on
 	cjne	r2,#0x01,L004006?
-;	robot.c:179: pwm_Left1 = pwm_Right1 = -1;
+;	robot.c:194: pwm_Left1 = pwm_Right1 = -1;
 	mov	_pwm_Right1,#0xFF
 	mov	_pwm_Left1,#0xFF
-;	robot.c:180: pwm_Left0 = pwm_Right0 = pwm_both; 
+;	robot.c:195: pwm_Left0 = pwm_Right0 = pwm_both; 
 	mov	_pwm_Right0,_pwm_both
 	mov	_pwm_Left0,_pwm_both
 L004006?:
@@ -1052,106 +1134,106 @@ L004006?:
 ;------------------------------------------------------------
 ;commandflag               Allocated to registers r2 r3 
 ;------------------------------------------------------------
-;	robot.c:191: void readData (void) {
+;	robot.c:206: void readData (void) {
 ;	-----------------------------------------
 ;	 function readData
 ;	-----------------------------------------
 _readData:
-;	robot.c:192: int commandflag = 0;					//determines if there's a real command coming in or not
+;	robot.c:207: int commandflag = 0;					//determines if there's a real command coming in or not
 	mov	r2,#0x00
 	mov	r3,#0x00
-;	robot.c:195: if (COMMAND_PIN == 0) {					//0---
+;	robot.c:210: if (COMMAND_PIN == 0) {					//0---
 	jnb	_P1_0,L005039?
 	ljmp	L005022?
 L005039?:
-;	robot.c:196: waitms(CMDFRQ*1.5);
+;	robot.c:211: waitms(CMDFRQ*1.5);
 	mov	dptr,#0x0069
 	push	ar2
 	push	ar3
 	lcall	_waitms
 	pop	ar3
 	pop	ar2
-;	robot.c:197: if (COMMAND_PIN == 1) {				//01--
+;	robot.c:212: if (COMMAND_PIN == 1) {				//01--
 	jnb	_P1_0,L005019?
-;	robot.c:198: waitms(CMDFRQ);
+;	robot.c:213: waitms(CMDFRQ);
 	mov	dptr,#0x0046
 	push	ar2
 	push	ar3
 	lcall	_waitms
 	pop	ar3
 	pop	ar2
-;	robot.c:199: if (COMMAND_PIN == 0) {			//010-
+;	robot.c:214: if (COMMAND_PIN == 0) {			//010-
 	jb	_P1_0,L005007?
-;	robot.c:200: waitms(CMDFRQ);
+;	robot.c:215: waitms(CMDFRQ);
 	mov	dptr,#0x0046
 	push	ar2
 	push	ar3
 	lcall	_waitms
 	pop	ar3
 	pop	ar2
-;	robot.c:201: if (COMMAND_PIN == 0) 	currentcmd = 4;	//0100	
+;	robot.c:216: if (COMMAND_PIN == 0) 	currentcmd = 4;	//0100	
 	jb	_P1_0,L005002?
 	mov	_currentcmd,#0x04
 	sjmp	L005022?
 L005002?:
-;	robot.c:202: else 					currentcmd = 5;	//0101
+;	robot.c:217: else 					currentcmd = 5;	//0101
 	mov	_currentcmd,#0x05
 	sjmp	L005022?
 L005007?:
-;	robot.c:205: waitms(CMDFRQ);
+;	robot.c:220: waitms(CMDFRQ);
 	mov	dptr,#0x0046
 	push	ar2
 	push	ar3
 	lcall	_waitms
 	pop	ar3
 	pop	ar2
-;	robot.c:206: if (COMMAND_PIN == 0) 	currentcmd = 6;	//0110
+;	robot.c:221: if (COMMAND_PIN == 0) 	currentcmd = 6;	//0110
 	jb	_P1_0,L005022?
 	mov	_currentcmd,#0x06
 	sjmp	L005022?
 L005019?:
-;	robot.c:210: waitms(CMDFRQ);
+;	robot.c:225: waitms(CMDFRQ);
 	mov	dptr,#0x0046
 	push	ar2
 	push	ar3
 	lcall	_waitms
 	pop	ar3
 	pop	ar2
-;	robot.c:211: if (COMMAND_PIN == 1) {			//001-
+;	robot.c:226: if (COMMAND_PIN == 1) {			//001-
 	jnb	_P1_0,L005016?
-;	robot.c:212: waitms(CMDFRQ);
+;	robot.c:227: waitms(CMDFRQ);
 	mov	dptr,#0x0046
 	push	ar2
 	push	ar3
 	lcall	_waitms
 	pop	ar3
 	pop	ar2
-;	robot.c:213: if (COMMAND_PIN == 1) 	currentcmd = 3;	//0011
+;	robot.c:228: if (COMMAND_PIN == 1) 	currentcmd = 3;	//0011
 	jnb	_P1_0,L005010?
 	mov	_currentcmd,#0x03
 	sjmp	L005022?
 L005010?:
-;	robot.c:214: else 					currentcmd = 2;	//0010
+;	robot.c:229: else 					currentcmd = 2;	//0010
 	mov	_currentcmd,#0x02
 	sjmp	L005022?
 L005016?:
-;	robot.c:217: waitms(CMDFRQ);
+;	robot.c:232: waitms(CMDFRQ);
 	mov	dptr,#0x0046
 	push	ar2
 	push	ar3
 	lcall	_waitms
 	pop	ar3
 	pop	ar2
-;	robot.c:218: if (COMMAND_PIN == 1) 	currentcmd = 1; //0001
+;	robot.c:233: if (COMMAND_PIN == 1) 	currentcmd = 1; //0001
 	jnb	_P1_0,L005013?
 	mov	_currentcmd,#0x01
 	sjmp	L005022?
 L005013?:
-;	robot.c:220: commandflag = 1;
+;	robot.c:235: commandflag = 1;
 	mov	r2,#0x01
 	mov	r3,#0x00
 L005022?:
-;	robot.c:227: if (commandflag == 0)	{while (COMMAND_PIN == 0);} 
+;	robot.c:242: if (commandflag == 0)	{while (COMMAND_PIN == 0);} 
 	mov	a,r2
 	orl	a,r3
 	jnz	L005028?
@@ -1162,67 +1244,67 @@ L005028?:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'linetrack'
 ;------------------------------------------------------------
-;forwardbackward           Allocated with name '_linetrack_forwardbackward_1_81'
-;vleft                     Allocated with name '_linetrack_vleft_1_82'
-;vright                    Allocated with name '_linetrack_vright_1_82'
+;forwardbackward           Allocated with name '_linetrack_forwardbackward_1_84'
+;vleft                     Allocated with name '_linetrack_vleft_1_85'
+;vright                    Allocated with name '_linetrack_vright_1_85'
 ;sloc0                     Allocated with name '_linetrack_sloc0_1_0'
 ;------------------------------------------------------------
-;	robot.c:237: void linetrack (int forwardbackward) {
+;	robot.c:252: void linetrack (int forwardbackward) {
 ;	-----------------------------------------
 ;	 function linetrack
 ;	-----------------------------------------
 _linetrack:
-	mov	_linetrack_forwardbackward_1_81,dpl
-	mov	(_linetrack_forwardbackward_1_81 + 1),dph
-;	robot.c:243: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+	mov	_linetrack_forwardbackward_1_84,dpl
+	mov	(_linetrack_forwardbackward_1_84 + 1),dph
+;	robot.c:258: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
-	mov	_linetrack_vleft_1_82,dpl
-	mov	(_linetrack_vleft_1_82 + 1),dph
-	mov	(_linetrack_vleft_1_82 + 2),b
-	mov	(_linetrack_vleft_1_82 + 3),a
-;	robot.c:244: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	mov	_linetrack_vleft_1_85,dpl
+	mov	(_linetrack_vleft_1_85 + 1),dph
+	mov	(_linetrack_vleft_1_85 + 2),b
+	mov	(_linetrack_vleft_1_85 + 3),a
+;	robot.c:259: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
-	mov	_linetrack_vright_1_82,dpl
-	mov	(_linetrack_vright_1_82 + 1),dph
-	mov	(_linetrack_vright_1_82 + 2),b
-	mov	(_linetrack_vright_1_82 + 3),a
-;	robot.c:247: if (forwardbackward == 2) {
+	mov	_linetrack_vright_1_85,dpl
+	mov	(_linetrack_vright_1_85 + 1),dph
+	mov	(_linetrack_vright_1_85 + 2),b
+	mov	(_linetrack_vright_1_85 + 3),a
+;	robot.c:262: if (forwardbackward == 2) {
 	mov	a,#0x02
-	cjne	a,_linetrack_forwardbackward_1_81,L006013?
+	cjne	a,_linetrack_forwardbackward_1_84,L006013?
 	clr	a
-	cjne	a,(_linetrack_forwardbackward_1_81 + 1),L006013?
+	cjne	a,(_linetrack_forwardbackward_1_84 + 1),L006013?
 	sjmp	L006014?
 L006013?:
 	sjmp	L006002?
 L006014?:
-;	robot.c:248: vleft=Volts_at_Pin(LQFP32_MUX_P2_5);
+;	robot.c:263: vleft=Volts_at_Pin(LQFP32_MUX_P2_5);
 	mov	dpl,#0x0D
 	lcall	_Volts_at_Pin
-	mov	_linetrack_vleft_1_82,dpl
-	mov	(_linetrack_vleft_1_82 + 1),dph
-	mov	(_linetrack_vleft_1_82 + 2),b
-	mov	(_linetrack_vleft_1_82 + 3),a
-;	robot.c:249: vright=Volts_at_Pin(LQFP32_MUX_P2_6);
+	mov	_linetrack_vleft_1_85,dpl
+	mov	(_linetrack_vleft_1_85 + 1),dph
+	mov	(_linetrack_vleft_1_85 + 2),b
+	mov	(_linetrack_vleft_1_85 + 3),a
+;	robot.c:264: vright=Volts_at_Pin(LQFP32_MUX_P2_6);
 	mov	dpl,#0x0E
 	lcall	_Volts_at_Pin
-	mov	_linetrack_vright_1_82,dpl
-	mov	(_linetrack_vright_1_82 + 1),dph
-	mov	(_linetrack_vright_1_82 + 2),b
-	mov	(_linetrack_vright_1_82 + 3),a
+	mov	_linetrack_vright_1_85,dpl
+	mov	(_linetrack_vright_1_85 + 1),dph
+	mov	(_linetrack_vright_1_85 + 2),b
+	mov	(_linetrack_vright_1_85 + 3),a
 L006002?:
-;	robot.c:253: pwm_Left0 = -1;
+;	robot.c:268: pwm_Left0 = -1;
 	mov	_pwm_Left0,#0xFF
-;	robot.c:254: pwm_Left1 = vright*vright*75/(vright*vright+vleft*vleft);
-	push	_linetrack_vright_1_82
-	push	(_linetrack_vright_1_82 + 1)
-	push	(_linetrack_vright_1_82 + 2)
-	push	(_linetrack_vright_1_82 + 3)
-	mov	dpl,_linetrack_vright_1_82
-	mov	dph,(_linetrack_vright_1_82 + 1)
-	mov	b,(_linetrack_vright_1_82 + 2)
-	mov	a,(_linetrack_vright_1_82 + 3)
+;	robot.c:269: pwm_Left1 = vright*vright*75/(vright*vright+vleft*vleft);
+	push	_linetrack_vright_1_85
+	push	(_linetrack_vright_1_85 + 1)
+	push	(_linetrack_vright_1_85 + 2)
+	push	(_linetrack_vright_1_85 + 3)
+	mov	dpl,_linetrack_vright_1_85
+	mov	dph,(_linetrack_vright_1_85 + 1)
+	mov	b,(_linetrack_vright_1_85 + 2)
+	mov	a,(_linetrack_vright_1_85 + 3)
 	lcall	___fsmul
 	mov	r4,dpl
 	mov	r5,dph
@@ -1250,14 +1332,14 @@ L006002?:
 	push	ar5
 	push	ar6
 	push	ar7
-	push	_linetrack_vright_1_82
-	push	(_linetrack_vright_1_82 + 1)
-	push	(_linetrack_vright_1_82 + 2)
-	push	(_linetrack_vright_1_82 + 3)
-	mov	dpl,_linetrack_vright_1_82
-	mov	dph,(_linetrack_vright_1_82 + 1)
-	mov	b,(_linetrack_vright_1_82 + 2)
-	mov	a,(_linetrack_vright_1_82 + 3)
+	push	_linetrack_vright_1_85
+	push	(_linetrack_vright_1_85 + 1)
+	push	(_linetrack_vright_1_85 + 2)
+	push	(_linetrack_vright_1_85 + 3)
+	mov	dpl,_linetrack_vright_1_85
+	mov	dph,(_linetrack_vright_1_85 + 1)
+	mov	b,(_linetrack_vright_1_85 + 2)
+	mov	a,(_linetrack_vright_1_85 + 3)
 	lcall	___fsmul
 	mov	_linetrack_sloc0_1_0,dpl
 	mov	(_linetrack_sloc0_1_0 + 1),dph
@@ -1266,14 +1348,14 @@ L006002?:
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
-	push	_linetrack_vleft_1_82
-	push	(_linetrack_vleft_1_82 + 1)
-	push	(_linetrack_vleft_1_82 + 2)
-	push	(_linetrack_vleft_1_82 + 3)
-	mov	dpl,_linetrack_vleft_1_82
-	mov	dph,(_linetrack_vleft_1_82 + 1)
-	mov	b,(_linetrack_vleft_1_82 + 2)
-	mov	a,(_linetrack_vleft_1_82 + 3)
+	push	_linetrack_vleft_1_85
+	push	(_linetrack_vleft_1_85 + 1)
+	push	(_linetrack_vleft_1_85 + 2)
+	push	(_linetrack_vleft_1_85 + 3)
+	mov	dpl,_linetrack_vleft_1_85
+	mov	dph,(_linetrack_vleft_1_85 + 1)
+	mov	b,(_linetrack_vleft_1_85 + 2)
+	mov	a,(_linetrack_vleft_1_85 + 3)
 	lcall	___fsmul
 	mov	r2,dpl
 	mov	r3,dph
@@ -1324,17 +1406,17 @@ L006002?:
 	mov	a,r5
 	lcall	___fs2schar
 	mov	_pwm_Left1,dpl
-;	robot.c:255: pwm_Right1 = -1;
+;	robot.c:270: pwm_Right1 = -1;
 	mov	_pwm_Right1,#0xFF
-;	robot.c:256: pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
-	push	_linetrack_vleft_1_82
-	push	(_linetrack_vleft_1_82 + 1)
-	push	(_linetrack_vleft_1_82 + 2)
-	push	(_linetrack_vleft_1_82 + 3)
-	mov	dpl,_linetrack_vleft_1_82
-	mov	dph,(_linetrack_vleft_1_82 + 1)
-	mov	b,(_linetrack_vleft_1_82 + 2)
-	mov	a,(_linetrack_vleft_1_82 + 3)
+;	robot.c:271: pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
+	push	_linetrack_vleft_1_85
+	push	(_linetrack_vleft_1_85 + 1)
+	push	(_linetrack_vleft_1_85 + 2)
+	push	(_linetrack_vleft_1_85 + 3)
+	mov	dpl,_linetrack_vleft_1_85
+	mov	dph,(_linetrack_vleft_1_85 + 1)
+	mov	b,(_linetrack_vleft_1_85 + 2)
+	mov	a,(_linetrack_vleft_1_85 + 3)
 	lcall	___fsmul
 	mov	r2,dpl
 	mov	r3,dph
@@ -1362,14 +1444,14 @@ L006002?:
 	push	ar3
 	push	ar4
 	push	ar5
-	push	_linetrack_vright_1_82
-	push	(_linetrack_vright_1_82 + 1)
-	push	(_linetrack_vright_1_82 + 2)
-	push	(_linetrack_vright_1_82 + 3)
-	mov	dpl,_linetrack_vright_1_82
-	mov	dph,(_linetrack_vright_1_82 + 1)
-	mov	b,(_linetrack_vright_1_82 + 2)
-	mov	a,(_linetrack_vright_1_82 + 3)
+	push	_linetrack_vright_1_85
+	push	(_linetrack_vright_1_85 + 1)
+	push	(_linetrack_vright_1_85 + 2)
+	push	(_linetrack_vright_1_85 + 3)
+	mov	dpl,_linetrack_vright_1_85
+	mov	dph,(_linetrack_vright_1_85 + 1)
+	mov	b,(_linetrack_vright_1_85 + 2)
+	mov	a,(_linetrack_vright_1_85 + 3)
 	lcall	___fsmul
 	mov	_linetrack_sloc0_1_0,dpl
 	mov	(_linetrack_sloc0_1_0 + 1),dph
@@ -1378,14 +1460,14 @@ L006002?:
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
-	push	_linetrack_vleft_1_82
-	push	(_linetrack_vleft_1_82 + 1)
-	push	(_linetrack_vleft_1_82 + 2)
-	push	(_linetrack_vleft_1_82 + 3)
-	mov	dpl,_linetrack_vleft_1_82
-	mov	dph,(_linetrack_vleft_1_82 + 1)
-	mov	b,(_linetrack_vleft_1_82 + 2)
-	mov	a,(_linetrack_vleft_1_82 + 3)
+	push	_linetrack_vleft_1_85
+	push	(_linetrack_vleft_1_85 + 1)
+	push	(_linetrack_vleft_1_85 + 2)
+	push	(_linetrack_vleft_1_85 + 3)
+	mov	dpl,_linetrack_vleft_1_85
+	mov	dph,(_linetrack_vleft_1_85 + 1)
+	mov	b,(_linetrack_vleft_1_85 + 2)
+	mov	a,(_linetrack_vleft_1_85 + 3)
 	lcall	___fsmul
 	mov	r6,dpl
 	mov	r7,dph
@@ -1436,71 +1518,71 @@ L006002?:
 	mov	a,r5
 	lcall	___fs2schar
 	mov	_pwm_Right0,dpl
-;	robot.c:260: if ((forwardbackward == 1)||(forwardbackward == 3)) {
+;	robot.c:275: if ((forwardbackward == 1)||(forwardbackward == 3)) {
 	mov	a,#0x01
-	cjne	a,_linetrack_forwardbackward_1_81,L006015?
+	cjne	a,_linetrack_forwardbackward_1_84,L006015?
 	clr	a
-	cjne	a,(_linetrack_forwardbackward_1_81 + 1),L006015?
+	cjne	a,(_linetrack_forwardbackward_1_84 + 1),L006015?
 	sjmp	L006005?
 L006015?:
 	mov	a,#0x03
-	cjne	a,_linetrack_forwardbackward_1_81,L006016?
+	cjne	a,_linetrack_forwardbackward_1_84,L006016?
 	clr	a
-	cjne	a,(_linetrack_forwardbackward_1_81 + 1),L006016?
+	cjne	a,(_linetrack_forwardbackward_1_84 + 1),L006016?
 	sjmp	L006017?
 L006016?:
 	ret
 L006017?:
 L006005?:
-;	robot.c:262: vleft=Volts_at_Pin(LQFP32_MUX_P2_5);
+;	robot.c:277: vleft=Volts_at_Pin(LQFP32_MUX_P2_5);
 	mov	dpl,#0x0D
 	lcall	_Volts_at_Pin
-	mov	_linetrack_vleft_1_82,dpl
-	mov	(_linetrack_vleft_1_82 + 1),dph
-	mov	(_linetrack_vleft_1_82 + 2),b
-	mov	(_linetrack_vleft_1_82 + 3),a
-;	robot.c:263: vright=Volts_at_Pin(LQFP32_MUX_P2_6);
+	mov	_linetrack_vleft_1_85,dpl
+	mov	(_linetrack_vleft_1_85 + 1),dph
+	mov	(_linetrack_vleft_1_85 + 2),b
+	mov	(_linetrack_vleft_1_85 + 3),a
+;	robot.c:278: vright=Volts_at_Pin(LQFP32_MUX_P2_6);
 	mov	dpl,#0x0E
 	lcall	_Volts_at_Pin
-	mov	_linetrack_vright_1_82,dpl
-	mov	(_linetrack_vright_1_82 + 1),dph
-	mov	(_linetrack_vright_1_82 + 2),b
-	mov	(_linetrack_vright_1_82 + 3),a
-;	robot.c:266: if (forwardbackward == 3) {
+	mov	_linetrack_vright_1_85,dpl
+	mov	(_linetrack_vright_1_85 + 1),dph
+	mov	(_linetrack_vright_1_85 + 2),b
+	mov	(_linetrack_vright_1_85 + 3),a
+;	robot.c:281: if (forwardbackward == 3) {
 	mov	a,#0x03
-	cjne	a,_linetrack_forwardbackward_1_81,L006018?
+	cjne	a,_linetrack_forwardbackward_1_84,L006018?
 	clr	a
-	cjne	a,(_linetrack_forwardbackward_1_81 + 1),L006018?
+	cjne	a,(_linetrack_forwardbackward_1_84 + 1),L006018?
 	sjmp	L006019?
 L006018?:
 	sjmp	L006004?
 L006019?:
-;	robot.c:267: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+;	robot.c:282: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
-	mov	_linetrack_vleft_1_82,dpl
-	mov	(_linetrack_vleft_1_82 + 1),dph
-	mov	(_linetrack_vleft_1_82 + 2),b
-	mov	(_linetrack_vleft_1_82 + 3),a
-;	robot.c:268: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	mov	_linetrack_vleft_1_85,dpl
+	mov	(_linetrack_vleft_1_85 + 1),dph
+	mov	(_linetrack_vleft_1_85 + 2),b
+	mov	(_linetrack_vleft_1_85 + 3),a
+;	robot.c:283: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
-	mov	_linetrack_vright_1_82,dpl
-	mov	(_linetrack_vright_1_82 + 1),dph
-	mov	(_linetrack_vright_1_82 + 2),b
-	mov	(_linetrack_vright_1_82 + 3),a
+	mov	_linetrack_vright_1_85,dpl
+	mov	(_linetrack_vright_1_85 + 1),dph
+	mov	(_linetrack_vright_1_85 + 2),b
+	mov	(_linetrack_vright_1_85 + 3),a
 L006004?:
-;	robot.c:272: pwm_Left1 = -1;
+;	robot.c:287: pwm_Left1 = -1;
 	mov	_pwm_Left1,#0xFF
-;	robot.c:273: pwm_Left0 = vright*vright*75/(vright*vright+vleft*vleft);
-	push	_linetrack_vright_1_82
-	push	(_linetrack_vright_1_82 + 1)
-	push	(_linetrack_vright_1_82 + 2)
-	push	(_linetrack_vright_1_82 + 3)
-	mov	dpl,_linetrack_vright_1_82
-	mov	dph,(_linetrack_vright_1_82 + 1)
-	mov	b,(_linetrack_vright_1_82 + 2)
-	mov	a,(_linetrack_vright_1_82 + 3)
+;	robot.c:288: pwm_Left0 = vright*vright*75/(vright*vright+vleft*vleft);
+	push	_linetrack_vright_1_85
+	push	(_linetrack_vright_1_85 + 1)
+	push	(_linetrack_vright_1_85 + 2)
+	push	(_linetrack_vright_1_85 + 3)
+	mov	dpl,_linetrack_vright_1_85
+	mov	dph,(_linetrack_vright_1_85 + 1)
+	mov	b,(_linetrack_vright_1_85 + 2)
+	mov	a,(_linetrack_vright_1_85 + 3)
 	lcall	___fsmul
 	mov	r2,dpl
 	mov	r3,dph
@@ -1528,14 +1610,14 @@ L006004?:
 	push	ar3
 	push	ar4
 	push	ar5
-	push	_linetrack_vright_1_82
-	push	(_linetrack_vright_1_82 + 1)
-	push	(_linetrack_vright_1_82 + 2)
-	push	(_linetrack_vright_1_82 + 3)
-	mov	dpl,_linetrack_vright_1_82
-	mov	dph,(_linetrack_vright_1_82 + 1)
-	mov	b,(_linetrack_vright_1_82 + 2)
-	mov	a,(_linetrack_vright_1_82 + 3)
+	push	_linetrack_vright_1_85
+	push	(_linetrack_vright_1_85 + 1)
+	push	(_linetrack_vright_1_85 + 2)
+	push	(_linetrack_vright_1_85 + 3)
+	mov	dpl,_linetrack_vright_1_85
+	mov	dph,(_linetrack_vright_1_85 + 1)
+	mov	b,(_linetrack_vright_1_85 + 2)
+	mov	a,(_linetrack_vright_1_85 + 3)
 	lcall	___fsmul
 	mov	_linetrack_sloc0_1_0,dpl
 	mov	(_linetrack_sloc0_1_0 + 1),dph
@@ -1544,14 +1626,14 @@ L006004?:
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
-	push	_linetrack_vleft_1_82
-	push	(_linetrack_vleft_1_82 + 1)
-	push	(_linetrack_vleft_1_82 + 2)
-	push	(_linetrack_vleft_1_82 + 3)
-	mov	dpl,_linetrack_vleft_1_82
-	mov	dph,(_linetrack_vleft_1_82 + 1)
-	mov	b,(_linetrack_vleft_1_82 + 2)
-	mov	a,(_linetrack_vleft_1_82 + 3)
+	push	_linetrack_vleft_1_85
+	push	(_linetrack_vleft_1_85 + 1)
+	push	(_linetrack_vleft_1_85 + 2)
+	push	(_linetrack_vleft_1_85 + 3)
+	mov	dpl,_linetrack_vleft_1_85
+	mov	dph,(_linetrack_vleft_1_85 + 1)
+	mov	b,(_linetrack_vleft_1_85 + 2)
+	mov	a,(_linetrack_vleft_1_85 + 3)
 	lcall	___fsmul
 	mov	r6,dpl
 	mov	r7,dph
@@ -1602,17 +1684,17 @@ L006004?:
 	mov	a,r5
 	lcall	___fs2schar
 	mov	_pwm_Left0,dpl
-;	robot.c:274: pwm_Right0 = -1;
+;	robot.c:289: pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
-;	robot.c:275: pwm_Right1 = vleft*vleft*75/(vright*vright+vleft*vleft);
-	push	_linetrack_vleft_1_82
-	push	(_linetrack_vleft_1_82 + 1)
-	push	(_linetrack_vleft_1_82 + 2)
-	push	(_linetrack_vleft_1_82 + 3)
-	mov	dpl,_linetrack_vleft_1_82
-	mov	dph,(_linetrack_vleft_1_82 + 1)
-	mov	b,(_linetrack_vleft_1_82 + 2)
-	mov	a,(_linetrack_vleft_1_82 + 3)
+;	robot.c:290: pwm_Right1 = vleft*vleft*75/(vright*vright+vleft*vleft);
+	push	_linetrack_vleft_1_85
+	push	(_linetrack_vleft_1_85 + 1)
+	push	(_linetrack_vleft_1_85 + 2)
+	push	(_linetrack_vleft_1_85 + 3)
+	mov	dpl,_linetrack_vleft_1_85
+	mov	dph,(_linetrack_vleft_1_85 + 1)
+	mov	b,(_linetrack_vleft_1_85 + 2)
+	mov	a,(_linetrack_vleft_1_85 + 3)
 	lcall	___fsmul
 	mov	r2,dpl
 	mov	r3,dph
@@ -1640,14 +1722,14 @@ L006004?:
 	push	ar3
 	push	ar4
 	push	ar5
-	push	_linetrack_vright_1_82
-	push	(_linetrack_vright_1_82 + 1)
-	push	(_linetrack_vright_1_82 + 2)
-	push	(_linetrack_vright_1_82 + 3)
-	mov	dpl,_linetrack_vright_1_82
-	mov	dph,(_linetrack_vright_1_82 + 1)
-	mov	b,(_linetrack_vright_1_82 + 2)
-	mov	a,(_linetrack_vright_1_82 + 3)
+	push	_linetrack_vright_1_85
+	push	(_linetrack_vright_1_85 + 1)
+	push	(_linetrack_vright_1_85 + 2)
+	push	(_linetrack_vright_1_85 + 3)
+	mov	dpl,_linetrack_vright_1_85
+	mov	dph,(_linetrack_vright_1_85 + 1)
+	mov	b,(_linetrack_vright_1_85 + 2)
+	mov	a,(_linetrack_vright_1_85 + 3)
 	lcall	___fsmul
 	mov	_linetrack_sloc0_1_0,dpl
 	mov	(_linetrack_sloc0_1_0 + 1),dph
@@ -1656,14 +1738,14 @@ L006004?:
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
-	push	_linetrack_vleft_1_82
-	push	(_linetrack_vleft_1_82 + 1)
-	push	(_linetrack_vleft_1_82 + 2)
-	push	(_linetrack_vleft_1_82 + 3)
-	mov	dpl,_linetrack_vleft_1_82
-	mov	dph,(_linetrack_vleft_1_82 + 1)
-	mov	b,(_linetrack_vleft_1_82 + 2)
-	mov	a,(_linetrack_vleft_1_82 + 3)
+	push	_linetrack_vleft_1_85
+	push	(_linetrack_vleft_1_85 + 1)
+	push	(_linetrack_vleft_1_85 + 2)
+	push	(_linetrack_vleft_1_85 + 3)
+	mov	dpl,_linetrack_vleft_1_85
+	mov	dph,(_linetrack_vleft_1_85 + 1)
+	mov	b,(_linetrack_vleft_1_85 + 2)
+	mov	a,(_linetrack_vleft_1_85 + 3)
 	lcall	___fsmul
 	mov	r6,dpl
 	mov	r7,dph
@@ -1719,56 +1801,56 @@ L006004?:
 ;Allocation info for local variables in function 'stopcar'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	robot.c:287: void stopcar(void) {
+;	robot.c:302: void stopcar(void) {
 ;	-----------------------------------------
 ;	 function stopcar
 ;	-----------------------------------------
 _stopcar:
-;	robot.c:289: pwm_Left1 = -1;
+;	robot.c:304: pwm_Left1 = -1;
 	mov	_pwm_Left1,#0xFF
-;	robot.c:290: pwm_Right1 = -1;
+;	robot.c:305: pwm_Right1 = -1;
 	mov	_pwm_Right1,#0xFF
-;	robot.c:291: pwm_Left0 = -1;
+;	robot.c:306: pwm_Left0 = -1;
 	mov	_pwm_Left0,#0xFF
-;	robot.c:292: pwm_Right0 = -1;
+;	robot.c:307: pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'turncar'
 ;------------------------------------------------------------
 ;leftright                 Allocated to registers r2 r3 
-;v                         Allocated with name '_turncar_v_1_89'
-;direction                 Allocated with name '_turncar_direction_1_89'
+;v                         Allocated with name '_turncar_v_1_92'
+;direction                 Allocated with name '_turncar_direction_1_92'
 ;------------------------------------------------------------
-;	robot.c:298: void turncar (int leftright) {
+;	robot.c:313: void turncar (int leftright) {
 ;	-----------------------------------------
 ;	 function turncar
 ;	-----------------------------------------
 _turncar:
 	mov	r2,dpl
 	mov	r3,dph
-;	robot.c:304: pwm_Left0 = -1;
+;	robot.c:319: pwm_Left0 = -1;
 	mov	_pwm_Left0,#0xFF
-;	robot.c:305: pwm_Left1 = -1;
+;	robot.c:320: pwm_Left1 = -1;
 	mov	_pwm_Left1,#0xFF
-;	robot.c:306: pwm_Right0 = -1;
+;	robot.c:321: pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
-;	robot.c:307: pwm_Right1 = -1;
+;	robot.c:322: pwm_Right1 = -1;
 	mov	_pwm_Right1,#0xFF
-;	robot.c:309: direction = currentstate - 1;
+;	robot.c:324: direction = currentstate - 1;
 	mov	a,_currentstate
 	dec	a
-	mov	_turncar_direction_1_89,a
-;	robot.c:312: if (leftright == 0) {
+	mov	_turncar_direction_1_92,a
+;	robot.c:327: if (leftright == 0) {
 	mov	a,r2
 	orl	a,r3
 	jz	L008032?
 	ljmp	L008010?
 L008032?:
-;	robot.c:314: pwm_Right0 = 100;
+;	robot.c:329: pwm_Right0 = 100;
 	mov	_pwm_Right0,#0x64
-;	robot.c:318: v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
-	mov	a,_turncar_direction_1_89
+;	robot.c:333: v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
+	mov	a,_turncar_direction_1_92
 	jz	L008014?
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
@@ -1785,11 +1867,11 @@ L008014?:
 	mov	r6,b
 	mov	r7,a
 L008015?:
-	mov	_turncar_v_1_89,r4
-	mov	(_turncar_v_1_89 + 1),r5
-	mov	(_turncar_v_1_89 + 2),r6
-	mov	(_turncar_v_1_89 + 3),r7
-;	robot.c:320: while (v < 1.5) {
+	mov	_turncar_v_1_92,r4
+	mov	(_turncar_v_1_92 + 1),r5
+	mov	(_turncar_v_1_92 + 2),r6
+	mov	(_turncar_v_1_92 + 3),r7
+;	robot.c:335: while (v < 1.5) {
 L008001?:
 	clr	a
 	push	acc
@@ -1798,10 +1880,10 @@ L008001?:
 	push	acc
 	mov	a,#0x3F
 	push	acc
-	mov	dpl,_turncar_v_1_89
-	mov	dph,(_turncar_v_1_89 + 1)
-	mov	b,(_turncar_v_1_89 + 2)
-	mov	a,(_turncar_v_1_89 + 3)
+	mov	dpl,_turncar_v_1_92
+	mov	dph,(_turncar_v_1_92 + 1)
+	mov	b,(_turncar_v_1_92 + 2)
+	mov	a,(_turncar_v_1_92 + 3)
 	lcall	___fslt
 	mov	r4,dpl
 	mov	a,sp
@@ -1809,8 +1891,8 @@ L008001?:
 	mov	sp,a
 	mov	a,r4
 	jz	L008003?
-;	robot.c:322: v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
-	mov	a,_turncar_direction_1_89
+;	robot.c:337: v= direction ? Volts_at_Pin(LQFP32_MUX_P2_4) : Volts_at_Pin(LQFP32_MUX_P2_6);
+	mov	a,_turncar_direction_1_92
 	jz	L008016?
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
@@ -1827,32 +1909,32 @@ L008016?:
 	mov	r6,b
 	mov	r7,a
 L008017?:
-	mov	_turncar_v_1_89,r4
-	mov	(_turncar_v_1_89 + 1),r5
-	mov	(_turncar_v_1_89 + 2),r6
-	mov	(_turncar_v_1_89 + 3),r7
+	mov	_turncar_v_1_92,r4
+	mov	(_turncar_v_1_92 + 1),r5
+	mov	(_turncar_v_1_92 + 2),r6
+	mov	(_turncar_v_1_92 + 3),r7
 	sjmp	L008001?
 L008003?:
-;	robot.c:326: pwm_Right0 = -1; 
+;	robot.c:340: waitms(300);
+	mov	dptr,#0x012C
+	lcall	_waitms
+;	robot.c:343: pwm_Right0 = -1; 
 	mov	_pwm_Right0,#0xFF
-;	robot.c:327: pwm_Left0 = -1;		
+;	robot.c:344: pwm_Left0 = -1;		
 	mov	_pwm_Left0,#0xFF
 	ret
 L008010?:
-;	robot.c:331: else if (leftright == 1) {
+;	robot.c:348: else if (leftright == 1) {
 	cjne	r2,#0x01,L008036?
 	cjne	r3,#0x00,L008036?
 	sjmp	L008037?
 L008036?:
 	ret
 L008037?:
-;	robot.c:333: pwm_Left1 = 100;
+;	robot.c:350: pwm_Left1 = 100;
 	mov	_pwm_Left1,#0x64
-;	robot.c:337: waitms(1000);
-	mov	dptr,#0x03E8
-	lcall	_waitms
-;	robot.c:340: v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
-	mov	a,_turncar_direction_1_89
+;	robot.c:354: v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
+	mov	a,_turncar_direction_1_92
 	jz	L008018?
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
@@ -1869,11 +1951,11 @@ L008018?:
 	mov	r4,b
 	mov	r5,a
 L008019?:
-	mov	_turncar_v_1_89,r2
-	mov	(_turncar_v_1_89 + 1),r3
-	mov	(_turncar_v_1_89 + 2),r4
-	mov	(_turncar_v_1_89 + 3),r5
-;	robot.c:342: while (v < 1.5) {
+	mov	_turncar_v_1_92,r2
+	mov	(_turncar_v_1_92 + 1),r3
+	mov	(_turncar_v_1_92 + 2),r4
+	mov	(_turncar_v_1_92 + 3),r5
+;	robot.c:356: while (v < 1.5) {
 L008004?:
 	clr	a
 	push	acc
@@ -1882,10 +1964,10 @@ L008004?:
 	push	acc
 	mov	a,#0x3F
 	push	acc
-	mov	dpl,_turncar_v_1_89
-	mov	dph,(_turncar_v_1_89 + 1)
-	mov	b,(_turncar_v_1_89 + 2)
-	mov	a,(_turncar_v_1_89 + 3)
+	mov	dpl,_turncar_v_1_92
+	mov	dph,(_turncar_v_1_92 + 1)
+	mov	b,(_turncar_v_1_92 + 2)
+	mov	a,(_turncar_v_1_92 + 3)
 	lcall	___fslt
 	mov	r2,dpl
 	mov	a,sp
@@ -1893,8 +1975,8 @@ L008004?:
 	mov	sp,a
 	mov	a,r2
 	jz	L008006?
-;	robot.c:344: v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
-	mov	a,_turncar_direction_1_89
+;	robot.c:358: v= direction ? Volts_at_Pin(LQFP32_MUX_P2_3) : Volts_at_Pin(LQFP32_MUX_P2_5);
+	mov	a,_turncar_direction_1_92
 	jz	L008020?
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
@@ -1911,63 +1993,66 @@ L008020?:
 	mov	r4,b
 	mov	r5,a
 L008021?:
-	mov	_turncar_v_1_89,r2
-	mov	(_turncar_v_1_89 + 1),r3
-	mov	(_turncar_v_1_89 + 2),r4
-	mov	(_turncar_v_1_89 + 3),r5
+	mov	_turncar_v_1_92,r2
+	mov	(_turncar_v_1_92 + 1),r3
+	mov	(_turncar_v_1_92 + 2),r4
+	mov	(_turncar_v_1_92 + 3),r5
 	sjmp	L008004?
 L008006?:
-;	robot.c:348: pwm_Left1 = -1; 
+;	robot.c:361: waitms(300);
+	mov	dptr,#0x012C
+	lcall	_waitms
+;	robot.c:364: pwm_Left1 = -1; 
 	mov	_pwm_Left1,#0xFF
-;	robot.c:349: pwm_Right1 = -1; 
+;	robot.c:365: pwm_Right1 = -1; 
 	mov	_pwm_Right1,#0xFF
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'uturn'
 ;------------------------------------------------------------
-;vleft                     Allocated with name '_uturn_vleft_1_95'
-;vright                    Allocated with name '_uturn_vright_1_95'
+;vleft                     Allocated with name '_uturn_vleft_1_98'
+;vright                    Allocated with name '_uturn_vright_1_98'
 ;------------------------------------------------------------
-;	robot.c:357: void uturn(void) {
+;	robot.c:373: void uturn(void) {
 ;	-----------------------------------------
 ;	 function uturn
 ;	-----------------------------------------
 _uturn:
-;	robot.c:361: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+;	robot.c:377: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
-	mov	_uturn_vleft_1_95,dpl
-	mov	(_uturn_vleft_1_95 + 1),dph
-	mov	(_uturn_vleft_1_95 + 2),b
-	mov	(_uturn_vleft_1_95 + 3),a
-;	robot.c:362: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	mov	_uturn_vleft_1_98,dpl
+	mov	(_uturn_vleft_1_98 + 1),dph
+	mov	(_uturn_vleft_1_98 + 2),b
+	mov	(_uturn_vleft_1_98 + 3),a
+;	robot.c:378: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
-	mov	_uturn_vright_1_95,dpl
-	mov	(_uturn_vright_1_95 + 1),dph
-	mov	(_uturn_vright_1_95 + 2),b
-	mov	(_uturn_vright_1_95 + 3),a
-;	robot.c:365: pwm_Left0 = -1;
+	mov	_uturn_vright_1_98,dpl
+	mov	(_uturn_vright_1_98 + 1),dph
+	mov	(_uturn_vright_1_98 + 2),b
+	mov	(_uturn_vright_1_98 + 3),a
+;	robot.c:381: pwm_Left0 = -1;
 	mov	_pwm_Left0,#0xFF
-;	robot.c:366: pwm_Left1 = 50;
+;	robot.c:382: pwm_Left1 = 50;
 	mov	_pwm_Left1,#0x32
-;	robot.c:367: pwm_Right0 = -1;
+;	robot.c:383: pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
-;	robot.c:368: pwm_Right1 = 50;
+;	robot.c:384: pwm_Right1 = 50;
 	mov	_pwm_Right1,#0x32
-;	robot.c:371: waitms(4000);
+;	robot.c:387: waitms(4000);
 	mov	dptr,#0x0FA0
 	lcall	_waitms
-;	robot.c:374: while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
+;	robot.c:390: while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
 L009002?:
-	push	_uturn_vright_1_95
-	push	(_uturn_vright_1_95 + 1)
-	push	(_uturn_vright_1_95 + 2)
-	push	(_uturn_vright_1_95 + 3)
-	mov	dpl,_uturn_vleft_1_95
-	mov	dph,(_uturn_vleft_1_95 + 1)
-	mov	b,(_uturn_vleft_1_95 + 2)
-	mov	a,(_uturn_vleft_1_95 + 3)
+	push	_uturn_vright_1_98
+	push	(_uturn_vright_1_98 + 1)
+	push	(_uturn_vright_1_98 + 2)
+	push	(_uturn_vright_1_98 + 3)
+	mov	dpl,_uturn_vleft_1_98
+	mov	dph,(_uturn_vleft_1_98 + 1)
+	mov	b,(_uturn_vleft_1_98 + 2)
+	mov	a,(_uturn_vleft_1_98 + 3)
 	lcall	___fssub
 	mov	r2,dpl
 	mov	r3,dph
@@ -1995,14 +2080,14 @@ L009002?:
 	mov	sp,a
 	mov	a,r2
 	jnz	L009003?
-	push	_uturn_vright_1_95
-	push	(_uturn_vright_1_95 + 1)
-	push	(_uturn_vright_1_95 + 2)
-	push	(_uturn_vright_1_95 + 3)
-	mov	dpl,_uturn_vleft_1_95
-	mov	dph,(_uturn_vleft_1_95 + 1)
-	mov	b,(_uturn_vleft_1_95 + 2)
-	mov	a,(_uturn_vleft_1_95 + 3)
+	push	_uturn_vright_1_98
+	push	(_uturn_vright_1_98 + 1)
+	push	(_uturn_vright_1_98 + 2)
+	push	(_uturn_vright_1_98 + 3)
+	mov	dpl,_uturn_vleft_1_98
+	mov	dph,(_uturn_vleft_1_98 + 1)
+	mov	b,(_uturn_vleft_1_98 + 2)
+	mov	a,(_uturn_vleft_1_98 + 3)
 	lcall	___fssub
 	mov	r2,dpl
 	mov	r3,dph
@@ -2031,20 +2116,20 @@ L009002?:
 	mov	a,r2
 	jz	L009005?
 L009003?:
-;	robot.c:376: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
+;	robot.c:392: vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
-	mov	_uturn_vleft_1_95,dpl
-	mov	(_uturn_vleft_1_95 + 1),dph
-	mov	(_uturn_vleft_1_95 + 2),b
-	mov	(_uturn_vleft_1_95 + 3),a
-;	robot.c:377: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+	mov	_uturn_vleft_1_98,dpl
+	mov	(_uturn_vleft_1_98 + 1),dph
+	mov	(_uturn_vleft_1_98 + 2),b
+	mov	(_uturn_vleft_1_98 + 3),a
+;	robot.c:393: vright=Volts_at_Pin(LQFP32_MUX_P2_4);
 	mov	dpl,#0x0C
 	lcall	_Volts_at_Pin
-	mov	_uturn_vright_1_95,dpl
-	mov	(_uturn_vright_1_95 + 1),dph
-	mov	(_uturn_vright_1_95 + 2),b
-	mov	(_uturn_vright_1_95 + 3),a
+	mov	_uturn_vright_1_98,dpl
+	mov	(_uturn_vright_1_98 + 1),dph
+	mov	(_uturn_vright_1_98 + 2),b
+	mov	(_uturn_vright_1_98 + 3),a
 	ljmp	L009002?
 L009005?:
 	ret
@@ -2054,38 +2139,38 @@ L009005?:
 ;power                     Allocated with name '_movecar_PARM_2'
 ;forback                   Allocated to registers r2 r3 
 ;------------------------------------------------------------
-;	robot.c:384: void movecar (int forback, int power) {
+;	robot.c:400: void movecar (int forback, int power) {
 ;	-----------------------------------------
 ;	 function movecar
 ;	-----------------------------------------
 _movecar:
 	mov	r2,dpl
 	mov	r3,dph
-;	robot.c:386: if (forback == 1) {
+;	robot.c:402: if (forback == 1) {
 	cjne	r2,#0x01,L010004?
 	cjne	r3,#0x00,L010004?
-;	robot.c:387: pwm_Left1 = power;
+;	robot.c:403: pwm_Left1 = power;
 	mov	r4,_movecar_PARM_2
 	mov	_pwm_Left1,r4
-;	robot.c:388: pwm_Left0 = -1;
+;	robot.c:404: pwm_Left0 = -1;
 	mov	_pwm_Left0,#0xFF
-;	robot.c:389: pwm_Right0 = power;
+;	robot.c:405: pwm_Right0 = power;
 	mov	_pwm_Right0,r4
-;	robot.c:390: pwm_Right1 = -1;
+;	robot.c:406: pwm_Right1 = -1;
 	mov	_pwm_Right1,#0xFF
 	ret
 L010004?:
-;	robot.c:392: else if (forback == 2) {
+;	robot.c:408: else if (forback == 2) {
 	cjne	r2,#0x02,L010006?
 	cjne	r3,#0x00,L010006?
-;	robot.c:393: pwm_Left0 = power;
+;	robot.c:409: pwm_Left0 = power;
 	mov	r2,_movecar_PARM_2
 	mov	_pwm_Left0,r2
-;	robot.c:394: pwm_Left1 = -1;
+;	robot.c:410: pwm_Left1 = -1;
 	mov	_pwm_Left1,#0xFF
-;	robot.c:395: pwm_Right1 = power;
+;	robot.c:411: pwm_Right1 = power;
 	mov	_pwm_Right1,r2
-;	robot.c:396: pwm_Right0 = -1;
+;	robot.c:412: pwm_Right0 = -1;
 	mov	_pwm_Right0,#0xFF
 L010006?:
 	ret
@@ -2099,7 +2184,7 @@ __str_0:
 	db '[2J'
 	db 0x00
 __str_1:
-	db 'frontL %f frontR %f backL %f backR %f'
+	db 'frontL %f frontR %f backL %f backR %f command %1d'
 	db 0x0D
 	db 0x00
 __str_2:
