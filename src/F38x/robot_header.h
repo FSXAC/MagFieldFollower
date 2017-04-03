@@ -29,3 +29,4 @@ void linetrack(int forwardbackward);
 void stopcar(void);
 void turncar(int leftright);
 void uturn(void);
+void movecar (int forback, int power);
