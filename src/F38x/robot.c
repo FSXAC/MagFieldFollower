@@ -21,8 +21,8 @@ volatile  char currentstate = 1;
 
 void main(void) {
 	//VARIABLES FOR VOLTAGES
-	volatile float leftv = 0;
-	volatile float rightv = 0;
+	volatile float v1 = 0;
+	volatile float v2 = 0;
 
   	MOTOR_LEFT0 =0;
    	MOTOR_LEFT1 =0;
@@ -55,19 +55,21 @@ void main(void) {
 		//RECEIVE COMMANDS
 		readData(); 
 		
-		//printf("adc readings = %f\r\n", Volts_at_Pin(LQFP32_MUX_P1_0));
+		printf("frontL %f frontR %f backL %f backR %f\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6));
 		
 		//CURRENT STATE
 		switch (currentstate) {
 			case 1:
 				linetrack(0);	//forwards
-				leftv = Volts_at_Pin(LQFP32_MUX_P2_3);
-				rightv = Volts_at_Pin(LQFP32_MUX_P2_4);
+				//GET VOLTAGE
+				v1 = Volts_at_Pin(LQFP32_MUX_P2_3);
+				v2 = Volts_at_Pin(LQFP32_MUX_P2_4);
 				break;
 			case 2:
 				linetrack(1);	//backwards
-				leftv = Volts_at_Pin(LQFP32_MUX_P2_5);
-				rightv = Volts_at_Pin(LQFP32_MUX_P2_6);
+				//GET VOLTAGE
+				v2 = Volts_at_Pin(LQFP32_MUX_P2_5);
+				v1 = Volts_at_Pin(LQFP32_MUX_P2_6);
 				break;
 			case 3:
 				stopcar();		//stop car
@@ -78,51 +80,20 @@ void main(void) {
 		switch (currentcmd) {
 			//case for left turn
 			case 0 :
-				//if moving forward, and hits an intersection with no commands, move forwards. 
-				if (leftv > 1 && rightv >1) {
+				//MOVE STRAIGHT THROUGH INTERSECTION WHEN NO COMMANDS
+				if (v1 > 0.9 && v2 >1.2) {
+					printf("\nINTERSECTION\n"); 
 					movecar(currentstate, 35);
 					waitms(1500);
 				} 
-				
-				if (currentstate == 1) {
-					if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
-						//printf("\n\r reached intersection :D");
-						//MOVE FORWARDS
-						pwm_Left1 = 35;
-						pwm_Left0 = -1;
-						pwm_Right0 = 35;
-						pwm_Right1 = -1;		
-						
-						//FORWARDS FOR AMOUNT OF TIME				
-						waitms(1500);
-					}
-				}
-				
-				//INTERSECTION WHEN BACKWARDS
-				if (currentstate == 2) {
-					if (Volts_at_Pin(LQFP32_MUX_P2_5) > 1 && Volts_at_Pin(LQFP32_MUX_P2_6) > 1) {
-						//printf("\n\r reached intersection :D");
-						//MOVE BACKWARDS
-						pwm_Left0 = 35;
-						pwm_Left1 = -1;
-						pwm_Right1 = 35;
-						pwm_Right0 = -1;		
-						
-						//BACKWARDS FOR AMOUNT OF TIME				
-						waitms(1500);
-					}
-				}
 				break;
 			//--------------------------------------------------//	
 			case 1 :
 				///CHECK FOR INTERSECTION
-				if (Volts_at_Pin(LQFP32_MUX_P2_3) > 1 && Volts_at_Pin(LQFP32_MUX_P2_4) > 1) {
+				if (v1 > 0.9 && v2 >1.2)  {
 						//printf("\n\r reached intersection :D");
 						//MOVE FORWARDS UNTIL AT INTERSECTION
-						pwm_Left1 = 35;
-						pwm_Left0 = -1;
-						pwm_Right0 = 35;
-						pwm_Right1 = -1;						
+						movecar(currentstate, 35);						
 						waitms(1500);
 					
 						//TURN
@@ -134,13 +105,10 @@ void main(void) {
 			//case for right turn			
 			case 2 :
 				//CHECK FOR INTERSECTION
-				if (Volts_at_Pin(LQFP32_MUX_P2_4) > 1 || Volts_at_Pin(LQFP32_MUX_P2_3) > 1) {
+				if (v1 > 0.9 && v2 >1.2) {
 						//printf("\n\r reached intersection :D");
 						//MOVE FORWARDS UNTIL INTERSECTION
-						pwm_Left1 = 35;
-						pwm_Left0 = -1;
-						pwm_Right0 = 35;
-						pwm_Right1 = -1;
+						movecar(currentstate, 35);
 						waitms(1500);
 
 						//TURN
@@ -258,7 +226,7 @@ void readData (void) {
 	if (commandflag == 0)	{while (COMMAND_PIN == 0);} 
 	
 	//PRINT INCOMING COMMAND 
-	printf("\ncurrent command is %d\r\n", currentcmd);		
+	//printf("\ncurrent command is %d\r\n", currentcmd);		
 }
 
 
@@ -294,7 +262,7 @@ void linetrack (int forwardbackward) {
 	}
 	
 	//TRACK VOLTAGE, PWM, AND COMMANDS
-	printf("2.3= %f, 2.4= %f, LeftF= %4d, RightF= %4d, LeftB= %4d, RightB= %4d, command:%1d, state:%1d\r", vleft, vright, pwm_Left1, pwm_Right0, pwm_Left0, pwm_Right1, currentcmd, currentstate);
+//	printf("2.3= %f, 2.4= %f, LeftF= %4d, RightF= %4d, LeftB= %4d, RightB= %4d, command:%1d, state:%1d\r", vleft, vright, pwm_Left1, pwm_Right0, pwm_Left0, pwm_Right1, currentcmd, currentstate);
 	
 }
 
@@ -315,14 +283,17 @@ void stopcar(void) {
 //--------------------------------------------------//
 void turncar (int leftright) {
 	//LEFT = 0, RIGHT = 1
-	volatile float vleft;
-	volatile float vright;
+	volatile float 	vleft;
+	volatile float 	vright;
+	volatile char 	direction;
 		
 	//SET ALL PWM TO 0		
 	pwm_Left0 = -1;
 	pwm_Left1 = -1;
 	pwm_Right0 = -1;
 	pwm_Right1 = -1;
+	
+	direction = currentstate - 1;
 
 	//CODE FOR TURNING LEFT
 	if (leftright == 0) {
@@ -333,13 +304,13 @@ void turncar (int leftright) {
 		waitms(1000);
 	
 		//CHECK FOR VOLTAGES AND WAIT TILL EQUAL
-		vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
-		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+		vleft= direction ? Volts_at_Pin(LQFP32_MUX_P2_5) : Volts_at_Pin(LQFP32_MUX_P2_3);
+		vright=direction ? Volts_at_Pin(LQFP32_MUX_P2_6) : Volts_at_Pin(LQFP32_MUX_P2_4);
 		
 		while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
 			//get voltages
-			vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
-			vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+			vleft= direction ? Volts_at_Pin(LQFP32_MUX_P2_5) : Volts_at_Pin(LQFP32_MUX_P2_3);
+			vright=direction ? Volts_at_Pin(LQFP32_MUX_P2_6) : Volts_at_Pin(LQFP32_MUX_P2_4);
 			//linetrack(0); this worked but only for left and right turns
 		}
 		
@@ -356,13 +327,13 @@ void turncar (int leftright) {
 		waitms(1000);
 	
 		//CHECK FOR VOLTAGES AND WAIT UNTIL EQUAL
-		vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
-		vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+		vleft= direction ? Volts_at_Pin(LQFP32_MUX_P2_5) : Volts_at_Pin(LQFP32_MUX_P2_3);
+		vright=direction ? Volts_at_Pin(LQFP32_MUX_P2_6) : Volts_at_Pin(LQFP32_MUX_P2_4);
 		
 		while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
 			//get voltages
-			vleft=Volts_at_Pin(LQFP32_MUX_P2_3);
-			vright=Volts_at_Pin(LQFP32_MUX_P2_4);
+			vleft= direction ? Volts_at_Pin(LQFP32_MUX_P2_5) : Volts_at_Pin(LQFP32_MUX_P2_3);
+			vright=direction ? Volts_at_Pin(LQFP32_MUX_P2_6) : Volts_at_Pin(LQFP32_MUX_P2_4);
 			//linetrack(0); 
 		}
 	
@@ -403,14 +374,14 @@ void uturn(void) {
 // STRAIGHT LINE
 //--------------------------------------------------//
 void movecar (int forback, int power) {
-	//0 = forwards, 1 = backwards, power = PWM
-	if (forback == 0) {
+	//1 = forwards, 2 = backwards, power = PWM
+	if (forback == 1) {
 		pwm_Left1 = power;
 		pwm_Left0 = -1;
 		pwm_Right0 = power;
 		pwm_Right1 = -1;
 	}
-	else {
+	else if (forback == 2) {
 		pwm_Left0 = power;
 		pwm_Left1 = -1;
 		pwm_Right1 = power;
