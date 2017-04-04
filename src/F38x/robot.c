@@ -47,6 +47,8 @@ void main(void) {
 	//INITIALIZE ADC
 	InitADC();	
 	
+	mxInit();
+	
 	//MAIN CODE
 	while (1) {	
 
@@ -59,18 +61,18 @@ void main(void) {
 		// LED Matrix output
 		if (currentcmd == CMD_LEFT) mxDirection(0);
 		else if (currentcmd == CMD_RIGHT) mxDirection(1);
-		else if (currentcmd == CMD_STOP) mxStop();
+		else if (currentcmd == CMD_STOP||currentstate == 3) mxStop();
 		else if (currentcmd == CMD_UTURN) mxUTurn();
+		else if (currentcmd == CMD_NONE) mxClear();
 		// waitms(100);
 		// continue;
 		Sonar_Reading();
 		if (distance < 7) {
-			currentstate = 3;		//code for testing
 			stopcar();
 			while (distance < 7) {
 				Sonar_Reading();
+				mxStop();
 			}
-			currentstate = 1;		//code for testing
 		}		 
 
 		// CURRENT STATE
@@ -89,6 +91,7 @@ void main(void) {
 				break;
 			case STOP_STATE:
 				stopcar();		// stop car
+				mxStop();
 				break;
 		}
 		
@@ -131,6 +134,7 @@ void main(void) {
 					}												 
 			
 					waitms(1500);
+					
 				} 
 				break;
 			//--------------------------------------------------//	
@@ -139,9 +143,7 @@ void main(void) {
 			//	printf("Turn left at the next intersection\n");
 				if (v1 > 0.7 && v2 >1)  {
 						//printf("\n\r INTERSECTION\n");
-						//MOVE FORWARDS UNTIL AT INTERSECTION
-					
-						//TURN
+
 						// 1 for forward left, 2 for reverse left
 						turncar(currentstate);
 						currentcmd = 0;
@@ -186,9 +188,11 @@ void main(void) {
 			//---------------------------------//	
 			//case for 180 turn 
 			case CMD_UTURN:
+				mxUTurn();
 				uturn();
 				//printf("\nUTURN\n");
 				currentcmd = 0;
+				mxInit(); 
 				break;
 				
 			//DEFAULT TO MOVE FORWARDS
@@ -378,32 +382,31 @@ void stopcar(void) {
 // TURN AT INTERSECTION
 //--------------------------------------------------//
 void turncar (int leftright) {
-	// FLEFT: 1
-	// RLEFT: 2
-	// FRIGHT: 3
-	// RRIGHT: 4
+	// F LEFT: 1
+	// R LEFT: 2
+	// F RIGHT: 3
+	// R RIGHT: 4
 	volatile float 	v;
-	volatile char 	direction;
 		
 	//SET ALL PWM TO 0		
 	pwm_Left0 = -1;
 	pwm_Left1 = -1;
 	pwm_Right0 = -1;
 	pwm_Right1 = -1;
-	
-	direction = currentstate - 1;
 
 	//CODE FOR TURNING LEFT
 	if (leftright == 1) {
 		//SET ONLY RIGHT MOTOR
 		pwm_Right0 = 100;
-	
+		
+		waitms(750);	
+		
 		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
-		v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+		v = Volts_at_Pin(TANK_RR);
 				
-		while (v < 1.2) {
+		while (v < 1) {
 			//get voltage
-			v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+			v = Volts_at_Pin(TANK_RR);
 			//printf ("\nv = %f\r\n", v);
 		}
 
@@ -418,16 +421,18 @@ void turncar (int leftright) {
 	else if (leftright == 3) {
 		//SET ONLY LEFT MOTOR
 		pwm_Left1 = 75;
-		waitms(200);
+		waitms(750);
 	
 		// CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
-		v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+		v = Volts_at_Pin(TANK_RL);
 				
-		while (v < 1.2) {
+		while (v < 0.7) {
 			//get voltage
-			v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+			v = Volts_at_Pin(TANK_RL);
 			//printf ("\nv = %f\r\n", v);
 		}
+		
+		waitms(300);
 		
 		//SET MOTOR BACK TO 0
 		pwm_Left1 = -1; 
@@ -436,19 +441,22 @@ void turncar (int leftright) {
 	// REVERSE TURN LEFT
 	else if (leftright == 2) {
 		//SET ONLY RIGHT MOTOR
-		pwm_Right1 = 100;
+		pwm_Right1 = 75;
+		pwm_Left0 = 75;
+		
+		waitms(250);
+		pwm_Left0 = -1;
+	//	pwm_Left0 = 30;
 	
+		waitms(1000);
 		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
-		v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+		v = Volts_at_Pin(TANK_RR);
 				
-		while (v < 0.9) {
+		while (v < 0.7) {
 			//get voltage
-			v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+			v = Volts_at_Pin(TANK_RR);
 			//printf ("\nv = %f\r\n", v);
 		}
-
-		// turning
-		waitms(300);
 		
 		//STOP MOTOR AGAIN 
 		pwm_Right1 = -1; 
@@ -458,14 +466,21 @@ void turncar (int leftright) {
 	else if (leftright == 4) {
 		//SET ONLY LEFT MOTOR
 		pwm_Left0 = 75;
-		waitms(200);
+//		pwm_Right1 = 30;
+		pwm_Right1 = 75;
+		
+		waitms(250);
+		
+		pwm_Right1 = -1;
+		
+		waitms(1000);
 	
 		// CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
-		v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+		v = Volts_at_Pin(TANK_RL);
 				
-		while (v < 0.9) {
+		while (v < 0.7) {
 			//get voltage
-			v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+			v = Volts_at_Pin(TANK_RL);
 			//printf ("\nv = %f\r\n", v);
 		}
 		
@@ -491,7 +506,7 @@ void uturn(void) {
 	pwm_Right1 = 50;
 	
 	//SPIN FOR AMOUNT OF TIME
-	waitms(3000);
+	waitms(2000);
 
 	while ((Volts_at_Pin(TANK_FL)-Volts_at_Pin(TANK_FR))<-0.3 || (Volts_at_Pin(TANK_FL)-Volts_at_Pin(TANK_FR))>0.3);
 	
