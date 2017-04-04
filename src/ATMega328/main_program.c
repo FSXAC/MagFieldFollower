@@ -120,6 +120,9 @@ void transmit(uint8_t command) {
         // delay in the signal
         delay(TX_BIT_DELAY);
     }
+
+    // finish transmission, turn off ports
+    PORTB turnOff(0);
     setMagEnabled(1);
     delay(TX_PERIOD);
 }
