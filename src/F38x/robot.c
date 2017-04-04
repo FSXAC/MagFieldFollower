@@ -5,17 +5,17 @@
 #include <stdio.h>
 #include "robot_header.h"
 
-volatile  char pwm_count=0;
-volatile  char mode = 0;
-volatile  char pwm_both =0;
-volatile  char pwm_Left0 = 0; //p1.5
-volatile  char pwm_Left1 = 0; //p1.6
-volatile  char pwm_Right0 = 0; //p2.0
-volatile  char pwm_Right1 = 0; //p2.1
-volatile  char direction = 0; // 1 for back 0 for forward
+volatile char pwm_count=0;
+volatile char mode = 0;
+volatile char pwm_both =0;
+volatile char pwm_Left0 = 0; //p1.5
+volatile char pwm_Left1 = 0; //p1.6
+volatile char pwm_Right0 = 0; //p2.0
+volatile char pwm_Right1 = 0; //p2.1
+volatile char direction = 0; // 1 for back 0 for forward
 
-volatile  char currentcmd = 0;
-volatile  char currentstate = 1;
+volatile char currentcmd = 0;
+volatile char currentstate = 1;
 
 unsigned char overflow_count;
 volatile float time = 0.0f;
@@ -64,8 +64,8 @@ void main(void) {
 		else if (currentcmd == CMD_STOP||currentstate == 3) mxStop();
 		else if (currentcmd == CMD_UTURN) mxUTurn();
 		else if (currentcmd == CMD_NONE) mxClear();
-		// waitms(100);
-		// continue;
+
+		// collision detection
 		Sonar_Reading();
 		if (distance < 7) {
 			stopcar();
@@ -310,21 +310,13 @@ unsigned char readData(unsigned char prevcommand) {
 	if (!COMMAND_PIN) {
 		command = 0; 
 		while (!COMMAND_PIN);
-		P1_4 = 1;
 		waitms((int)(CMDFRQ + CMDFRQ/2));
-		P1_4 = 0;
 		command |= COMMAND_PIN<<2;
 		waitms(CMDFRQ);
-		P1_4 = 1;
 		command |= COMMAND_PIN<<1;
 		waitms(CMDFRQ);
-		P1_4 = 0;
 		command |= COMMAND_PIN;
 		while (!COMMAND_PIN);
-		/*printf("\nCommand received: 0b_0%c%c%c\n", 
-			(command & 0x04) ? '1' : '0',
-			(command & 0x02) ? '1' : '0',
-			(command & 0x01) ? '1' : '0');*/
 		if (command > 6) command = prevcommand; 
 		
 	}
