@@ -1,10 +1,11 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Mon Apr 03 13:35:12 2017
+; This file was generated Mon Apr 03 16:15:17 2017
 ;--------------------------------------------------------
 $name robot
 $optc51 --model-small
+$printf_float
 	R_DSEG    segment data
 	R_CSEG    segment code
 	R_BSEG    segment bit
@@ -395,6 +396,22 @@ _main_v1_1_57:
 	ds 4
 _main_v2_1_57:
 	ds 4
+_main_sloc0_1_0:
+	ds 2
+_main_sloc1_1_0:
+	ds 2
+_main_sloc2_1_0:
+	ds 2
+_main_sloc3_1_0:
+	ds 2
+_main_sloc4_1_0:
+	ds 2
+_main_sloc5_1_0:
+	ds 2
+_main_sloc6_1_0:
+	ds 4
+_main_sloc7_1_0:
+	ds 4
 _linetrack_vleft_1_76:
 	ds 4
 _linetrack_vright_1_76:
@@ -427,7 +444,7 @@ _uturn_vright_1_92:
 ; bit data
 ;--------------------------------------------------------
 	rseg R_BSEG
-_main_sloc0_1_0:
+_main_sloc8_1_0:
 	DBIT	1
 _Timer2_ISR_sloc0_1_0:
 	DBIT	1
@@ -497,6 +514,14 @@ _Timer2_ISR_sloc0_1_0:
 ;------------------------------------------------------------
 ;v1                        Allocated with name '_main_v1_1_57'
 ;v2                        Allocated with name '_main_v2_1_57'
+;sloc0                     Allocated with name '_main_sloc0_1_0'
+;sloc1                     Allocated with name '_main_sloc1_1_0'
+;sloc2                     Allocated with name '_main_sloc2_1_0'
+;sloc3                     Allocated with name '_main_sloc3_1_0'
+;sloc4                     Allocated with name '_main_sloc4_1_0'
+;sloc5                     Allocated with name '_main_sloc5_1_0'
+;sloc6                     Allocated with name '_main_sloc6_1_0'
+;sloc7                     Allocated with name '_main_sloc7_1_0'
 ;------------------------------------------------------------
 ;	robot.c:20: void main(void) {
 ;	-----------------------------------------
@@ -560,6 +585,107 @@ L002034?:
 ;	robot.c:50: currentcmd = readData(); 
 	lcall	_readData
 	mov	_currentcmd,dpl
+;	robot.c:53: printf("frontL %f frontR %f backL %f backR %f command %1d, state %1d left0 %3d left1 %3d right0 %3d right1 %3d\r", Volts_at_Pin(TANK_FL),Volts_at_Pin(TANK_FR),Volts_at_Pin(TANK_RL),Volts_at_Pin(TANK_RR), currentcmd, currentstate, pwm_Left0, pwm_Left1, pwm_Right0, pwm_Right1);
+	mov	_main_sloc5_1_0,_pwm_Right1
+	mov	a,_pwm_Right1
+	rlc	a
+	subb	a,acc
+	mov	(_main_sloc5_1_0 + 1),a
+	mov	_main_sloc4_1_0,_pwm_Right0
+	mov	a,_pwm_Right0
+	rlc	a
+	subb	a,acc
+	mov	(_main_sloc4_1_0 + 1),a
+	mov	_main_sloc3_1_0,_pwm_Left1
+	mov	a,_pwm_Left1
+	rlc	a
+	subb	a,acc
+	mov	(_main_sloc3_1_0 + 1),a
+	mov	_main_sloc0_1_0,_pwm_Left0
+	mov	a,_pwm_Left0
+	rlc	a
+	subb	a,acc
+	mov	(_main_sloc0_1_0 + 1),a
+	mov	_main_sloc1_1_0,_currentstate
+	mov	a,_currentstate
+	rlc	a
+	subb	a,acc
+	mov	(_main_sloc1_1_0 + 1),a
+	mov	_main_sloc2_1_0,_currentcmd
+	mov	a,_currentcmd
+	rlc	a
+	subb	a,acc
+	mov	(_main_sloc2_1_0 + 1),a
+	mov	dpl,#0x0E
+	lcall	_Volts_at_Pin
+	mov	r0,dpl
+	mov	r1,dph
+	mov	r6,b
+	mov	r7,a
+	mov	dpl,#0x0D
+	push	ar6
+	push	ar7
+	push	ar0
+	push	ar1
+	lcall	_Volts_at_Pin
+	mov	_main_sloc6_1_0,dpl
+	mov	(_main_sloc6_1_0 + 1),dph
+	mov	(_main_sloc6_1_0 + 2),b
+	mov	(_main_sloc6_1_0 + 3),a
+	mov	dpl,#0x0C
+	lcall	_Volts_at_Pin
+	mov	_main_sloc7_1_0,dpl
+	mov	(_main_sloc7_1_0 + 1),dph
+	mov	(_main_sloc7_1_0 + 2),b
+	mov	(_main_sloc7_1_0 + 3),a
+	mov	dpl,#0x0B
+	lcall	_Volts_at_Pin
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	pop	ar1
+	pop	ar0
+	pop	ar7
+	pop	ar6
+	push	_main_sloc5_1_0
+	push	(_main_sloc5_1_0 + 1)
+	push	_main_sloc4_1_0
+	push	(_main_sloc4_1_0 + 1)
+	push	_main_sloc3_1_0
+	push	(_main_sloc3_1_0 + 1)
+	push	_main_sloc0_1_0
+	push	(_main_sloc0_1_0 + 1)
+	push	_main_sloc1_1_0
+	push	(_main_sloc1_1_0 + 1)
+	push	_main_sloc2_1_0
+	push	(_main_sloc2_1_0 + 1)
+	push	ar0
+	push	ar1
+	push	ar6
+	push	ar7
+	push	_main_sloc6_1_0
+	push	(_main_sloc6_1_0 + 1)
+	push	(_main_sloc6_1_0 + 2)
+	push	(_main_sloc6_1_0 + 3)
+	push	_main_sloc7_1_0
+	push	(_main_sloc7_1_0 + 1)
+	push	(_main_sloc7_1_0 + 2)
+	push	(_main_sloc7_1_0 + 3)
+	push	ar2
+	push	ar3
+	push	ar4
+	push	ar5
+	mov	a,#__str_1
+	push	acc
+	mov	a,#(__str_1 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	mov	a,sp
+	add	a,#0xe1
+	mov	sp,a
 ;	robot.c:59: switch (currentstate) {
 	mov	r2,_currentstate
 	cjne	r2,#0x01,L002064?
@@ -705,7 +831,7 @@ L002041?:
 L002042?:
 	mov	a,r2
 	add	a,#0xff
-	mov	_main_sloc0_1_0,c
+	mov	_main_sloc8_1_0,c
 	sjmp	L002039?
 L002038?:
 ;	robot.c:84: (v1 > 0.7 && v2 > 1)) {
@@ -752,15 +878,15 @@ L002044?:
 L002045?:
 	mov	a,r2
 	add	a,#0xff
-	mov	_main_sloc0_1_0,c
+	mov	_main_sloc8_1_0,c
 L002039?:
-	jb	_main_sloc0_1_0,L002076?
+	jb	_main_sloc8_1_0,L002076?
 	ljmp	L002034?
 L002076?:
 ;	robot.c:85: printf("\nINTERSECTION\n");
-	mov	a,#__str_1
+	mov	a,#__str_2
 	push	acc
-	mov	a,#(__str_1 >> 8)
+	mov	a,#(__str_2 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -771,7 +897,7 @@ L002076?:
 ;	robot.c:87: if (currentstate == 1) {
 	mov	a,#0x01
 	cjne	a,_currentstate,L002015?
-;	robot.c:88: if (Volts_at_Pin(LQFP32_MUX_P2_5)>Volts_at_Pin(LQFP32_MUX_P2_6)) {
+;	robot.c:88: if (Volts_at_Pin(TANK_RL)>Volts_at_Pin(TANK_RR)) {
 	mov	dpl,#0x0D
 	lcall	_Volts_at_Pin
 	mov	r2,dpl
@@ -893,9 +1019,9 @@ L002016?:
 ;	robot.c:119: case CMD_LEFT:
 L002019?:
 ;	robot.c:121: printf("Turn left at the next intersection\n");
-	mov	a,#__str_2
+	mov	a,#__str_3
 	push	acc
-	mov	a,#(__str_2 >> 8)
+	mov	a,#(__str_3 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -944,9 +1070,9 @@ L002083?:
 	ljmp	L002034?
 L002084?:
 ;	robot.c:123: printf("\n\r INTERSECTION\n");
-	mov	a,#__str_3
+	mov	a,#__str_4
 	push	acc
-	mov	a,#(__str_3 >> 8)
+	mov	a,#(__str_4 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -970,9 +1096,9 @@ L002084?:
 ;	robot.c:134: case CMD_RIGHT:
 L002023?:
 ;	robot.c:136: printf("Turn right at the next intersection\n");
-	mov	a,#__str_4
+	mov	a,#__str_5
 	push	acc
-	mov	a,#(__str_4 >> 8)
+	mov	a,#(__str_5 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1021,9 +1147,9 @@ L002085?:
 	ljmp	L002034?
 L002086?:
 ;	robot.c:138: printf("\n\r INTERSECTION\n");
-	mov	a,#__str_3
+	mov	a,#__str_4
 	push	acc
-	mov	a,#(__str_3 >> 8)
+	mov	a,#(__str_4 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1049,9 +1175,9 @@ L002086?:
 ;	robot.c:146: case CMD_FORWARD:
 L002027?:
 ;	robot.c:148: printf("GO!\n");
-	mov	a,#__str_5
+	mov	a,#__str_6
 	push	acc
-	mov	a,#(__str_5 >> 8)
+	mov	a,#(__str_6 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1068,9 +1194,9 @@ L002027?:
 ;	robot.c:154: case CMD_REVERSE:
 L002028?:
 ;	robot.c:156: printf("Reverse Reverse!\n");
-	mov	a,#__str_6
+	mov	a,#__str_7
 	push	acc
-	mov	a,#(__str_6 >> 8)
+	mov	a,#(__str_7 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1087,9 +1213,9 @@ L002028?:
 ;	robot.c:162: case CMD_STOP:
 L002029?:
 ;	robot.c:164: printf("HALT peasants!\n");
-	mov	a,#__str_7
+	mov	a,#__str_8
 	push	acc
-	mov	a,#(__str_7 >> 8)
+	mov	a,#(__str_8 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1105,10 +1231,12 @@ L002029?:
 	ljmp	L002034?
 ;	robot.c:170: case CMD_UTURN:
 L002030?:
+;	robot.c:171: uturn();
+	lcall	_uturn
 ;	robot.c:172: printf("UTURN\n");
-	mov	a,#__str_8
+	mov	a,#__str_9
 	push	acc
-	mov	a,#(__str_8 >> 8)
+	mov	a,#(__str_9 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1296,7 +1424,7 @@ L004016?:
 	rlc	a
 	subb	a,acc
 	mov	r0,a
-;	robot.c:301: printf("Command received: 0b_0%c%c%c\n", 
+;	robot.c:301: printf("\nCommand received: 0b_0%c%c%c\n", 
 	push	ar2
 	push	ar3
 	push	ar4
@@ -1304,9 +1432,9 @@ L004016?:
 	push	ar6
 	push	ar7
 	push	ar0
-	mov	a,#__str_9
+	mov	a,#__str_10
 	push	acc
-	mov	a,#(__str_9 >> 8)
+	mov	a,#(__str_10 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -2213,54 +2341,39 @@ _uturn:
 	mov	_pwm_Right0,#0xFF
 ;	robot.c:466: pwm_Right1 = 50;
 	mov	_pwm_Right1,#0x32
-;	robot.c:469: waitms(4000);
-	mov	dptr,#0x0FA0
+;	robot.c:469: waitms(3000);
+	mov	dptr,#0x0BB8
 	lcall	_waitms
-;	robot.c:472: while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
+;	robot.c:471: while ((Volts_at_Pin(TANK_FL)-Volts_at_Pin(TANK_FR))<-0.3 || (Volts_at_Pin(TANK_FL)-Volts_at_Pin(TANK_FR))>0.3);
 L008002?:
-	push	_uturn_vright_1_92
-	push	(_uturn_vright_1_92 + 1)
-	push	(_uturn_vright_1_92 + 2)
-	push	(_uturn_vright_1_92 + 3)
-	mov	dpl,_uturn_vleft_1_92
-	mov	dph,(_uturn_vleft_1_92 + 1)
-	mov	b,(_uturn_vleft_1_92 + 2)
-	mov	a,(_uturn_vleft_1_92 + 3)
-	lcall	___fssub
+	mov	dpl,#0x0B
+	lcall	_Volts_at_Pin
 	mov	r2,dpl
 	mov	r3,dph
 	mov	r4,b
 	mov	r5,a
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	mov	a,#0xCD
-	push	acc
-	mov	a,#0xCC
-	push	acc
-	mov	a,#0x4C
-	push	acc
-	mov	a,#0x3E
-	push	acc
+	mov	dpl,#0x0C
+	push	ar2
+	push	ar3
+	push	ar4
+	push	ar5
+	lcall	_Volts_at_Pin
+	mov	r6,dpl
+	mov	r7,dph
+	mov	r0,b
+	mov	r1,a
+	pop	ar5
+	pop	ar4
+	pop	ar3
+	pop	ar2
+	push	ar6
+	push	ar7
+	push	ar0
+	push	ar1
 	mov	dpl,r2
 	mov	dph,r3
 	mov	b,r4
 	mov	a,r5
-	lcall	___fsgt
-	mov	r2,dpl
-	mov	a,sp
-	add	a,#0xfc
-	mov	sp,a
-	mov	a,r2
-	jnz	L008003?
-	push	_uturn_vright_1_92
-	push	(_uturn_vright_1_92 + 1)
-	push	(_uturn_vright_1_92 + 2)
-	push	(_uturn_vright_1_92 + 3)
-	mov	dpl,_uturn_vleft_1_92
-	mov	dph,(_uturn_vleft_1_92 + 1)
-	mov	b,(_uturn_vleft_1_92 + 2)
-	mov	a,(_uturn_vleft_1_92 + 3)
 	lcall	___fssub
 	mov	r2,dpl
 	mov	r3,dph
@@ -2269,11 +2382,10 @@ L008002?:
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
-	mov	a,#0xCD
+	mov	a,#0x9A
 	push	acc
-	mov	a,#0xCC
+	mov	a,#0x99
 	push	acc
-	mov	a,#0x4C
 	push	acc
 	mov	a,#0xBE
 	push	acc
@@ -2287,24 +2399,63 @@ L008002?:
 	add	a,#0xfc
 	mov	sp,a
 	mov	a,r2
-	jz	L008005?
-L008003?:
-;	robot.c:474: vleft  = Volts_at_Pin(TANK_FL);
+	jnz	L008002?
 	mov	dpl,#0x0B
 	lcall	_Volts_at_Pin
-	mov	_uturn_vleft_1_92,dpl
-	mov	(_uturn_vleft_1_92 + 1),dph
-	mov	(_uturn_vleft_1_92 + 2),b
-	mov	(_uturn_vleft_1_92 + 3),a
-;	robot.c:475: vright = Volts_at_Pin(TANK_FR);
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
 	mov	dpl,#0x0C
+	push	ar2
+	push	ar3
+	push	ar4
+	push	ar5
 	lcall	_Volts_at_Pin
-	mov	_uturn_vright_1_92,dpl
-	mov	(_uturn_vright_1_92 + 1),dph
-	mov	(_uturn_vright_1_92 + 2),b
-	mov	(_uturn_vright_1_92 + 3),a
+	mov	r6,dpl
+	mov	r7,dph
+	mov	r0,b
+	mov	r1,a
+	pop	ar5
+	pop	ar4
+	pop	ar3
+	pop	ar2
+	push	ar6
+	push	ar7
+	push	ar0
+	push	ar1
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fssub
+	mov	r2,dpl
+	mov	r3,dph
+	mov	r4,b
+	mov	r5,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,#0x9A
+	push	acc
+	mov	a,#0x99
+	push	acc
+	push	acc
+	mov	a,#0x3E
+	push	acc
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r5
+	lcall	___fsgt
+	mov	r2,dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,r2
+	jz	L008010?
 	ljmp	L008002?
-L008005?:
+L008010?:
 	ret
 	rseg R_CSEG
 
@@ -2316,41 +2467,47 @@ __str_0:
 	db '[2J'
 	db 0x00
 __str_1:
+	db 'frontL %f frontR %f backL %f backR %f command %1d, state %1d'
+	db ' left0 %3d left1 %3d right0 %3d right1 %3d'
+	db 0x0D
+	db 0x00
+__str_2:
 	db 0x0A
 	db 'INTERSECTION'
 	db 0x0A
 	db 0x00
-__str_2:
+__str_3:
 	db 'Turn left at the next intersection'
 	db 0x0A
 	db 0x00
-__str_3:
+__str_4:
 	db 0x0A
 	db 0x0D
 	db ' INTERSECTION'
 	db 0x0A
 	db 0x00
-__str_4:
+__str_5:
 	db 'Turn right at the next intersection'
 	db 0x0A
 	db 0x00
-__str_5:
+__str_6:
 	db 'GO!'
 	db 0x0A
 	db 0x00
-__str_6:
+__str_7:
 	db 'Reverse Reverse!'
 	db 0x0A
 	db 0x00
-__str_7:
+__str_8:
 	db 'HALT peasants!'
 	db 0x0A
 	db 0x00
-__str_8:
+__str_9:
 	db 'UTURN'
 	db 0x0A
 	db 0x00
-__str_9:
+__str_10:
+	db 0x0A
 	db 'Command received: 0b_0%c%c%c'
 	db 0x0A
 	db 0x00

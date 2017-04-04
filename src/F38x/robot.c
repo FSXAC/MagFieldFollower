@@ -50,7 +50,7 @@ void main(void) {
 		currentcmd = readData(); 
 		
 		// FOR DEBUGGING
-		// printf("frontL %f frontR %f backL %f backR %f command %1d\r", Volts_at_Pin(LQFP32_MUX_P2_3),Volts_at_Pin(LQFP32_MUX_P2_4),Volts_at_Pin(LQFP32_MUX_P2_5),Volts_at_Pin(LQFP32_MUX_P2_6), currentcmd);
+		printf("frontL %f frontR %f backL %f backR %f command %1d, state %1d left0 %3d left1 %3d right0 %3d right1 %3d\r", Volts_at_Pin(TANK_FL),Volts_at_Pin(TANK_FR),Volts_at_Pin(TANK_RL),Volts_at_Pin(TANK_RR), currentcmd, currentstate, pwm_Left0, pwm_Left1, pwm_Right0, pwm_Right1);
 		// waitms(100);
 		// continue;
 
@@ -85,7 +85,7 @@ void main(void) {
 					printf("\nINTERSECTION\n");
 
 					if (currentstate == 1) {
-						if (Volts_at_Pin(LQFP32_MUX_P2_5)>Volts_at_Pin(LQFP32_MUX_P2_6)) {
+						if (Volts_at_Pin(TANK_RL)>Volts_at_Pin(TANK_RR)) {
 							pwm_Left1 = 50;
 							pwm_Left0 = -1;
 							pwm_Right0 = 30;
@@ -168,7 +168,7 @@ void main(void) {
 			//---------------------------------//	
 			//case for 180 turn 
 			case CMD_UTURN:
-				// uturn();
+				uturn();
 				printf("UTURN\n");
 				currentcmd = 0;
 				break;
@@ -298,7 +298,7 @@ unsigned char readData(void) {
 		P1_4 = 0;
 		command |= COMMAND_PIN;
 		while (!COMMAND_PIN);
-		printf("Command received: 0b_0%c%c%c\n", 
+		printf("\nCommand received: 0b_0%c%c%c\n", 
 			(command & 0x04) ? '1' : '0',
 			(command & 0x02) ? '1' : '0',
 			(command & 0x01) ? '1' : '0');
@@ -466,14 +466,11 @@ void uturn(void) {
 	pwm_Right1 = 50;
 	
 	//SPIN FOR AMOUNT OF TIME
-	waitms(4000);
+	waitms(3000);
+
+	while ((Volts_at_Pin(TANK_FL)-Volts_at_Pin(TANK_FR))<-0.3 || (Volts_at_Pin(TANK_FL)-Volts_at_Pin(TANK_FR))>0.3);
 	
-	//WAIT FOR WHEN VOLTAGES ARE EQUAL AGAIN
-	while (((vleft - vright) > 0.2) || ((vleft - vright) < (-0.2))) {
-		// get voltages
-		vleft  = Volts_at_Pin(TANK_FL);
-		vright = Volts_at_Pin(TANK_FR);
-	}
+	
 }	
 
 //--------------------------------------------------//
