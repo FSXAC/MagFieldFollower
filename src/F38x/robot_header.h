@@ -1,6 +1,10 @@
 #define SYSCLK    48000000L // SYSCLK frequency in Hz
 #define BAUDRATE  115200L   // Baud rate of UART in bps
 
+// useful defines
+#define HIGH 1
+#define LOW 0
+
 // motor pins
 #define MOTOR_LEFT0 P1_5
 #define MOTOR_LEFT1 P1_6
@@ -31,7 +35,6 @@
 #define REVERSE_STATE 2
 #define STOP_STATE 3
 #define DEBUG_STATE 4
-
 
 // ===[FUNCTION PROTOTYPES]===
 // system functions
