@@ -51,9 +51,12 @@ void main(void) {
 		
 		// FOR DEBUGGING
 		printf("frontL %f frontR %f backL %f backR %f command %1d, state %1d left0 %3d left1 %3d right0 %3d right1 %3d\r", Volts_at_Pin(TANK_FL),Volts_at_Pin(TANK_FR),Volts_at_Pin(TANK_RL),Volts_at_Pin(TANK_RR), currentcmd, currentstate, pwm_Left0, pwm_Left1, pwm_Right0, pwm_Right1);
-		// waitms(100);
-		// continue;
 
+		// LED Matrix output
+		if (currentcmd == CMD_LEFT) mxDirection(0);
+		else if (currentcmd == CMD_RIGHT) mxDirection(1);
+		else if (currentcmd == CMD_STOP) mxStop();
+		else if (currentcmd == CMD_UTURN) mxUTurn();
 
 		// CURRENT STATE
 		switch (currentstate) {
