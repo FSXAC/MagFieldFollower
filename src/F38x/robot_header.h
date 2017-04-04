@@ -58,3 +58,13 @@ void stopcar(void);
 void turncar(int leftright);
 void uturn(void);
 void movecar (int forback, int power);
+
+// led matrix functions
+void mxSPI(unsigned char value);
+void mxPulse(void);
+void mxClear(void);
+void mxWrite(unsigned char address, unsigned char value);
+void mxTest(void);
+void mxDisplay(unsigned char *grid);
+void mxSetIntensity(unsigned char intensity);
+void mxInit(void);

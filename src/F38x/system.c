@@ -62,6 +62,8 @@ char _c51_external_startup (void) {
 	return 0;
 }
 
+
+// delay microseconds using timer 3
 void Timer3us(unsigned char us) {
 	unsigned char i;               // usec counter
 	
