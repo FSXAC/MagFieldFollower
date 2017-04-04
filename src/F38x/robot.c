@@ -58,8 +58,8 @@ void main(void) {
 		// continue;
 		if (currentcmd == CMD_LEFT) mxDirection(0);
 		else if (currentcmd == CMD_RIGHT) mxDirection(1);
-		else if (currentcmd == CMD_FORWARD) mxGo(0);
-		else if (currentcmd == CMD_REVERSE) mxGo(1);
+		else if (currentcmd == CMD_STOP) mxStop();
+		else if (currentcmd == CMD_UTURN) mxUTurn();
 
 		// CURRENT STATE
 		switch (currentstate) {

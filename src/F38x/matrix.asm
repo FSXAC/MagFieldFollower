@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Mon Apr 03 19:29:46 2017
+; This file was generated Mon Apr 03 23:13:55 2017
 ;--------------------------------------------------------
 $name matrix
 $optc51 --model-small
@@ -25,22 +25,23 @@ $optc51 --model-small
 ;--------------------------------------------------------
 	public _mxIntensity
 	public _mxSPIR
+	public _mirror
 	public _mxWrite_PARM_2
 	public _mxDisplay_PARM_2
+	public _mirror_PARM_2
 	public _MX_UTURN
 	public _MX_STOP
-	public _MX_GO
 	public _MX_TURN
 	public _reverse
 	public _mxDirection
-	public _mxGo
+	public _mxStop
+	public _mxUTurn
 	public _mxDisplay
 	public _mxWrite
 	public _mxSPI
 	public _mxPulse
 	public _mxClear
 	public _mxInit
-	public _mxTest
 ;--------------------------------------------------------
 ; Special Function Registers
 ;--------------------------------------------------------
@@ -374,15 +375,15 @@ _SPIEN          BIT 0xf8
 	rseg R_DSEG
 _MX_TURN:
 	ds 8
-_MX_GO:
-	ds 4
 _MX_STOP:
 	ds 2
 _MX_UTURN:
 	ds 8
+_mirror_PARM_2:
+	ds 1
 _mxDisplay_PARM_2:
 	ds 1
-_mxDisplay_grid_1_54:
+_mxDisplay_grid_1_60:
 	ds 3
 _mxWrite_PARM_2:
 	ds 1
@@ -443,15 +444,10 @@ _mxWrite_PARM_2:
 	mov	(_MX_TURN + 0x0005),#0x32
 	mov	(_MX_TURN + 0x0006),#0x12
 	mov	(_MX_TURN + 0x0007),#0x02
-;	matrix.c:15: unsigned char MX_GO[4] = {0x13, 0x7F, 0xD9, 0x11};
-	mov	_MX_GO,#0x13
-	mov	(_MX_GO + 0x0001),#0x7F
-	mov	(_MX_GO + 0x0002),#0xD9
-	mov	(_MX_GO + 0x0003),#0x11
-;	matrix.c:16: unsigned char MX_STOP[2] = {0x37, 0xF8};
+;	matrix.c:15: unsigned char MX_STOP[2] = {0x37, 0xF8};
 	mov	_MX_STOP,#0x37
 	mov	(_MX_STOP + 0x0001),#0xF8
-;	matrix.c:17: unsigned char MX_UTURN[8] = {0x1C, 0x36, 0x22, 0x22, 0x22, 0xFA, 0x72, 0x22};
+;	matrix.c:16: unsigned char MX_UTURN[8] = {0x1C, 0x36, 0x22, 0x22, 0x22, 0xFA, 0x72, 0x22};
 	mov	_MX_UTURN,#0x1C
 	mov	(_MX_UTURN + 0x0001),#0x36
 	mov	(_MX_UTURN + 0x0002),#0x22
@@ -470,14 +466,14 @@ _mxWrite_PARM_2:
 ;------------------------------------------------------------
 ;b                         Allocated to registers r2 
 ;------------------------------------------------------------
-;	matrix.c:20: unsigned char reverse(unsigned char b) {
+;	matrix.c:19: unsigned char reverse(unsigned char b) {
 ;	-----------------------------------------
 ;	 function reverse
 ;	-----------------------------------------
 _reverse:
 	using	0
 	mov	r2,dpl
-;	matrix.c:21: b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+;	matrix.c:20: b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
 	mov	a,#0xF0
 	anl	a,r2
 	swap	a
@@ -489,7 +485,7 @@ _reverse:
 	anl	a,#0xf0
 	orl	a,r3
 	mov	r2,a
-;	matrix.c:22: b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+;	matrix.c:21: b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
 	mov	a,#0xCC
 	anl	a,r2
 	rr	a
@@ -502,7 +498,7 @@ _reverse:
 	add	a,acc
 	orl	a,r3
 	mov	r2,a
-;	matrix.c:23: b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+;	matrix.c:22: b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
 	mov	a,#0xAA
 	anl	a,r2
 	clr	c
@@ -512,7 +508,52 @@ _reverse:
 	anl	a,r2
 	add	a,acc
 	orl	a,r3
-;	matrix.c:24: return b;
+;	matrix.c:23: return b;
+	mov	dpl,a
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'mirror'
+;------------------------------------------------------------
+;upper                     Allocated with name '_mirror_PARM_2'
+;b                         Allocated to registers r2 
+;------------------------------------------------------------
+;	matrix.c:27: unsigned char mirror(unsigned char b, unsigned char upper) {
+;	-----------------------------------------
+;	 function mirror
+;	-----------------------------------------
+_mirror:
+	mov	r2,dpl
+;	matrix.c:28: if (upper) return ((reverse(b) & 0x0F) | (b & 0xF0));
+	mov	a,_mirror_PARM_2
+	jz	L003002?
+	mov	dpl,r2
+	push	ar2
+	lcall	_reverse
+	mov	a,dpl
+	pop	ar2
+	anl	a,#0x0F
+	mov	r3,a
+	mov	a,#0xF0
+	anl	a,r2
+	orl	a,r3
+	mov	dpl,a
+	ret
+L003002?:
+;	matrix.c:29: else return ((reverse(b) & 0xF0)>>4 | (b & 0x0F)<<4);
+	mov	dpl,r2
+	push	ar2
+	lcall	_reverse
+	mov	a,dpl
+	pop	ar2
+	anl	a,#0xF0
+	swap	a
+	anl	a,#0x0f
+	mov	r3,a
+	anl	ar2,#0x0F
+	mov	a,r2
+	swap	a
+	anl	a,#0xf0
+	orl	a,r3
 	mov	dpl,a
 	ret
 ;------------------------------------------------------------
@@ -520,252 +561,299 @@ _reverse:
 ;------------------------------------------------------------
 ;flipped                   Allocated to registers r2 
 ;------------------------------------------------------------
-;	matrix.c:28: void mxDirection(unsigned char flipped) {
+;	matrix.c:33: void mxDirection(unsigned char flipped) {
 ;	-----------------------------------------
 ;	 function mxDirection
 ;	-----------------------------------------
 _mxDirection:
-;	matrix.c:29: if (flipped) mxDisplay(MX_TURN, 0x01);
+;	matrix.c:35: if (flipped) mxDisplay(MX_TURN, 1);
 	mov	a,dpl
 	mov	r2,a
-	jz	L003002?
+	jz	L004002?
 	mov	_mxDisplay_PARM_2,#0x01
 	mov	dptr,#_MX_TURN
 	mov	b,#0x40
 	ljmp	_mxDisplay
-L003002?:
-;	matrix.c:30: else mxDisplay(MX_TURN, 0x00);
-	mov	_mxDisplay_PARM_2,#0x00
-	mov	dptr,#_MX_TURN
-	mov	b,#0x40
-	ljmp	_mxDisplay
-;------------------------------------------------------------
-;Allocation info for local variables in function 'mxGo'
-;------------------------------------------------------------
-;flipped                   Allocated to registers r2 
-;------------------------------------------------------------
-;	matrix.c:34: void mxGo(unsigned char flipped) {
-;	-----------------------------------------
-;	 function mxGo
-;	-----------------------------------------
-_mxGo:
-;	matrix.c:35: if (flipped) mxDisplay(MX_TURN, 0x02);
-	mov	a,dpl
-	mov	r2,a
-	jz	L004002?
-	mov	_mxDisplay_PARM_2,#0x02
-	mov	dptr,#_MX_TURN
-	mov	b,#0x40
-	ljmp	_mxDisplay
 L004002?:
-;	matrix.c:36: else mxDisplay(MX_TURN, 0x00);
+;	matrix.c:38: else mxDisplay(MX_TURN, 0);
 	mov	_mxDisplay_PARM_2,#0x00
 	mov	dptr,#_MX_TURN
+	mov	b,#0x40
+	ljmp	_mxDisplay
+;------------------------------------------------------------
+;Allocation info for local variables in function 'mxStop'
+;------------------------------------------------------------
+;------------------------------------------------------------
+;	matrix.c:42: void mxStop(void) {
+;	-----------------------------------------
+;	 function mxStop
+;	-----------------------------------------
+_mxStop:
+;	matrix.c:43: mxDisplay(MX_STOP, 2);
+	mov	_mxDisplay_PARM_2,#0x02
+	mov	dptr,#_MX_STOP
+	mov	b,#0x40
+	ljmp	_mxDisplay
+;------------------------------------------------------------
+;Allocation info for local variables in function 'mxUTurn'
+;------------------------------------------------------------
+;------------------------------------------------------------
+;	matrix.c:47: void mxUTurn(void) {
+;	-----------------------------------------
+;	 function mxUTurn
+;	-----------------------------------------
+_mxUTurn:
+;	matrix.c:48: mxDisplay(MX_UTURN, 0);
+	mov	_mxDisplay_PARM_2,#0x00
+	mov	dptr,#_MX_UTURN
 	mov	b,#0x40
 	ljmp	_mxDisplay
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'mxDisplay'
 ;------------------------------------------------------------
 ;options                   Allocated with name '_mxDisplay_PARM_2'
-;grid                      Allocated with name '_mxDisplay_grid_1_54'
-;i                         Allocated to registers r7 
+;grid                      Allocated with name '_mxDisplay_grid_1_60'
+;i                         Allocated to registers r6 
 ;------------------------------------------------------------
-;	matrix.c:47: void mxDisplay(unsigned char *grid, unsigned char options) {
+;	matrix.c:55: void mxDisplay(unsigned char *grid, unsigned char options) {
 ;	-----------------------------------------
 ;	 function mxDisplay
 ;	-----------------------------------------
 _mxDisplay:
-	mov	_mxDisplay_grid_1_54,dpl
-	mov	(_mxDisplay_grid_1_54 + 1),dph
-	mov	(_mxDisplay_grid_1_54 + 2),b
-;	matrix.c:49: for (i = 0; i < 8; i++) {
-	mov	a,#0x01
-	anl	a,_mxDisplay_PARM_2
-	mov	r5,a
+	mov	_mxDisplay_grid_1_60,dpl
+	mov	(_mxDisplay_grid_1_60 + 1),dph
+	mov	(_mxDisplay_grid_1_60 + 2),b
+;	matrix.c:59: if (options == 2) {
 	mov	a,#0x02
-	anl	a,_mxDisplay_PARM_2
+	cjne	a,_mxDisplay_PARM_2,L007017?
+	sjmp	L007018?
+L007017?:
+	ljmp	L007015?
+L007018?:
+;	matrix.c:60: mxWrite(1, mirror(grid[0], 1));
+	mov	dpl,_mxDisplay_grid_1_60
+	mov	dph,(_mxDisplay_grid_1_60 + 1)
+	mov	b,(_mxDisplay_grid_1_60 + 2)
+	lcall	__gptrget
+	mov	r5,a
+	mov	_mirror_PARM_2,#0x01
+	mov	dpl,r5
+	lcall	_mirror
+	mov	_mxWrite_PARM_2,dpl
+	mov	dpl,#0x01
+	lcall	_mxWrite
+;	matrix.c:61: mxWrite(2, mirror(grid[0], 0));
+	mov	dpl,_mxDisplay_grid_1_60
+	mov	dph,(_mxDisplay_grid_1_60 + 1)
+	mov	b,(_mxDisplay_grid_1_60 + 2)
+	lcall	__gptrget
+	mov	r5,a
+	mov	_mirror_PARM_2,#0x00
+	mov	dpl,r5
+	lcall	_mirror
+	mov	_mxWrite_PARM_2,dpl
+	mov	dpl,#0x02
+	lcall	_mxWrite
+;	matrix.c:62: mxWrite(3, mirror(grid[1], 1));
+	mov	a,#0x01
+	add	a,_mxDisplay_grid_1_60
+	mov	r5,a
+	clr	a
+	addc	a,(_mxDisplay_grid_1_60 + 1)
 	mov	r6,a
-	mov	r7,#0x00
-L005010?:
-	cjne	r7,#0x08,L005022?
-L005022?:
-	jc	L005023?
-	ret
-L005023?:
-;	matrix.c:50: if (options & 0x02) {
-	mov	a,r6
-	jz	L005008?
-;	matrix.c:51: if (options & 0x01) mxWrite(i+1, reverse(grid[i]));
-	mov	a,r5
-	jz	L005002?
-	mov	a,r7
-	inc	a
+	mov	r7,(_mxDisplay_grid_1_60 + 2)
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
 	mov	r0,a
-	mov	a,r7
-	add	a,_mxDisplay_grid_1_54
-	mov	r1,a
-	clr	a
-	addc	a,(_mxDisplay_grid_1_54 + 1)
-	mov	r2,a
-	mov	r3,(_mxDisplay_grid_1_54 + 2)
-	mov	dpl,r1
-	mov	dph,r2
-	mov	b,r3
-	lcall	__gptrget
-	mov	dpl,a
-	push	ar5
-	push	ar6
-	push	ar7
-	push	ar0
-	lcall	_reverse
-	mov	_mxWrite_PARM_2,dpl
-	pop	ar0
+	mov	_mirror_PARM_2,#0x01
 	mov	dpl,r0
-	lcall	_mxWrite
-	pop	ar7
-	pop	ar6
-	pop	ar5
-	ljmp	L005012?
-L005002?:
-;	matrix.c:52: else mxWrite(i+1, grid[i]);	
-	mov	a,r7
-	inc	a
-	mov	r2,a
-	mov	a,r7
-	add	a,_mxDisplay_grid_1_54
-	mov	r3,a
-	clr	a
-	addc	a,(_mxDisplay_grid_1_54 + 1)
-	mov	r4,a
-	mov	r0,(_mxDisplay_grid_1_54 + 2)
-	mov	dpl,r3
-	mov	dph,r4
-	mov	b,r0
-	lcall	__gptrget
-	mov	_mxWrite_PARM_2,a
-	mov	dpl,r2
 	push	ar5
 	push	ar6
 	push	ar7
+	lcall	_mirror
+	mov	_mxWrite_PARM_2,dpl
+	mov	dpl,#0x03
 	lcall	_mxWrite
 	pop	ar7
 	pop	ar6
 	pop	ar5
-	ljmp	L005012?
-L005008?:
-;	matrix.c:54: if (options & 0x01) mxWrite(i+1, reverse(grid[7-i]));
-	mov	a,r5
-	jz	L005005?
-	mov	a,r7
-	inc	a
-	mov	r2,a
-	mov	ar3,r7
-	mov	r4,#0x00
-	mov	a,#0x07
-	clr	c
-	subb	a,r3
-	mov	r3,a
+;	matrix.c:63: mxWrite(4, mirror(grid[1], 0));
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
+	mov	r0,a
+	mov	_mirror_PARM_2,#0x00
+	mov	dpl,r0
+	push	ar5
+	push	ar6
+	push	ar7
+	lcall	_mirror
+	mov	_mxWrite_PARM_2,dpl
+	mov	dpl,#0x04
+	lcall	_mxWrite
+	pop	ar7
+	pop	ar6
+	pop	ar5
+;	matrix.c:64: mxWrite(5, mirror(grid[1], 0));
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
+	mov	r0,a
+	mov	_mirror_PARM_2,#0x00
+	mov	dpl,r0
+	push	ar5
+	push	ar6
+	push	ar7
+	lcall	_mirror
+	mov	_mxWrite_PARM_2,dpl
+	mov	dpl,#0x05
+	lcall	_mxWrite
+	pop	ar7
+	pop	ar6
+	pop	ar5
+;	matrix.c:65: mxWrite(6, mirror(grid[1], 1));
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
+	mov	r5,a
+	mov	_mirror_PARM_2,#0x01
+	mov	dpl,r5
+	lcall	_mirror
+	mov	_mxWrite_PARM_2,dpl
+	mov	dpl,#0x06
+	lcall	_mxWrite
+;	matrix.c:66: mxWrite(7, mirror(grid[0], 0));
+	mov	dpl,_mxDisplay_grid_1_60
+	mov	dph,(_mxDisplay_grid_1_60 + 1)
+	mov	b,(_mxDisplay_grid_1_60 + 2)
+	lcall	__gptrget
+	mov	r5,a
+	mov	_mirror_PARM_2,#0x00
+	mov	dpl,r5
+	lcall	_mirror
+	mov	_mxWrite_PARM_2,dpl
+	mov	dpl,#0x07
+	lcall	_mxWrite
+;	matrix.c:67: mxWrite(8, mirror(grid[0], 1));
+	mov	dpl,_mxDisplay_grid_1_60
+	mov	dph,(_mxDisplay_grid_1_60 + 1)
+	mov	b,(_mxDisplay_grid_1_60 + 2)
+	lcall	__gptrget
+	mov	r5,a
+	mov	_mirror_PARM_2,#0x01
+	mov	dpl,r5
+	lcall	_mirror
+	mov	_mxWrite_PARM_2,dpl
+	mov	dpl,#0x08
+;	matrix.c:68: return;
+;	matrix.c:72: for (i = 0; i < 8; i++) {
+	ljmp	_mxWrite
+L007015?:
+	mov	a,#0x01
+	cjne	a,_mxDisplay_PARM_2,L007019?
+	mov	a,#0x01
+	sjmp	L007020?
+L007019?:
 	clr	a
-	subb	a,r4
-	mov	r4,a
-	mov	a,r3
-	add	a,_mxDisplay_grid_1_54
-	mov	r3,a
-	mov	a,r4
-	addc	a,(_mxDisplay_grid_1_54 + 1)
-	mov	r4,a
-	mov	r0,(_mxDisplay_grid_1_54 + 2)
-	mov	dpl,r3
-	mov	dph,r4
-	mov	b,r0
+L007020?:
+	mov	r5,a
+	mov	r6,#0x00
+L007006?:
+	cjne	r6,#0x08,L007021?
+L007021?:
+	jnc	L007010?
+;	matrix.c:74: if (options == 1) mxWrite(i+1, reverse(grid[i]));
+	mov	a,r5
+	jz	L007004?
+	mov	a,r6
+	inc	a
+	mov	r7,a
+	mov	a,r6
+	add	a,_mxDisplay_grid_1_60
+	mov	r0,a
+	clr	a
+	addc	a,(_mxDisplay_grid_1_60 + 1)
+	mov	r1,a
+	mov	r2,(_mxDisplay_grid_1_60 + 2)
+	mov	dpl,r0
+	mov	dph,r1
+	mov	b,r2
 	lcall	__gptrget
 	mov	dpl,a
-	push	ar2
 	push	ar5
 	push	ar6
 	push	ar7
 	lcall	_reverse
 	mov	_mxWrite_PARM_2,dpl
 	pop	ar7
-	pop	ar6
-	pop	ar5
-	pop	ar2
-	mov	dpl,r2
-	push	ar5
-	push	ar6
-	push	ar7
+	mov	dpl,r7
 	lcall	_mxWrite
-	pop	ar7
 	pop	ar6
 	pop	ar5
-	sjmp	L005012?
-L005005?:
-;	matrix.c:55: else mxWrite(i+1, grid[7-i]);	
-	mov	a,r7
+	sjmp	L007008?
+L007004?:
+;	matrix.c:77: else mxWrite(i+1, grid[i]);
+	mov	a,r6
 	inc	a
 	mov	r2,a
-	mov	ar3,r7
-	mov	r4,#0x00
-	mov	a,#0x07
-	clr	c
-	subb	a,r3
+	mov	a,r6
+	add	a,_mxDisplay_grid_1_60
 	mov	r3,a
 	clr	a
-	subb	a,r4
+	addc	a,(_mxDisplay_grid_1_60 + 1)
 	mov	r4,a
-	mov	a,r3
-	add	a,_mxDisplay_grid_1_54
-	mov	r3,a
-	mov	a,r4
-	addc	a,(_mxDisplay_grid_1_54 + 1)
-	mov	r4,a
-	mov	r0,(_mxDisplay_grid_1_54 + 2)
+	mov	r7,(_mxDisplay_grid_1_60 + 2)
 	mov	dpl,r3
 	mov	dph,r4
-	mov	b,r0
+	mov	b,r7
 	lcall	__gptrget
 	mov	_mxWrite_PARM_2,a
 	mov	dpl,r2
 	push	ar5
 	push	ar6
-	push	ar7
 	lcall	_mxWrite
-	pop	ar7
 	pop	ar6
 	pop	ar5
-L005012?:
-;	matrix.c:49: for (i = 0; i < 8; i++) {
-	inc	r7
-	ljmp	L005010?
+L007008?:
+;	matrix.c:72: for (i = 0; i < 8; i++) {
+	inc	r6
+	sjmp	L007006?
+L007010?:
+	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'mxWrite'
 ;------------------------------------------------------------
 ;value                     Allocated with name '_mxWrite_PARM_2'
 ;address                   Allocated to registers r2 
 ;------------------------------------------------------------
-;	matrix.c:61: void mxWrite(unsigned char address, unsigned char value) {
+;	matrix.c:82: void mxWrite(unsigned char address, unsigned char value) {
 ;	-----------------------------------------
 ;	 function mxWrite
 ;	-----------------------------------------
 _mxWrite:
 	mov	r2,dpl
-;	matrix.c:62: if ((address < 1) || (address > 8)) return;
-	cjne	r2,#0x01,L006007?
-L006007?:
-	jc	L006001?
+;	matrix.c:83: if ((address < 1) || (address > 8)) return;
+	cjne	r2,#0x01,L008007?
+L008007?:
+	jc	L008001?
 	mov	a,r2
 	add	a,#0xff - 0x08
-	jnc	L006002?
-L006001?:
+	jnc	L008002?
+L008001?:
 	ret
-L006002?:
-;	matrix.c:63: mxSPI(address);
+L008002?:
+;	matrix.c:84: mxSPI(address);
 	mov	dpl,r2
 	lcall	_mxSPI
-;	matrix.c:64: mxSPI(value);
+;	matrix.c:85: mxSPI(value);
 	mov	dpl,_mxWrite_PARM_2
 	lcall	_mxSPI
-;	matrix.c:65: mxPulse();
+;	matrix.c:86: mxPulse();
 	ljmp	_mxPulse
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'mxSPI'
@@ -774,49 +862,49 @@ L006002?:
 ;j                         Allocated to registers r3 
 ;temp                      Allocated to registers r4 
 ;------------------------------------------------------------
-;	matrix.c:69: void mxSPI(unsigned char value) {
+;	matrix.c:90: void mxSPI(unsigned char value) {
 ;	-----------------------------------------
 ;	 function mxSPI
 ;	-----------------------------------------
 _mxSPI:
 	mov	r2,dpl
-;	matrix.c:71: for (j = 0; j < 8; j++) {
+;	matrix.c:92: for (j = 0; j < 8; j++) {
 	mov	r3,#0x00
-L007001?:
-	cjne	r3,#0x08,L007010?
-L007010?:
-	jnc	L007005?
-;	matrix.c:72: temp = value & 0x80;
+L009001?:
+	cjne	r3,#0x08,L009010?
+L009010?:
+	jnc	L009005?
+;	matrix.c:93: temp = value & 0x80;
 	mov	a,#0x80
 	anl	a,r2
 	mov	r4,a
-;	matrix.c:73: LED_DATA = (temp == 0x80) ? HIGH : LOW;
-	cjne	r4,#0x80,L007012?
+;	matrix.c:94: LED_DATA = (temp == 0x80) ? HIGH : LOW;
+	cjne	r4,#0x80,L009012?
 	setb	c
-	sjmp	L007013?
-L007012?:
+	sjmp	L009013?
+L009012?:
 	clr	c
-L007013?:
+L009013?:
 	mov	_P1_3,c
-;	matrix.c:76: LED_CLK = HIGH;
+;	matrix.c:97: LED_CLK = HIGH;
 	setb	_P1_2
-;	matrix.c:77: Timer3us(20);
+;	matrix.c:98: Timer3us(20);
 	mov	dpl,#0x14
 	push	ar2
 	push	ar3
 	lcall	_Timer3us
 	pop	ar3
 	pop	ar2
-;	matrix.c:78: LED_CLK = LOW;
+;	matrix.c:99: LED_CLK = LOW;
 	clr	_P1_2
-;	matrix.c:81: value = value << 1;
+;	matrix.c:102: value = value << 1;
 	mov	a,r2
 	add	a,r2
 	mov	r2,a
-;	matrix.c:71: for (j = 0; j < 8; j++) {
+;	matrix.c:92: for (j = 0; j < 8; j++) {
 	inc	r3
-	sjmp	L007001?
-L007005?:
+	sjmp	L009001?
+L009005?:
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'mxSPIR'
@@ -825,66 +913,66 @@ L007005?:
 ;j                         Allocated to registers r3 
 ;temp                      Allocated to registers r4 
 ;------------------------------------------------------------
-;	matrix.c:86: void mxSPIR(unsigned char value) {
+;	matrix.c:107: void mxSPIR(unsigned char value) {
 ;	-----------------------------------------
 ;	 function mxSPIR
 ;	-----------------------------------------
 _mxSPIR:
 	mov	r2,dpl
-;	matrix.c:88: for (j = 0; j < 8; j++) {
+;	matrix.c:109: for (j = 0; j < 8; j++) {
 	mov	r3,#0x00
-L008001?:
-	cjne	r3,#0x08,L008010?
-L008010?:
-	jnc	L008005?
-;	matrix.c:89: temp = value & 0x01;
+L010001?:
+	cjne	r3,#0x08,L010010?
+L010010?:
+	jnc	L010005?
+;	matrix.c:110: temp = value & 0x01;
 	mov	a,#0x01
 	anl	a,r2
 	mov	r4,a
-;	matrix.c:90: LED_DATA = (temp == 0x01) ? HIGH : LOW;
-	cjne	r4,#0x01,L008012?
+;	matrix.c:111: LED_DATA = (temp == 0x01) ? HIGH : LOW;
+	cjne	r4,#0x01,L010012?
 	setb	c
-	sjmp	L008013?
-L008012?:
+	sjmp	L010013?
+L010012?:
 	clr	c
-L008013?:
+L010013?:
 	mov	_P1_3,c
-;	matrix.c:93: LED_CLK = HIGH;
+;	matrix.c:114: LED_CLK = HIGH;
 	setb	_P1_2
-;	matrix.c:94: Timer3us(20);
+;	matrix.c:115: Timer3us(20);
 	mov	dpl,#0x14
 	push	ar2
 	push	ar3
 	lcall	_Timer3us
 	pop	ar3
 	pop	ar2
-;	matrix.c:95: LED_CLK = LOW;
+;	matrix.c:116: LED_CLK = LOW;
 	clr	_P1_2
-;	matrix.c:98: value = value >> 1;
+;	matrix.c:119: value = value >> 1;
 	mov	a,r2
 	clr	c
 	rrc	a
 	mov	r2,a
-;	matrix.c:88: for (j = 0; j < 8; j++) {
+;	matrix.c:109: for (j = 0; j < 8; j++) {
 	inc	r3
-	sjmp	L008001?
-L008005?:
+	sjmp	L010001?
+L010005?:
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'mxPulse'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	matrix.c:103: void mxPulse(void) {
+;	matrix.c:124: void mxPulse(void) {
 ;	-----------------------------------------
 ;	 function mxPulse
 ;	-----------------------------------------
 _mxPulse:
-;	matrix.c:104: LED_CS = HIGH;
+;	matrix.c:125: LED_CS = HIGH;
 	setb	_P1_4
-;	matrix.c:105: waitms(1);
+;	matrix.c:126: waitms(1);
 	mov	dptr,#0x0001
 	lcall	_waitms
-;	matrix.c:106: LED_CS = LOW;
+;	matrix.c:127: LED_CS = LOW;
 	clr	_P1_4
 	ret
 ;------------------------------------------------------------
@@ -892,133 +980,105 @@ _mxPulse:
 ;------------------------------------------------------------
 ;j                         Allocated to registers r2 
 ;------------------------------------------------------------
-;	matrix.c:110: void mxClear(void) {
+;	matrix.c:131: void mxClear(void) {
 ;	-----------------------------------------
 ;	 function mxClear
 ;	-----------------------------------------
 _mxClear:
-;	matrix.c:112: for (j = 1; j <= 8; j++) {
+;	matrix.c:133: for (j = 1; j <= 8; j++) {
 	mov	r2,#0x01
-L010001?:
+L012001?:
 	mov	a,r2
 	add	a,#0xff - 0x08
-	jc	L010005?
-;	matrix.c:113: mxSPI(j);
+	jc	L012005?
+;	matrix.c:134: mxSPI(j);
 	mov	dpl,r2
 	push	ar2
 	lcall	_mxSPI
-;	matrix.c:114: mxSPI(0x00);
+;	matrix.c:135: mxSPI(0x00);
 	mov	dpl,#0x00
 	lcall	_mxSPI
-;	matrix.c:115: mxPulse();
+;	matrix.c:136: mxPulse();
 	lcall	_mxPulse
 	pop	ar2
-;	matrix.c:112: for (j = 1; j <= 8; j++) {
+;	matrix.c:133: for (j = 1; j <= 8; j++) {
 	inc	r2
-	sjmp	L010001?
-L010005?:
+	sjmp	L012001?
+L012005?:
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'mxIntensity'
 ;------------------------------------------------------------
 ;intensity                 Allocated to registers r2 
 ;------------------------------------------------------------
-;	matrix.c:120: void mxIntensity(unsigned char intensity) {
+;	matrix.c:141: void mxIntensity(unsigned char intensity) {
 ;	-----------------------------------------
 ;	 function mxIntensity
 ;	-----------------------------------------
 _mxIntensity:
-;	matrix.c:121: if (intensity > 0x0F) return;
+;	matrix.c:142: if (intensity > 0x0F) return;
 	mov	a,dpl
 	mov	r2,a
 	add	a,#0xff - 0x0F
-	jnc	L011002?
+	jnc	L013002?
 	ret
-L011002?:
-;	matrix.c:122: mxSPI(0x0A);
+L013002?:
+;	matrix.c:143: mxSPI(0x0A);
 	mov	dpl,#0x0A
 	push	ar2
 	lcall	_mxSPI
 	pop	ar2
-;	matrix.c:123: mxSPI(intensity);
+;	matrix.c:144: mxSPI(intensity);
 	mov	dpl,r2
 	lcall	_mxSPI
-;	matrix.c:124: mxPulse();
+;	matrix.c:145: mxPulse();
 	ljmp	_mxPulse
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'mxInit'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	matrix.c:128: void mxInit(void) {
+;	matrix.c:149: void mxInit(void) {
 ;	-----------------------------------------
 ;	 function mxInit
 ;	-----------------------------------------
 _mxInit:
-;	matrix.c:130: P1MDOUT &= 0b_1111_0001;
+;	matrix.c:151: P1MDOUT &= 0b_1111_0001;
 	anl	_P1MDOUT,#0xF1
-;	matrix.c:132: LED_CS = LOW;
+;	matrix.c:153: LED_CS = LOW;
 	clr	_P1_4
-;	matrix.c:135: mxSPI(0x09);
+;	matrix.c:156: mxSPI(0x09);
 	mov	dpl,#0x09
 	lcall	_mxSPI
-;	matrix.c:136: mxSPI(0x00);
+;	matrix.c:157: mxSPI(0x00);
 	mov	dpl,#0x00
 	lcall	_mxSPI
-;	matrix.c:137: mxPulse();
+;	matrix.c:158: mxPulse();
 	lcall	_mxPulse
-;	matrix.c:140: mxSPI(0x0A);
+;	matrix.c:161: mxSPI(0x0A);
 	mov	dpl,#0x0A
 	lcall	_mxSPI
-;	matrix.c:141: mxSPI(0x01);
-	mov	dpl,#0x01
+;	matrix.c:162: mxSPI(0x0F);
+	mov	dpl,#0x0F
 	lcall	_mxSPI
-;	matrix.c:142: mxPulse();
+;	matrix.c:163: mxPulse();
 	lcall	_mxPulse
-;	matrix.c:145: mxSPI(0x0b);
+;	matrix.c:166: mxSPI(0x0b);
 	mov	dpl,#0x0B
 	lcall	_mxSPI
-;	matrix.c:146: mxSPI(0x07);
+;	matrix.c:167: mxSPI(0x07);
 	mov	dpl,#0x07
 	lcall	_mxSPI
-;	matrix.c:147: mxPulse();
+;	matrix.c:168: mxPulse();
 	lcall	_mxPulse
-;	matrix.c:150: mxClear();
+;	matrix.c:171: mxClear();
 	lcall	_mxClear
-;	matrix.c:153: mxSPI(0x0C);
+;	matrix.c:174: mxSPI(0x0C);
 	mov	dpl,#0x0C
 	lcall	_mxSPI
-;	matrix.c:154: mxSPI(0x01);
+;	matrix.c:175: mxSPI(0x01);
 	mov	dpl,#0x01
 	lcall	_mxSPI
-;	matrix.c:155: mxPulse();
-	ljmp	_mxPulse
-;------------------------------------------------------------
-;Allocation info for local variables in function 'mxTest'
-;------------------------------------------------------------
-;------------------------------------------------------------
-;	matrix.c:159: void mxTest(void) {
-;	-----------------------------------------
-;	 function mxTest
-;	-----------------------------------------
-_mxTest:
-;	matrix.c:160: mxSPI(0x0F);
-	mov	dpl,#0x0F
-	lcall	_mxSPI
-;	matrix.c:161: mxSPI(0x01);
-	mov	dpl,#0x01
-	lcall	_mxSPI
-;	matrix.c:162: mxPulse();
-	lcall	_mxPulse
-;	matrix.c:163: waitms(1000);
-	mov	dptr,#0x03E8
-	lcall	_waitms
-;	matrix.c:164: mxSPI(0x0F);
-	mov	dpl,#0x0F
-	lcall	_mxSPI
-;	matrix.c:165: mxSPI(0x00);
-	mov	dpl,#0x00
-	lcall	_mxSPI
-;	matrix.c:166: mxPulse();
+;	matrix.c:176: mxPulse();
 	ljmp	_mxPulse
 	rseg R_CSEG
 

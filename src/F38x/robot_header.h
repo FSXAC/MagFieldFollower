@@ -60,9 +60,13 @@ void uturn(void);
 void movecar (int forback, int power);
 
 // led matrix functions
-unsigned char reverse(unsigned char b);
 void mxDirection(unsigned char flipped);
 void mxGo(unsigned char flipped);
+void mxStop(void);
+void mxUTurn(void);
+
+// led matrix helper functions
+unsigned char reverse(unsigned char b);
 void mxSPI(unsigned char value); // FIX ME
 void mxPulse(void);
 void mxClear(void);

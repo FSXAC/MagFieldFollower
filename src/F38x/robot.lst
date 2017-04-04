@@ -1,7 +1,7 @@
 0000              1   ;--------------------------------------------------------
 0000              2   ; File Created by C51
 0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-0000              4   ; This file was generated Mon Apr 03 19:29:45 2017
+0000              4   ; This file was generated Mon Apr 03 22:41:33 2017
 0000              5   ;--------------------------------------------------------
                   5   $name robot
                   6   $optc51 --model-small
@@ -392,9 +392,9 @@
 0008            392            ds 1
 0009            393   _currentstate:
 0009            394            ds 1
-000A            395   _main_v1_1_68:
+000A            395   _main_v1_1_70:
 000A            396            ds 4
-000E            397   _main_v2_1_68:
+000E            397   _main_v2_1_70:
 000E            398            ds 4
 0012            399   _main_sloc0_1_0:
 0012            400            ds 2
@@ -412,21 +412,21 @@
 001E            412            ds 4
 0022            413   _main_sloc7_1_0:
 0022            414            ds 4
-0026            415   _linetrack_vleft_1_87:
+0026            415   _linetrack_vleft_1_89:
 0026            416            ds 4
-002A            417   _linetrack_vright_1_87:
+002A            417   _linetrack_vright_1_89:
 002A            418            ds 4
 002E            419   _linetrack_sloc0_1_0:
 002E            420            ds 4
 0032            421   _linetrack_sloc1_1_0:
 0032            422            ds 4
-0036            423   _turncar_v_1_93:
+0036            423   _turncar_v_1_95:
 0036            424            ds 4
-003A            425   _turncar_direction_1_93:
+003A            425   _turncar_direction_1_95:
 003A            426            ds 1
-003B            427   _uturn_vleft_1_103:
+003B            427   _uturn_vleft_1_105:
 003B            428            ds 4
-003F            429   _uturn_vright_1_103:
+003F            429   _uturn_vright_1_105:
 003F            430            ds 4
 0043            431   ;--------------------------------------------------------
 0043            432   ; overlayable items in internal ram 
@@ -512,8 +512,8 @@
 0000            512   ;------------------------------------------------------------
 0000            513   ;Allocation info for local variables in function 'main'
 0000            514   ;------------------------------------------------------------
-0000            515   ;v1                        Allocated with name '_main_v1_1_68'
-0000            516   ;v2                        Allocated with name '_main_v2_1_68'
+0000            515   ;v1                        Allocated with name '_main_v1_1_70'
+0000            516   ;v2                        Allocated with name '_main_v2_1_70'
 0000            517   ;sloc0                     Allocated with name '_main_sloc0_1_0'
 0000            518   ;sloc1                     Allocated with name '_main_sloc1_1_0'
 0000            519   ;sloc2                     Allocated with name '_main_sloc2_1_0'
@@ -530,15 +530,15 @@
 0000            530   _main:
 0000            531            using   0
 0000            532   ;        robot.c:22: volatile float v1 = 0;
-0000 752800     533            mov     _main_v1_1_68,#0x00
-0003 752900     534            mov     (_main_v1_1_68 + 1),#0x00
-0006 752A00     535            mov     (_main_v1_1_68 + 2),#0x00
-0009 752B00     536            mov     (_main_v1_1_68 + 3),#0x00
+0000 752800     533            mov     _main_v1_1_70,#0x00
+0003 752900     534            mov     (_main_v1_1_70 + 1),#0x00
+0006 752A00     535            mov     (_main_v1_1_70 + 2),#0x00
+0009 752B00     536            mov     (_main_v1_1_70 + 3),#0x00
 000C            537   ;        robot.c:23: volatile float v2 = 0;
-000C 756800     538            mov     _main_v2_1_68,#0x00
-000F 756900     539            mov     (_main_v2_1_68 + 1),#0x00
-0012 756A00     540            mov     (_main_v2_1_68 + 2),#0x00
-0015 756B00     541            mov     (_main_v2_1_68 + 3),#0x00
+000C 756800     538            mov     _main_v2_1_70,#0x00
+000F 756900     539            mov     (_main_v2_1_70 + 1),#0x00
+0012 756A00     540            mov     (_main_v2_1_70 + 2),#0x00
+0015 756B00     541            mov     (_main_v2_1_70 + 3),#0x00
 0018            542   ;        robot.c:25: MOTOR_LEFT0 = 0;
 0018 C295       543            clr     _P1_5
 001A            544   ;        robot.c:26: MOTOR_LEFT1 = 0;
@@ -702,1801 +702,1799 @@
 0155 120100     702            lcall   _mxDirection
 0158 8001       703            sjmp    L002011?
 015A            704   L002007?:
-015A            705   ;        robot.c:61: else if (currentcmd == CMD_FORWARD) mxGo(0);
-015A 7403       706            mov     a,#0x03
+015A            705   ;        robot.c:61: else if (currentcmd == CMD_STOP) mxStop();
+015A 7405       706            mov     a,#0x05
 015C B53078     707            cjne    a,_currentcmd,L002004?
-015F 758200     708            mov     dpl,#0x00
-0162 120100     709            lcall   _mxGo
-0165 8001       710            sjmp    L002011?
-0167            711   L002004?:
-0167            712   ;        robot.c:62: else if (currentcmd == CMD_REVERSE) mxGo(1);
-0167 7404       713            mov     a,#0x04
-0169 B530F8     714            cjne    a,_currentcmd,L002011?
-016C 758201     715            mov     dpl,#0x01
-016F 120100     716            lcall   _mxGo
-0172            717   L002011?:
-0172            718   ;        robot.c:65: switch (currentstate) {
-0172 AAF0       719            mov     r2,_currentstate
-0174 BA01F8     720            cjne    r2,#0x01,L002087?
-0177 8001       721            sjmp    L002012?
-0179            722   L002087?:
-0179 BA0278     723            cjne    r2,#0x02,L002088?
-017C 8001       724            sjmp    L002013?
-017E            725   L002088?:
-017E            726   ;        robot.c:66: case FORWARD_STATE:
-017E BA03F8     727            cjne    r2,#0x03,L002015?
-0181 8001       728            sjmp    L002014?
-0183            729   L002012?:
-0183            730   ;        robot.c:67: linetrack(0);       // forwards
-0183 900000     731            mov     dptr,#0x0000
-0186 120100     732            lcall   _linetrack
-0189            733   ;        robot.c:69: v1 = Volts_at_Pin(TANK_FL);
-0189 75820B     734            mov     dpl,#0x0B
-018C 120100     735            lcall   _Volts_at_Pin
-018F 858228     736            mov     _main_v1_1_68,dpl
-0192 858329     737            mov     (_main_v1_1_68 + 1),dph
-0195 85F02A     738            mov     (_main_v1_1_68 + 2),b
-0198 F52B       739            mov     (_main_v1_1_68 + 3),a
-019A            740   ;        robot.c:70: v2 = Volts_at_Pin(TANK_FR);
-019A 75820C     741            mov     dpl,#0x0C
-019D 120100     742            lcall   _Volts_at_Pin
-01A0 858268     743            mov     _main_v2_1_68,dpl
-01A3 858369     744            mov     (_main_v2_1_68 + 1),dph
-01A6 85F06A     745            mov     (_main_v2_1_68 + 2),b
-01A9 F56B       746            mov     (_main_v2_1_68 + 3),a
-01AB            747   ;        robot.c:71: break;
-01AB            748   ;        robot.c:72: case REVERSE_STATE:
-01AB 8001       749            sjmp    L002015?
-01AD            750   L002013?:
-01AD            751   ;        robot.c:73: linetrack(1);       // backwards
-01AD 900001     752            mov     dptr,#0x0001
-01B0 120100     753            lcall   _linetrack
-01B3            754   ;        robot.c:75: v2 = Volts_at_Pin(TANK_RL);
-01B3 75820D     755            mov     dpl,#0x0D
-01B6 120100     756            lcall   _Volts_at_Pin
-01B9 858268     757            mov     _main_v2_1_68,dpl
-01BC 858369     758            mov     (_main_v2_1_68 + 1),dph
-01BF 85F06A     759            mov     (_main_v2_1_68 + 2),b
-01C2 F56B       760            mov     (_main_v2_1_68 + 3),a
-01C4            761   ;        robot.c:76: v1 = Volts_at_Pin(TANK_RR);
-01C4 75820E     762            mov     dpl,#0x0E
-01C7 120100     763            lcall   _Volts_at_Pin
-01CA 858228     764            mov     _main_v1_1_68,dpl
-01CD 858329     765            mov     (_main_v1_1_68 + 1),dph
-01D0 85F02A     766            mov     (_main_v1_1_68 + 2),b
-01D3 F52B       767            mov     (_main_v1_1_68 + 3),a
-01D5            768   ;        robot.c:77: break;
-01D5            769   ;        robot.c:78: case STOP_STATE:
-01D5 8001       770            sjmp    L002015?
-01D7            771   L002014?:
-01D7            772   ;        robot.c:79: stopcar();          // stop car
-01D7 120100     773            lcall   _stopcar
-01DA            774   ;        robot.c:81: }
-01DA            775   L002015?:
-01DA            776   ;        robot.c:84: switch (currentcmd) {
-01DA E530       777            mov     a,_currentcmd
-01DC FA         778            mov     r2,a
-01DD 30E778     779            jnb     acc.7,L002090?
-01E0 020100     780            ljmp    L002042?
-01E3            781   L002090?:
-01E3 C3         782            clr     c
-01E4 7486       783            mov     a,#(0x06 ^ 0x80)
-01E6 8AF0       784            mov     b,r2
-01E8 63F080     785            xrl     b,#0x80
-01EB 95F0       786            subb    a,b
-01ED 5001       787            jnc     L002091?
-01EF 020100     788            ljmp    L002042?
-01F2            789   L002091?:
-01F2 EA         790            mov     a,r2
-01F3 2A         791            add     a,r2
-01F4 2A         792            add     a,r2
-01F5 909E38     793            mov     dptr,#L002092?
-01F8 73         794            jmp     @a+dptr
-01F9            795   L002092?:
-01F9 020100     796            ljmp    L002016?
-01FC 020100     797            ljmp    L002030?
-01FF 020100     798            ljmp    L002034?
-0202 020100     799            ljmp    L002038?
-0205 020100     800            ljmp    L002039?
-0208 020100     801            ljmp    L002040?
-020B 020100     802            ljmp    L002041?
-020E            803   ;        robot.c:86: case CMD_NONE:
-020E            804   L002016?:
-020E            805   ;        robot.c:88: if ((currentstate-1) ? 
-020E AAF0       806            mov     r2,_currentstate
-0210 E5F0       807            mov     a,_currentstate
-0212 33         808            rlc     a
-0213 95E0       809            subb    a,acc
-0215 FB         810            mov     r3,a
-0216 1A         811            dec     r2
-0217 BAFF40     812            cjne    r2,#0xff,L002093?
-021A 1B         813            dec     r3
-021B            814   L002093?:
-021B EA         815            mov     a,r2
-021C 4B         816            orl     a,r3
-021D 6001       817            jz      L002049?
-021F            818   ;        robot.c:89: (v1 > 1.2 && v2 > 1.2) :
-021F 749A       819            mov     a,#0x9A
-0221 C0E0       820            push    acc
-0223 7499       821            mov     a,#0x99
-0225 C0E0       822            push    acc
-0227 C0E0       823            push    acc
-0229 743F       824            mov     a,#0x3F
-022B C0E0       825            push    acc
-022D 852882     826            mov     dpl,_main_v1_1_68
-0230 852983     827            mov     dph,(_main_v1_1_68 + 1)
-0233 852AF0     828            mov     b,(_main_v1_1_68 + 2)
-0236 E52B       829            mov     a,(_main_v1_1_68 + 3)
-0238 120100     830            lcall   ___fsgt
-023B AA82       831            mov     r2,dpl
-023D E581       832            mov     a,sp
-023F 24FC       833            add     a,#0xfc
-0241 F581       834            mov     sp,a
-0243 EA         835            mov     a,r2
-0244 6001       836            jz      L002051?
-0246 749A       837            mov     a,#0x9A
-0248 C0E0       838            push    acc
-024A 7499       839            mov     a,#0x99
-024C C0E0       840            push    acc
-024E C0E0       841            push    acc
-0250 743F       842            mov     a,#0x3F
-0252 C0E0       843            push    acc
-0254 856882     844            mov     dpl,_main_v2_1_68
-0257 856983     845            mov     dph,(_main_v2_1_68 + 1)
-025A 856AF0     846            mov     b,(_main_v2_1_68 + 2)
-025D E56B       847            mov     a,(_main_v2_1_68 + 3)
-025F 120100     848            lcall   ___fsgt
-0262 AA82       849            mov     r2,dpl
-0264 E581       850            mov     a,sp
-0266 24FC       851            add     a,#0xfc
-0268 F581       852            mov     sp,a
-026A EA         853            mov     a,r2
-026B 7001       854            jnz     L002052?
-026D            855   L002051?:
-026D 7A00       856            mov     r2,#0x00
-026F 8001       857            sjmp    L002053?
-0271            858   L002052?:
-0271 7A01       859            mov     r2,#0x01
-0273            860   L002053?:
-0273 EA         861            mov     a,r2
-0274 24FF       862            add     a,#0xff
-0276 9218       863            mov     _main_sloc8_1_0,c
-0278 8001       864            sjmp    L002050?
-027A            865   L002049?:
-027A            866   ;        robot.c:90: (v1 > 0.7 && v2 > 1)) {
-027A 7433       867            mov     a,#0x33
-027C C0E0       868            push    acc
-027E C0E0       869            push    acc
-0280 C0E0       870            push    acc
-0282 743F       871            mov     a,#0x3F
-0284 C0E0       872            push    acc
-0286 852882     873            mov     dpl,_main_v1_1_68
-0289 852983     874            mov     dph,(_main_v1_1_68 + 1)
-028C 852AF0     875            mov     b,(_main_v1_1_68 + 2)
-028F E52B       876            mov     a,(_main_v1_1_68 + 3)
-0291 120100     877            lcall   ___fsgt
-0294 AA82       878            mov     r2,dpl
-0296 E581       879            mov     a,sp
-0298 24FC       880            add     a,#0xfc
-029A F581       881            mov     sp,a
-029C EA         882            mov     a,r2
-029D 6001       883            jz      L002054?
-029F E4         884            clr     a
-02A0 C0E0       885            push    acc
-02A2 C0E0       886            push    acc
-02A4 7480       887            mov     a,#0x80
-02A6 C0E0       888            push    acc
-02A8 743F       889            mov     a,#0x3F
-02AA C0E0       890            push    acc
-02AC 856882     891            mov     dpl,_main_v2_1_68
-02AF 856983     892            mov     dph,(_main_v2_1_68 + 1)
-02B2 856AF0     893            mov     b,(_main_v2_1_68 + 2)
-02B5 E56B       894            mov     a,(_main_v2_1_68 + 3)
-02B7 120100     895            lcall   ___fsgt
-02BA AA82       896            mov     r2,dpl
-02BC E581       897            mov     a,sp
-02BE 24FC       898            add     a,#0xfc
-02C0 F581       899            mov     sp,a
-02C2 EA         900            mov     a,r2
-02C3 7001       901            jnz     L002055?
-02C5            902   L002054?:
-02C5 7A00       903            mov     r2,#0x00
-02C7 8001       904            sjmp    L002056?
-02C9            905   L002055?:
-02C9 7A01       906            mov     r2,#0x01
-02CB            907   L002056?:
-02CB EA         908            mov     a,r2
-02CC 24FF       909            add     a,#0xff
-02CE 9218       910            mov     _main_sloc8_1_0,c
-02D0            911   L002050?:
-02D0 2018C0     912            jb      _main_sloc8_1_0,L002099?
-02D3 020100     913            ljmp    L002045?
-02D6            914   L002099?:
-02D6            915   ;        robot.c:91: printf("\nINTERSECTION\n");
-02D6 7400       916            mov     a,#__str_2
-02D8 C0E0       917            push    acc
-02DA 74A3       918            mov     a,#(__str_2 >> 8)
-02DC C0E0       919            push    acc
-02DE 7480       920            mov     a,#0x80
-02E0 C0E0       921            push    acc
-02E2 120100     922            lcall   _printf
-02E5 1581       923            dec     sp
-02E7 1581       924            dec     sp
-02E9 1581       925            dec     sp
-02EB            926   ;        robot.c:93: if (currentstate == 1) {
-02EB 7401       927            mov     a,#0x01
-02ED B5F040     928            cjne    a,_currentstate,L002026?
-02F0            929   ;        robot.c:94: if (Volts_at_Pin(TANK_RL)>Volts_at_Pin(TANK_RR)) {
-02F0 75820D     930            mov     dpl,#0x0D
-02F3 120100     931            lcall   _Volts_at_Pin
-02F6 AA82       932            mov     r2,dpl
-02F8 AB83       933            mov     r3,dph
-02FA ACF0       934            mov     r4,b
-02FC FD         935            mov     r5,a
-02FD 75820E     936            mov     dpl,#0x0E
-0300 C002       937            push    ar2
-0302 C003       938            push    ar3
-0304 C004       939            push    ar4
-0306 C005       940            push    ar5
-0308 120100     941            lcall   _Volts_at_Pin
-030B AE82       942            mov     r6,dpl
-030D AF83       943            mov     r7,dph
-030F A8F0       944            mov     r0,b
-0311 F9         945            mov     r1,a
-0312 D005       946            pop     ar5
-0314 D004       947            pop     ar4
-0316 D003       948            pop     ar3
-0318 D002       949            pop     ar2
-031A C006       950            push    ar6
-031C C007       951            push    ar7
-031E C000       952            push    ar0
-0320 C001       953            push    ar1
-0322 8A82       954            mov     dpl,r2
-0324 8B83       955            mov     dph,r3
-0326 8CF0       956            mov     b,r4
-0328 ED         957            mov     a,r5
-0329 120100     958            lcall   ___fsgt
-032C AA82       959            mov     r2,dpl
-032E E581       960            mov     a,sp
-0330 24FC       961            add     a,#0xfc
-0332 F581       962            mov     sp,a
-0334 EA         963            mov     a,r2
-0335 6001       964            jz      L002018?
-0337            965   ;        robot.c:95: pwm_Left1 = 50;
-0337 753032     966            mov     _pwm_Left1,#0x32
-033A            967   ;        robot.c:96: pwm_Left0 = -1;
-033A 7570FF     968            mov     _pwm_Left0,#0xFF
-033D            969   ;        robot.c:97: pwm_Right0 = 30;
-033D 75F01E     970            mov     _pwm_Right0,#0x1E
-0340            971   ;        robot.c:98: pwm_Right1 = -1;
-0340 75B0FF     972            mov     _pwm_Right1,#0xFF
-0343 8001       973            sjmp    L002027?
-0345            974   L002018?:
-0345            975   ;        robot.c:101: pwm_Left1 = 30;
-0345 75301E     976            mov     _pwm_Left1,#0x1E
-0348            977   ;        robot.c:102: pwm_Left0 = -1;
-0348 7570FF     978            mov     _pwm_Left0,#0xFF
-034B            979   ;        robot.c:103: pwm_Right0 = 50;
-034B 75F032     980            mov     _pwm_Right0,#0x32
-034E            981   ;        robot.c:104: pwm_Right1 = -1;
-034E 75B0FF     982            mov     _pwm_Right1,#0xFF
-0351 8001       983            sjmp    L002027?
-0353            984   L002026?:
-0353            985   ;        robot.c:106: } else if (currentstate == 2) {
-0353 7402       986            mov     a,#0x02
-0355 B5F0C0     987            cjne    a,_currentstate,L002027?
-0358            988   ;        robot.c:107: if (Volts_at_Pin(TANK_FL)>Volts_at_Pin(TANK_FR)) {
-0358 75820B     989            mov     dpl,#0x0B
-035B 120100     990            lcall   _Volts_at_Pin
-035E AA82       991            mov     r2,dpl
-0360 AB83       992            mov     r3,dph
-0362 ACF0       993            mov     r4,b
-0364 FD         994            mov     r5,a
-0365 75820C     995            mov     dpl,#0x0C
-0368 C002       996            push    ar2
-036A C003       997            push    ar3
-036C C004       998            push    ar4
-036E C005       999            push    ar5
-0370 120100    1000            lcall   _Volts_at_Pin
-0373 AE82      1001            mov     r6,dpl
-0375 AF83      1002            mov     r7,dph
-0377 A8F0      1003            mov     r0,b
-0379 F9        1004            mov     r1,a
-037A D005      1005            pop     ar5
-037C D004      1006            pop     ar4
-037E D003      1007            pop     ar3
-0380 D002      1008            pop     ar2
-0382 C006      1009            push    ar6
-0384 C007      1010            push    ar7
-0386 C000      1011            push    ar0
-0388 C001      1012            push    ar1
-038A 8A82      1013            mov     dpl,r2
-038C 8B83      1014            mov     dph,r3
-038E 8CF0      1015            mov     b,r4
-0390 ED        1016            mov     a,r5
-0391 120100    1017            lcall   ___fsgt
-0394 AA82      1018            mov     r2,dpl
-0396 E581      1019            mov     a,sp
-0398 24FC      1020            add     a,#0xfc
-039A F581      1021            mov     sp,a
-039C EA        1022            mov     a,r2
-039D 6001      1023            jz      L002021?
-039F           1024   ;        robot.c:108: pwm_Left0 = 50;
-039F 757032    1025            mov     _pwm_Left0,#0x32
-03A2           1026   ;        robot.c:109: pwm_Left1 = -1;
-03A2 7530FF    1027            mov     _pwm_Left1,#0xFF
-03A5           1028   ;        robot.c:110: pwm_Right0 = -1;
-03A5 75F0FF    1029            mov     _pwm_Right0,#0xFF
-03A8           1030   ;        robot.c:111: pwm_Right1 = 30;
-03A8 75B01E    1031            mov     _pwm_Right1,#0x1E
-03AB 8001      1032            sjmp    L002027?
-03AD           1033   L002021?:
-03AD           1034   ;        robot.c:114: pwm_Left0 = 30;
-03AD 75701E    1035            mov     _pwm_Left0,#0x1E
-03B0           1036   ;        robot.c:115: pwm_Left1 = -1;
-03B0 7530FF    1037            mov     _pwm_Left1,#0xFF
-03B3           1038   ;        robot.c:116: pwm_Right0 = -1;
-03B3 75F0FF    1039            mov     _pwm_Right0,#0xFF
-03B6           1040   ;        robot.c:117: pwm_Right1 = 50;
-03B6 75B032    1041            mov     _pwm_Right1,#0x32
-03B9           1042   L002027?:
-03B9           1043   ;        robot.c:121: waitms(1500);
-03B9 9005DC    1044            mov     dptr,#0x05DC
-03BC 120100    1045            lcall   _waitms
-03BF           1046   ;        robot.c:123: break;
-03BF 020100    1047            ljmp    L002045?
-03C2           1048   ;        robot.c:125: case CMD_LEFT:
-03C2           1049   L002030?:
-03C2           1050   ;        robot.c:127: printf("Turn left at the next intersection\n");
-03C2 7480      1051            mov     a,#__str_3
-03C4 C0E0      1052            push    acc
-03C6 74A4      1053            mov     a,#(__str_3 >> 8)
-03C8 C0E0      1054            push    acc
-03CA 7480      1055            mov     a,#0x80
-03CC C0E0      1056            push    acc
-03CE 120100    1057            lcall   _printf
-03D1 1581      1058            dec     sp
-03D3 1581      1059            dec     sp
-03D5 1581      1060            dec     sp
-03D7           1061   ;        robot.c:128: if (v1 > 0.7 && v2 >1)  {
-03D7 7433      1062            mov     a,#0x33
-03D9 C0E0      1063            push    acc
-03DB C0E0      1064            push    acc
-03DD C0E0      1065            push    acc
-03DF 743F      1066            mov     a,#0x3F
-03E1 C0E0      1067            push    acc
-03E3 852882    1068            mov     dpl,_main_v1_1_68
-03E6 852983    1069            mov     dph,(_main_v1_1_68 + 1)
-03E9 852AF0    1070            mov     b,(_main_v1_1_68 + 2)
-03EC E52B      1071            mov     a,(_main_v1_1_68 + 3)
-03EE 120100    1072            lcall   ___fsgt
-03F1 AA82      1073            mov     r2,dpl
-03F3 E581      1074            mov     a,sp
-03F5 24FC      1075            add     a,#0xfc
-03F7 F581      1076            mov     sp,a
-03F9 EA        1077            mov     a,r2
-03FA 7001      1078            jnz     L002106?
-03FC 020100    1079            ljmp    L002045?
-03FF           1080   L002106?:
-03FF E4        1081            clr     a
-0400 C0E0      1082            push    acc
-0402 C0E0      1083            push    acc
-0404 7480      1084            mov     a,#0x80
-0406 C0E0      1085            push    acc
-0408 743F      1086            mov     a,#0x3F
-040A C0E0      1087            push    acc
-040C 856882    1088            mov     dpl,_main_v2_1_68
-040F 856983    1089            mov     dph,(_main_v2_1_68 + 1)
-0412 856AF0    1090            mov     b,(_main_v2_1_68 + 2)
-0415 E56B      1091            mov     a,(_main_v2_1_68 + 3)
-0417 120100    1092            lcall   ___fsgt
-041A AA82      1093            mov     r2,dpl
-041C E581      1094            mov     a,sp
-041E 24FC      1095            add     a,#0xfc
-0420 F581      1096            mov     sp,a
-0422 EA        1097            mov     a,r2
-0423 7001      1098            jnz     L002107?
-0425 020100    1099            ljmp    L002045?
-0428           1100   L002107?:
-0428           1101   ;        robot.c:129: printf("\n\r INTERSECTION\n");
-0428 7440      1102            mov     a,#__str_4
-042A C0E0      1103            push    acc
-042C 74A5      1104            mov     a,#(__str_4 >> 8)
-042E C0E0      1105            push    acc
-0430 7480      1106            mov     a,#0x80
-0432 C0E0      1107            push    acc
-0434 120100    1108            lcall   _printf
-0437 1581      1109            dec     sp
-0439 1581      1110            dec     sp
-043B 1581      1111            dec     sp
-043D           1112   ;        robot.c:134: turncar(currentstate);
-043D AAF0      1113            mov     r2,_currentstate
-043F E5F0      1114            mov     a,_currentstate
-0441 33        1115            rlc     a
-0442 95E0      1116            subb    a,acc
-0444 FB        1117            mov     r3,a
-0445 8A82      1118            mov     dpl,r2
-0447 8B83      1119            mov     dph,r3
-0449 120100    1120            lcall   _turncar
-044C           1121   ;        robot.c:135: currentcmd = 0;
-044C 753000    1122            mov     _currentcmd,#0x00
-044F           1123   ;        robot.c:137: break;
-044F 020100    1124            ljmp    L002045?
-0452           1125   ;        robot.c:140: case CMD_RIGHT:
-0452           1126   L002034?:
-0452           1127   ;        robot.c:142: printf("Turn right at the next intersection\n");
-0452 7480      1128            mov     a,#__str_5
-0454 C0E0      1129            push    acc
-0456 74A5      1130            mov     a,#(__str_5 >> 8)
-0458 C0E0      1131            push    acc
-045A 7480      1132            mov     a,#0x80
-045C C0E0      1133            push    acc
-045E 120100    1134            lcall   _printf
-0461 1581      1135            dec     sp
-0463 1581      1136            dec     sp
-0465 1581      1137            dec     sp
-0467           1138   ;        robot.c:143: if (v1 > 0.7 && v2 >1) {
-0467 7433      1139            mov     a,#0x33
-0469 C0E0      1140            push    acc
-046B C0E0      1141            push    acc
-046D C0E0      1142            push    acc
-046F 743F      1143            mov     a,#0x3F
-0471 C0E0      1144            push    acc
-0473 852882    1145            mov     dpl,_main_v1_1_68
-0476 852983    1146            mov     dph,(_main_v1_1_68 + 1)
-0479 852AF0    1147            mov     b,(_main_v1_1_68 + 2)
-047C E52B      1148            mov     a,(_main_v1_1_68 + 3)
-047E 120100    1149            lcall   ___fsgt
-0481 AA82      1150            mov     r2,dpl
-0483 E581      1151            mov     a,sp
-0485 24FC      1152            add     a,#0xfc
-0487 F581      1153            mov     sp,a
-0489 EA        1154            mov     a,r2
-048A 7001      1155            jnz     L002108?
-048C 020100    1156            ljmp    L002045?
-048F           1157   L002108?:
-048F E4        1158            clr     a
-0490 C0E0      1159            push    acc
-0492 C0E0      1160            push    acc
-0494 7480      1161            mov     a,#0x80
-0496 C0E0      1162            push    acc
-0498 743F      1163            mov     a,#0x3F
-049A C0E0      1164            push    acc
-049C 856882    1165            mov     dpl,_main_v2_1_68
-049F 856983    1166            mov     dph,(_main_v2_1_68 + 1)
-04A2 856AF0    1167            mov     b,(_main_v2_1_68 + 2)
-04A5 E56B      1168            mov     a,(_main_v2_1_68 + 3)
-04A7 120100    1169            lcall   ___fsgt
-04AA AA82      1170            mov     r2,dpl
-04AC E581      1171            mov     a,sp
-04AE 24FC      1172            add     a,#0xfc
-04B0 F581      1173            mov     sp,a
-04B2 EA        1174            mov     a,r2
-04B3 7001      1175            jnz     L002109?
-04B5 020100    1176            ljmp    L002045?
-04B8           1177   L002109?:
-04B8           1178   ;        robot.c:144: printf("\n\r INTERSECTION\n");
-04B8 7440      1179            mov     a,#__str_4
-04BA C0E0      1180            push    acc
-04BC 74A5      1181            mov     a,#(__str_4 >> 8)
-04BE C0E0      1182            push    acc
-04C0 7480      1183            mov     a,#0x80
-04C2 C0E0      1184            push    acc
-04C4 120100    1185            lcall   _printf
-04C7 1581      1186            dec     sp
-04C9 1581      1187            dec     sp
-04CB 1581      1188            dec     sp
-04CD           1189   ;        robot.c:146: turncar(currentstate + 2); //1 = right
-04CD AAF0      1190            mov     r2,_currentstate
-04CF E5F0      1191            mov     a,_currentstate
-04D1 33        1192            rlc     a
-04D2 95E0      1193            subb    a,acc
-04D4 FB        1194            mov     r3,a
-04D5 8A82      1195            mov     dpl,r2
-04D7 8B83      1196            mov     dph,r3
-04D9 A3        1197            inc     dptr
-04DA A3        1198            inc     dptr
-04DB 120100    1199            lcall   _turncar
-04DE           1200   ;        robot.c:147: currentcmd = 0;
-04DE 753000    1201            mov     _currentcmd,#0x00
-04E1           1202   ;        robot.c:149: break;
-04E1 020100    1203            ljmp    L002045?
-04E4           1204   ;        robot.c:152: case CMD_FORWARD:
-04E4           1205   L002038?:
-04E4           1206   ;        robot.c:154: printf("GO!\n");
-04E4 7440      1207            mov     a,#__str_6
-04E6 C0E0      1208            push    acc
-04E8 74A6      1209            mov     a,#(__str_6 >> 8)
-04EA C0E0      1210            push    acc
-04EC 7480      1211            mov     a,#0x80
-04EE C0E0      1212            push    acc
-04F0 120100    1213            lcall   _printf
-04F3 1581      1214            dec     sp
-04F5 1581      1215            dec     sp
-04F7 1581      1216            dec     sp
-04F9           1217   ;        robot.c:155: currentstate = 1;
-04F9 75F001    1218            mov     _currentstate,#0x01
-04FC           1219   ;        robot.c:156: currentcmd = 0;
-04FC 753000    1220            mov     _currentcmd,#0x00
-04FF           1221   ;        robot.c:157: break;
-04FF 020100    1222            ljmp    L002045?
-0502           1223   ;        robot.c:160: case CMD_REVERSE:
-0502           1224   L002039?:
-0502           1225   ;        robot.c:162: printf("Reverse Reverse!\n");
-0502 7480      1226            mov     a,#__str_7
-0504 C0E0      1227            push    acc
-0506 74A6      1228            mov     a,#(__str_7 >> 8)
-0508 C0E0      1229            push    acc
-050A 7480      1230            mov     a,#0x80
-050C C0E0      1231            push    acc
-050E 120100    1232            lcall   _printf
-0511 1581      1233            dec     sp
-0513 1581      1234            dec     sp
-0515 1581      1235            dec     sp
-0517           1236   ;        robot.c:163: currentstate = 2;
-0517 75F002    1237            mov     _currentstate,#0x02
-051A           1238   ;        robot.c:164: currentcmd = 0;
-051A 753000    1239            mov     _currentcmd,#0x00
-051D           1240   ;        robot.c:165: break;
-051D 020100    1241            ljmp    L002045?
-0520           1242   ;        robot.c:168: case CMD_STOP:
-0520           1243   L002040?:
-0520           1244   ;        robot.c:170: printf("HALT peasants!\n");
-0520 74C0      1245            mov     a,#__str_8
-0522 C0E0      1246            push    acc
-0524 74A6      1247            mov     a,#(__str_8 >> 8)
-0526 C0E0      1248            push    acc
-0528 7480      1249            mov     a,#0x80
-052A C0E0      1250            push    acc
-052C 120100    1251            lcall   _printf
-052F 1581      1252            dec     sp
-0531 1581      1253            dec     sp
-0533 1581      1254            dec     sp
-0535           1255   ;        robot.c:171: currentstate = 3;
-0535 75F003    1256            mov     _currentstate,#0x03
-0538           1257   ;        robot.c:172: currentcmd = 0;
-0538 753000    1258            mov     _currentcmd,#0x00
-053B           1259   ;        robot.c:173: break;
-053B 020100    1260            ljmp    L002045?
-053E           1261   ;        robot.c:176: case CMD_UTURN:
-053E           1262   L002041?:
-053E           1263   ;        robot.c:177: uturn();
-053E 120100    1264            lcall   _uturn
-0541           1265   ;        robot.c:178: printf("UTURN\n");
-0541 7400      1266            mov     a,#__str_9
-0543 C0E0      1267            push    acc
-0545 74A7      1268            mov     a,#(__str_9 >> 8)
-0547 C0E0      1269            push    acc
-0549 7480      1270            mov     a,#0x80
-054B C0E0      1271            push    acc
-054D 120100    1272            lcall   _printf
-0550 1581      1273            dec     sp
-0552 1581      1274            dec     sp
-0554 1581      1275            dec     sp
-0556           1276   ;        robot.c:179: currentcmd = 0;
-0556 753000    1277            mov     _currentcmd,#0x00
-0559           1278   ;        robot.c:180: break;
-0559 020100    1279            ljmp    L002045?
-055C           1280   ;        robot.c:183: default: 
-055C           1281   L002042?:
-055C           1282   ;        robot.c:184: currentstate = 1;
-055C 75F001    1283            mov     _currentstate,#0x01
-055F           1284   ;        robot.c:185: }
-055F 020100    1285            ljmp    L002045?
-0562           1286   ;------------------------------------------------------------
-0562           1287   ;Allocation info for local variables in function 'Timer2_ISR'
-0562           1288   ;------------------------------------------------------------
-0562           1289   ;------------------------------------------------------------
-0562           1290   ;        robot.c:189: void Timer2_ISR (void) interrupt 5 {
-0562           1291   ;        -----------------------------------------
-0562           1292   ;         function Timer2_ISR
-0562           1293   ;        -----------------------------------------
-0562           1294   _Timer2_ISR:
-0562 C0E0      1295            push    acc
-0564 C0F0      1296            push    b
-0566 C0D0      1297            push    psw
-0568 75D000    1298            mov     psw,#0x00
-056B           1299   ;        robot.c:190: TF2H = 0; // Clear Timer2 interrupt flag
-056B C2CF      1300            clr     _TF2H
-056D           1301   ;        robot.c:192: pwm_count++;
-056D 0520      1302            inc     _pwm_count
-056F           1303   ;        robot.c:193: if(pwm_count>100) pwm_count=0;
-056F C3        1304            clr     c
-0570 74E4      1305            mov     a,#(0x64 ^ 0x80)
-0572 8520F0    1306            mov     b,_pwm_count
-0575 63F080    1307            xrl     b,#0x80
-0578 95F0      1308            subb    a,b
-057A 5001      1309            jnc     L003002?
-057C 752000    1310            mov     _pwm_count,#0x00
-057F           1311   L003002?:
-057F           1312   ;        robot.c:196: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
-057F C3        1313            clr     c
-0580 E570      1314            mov     a,_pwm_Left0
-0582 6480      1315            xrl     a,#0x80
-0584 8520F0    1316            mov     b,_pwm_count
-0587 63F080    1317            xrl     b,#0x80
-058A 95F0      1318            subb    a,b
-058C 9268      1319            mov  _Timer2_ISR_sloc0_1_0,c
-058E B3        1320            cpl     c
-058F 9295      1321            mov     _P1_5,c
-0591           1322   ;        robot.c:197: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
-0591 C3        1323            clr     c
-0592 E530      1324            mov     a,_pwm_Left1
-0594 6480      1325            xrl     a,#0x80
-0596 8520F0    1326            mov     b,_pwm_count
-0599 63F080    1327            xrl     b,#0x80
-059C 95F0      1328            subb    a,b
-059E 9268      1329            mov  _Timer2_ISR_sloc0_1_0,c
-05A0 B3        1330            cpl     c
-05A1 9296      1331            mov     _P1_6,c
-05A3           1332   ;        robot.c:198: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
-05A3 C3        1333            clr     c
-05A4 E5F0      1334            mov     a,_pwm_Right0
-05A6 6480      1335            xrl     a,#0x80
-05A8 8520F0    1336            mov     b,_pwm_count
-05AB 63F080    1337            xrl     b,#0x80
-05AE 95F0      1338            subb    a,b
-05B0 9268      1339            mov  _Timer2_ISR_sloc0_1_0,c
-05B2 B3        1340            cpl     c
-05B3 92A0      1341            mov     _P2_0,c
-05B5           1342   ;        robot.c:199: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
-05B5 C3        1343            clr     c
-05B6 E5B0      1344            mov     a,_pwm_Right1
-05B8 6480      1345            xrl     a,#0x80
-05BA 8520F0    1346            mov     b,_pwm_count
-05BD 63F080    1347            xrl     b,#0x80
-05C0 95F0      1348            subb    a,b
-05C2 9268      1349            mov  _Timer2_ISR_sloc0_1_0,c
-05C4 B3        1350            cpl     c
-05C5 92A1      1351            mov     _P2_1,c
-05C7 D0D0      1352            pop     psw
-05C9 D0F0      1353            pop     b
-05CB D0E0      1354            pop     acc
-05CD 32        1355            reti
-05CE           1356   ;        eliminated unneeded push/pop dpl
-05CE           1357   ;        eliminated unneeded push/pop dph
-05CE           1358   ;------------------------------------------------------------
-05CE           1359   ;Allocation info for local variables in function 'readData'
-05CE           1360   ;------------------------------------------------------------
-05CE           1361   ;command                   Allocated to registers r2 
-05CE           1362   ;------------------------------------------------------------
-05CE           1363   ;        robot.c:292: unsigned char readData(void) {
-05CE           1364   ;        -----------------------------------------
-05CE           1365   ;         function readData
-05CE           1366   ;        -----------------------------------------
-05CE           1367   _readData:
-05CE           1368   ;        robot.c:293: unsigned char command = 0;
-05CE 7A00      1369            mov     r2,#0x00
-05D0           1370   ;        robot.c:294: if (!COMMAND_PIN) {
-05D0 3091C0    1371            jnb     _P1_1,L004024?
-05D3 020100    1372            ljmp    L004008?
-05D6           1373   L004024?:
-05D6           1374   ;        robot.c:295: while (!COMMAND_PIN);
-05D6           1375   L004001?:
-05D6 309140    1376            jnb     _P1_1,L004001?
-05D9           1377   ;        robot.c:296: P1_4 = 1;
-05D9 D294      1378            setb    _P1_4
-05DB           1379   ;        robot.c:297: waitms((int)(CMDFRQ + CMDFRQ/2));
-05DB 900060    1380            mov     dptr,#0x0060
-05DE 120100    1381            lcall   _waitms
-05E1           1382   ;        robot.c:298: P1_4 = 0;
-05E1 C294      1383            clr     _P1_4
-05E3           1384   ;        robot.c:299: command |= COMMAND_PIN<<2;
-05E3 A291      1385            mov     c,_P1_1
-05E5 E4        1386            clr     a
-05E6 33        1387            rlc     a
-05E7 25E0      1388            add     a,acc
-05E9 25E0      1389            add     a,acc
-05EB FA        1390            mov     r2,a
-05EC           1391   ;        robot.c:300: waitms(CMDFRQ);
-05EC 900040    1392            mov     dptr,#0x0040
-05EF C002      1393            push    ar2
-05F1 120100    1394            lcall   _waitms
-05F4 D002      1395            pop     ar2
-05F6           1396   ;        robot.c:301: P1_4 = 1;
-05F6 D294      1397            setb    _P1_4
-05F8           1398   ;        robot.c:302: command |= COMMAND_PIN<<1;
-05F8 A291      1399            mov     c,_P1_1
-05FA E4        1400            clr     a
-05FB 33        1401            rlc     a
-05FC 25E0      1402            add     a,acc
-05FE 4202      1403            orl     ar2,a
-0600           1404   ;        robot.c:303: waitms(CMDFRQ);
-0600 900040    1405            mov     dptr,#0x0040
-0603 C002      1406            push    ar2
-0605 120100    1407            lcall   _waitms
-0608 D002      1408            pop     ar2
-060A           1409   ;        robot.c:304: P1_4 = 0;
-060A C294      1410            clr     _P1_4
-060C           1411   ;        robot.c:305: command |= COMMAND_PIN;
-060C A291      1412            mov     c,_P1_1
-060E E4        1413            clr     a
-060F 33        1414            rlc     a
-0610 FB        1415            mov     r3,a
-0611 4202      1416            orl     ar2,a
-0613           1417   ;        robot.c:306: while (!COMMAND_PIN);
-0613           1418   L004004?:
-0613 309180    1419            jnb     _P1_1,L004004?
-0616           1420   ;        robot.c:310: (command & 0x01) ? '1' : '0');
-0616 EA        1421            mov     a,r2
-0617 30E0C0    1422            jnb     acc.0,L004011?
-061A 7B31      1423            mov     r3,#0x31
-061C 8001      1424            sjmp    L004012?
-061E           1425   L004011?:
-061E 7B30      1426            mov     r3,#0x30
-0620           1427   L004012?:
-0620 EB        1428            mov     a,r3
-0621 33        1429            rlc     a
-0622 95E0      1430            subb    a,acc
-0624 FC        1431            mov     r4,a
-0625           1432   ;        robot.c:309: (command & 0x02) ? '1' : '0',
-0625 EA        1433            mov     a,r2
-0626 30E140    1434            jnb     acc.1,L004013?
-0629 7D31      1435            mov     r5,#0x31
-062B 8001      1436            sjmp    L004014?
-062D           1437   L004013?:
-062D 7D30      1438            mov     r5,#0x30
-062F           1439   L004014?:
-062F ED        1440            mov     a,r5
-0630 33        1441            rlc     a
-0631 95E0      1442            subb    a,acc
-0633 FE        1443            mov     r6,a
-0634           1444   ;        robot.c:308: (command & 0x04) ? '1' : '0',
-0634 EA        1445            mov     a,r2
-0635 30E2C0    1446            jnb     acc.2,L004015?
-0638 7F31      1447            mov     r7,#0x31
-063A 8001      1448            sjmp    L004016?
-063C           1449   L004015?:
-063C 7F30      1450            mov     r7,#0x30
-063E           1451   L004016?:
-063E EF        1452            mov     a,r7
-063F 33        1453            rlc     a
-0640 95E0      1454            subb    a,acc
-0642 F8        1455            mov     r0,a
-0643           1456   ;        robot.c:307: printf("\nCommand received: 0b_0%c%c%c\n", 
-0643 C002      1457            push    ar2
-0645 C003      1458            push    ar3
-0647 C004      1459            push    ar4
-0649 C005      1460            push    ar5
-064B C006      1461            push    ar6
-064D C007      1462            push    ar7
-064F C000      1463            push    ar0
-0651 7440      1464            mov     a,#__str_10
-0653 C0E0      1465            push    acc
-0655 74AA      1466            mov     a,#(__str_10 >> 8)
-0657 C0E0      1467            push    acc
-0659 7480      1468            mov     a,#0x80
-065B C0E0      1469            push    acc
-065D 120100    1470            lcall   _printf
-0660 E581      1471            mov     a,sp
-0662 24F7      1472            add     a,#0xf7
-0664 F581      1473            mov     sp,a
-0666 D002      1474            pop     ar2
-0668           1475   L004008?:
-0668           1476   ;        robot.c:312: return command;
-0668 8A82      1477            mov     dpl,r2
-066A 22        1478            ret
-066B           1479   ;------------------------------------------------------------
-066B           1480   ;Allocation info for local variables in function 'linetrack'
-066B           1481   ;------------------------------------------------------------
-066B           1482   ;forwardbackward           Allocated to registers r2 r3 
-066B           1483   ;vleft                     Allocated with name '_linetrack_vleft_1_87'
-066B           1484   ;vright                    Allocated with name '_linetrack_vright_1_87'
-066B           1485   ;sloc0                     Allocated with name '_linetrack_sloc0_1_0'
-066B           1486   ;sloc1                     Allocated with name '_linetrack_sloc1_1_0'
-066B           1487   ;------------------------------------------------------------
-066B           1488   ;        robot.c:319: void linetrack (int forwardbackward) {
-066B           1489   ;        -----------------------------------------
-066B           1490   ;         function linetrack
-066B           1491   ;        -----------------------------------------
-066B           1492   _linetrack:
-066B AA82      1493            mov     r2,dpl
-066D AB83      1494            mov     r3,dph
-066F           1495   ;        robot.c:327: if (forwardbackward == 0) {
-066F EA        1496            mov     a,r2
-0670 4B        1497            orl     a,r3
-0671 6001      1498            jz      L005010?
-0673 020100    1499            ljmp    L005004?
-0676           1500   L005010?:
-0676           1501   ;        robot.c:328: vleft=Volts_at_Pin(TANK_FL);
-0676 75820B    1502            mov     dpl,#0x0B
-0679 120100    1503            lcall   _Volts_at_Pin
-067C 8582B8    1504            mov     _linetrack_vleft_1_87,dpl
-067F 8583B9    1505            mov     (_linetrack_vleft_1_87 + 1),dph
-0682 85F0BA    1506            mov     (_linetrack_vleft_1_87 + 2),b
-0685 F5BB      1507            mov     (_linetrack_vleft_1_87 + 3),a
-0687           1508   ;        robot.c:329: vright=Volts_at_Pin(TANK_FR);
-0687 75820C    1509            mov     dpl,#0x0C
-068A 120100    1510            lcall   _Volts_at_Pin
-068D 858208    1511            mov     _linetrack_vright_1_87,dpl
-0690 858309    1512            mov     (_linetrack_vright_1_87 + 1),dph
-0693 85F00A    1513            mov     (_linetrack_vright_1_87 + 2),b
-0696 F50B      1514            mov     (_linetrack_vright_1_87 + 3),a
-0698           1515   ;        robot.c:332: pwm_Left0 = -1;
-0698 7570FF    1516            mov     _pwm_Left0,#0xFF
-069B           1517   ;        robot.c:333: pwm_Left1 = vright*vright*75/(vright*vright+vleft*vleft);
-069B C008      1518            push    _linetrack_vright_1_87
-069D C009      1519            push    (_linetrack_vright_1_87 + 1)
-069F C00A      1520            push    (_linetrack_vright_1_87 + 2)
-06A1 C00B      1521            push    (_linetrack_vright_1_87 + 3)
-06A3 850882    1522            mov     dpl,_linetrack_vright_1_87
-06A6 850983    1523            mov     dph,(_linetrack_vright_1_87 + 1)
-06A9 850AF0    1524            mov     b,(_linetrack_vright_1_87 + 2)
-06AC E50B      1525            mov     a,(_linetrack_vright_1_87 + 3)
-06AE 120100    1526            lcall   ___fsmul
-06B1 AC82      1527            mov     r4,dpl
-06B3 AD83      1528            mov     r5,dph
-06B5 AEF0      1529            mov     r6,b
-06B7 FF        1530            mov     r7,a
-06B8 E581      1531            mov     a,sp
-06BA 24FC      1532            add     a,#0xfc
-06BC F581      1533            mov     sp,a
-06BE C004      1534            push    ar4
-06C0 C005      1535            push    ar5
-06C2 C006      1536            push    ar6
-06C4 C007      1537            push    ar7
-06C6 900000    1538            mov     dptr,#0x0000
-06C9 75F096    1539            mov     b,#0x96
-06CC 7442      1540            mov     a,#0x42
-06CE 120100    1541            lcall   ___fsmul
-06D1 858258    1542            mov     _linetrack_sloc0_1_0,dpl
-06D4 858359    1543            mov     (_linetrack_sloc0_1_0 + 1),dph
-06D7 85F05A    1544            mov     (_linetrack_sloc0_1_0 + 2),b
-06DA F55B      1545            mov     (_linetrack_sloc0_1_0 + 3),a
-06DC E581      1546            mov     a,sp
-06DE 24FC      1547            add     a,#0xfc
-06E0 F581      1548            mov     sp,a
-06E2 C008      1549            push    _linetrack_vright_1_87
-06E4 C009      1550            push    (_linetrack_vright_1_87 + 1)
-06E6 C00A      1551            push    (_linetrack_vright_1_87 + 2)
-06E8 C00B      1552            push    (_linetrack_vright_1_87 + 3)
-06EA 850882    1553            mov     dpl,_linetrack_vright_1_87
-06ED 850983    1554            mov     dph,(_linetrack_vright_1_87 + 1)
-06F0 850AF0    1555            mov     b,(_linetrack_vright_1_87 + 2)
-06F3 E50B      1556            mov     a,(_linetrack_vright_1_87 + 3)
-06F5 120100    1557            lcall   ___fsmul
-06F8 8582A8    1558            mov     _linetrack_sloc1_1_0,dpl
-06FB 8583A9    1559            mov     (_linetrack_sloc1_1_0 + 1),dph
-06FE 85F0AA    1560            mov     (_linetrack_sloc1_1_0 + 2),b
-0701 F5AB      1561            mov     (_linetrack_sloc1_1_0 + 3),a
-0703 E581      1562            mov     a,sp
-0705 24FC      1563            add     a,#0xfc
-0707 F581      1564            mov     sp,a
-0709 C0B8      1565            push    _linetrack_vleft_1_87
-070B C0B9      1566            push    (_linetrack_vleft_1_87 + 1)
-070D C0BA      1567            push    (_linetrack_vleft_1_87 + 2)
-070F C0BB      1568            push    (_linetrack_vleft_1_87 + 3)
-0711 85B882    1569            mov     dpl,_linetrack_vleft_1_87
-0714 85B983    1570            mov     dph,(_linetrack_vleft_1_87 + 1)
-0717 85BAF0    1571            mov     b,(_linetrack_vleft_1_87 + 2)
-071A E5BB      1572            mov     a,(_linetrack_vleft_1_87 + 3)
-071C 120100    1573            lcall   ___fsmul
-071F AE82      1574            mov     r6,dpl
-0721 AF83      1575            mov     r7,dph
-0723 ACF0      1576            mov     r4,b
-0725 FD        1577            mov     r5,a
-0726 E581      1578            mov     a,sp
-0728 24FC      1579            add     a,#0xfc
-072A F581      1580            mov     sp,a
-072C C006      1581            push    ar6
-072E C007      1582            push    ar7
-0730 C004      1583            push    ar4
-0732 C005      1584            push    ar5
-0734 85A882    1585            mov     dpl,_linetrack_sloc1_1_0
-0737 85A983    1586            mov     dph,(_linetrack_sloc1_1_0 + 1)
-073A 85AAF0    1587            mov     b,(_linetrack_sloc1_1_0 + 2)
-073D E5AB      1588            mov     a,(_linetrack_sloc1_1_0 + 3)
-073F 120100    1589            lcall   ___fsadd
-0742 AC82      1590            mov     r4,dpl
-0744 AD83      1591            mov     r5,dph
-0746 AEF0      1592            mov     r6,b
-0748 FF        1593            mov     r7,a
-0749 E581      1594            mov     a,sp
-074B 24FC      1595            add     a,#0xfc
-074D F581      1596            mov     sp,a
-074F C004      1597            push    ar4
-0751 C005      1598            push    ar5
-0753 C006      1599            push    ar6
-0755 C007      1600            push    ar7
-0757 855882    1601            mov     dpl,_linetrack_sloc0_1_0
-075A 855983    1602            mov     dph,(_linetrack_sloc0_1_0 + 1)
-075D 855AF0    1603            mov     b,(_linetrack_sloc0_1_0 + 2)
-0760 E55B      1604            mov     a,(_linetrack_sloc0_1_0 + 3)
-0762 120100    1605            lcall   ___fsdiv
-0765 AC82      1606            mov     r4,dpl
-0767 AD83      1607            mov     r5,dph
-0769 AEF0      1608            mov     r6,b
-076B FF        1609            mov     r7,a
-076C E581      1610            mov     a,sp
-076E 24FC      1611            add     a,#0xfc
-0770 F581      1612            mov     sp,a
-0772 8C82      1613            mov     dpl,r4
-0774 8D83      1614            mov     dph,r5
-0776 8EF0      1615            mov     b,r6
-0778 EF        1616            mov     a,r7
-0779 120100    1617            lcall   ___fs2schar
-077C 858230    1618            mov     _pwm_Left1,dpl
-077F           1619   ;        robot.c:334: pwm_Right1 = -1;
-077F 75B0FF    1620            mov     _pwm_Right1,#0xFF
-0782           1621   ;        robot.c:335: pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
-0782 C0B8      1622            push    _linetrack_vleft_1_87
-0784 C0B9      1623            push    (_linetrack_vleft_1_87 + 1)
-0786 C0BA      1624            push    (_linetrack_vleft_1_87 + 2)
-0788 C0BB      1625            push    (_linetrack_vleft_1_87 + 3)
-078A 85B882    1626            mov     dpl,_linetrack_vleft_1_87
-078D 85B983    1627            mov     dph,(_linetrack_vleft_1_87 + 1)
-0790 85BAF0    1628            mov     b,(_linetrack_vleft_1_87 + 2)
-0793 E5BB      1629            mov     a,(_linetrack_vleft_1_87 + 3)
-0795 120100    1630            lcall   ___fsmul
-0798 AC82      1631            mov     r4,dpl
-079A AD83      1632            mov     r5,dph
-079C AEF0      1633            mov     r6,b
-079E FF        1634            mov     r7,a
-079F E581      1635            mov     a,sp
-07A1 24FC      1636            add     a,#0xfc
-07A3 F581      1637            mov     sp,a
-07A5 C004      1638            push    ar4
-07A7 C005      1639            push    ar5
-07A9 C006      1640            push    ar6
-07AB C007      1641            push    ar7
-07AD 900000    1642            mov     dptr,#0x0000
-07B0 75F096    1643            mov     b,#0x96
-07B3 7442      1644            mov     a,#0x42
-07B5 120100    1645            lcall   ___fsmul
-07B8 8582A8    1646            mov     _linetrack_sloc1_1_0,dpl
-07BB 8583A9    1647            mov     (_linetrack_sloc1_1_0 + 1),dph
-07BE 85F0AA    1648            mov     (_linetrack_sloc1_1_0 + 2),b
-07C1 F5AB      1649            mov     (_linetrack_sloc1_1_0 + 3),a
-07C3 E581      1650            mov     a,sp
-07C5 24FC      1651            add     a,#0xfc
-07C7 F581      1652            mov     sp,a
-07C9 C008      1653            push    _linetrack_vright_1_87
-07CB C009      1654            push    (_linetrack_vright_1_87 + 1)
-07CD C00A      1655            push    (_linetrack_vright_1_87 + 2)
-07CF C00B      1656            push    (_linetrack_vright_1_87 + 3)
-07D1 850882    1657            mov     dpl,_linetrack_vright_1_87
-07D4 850983    1658            mov     dph,(_linetrack_vright_1_87 + 1)
-07D7 850AF0    1659            mov     b,(_linetrack_vright_1_87 + 2)
-07DA E50B      1660            mov     a,(_linetrack_vright_1_87 + 3)
-07DC 120100    1661            lcall   ___fsmul
-07DF 858258    1662            mov     _linetrack_sloc0_1_0,dpl
-07E2 858359    1663            mov     (_linetrack_sloc0_1_0 + 1),dph
-07E5 85F05A    1664            mov     (_linetrack_sloc0_1_0 + 2),b
-07E8 F55B      1665            mov     (_linetrack_sloc0_1_0 + 3),a
-07EA E581      1666            mov     a,sp
-07EC 24FC      1667            add     a,#0xfc
-07EE F581      1668            mov     sp,a
-07F0 C0B8      1669            push    _linetrack_vleft_1_87
-07F2 C0B9      1670            push    (_linetrack_vleft_1_87 + 1)
-07F4 C0BA      1671            push    (_linetrack_vleft_1_87 + 2)
-07F6 C0BB      1672            push    (_linetrack_vleft_1_87 + 3)
-07F8 85B882    1673            mov     dpl,_linetrack_vleft_1_87
-07FB 85B983    1674            mov     dph,(_linetrack_vleft_1_87 + 1)
-07FE 85BAF0    1675            mov     b,(_linetrack_vleft_1_87 + 2)
-0801 E5BB      1676            mov     a,(_linetrack_vleft_1_87 + 3)
-0803 120100    1677            lcall   ___fsmul
-0806 AE82      1678            mov     r6,dpl
-0808 AF83      1679            mov     r7,dph
-080A ACF0      1680            mov     r4,b
-080C FD        1681            mov     r5,a
-080D E581      1682            mov     a,sp
-080F 24FC      1683            add     a,#0xfc
-0811 F581      1684            mov     sp,a
-0813 C006      1685            push    ar6
-0815 C007      1686            push    ar7
-0817 C004      1687            push    ar4
-0819 C005      1688            push    ar5
-081B 855882    1689            mov     dpl,_linetrack_sloc0_1_0
-081E 855983    1690            mov     dph,(_linetrack_sloc0_1_0 + 1)
-0821 855AF0    1691            mov     b,(_linetrack_sloc0_1_0 + 2)
-0824 E55B      1692            mov     a,(_linetrack_sloc0_1_0 + 3)
-0826 120100    1693            lcall   ___fsadd
-0829 AC82      1694            mov     r4,dpl
-082B AD83      1695            mov     r5,dph
-082D AEF0      1696            mov     r6,b
-082F FF        1697            mov     r7,a
-0830 E581      1698            mov     a,sp
-0832 24FC      1699            add     a,#0xfc
-0834 F581      1700            mov     sp,a
-0836 C004      1701            push    ar4
-0838 C005      1702            push    ar5
-083A C006      1703            push    ar6
-083C C007      1704            push    ar7
-083E 85A882    1705            mov     dpl,_linetrack_sloc1_1_0
-0841 85A983    1706            mov     dph,(_linetrack_sloc1_1_0 + 1)
-0844 85AAF0    1707            mov     b,(_linetrack_sloc1_1_0 + 2)
-0847 E5AB      1708            mov     a,(_linetrack_sloc1_1_0 + 3)
-0849 120100    1709            lcall   ___fsdiv
-084C AC82      1710            mov     r4,dpl
-084E AD83      1711            mov     r5,dph
-0850 AEF0      1712            mov     r6,b
-0852 FF        1713            mov     r7,a
-0853 E581      1714            mov     a,sp
-0855 24FC      1715            add     a,#0xfc
-0857 F581      1716            mov     sp,a
-0859 8C82      1717            mov     dpl,r4
-085B 8D83      1718            mov     dph,r5
-085D 8EF0      1719            mov     b,r6
-085F EF        1720            mov     a,r7
-0860 120100    1721            lcall   ___fs2schar
-0863 8582F0    1722            mov     _pwm_Right0,dpl
-0866 22        1723            ret
-0867           1724   L005004?:
-0867           1725   ;        robot.c:336: } else if (forwardbackward == 1) {
-0867 BA0100    1726            cjne    r2,#0x01,L005011?
-086A BB0000    1727            cjne    r3,#0x00,L005011?
-086D 8001      1728            sjmp    L005012?
-086F           1729   L005011?:
-086F 22        1730            ret
-0870           1731   L005012?:
-0870           1732   ;        robot.c:339: vleft=Volts_at_Pin(TANK_RL);
-0870 75820D    1733            mov     dpl,#0x0D
-0873 120100    1734            lcall   _Volts_at_Pin
-0876 8582B8    1735            mov     _linetrack_vleft_1_87,dpl
-0879 8583B9    1736            mov     (_linetrack_vleft_1_87 + 1),dph
-087C 85F0BA    1737            mov     (_linetrack_vleft_1_87 + 2),b
-087F F5BB      1738            mov     (_linetrack_vleft_1_87 + 3),a
-0881           1739   ;        robot.c:340: vright=Volts_at_Pin(TANK_RR);
-0881 75820E    1740            mov     dpl,#0x0E
-0884 120100    1741            lcall   _Volts_at_Pin
-0887 858208    1742            mov     _linetrack_vright_1_87,dpl
-088A 858309    1743            mov     (_linetrack_vright_1_87 + 1),dph
-088D 85F00A    1744            mov     (_linetrack_vright_1_87 + 2),b
-0890 F50B      1745            mov     (_linetrack_vright_1_87 + 3),a
-0892           1746   ;        robot.c:343: pwm_Left1 = -1;
-0892 7530FF    1747            mov     _pwm_Left1,#0xFF
-0895           1748   ;        robot.c:344: pwm_Left0 = vright*vright*75/(vright*vright+vleft*vleft);
-0895 C008      1749            push    _linetrack_vright_1_87
-0897 C009      1750            push    (_linetrack_vright_1_87 + 1)
-0899 C00A      1751            push    (_linetrack_vright_1_87 + 2)
-089B C00B      1752            push    (_linetrack_vright_1_87 + 3)
-089D 850882    1753            mov     dpl,_linetrack_vright_1_87
-08A0 850983    1754            mov     dph,(_linetrack_vright_1_87 + 1)
-08A3 850AF0    1755            mov     b,(_linetrack_vright_1_87 + 2)
-08A6 E50B      1756            mov     a,(_linetrack_vright_1_87 + 3)
-08A8 120100    1757            lcall   ___fsmul
-08AB AA82      1758            mov     r2,dpl
-08AD AB83      1759            mov     r3,dph
-08AF ACF0      1760            mov     r4,b
-08B1 FD        1761            mov     r5,a
-08B2 E581      1762            mov     a,sp
-08B4 24FC      1763            add     a,#0xfc
-08B6 F581      1764            mov     sp,a
-08B8 C002      1765            push    ar2
-08BA C003      1766            push    ar3
-08BC C004      1767            push    ar4
-08BE C005      1768            push    ar5
-08C0 900000    1769            mov     dptr,#0x0000
-08C3 75F096    1770            mov     b,#0x96
-08C6 7442      1771            mov     a,#0x42
-08C8 120100    1772            lcall   ___fsmul
-08CB AA82      1773            mov     r2,dpl
-08CD AB83      1774            mov     r3,dph
-08CF ACF0      1775            mov     r4,b
-08D1 FD        1776            mov     r5,a
-08D2 E581      1777            mov     a,sp
-08D4 24FC      1778            add     a,#0xfc
-08D6 F581      1779            mov     sp,a
-08D8 C002      1780            push    ar2
-08DA C003      1781            push    ar3
-08DC C004      1782            push    ar4
-08DE C005      1783            push    ar5
-08E0 C008      1784            push    _linetrack_vright_1_87
-08E2 C009      1785            push    (_linetrack_vright_1_87 + 1)
-08E4 C00A      1786            push    (_linetrack_vright_1_87 + 2)
-08E6 C00B      1787            push    (_linetrack_vright_1_87 + 3)
-08E8 850882    1788            mov     dpl,_linetrack_vright_1_87
-08EB 850983    1789            mov     dph,(_linetrack_vright_1_87 + 1)
-08EE 850AF0    1790            mov     b,(_linetrack_vright_1_87 + 2)
-08F1 E50B      1791            mov     a,(_linetrack_vright_1_87 + 3)
-08F3 120100    1792            lcall   ___fsmul
-08F6 8582A8    1793            mov     _linetrack_sloc1_1_0,dpl
-08F9 8583A9    1794            mov     (_linetrack_sloc1_1_0 + 1),dph
-08FC 85F0AA    1795            mov     (_linetrack_sloc1_1_0 + 2),b
-08FF F5AB      1796            mov     (_linetrack_sloc1_1_0 + 3),a
-0901 E581      1797            mov     a,sp
-0903 24FC      1798            add     a,#0xfc
-0905 F581      1799            mov     sp,a
-0907 C0B8      1800            push    _linetrack_vleft_1_87
-0909 C0B9      1801            push    (_linetrack_vleft_1_87 + 1)
-090B C0BA      1802            push    (_linetrack_vleft_1_87 + 2)
-090D C0BB      1803            push    (_linetrack_vleft_1_87 + 3)
-090F 85B882    1804            mov     dpl,_linetrack_vleft_1_87
-0912 85B983    1805            mov     dph,(_linetrack_vleft_1_87 + 1)
-0915 85BAF0    1806            mov     b,(_linetrack_vleft_1_87 + 2)
-0918 E5BB      1807            mov     a,(_linetrack_vleft_1_87 + 3)
-091A 120100    1808            lcall   ___fsmul
-091D AE82      1809            mov     r6,dpl
-091F AF83      1810            mov     r7,dph
-0921 A8F0      1811            mov     r0,b
-0923 F9        1812            mov     r1,a
-0924 E581      1813            mov     a,sp
-0926 24FC      1814            add     a,#0xfc
-0928 F581      1815            mov     sp,a
-092A C006      1816            push    ar6
-092C C007      1817            push    ar7
-092E C000      1818            push    ar0
-0930 C001      1819            push    ar1
-0932 85A882    1820            mov     dpl,_linetrack_sloc1_1_0
-0935 85A983    1821            mov     dph,(_linetrack_sloc1_1_0 + 1)
-0938 85AAF0    1822            mov     b,(_linetrack_sloc1_1_0 + 2)
-093B E5AB      1823            mov     a,(_linetrack_sloc1_1_0 + 3)
-093D 120100    1824            lcall   ___fsadd
-0940 AE82      1825            mov     r6,dpl
-0942 AF83      1826            mov     r7,dph
-0944 A8F0      1827            mov     r0,b
-0946 F9        1828            mov     r1,a
-0947 E581      1829            mov     a,sp
-0949 24FC      1830            add     a,#0xfc
-094B F581      1831            mov     sp,a
-094D D005      1832            pop     ar5
-094F D004      1833            pop     ar4
-0951 D003      1834            pop     ar3
-0953 D002      1835            pop     ar2
-0955 C006      1836            push    ar6
-0957 C007      1837            push    ar7
-0959 C000      1838            push    ar0
-095B C001      1839            push    ar1
-095D 8A82      1840            mov     dpl,r2
-095F 8B83      1841            mov     dph,r3
-0961 8CF0      1842            mov     b,r4
-0963 ED        1843            mov     a,r5
-0964 120100    1844            lcall   ___fsdiv
-0967 AA82      1845            mov     r2,dpl
-0969 AB83      1846            mov     r3,dph
-096B ACF0      1847            mov     r4,b
-096D FD        1848            mov     r5,a
-096E E581      1849            mov     a,sp
-0970 24FC      1850            add     a,#0xfc
-0972 F581      1851            mov     sp,a
-0974 8A82      1852            mov     dpl,r2
-0976 8B83      1853            mov     dph,r3
-0978 8CF0      1854            mov     b,r4
-097A ED        1855            mov     a,r5
-097B 120100    1856            lcall   ___fs2schar
-097E 858270    1857            mov     _pwm_Left0,dpl
-0981           1858   ;        robot.c:345: pwm_Right0 = -1;
-0981 75F0FF    1859            mov     _pwm_Right0,#0xFF
-0984           1860   ;        robot.c:346: pwm_Right1 = vleft*vleft*75/(vright*vright+vleft*vleft);
-0984 C0B8      1861            push    _linetrack_vleft_1_87
-0986 C0B9      1862            push    (_linetrack_vleft_1_87 + 1)
-0988 C0BA      1863            push    (_linetrack_vleft_1_87 + 2)
-098A C0BB      1864            push    (_linetrack_vleft_1_87 + 3)
-098C 85B882    1865            mov     dpl,_linetrack_vleft_1_87
-098F 85B983    1866            mov     dph,(_linetrack_vleft_1_87 + 1)
-0992 85BAF0    1867            mov     b,(_linetrack_vleft_1_87 + 2)
-0995 E5BB      1868            mov     a,(_linetrack_vleft_1_87 + 3)
-0997 120100    1869            lcall   ___fsmul
-099A AA82      1870            mov     r2,dpl
-099C AB83      1871            mov     r3,dph
-099E ACF0      1872            mov     r4,b
-09A0 FD        1873            mov     r5,a
-09A1 E581      1874            mov     a,sp
-09A3 24FC      1875            add     a,#0xfc
-09A5 F581      1876            mov     sp,a
-09A7 C002      1877            push    ar2
-09A9 C003      1878            push    ar3
-09AB C004      1879            push    ar4
-09AD C005      1880            push    ar5
-09AF 900000    1881            mov     dptr,#0x0000
-09B2 75F096    1882            mov     b,#0x96
-09B5 7442      1883            mov     a,#0x42
-09B7 120100    1884            lcall   ___fsmul
-09BA AA82      1885            mov     r2,dpl
-09BC AB83      1886            mov     r3,dph
-09BE ACF0      1887            mov     r4,b
-09C0 FD        1888            mov     r5,a
-09C1 E581      1889            mov     a,sp
-09C3 24FC      1890            add     a,#0xfc
-09C5 F581      1891            mov     sp,a
-09C7 C002      1892            push    ar2
-09C9 C003      1893            push    ar3
-09CB C004      1894            push    ar4
-09CD C005      1895            push    ar5
-09CF C008      1896            push    _linetrack_vright_1_87
-09D1 C009      1897            push    (_linetrack_vright_1_87 + 1)
-09D3 C00A      1898            push    (_linetrack_vright_1_87 + 2)
-09D5 C00B      1899            push    (_linetrack_vright_1_87 + 3)
-09D7 850882    1900            mov     dpl,_linetrack_vright_1_87
-09DA 850983    1901            mov     dph,(_linetrack_vright_1_87 + 1)
-09DD 850AF0    1902            mov     b,(_linetrack_vright_1_87 + 2)
-09E0 E50B      1903            mov     a,(_linetrack_vright_1_87 + 3)
-09E2 120100    1904            lcall   ___fsmul
-09E5 8582A8    1905            mov     _linetrack_sloc1_1_0,dpl
-09E8 8583A9    1906            mov     (_linetrack_sloc1_1_0 + 1),dph
-09EB 85F0AA    1907            mov     (_linetrack_sloc1_1_0 + 2),b
-09EE F5AB      1908            mov     (_linetrack_sloc1_1_0 + 3),a
-09F0 E581      1909            mov     a,sp
-09F2 24FC      1910            add     a,#0xfc
-09F4 F581      1911            mov     sp,a
-09F6 C0B8      1912            push    _linetrack_vleft_1_87
-09F8 C0B9      1913            push    (_linetrack_vleft_1_87 + 1)
-09FA C0BA      1914            push    (_linetrack_vleft_1_87 + 2)
-09FC C0BB      1915            push    (_linetrack_vleft_1_87 + 3)
-09FE 85B882    1916            mov     dpl,_linetrack_vleft_1_87
-0A01 85B983    1917            mov     dph,(_linetrack_vleft_1_87 + 1)
-0A04 85BAF0    1918            mov     b,(_linetrack_vleft_1_87 + 2)
-0A07 E5BB      1919            mov     a,(_linetrack_vleft_1_87 + 3)
-0A09 120100    1920            lcall   ___fsmul
-0A0C AE82      1921            mov     r6,dpl
-0A0E AF83      1922            mov     r7,dph
-0A10 A8F0      1923            mov     r0,b
-0A12 F9        1924            mov     r1,a
-0A13 E581      1925            mov     a,sp
-0A15 24FC      1926            add     a,#0xfc
-0A17 F581      1927            mov     sp,a
-0A19 C006      1928            push    ar6
-0A1B C007      1929            push    ar7
-0A1D C000      1930            push    ar0
-0A1F C001      1931            push    ar1
-0A21 85A882    1932            mov     dpl,_linetrack_sloc1_1_0
-0A24 85A983    1933            mov     dph,(_linetrack_sloc1_1_0 + 1)
-0A27 85AAF0    1934            mov     b,(_linetrack_sloc1_1_0 + 2)
-0A2A E5AB      1935            mov     a,(_linetrack_sloc1_1_0 + 3)
-0A2C 120100    1936            lcall   ___fsadd
-0A2F AE82      1937            mov     r6,dpl
-0A31 AF83      1938            mov     r7,dph
-0A33 A8F0      1939            mov     r0,b
-0A35 F9        1940            mov     r1,a
-0A36 E581      1941            mov     a,sp
-0A38 24FC      1942            add     a,#0xfc
-0A3A F581      1943            mov     sp,a
-0A3C D005      1944            pop     ar5
-0A3E D004      1945            pop     ar4
-0A40 D003      1946            pop     ar3
-0A42 D002      1947            pop     ar2
-0A44 C006      1948            push    ar6
-0A46 C007      1949            push    ar7
-0A48 C000      1950            push    ar0
-0A4A C001      1951            push    ar1
-0A4C 8A82      1952            mov     dpl,r2
-0A4E 8B83      1953            mov     dph,r3
-0A50 8CF0      1954            mov     b,r4
-0A52 ED        1955            mov     a,r5
-0A53 120100    1956            lcall   ___fsdiv
-0A56 AA82      1957            mov     r2,dpl
-0A58 AB83      1958            mov     r3,dph
-0A5A ACF0      1959            mov     r4,b
-0A5C FD        1960            mov     r5,a
-0A5D E581      1961            mov     a,sp
-0A5F 24FC      1962            add     a,#0xfc
-0A61 F581      1963            mov     sp,a
-0A63 8A82      1964            mov     dpl,r2
-0A65 8B83      1965            mov     dph,r3
-0A67 8CF0      1966            mov     b,r4
-0A69 ED        1967            mov     a,r5
-0A6A 120100    1968            lcall   ___fs2schar
-0A6D 8582B0    1969            mov     _pwm_Right1,dpl
-0A70 22        1970            ret
-0A71           1971   ;------------------------------------------------------------
-0A71           1972   ;Allocation info for local variables in function 'stopcar'
-0A71           1973   ;------------------------------------------------------------
-0A71           1974   ;------------------------------------------------------------
-0A71           1975   ;        robot.c:354: void stopcar(void) {
-0A71           1976   ;        -----------------------------------------
-0A71           1977   ;         function stopcar
-0A71           1978   ;        -----------------------------------------
-0A71           1979   _stopcar:
-0A71           1980   ;        robot.c:356: pwm_Left1 = -1;
-0A71 7530FF    1981            mov     _pwm_Left1,#0xFF
-0A74           1982   ;        robot.c:357: pwm_Right1 = -1;
-0A74 75B0FF    1983            mov     _pwm_Right1,#0xFF
-0A77           1984   ;        robot.c:358: pwm_Left0 = -1;
-0A77 7570FF    1985            mov     _pwm_Left0,#0xFF
-0A7A           1986   ;        robot.c:359: pwm_Right0 = -1;
-0A7A 75F0FF    1987            mov     _pwm_Right0,#0xFF
-0A7D 22        1988            ret
-0A7E           1989   ;------------------------------------------------------------
-0A7E           1990   ;Allocation info for local variables in function 'turncar'
-0A7E           1991   ;------------------------------------------------------------
-0A7E           1992   ;leftright                 Allocated to registers r2 r3 
-0A7E           1993   ;v                         Allocated with name '_turncar_v_1_93'
-0A7E           1994   ;direction                 Allocated with name '_turncar_direction_1_93'
-0A7E           1995   ;------------------------------------------------------------
-0A7E           1996   ;        robot.c:365: void turncar (int leftright) {
-0A7E           1997   ;        -----------------------------------------
-0A7E           1998   ;         function turncar
-0A7E           1999   ;        -----------------------------------------
-0A7E           2000   _turncar:
-0A7E AA82      2001            mov     r2,dpl
-0A80 AB83      2002            mov     r3,dph
-0A82           2003   ;        robot.c:374: pwm_Left0 = -1;
-0A82 7570FF    2004            mov     _pwm_Left0,#0xFF
-0A85           2005   ;        robot.c:375: pwm_Left1 = -1;
-0A85 7530FF    2006            mov     _pwm_Left1,#0xFF
-0A88           2007   ;        robot.c:376: pwm_Right0 = -1;
-0A88 75F0FF    2008            mov     _pwm_Right0,#0xFF
-0A8B           2009   ;        robot.c:377: pwm_Right1 = -1;
-0A8B 75B0FF    2010            mov     _pwm_Right1,#0xFF
-0A8E           2011   ;        robot.c:379: direction = currentstate - 1;
-0A8E E5F0      2012            mov     a,_currentstate
-0A90 14        2013            dec     a
-0A91 F538      2014            mov     _turncar_direction_1_93,a
-0A93           2015   ;        robot.c:382: if (leftright == 1) {
-0A93 BA0180    2016            cjne    r2,#0x01,L007062?
-0A96 BB0080    2017            cjne    r3,#0x00,L007062?
-0A99 8001      2018            sjmp    L007063?
-0A9B           2019   L007062?:
-0A9B 020100    2020            ljmp    L007022?
-0A9E           2021   L007063?:
-0A9E           2022   ;        robot.c:384: pwm_Right0 = 100;
-0A9E 75F064    2023            mov     _pwm_Right0,#0x64
-0AA1           2024   ;        robot.c:387: v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
-0AA1 E538      2025            mov     a,_turncar_direction_1_93
-0AA3 6001      2026            jz      L007026?
-0AA5 75820C    2027            mov     dpl,#0x0C
-0AA8 120100    2028            lcall   _Volts_at_Pin
-0AAB AC82      2029            mov     r4,dpl
-0AAD AD83      2030            mov     r5,dph
-0AAF AEF0      2031            mov     r6,b
-0AB1 FF        2032            mov     r7,a
-0AB2 8001      2033            sjmp    L007027?
-0AB4           2034   L007026?:
-0AB4 75820E    2035            mov     dpl,#0x0E
-0AB7 120100    2036            lcall   _Volts_at_Pin
-0ABA AC82      2037            mov     r4,dpl
-0ABC AD83      2038            mov     r5,dph
-0ABE AEF0      2039            mov     r6,b
-0AC0 FF        2040            mov     r7,a
-0AC1           2041   L007027?:
-0AC1 8CE8      2042            mov     _turncar_v_1_93,r4
-0AC3 8DE9      2043            mov     (_turncar_v_1_93 + 1),r5
-0AC5 8EEA      2044            mov     (_turncar_v_1_93 + 2),r6
-0AC7 8FEB      2045            mov     (_turncar_v_1_93 + 3),r7
-0AC9           2046   ;        robot.c:389: while (v < 1.3) {
-0AC9           2047   L007001?:
-0AC9 7466      2048            mov     a,#0x66
-0ACB C0E0      2049            push    acc
-0ACD C0E0      2050            push    acc
-0ACF 74A6      2051            mov     a,#0xA6
-0AD1 C0E0      2052            push    acc
-0AD3 743F      2053            mov     a,#0x3F
-0AD5 C0E0      2054            push    acc
-0AD7 85E882    2055            mov     dpl,_turncar_v_1_93
-0ADA 85E983    2056            mov     dph,(_turncar_v_1_93 + 1)
-0ADD 85EAF0    2057            mov     b,(_turncar_v_1_93 + 2)
-0AE0 E5EB      2058            mov     a,(_turncar_v_1_93 + 3)
-0AE2 120100    2059            lcall   ___fslt
-0AE5 AC82      2060            mov     r4,dpl
-0AE7 E581      2061            mov     a,sp
-0AE9 24FC      2062            add     a,#0xfc
-0AEB F581      2063            mov     sp,a
-0AED EC        2064            mov     a,r4
-0AEE 6001      2065            jz      L007003?
-0AF0           2066   ;        robot.c:391: v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
-0AF0 E538      2067            mov     a,_turncar_direction_1_93
-0AF2 6001      2068            jz      L007028?
-0AF4 75820C    2069            mov     dpl,#0x0C
-0AF7 120100    2070            lcall   _Volts_at_Pin
-0AFA AC82      2071            mov     r4,dpl
-0AFC AD83      2072            mov     r5,dph
-0AFE AEF0      2073            mov     r6,b
-0B00 FF        2074            mov     r7,a
-0B01 8001      2075            sjmp    L007029?
-0B03           2076   L007028?:
-0B03 75820E    2077            mov     dpl,#0x0E
-0B06 120100    2078            lcall   _Volts_at_Pin
-0B09 AC82      2079            mov     r4,dpl
-0B0B AD83      2080            mov     r5,dph
-0B0D AEF0      2081            mov     r6,b
-0B0F FF        2082            mov     r7,a
-0B10           2083   L007029?:
-0B10 8CE8      2084            mov     _turncar_v_1_93,r4
-0B12 8DE9      2085            mov     (_turncar_v_1_93 + 1),r5
-0B14 8EEA      2086            mov     (_turncar_v_1_93 + 2),r6
-0B16 8FEB      2087            mov     (_turncar_v_1_93 + 3),r7
-0B18 8001      2088            sjmp    L007001?
-0B1A           2089   L007003?:
-0B1A           2090   ;        robot.c:395: waitms(300);
-0B1A 90012C    2091            mov     dptr,#0x012C
-0B1D 120100    2092            lcall   _waitms
-0B20           2093   ;        robot.c:398: pwm_Right0 = -1; 
-0B20 75F0FF    2094            mov     _pwm_Right0,#0xFF
-0B23 22        2095            ret
-0B24           2096   L007022?:
-0B24           2097   ;        robot.c:402: else if (leftright == 3) {
-0B24 BA0300    2098            cjne    r2,#0x03,L007067?
-0B27 BB0000    2099            cjne    r3,#0x00,L007067?
-0B2A 8001      2100            sjmp    L007068?
-0B2C           2101   L007067?:
-0B2C 020100    2102            ljmp    L007019?
-0B2F           2103   L007068?:
-0B2F           2104   ;        robot.c:404: pwm_Left1 = 75;
-0B2F 75304B    2105            mov     _pwm_Left1,#0x4B
-0B32           2106   ;        robot.c:405: waitms(200);
-0B32 9000C8    2107            mov     dptr,#0x00C8
-0B35 120100    2108            lcall   _waitms
-0B38           2109   ;        robot.c:408: v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
-0B38 E538      2110            mov     a,_turncar_direction_1_93
-0B3A 6001      2111            jz      L007030?
-0B3C 75820B    2112            mov     dpl,#0x0B
-0B3F 120100    2113            lcall   _Volts_at_Pin
-0B42 AC82      2114            mov     r4,dpl
-0B44 AD83      2115            mov     r5,dph
-0B46 AEF0      2116            mov     r6,b
-0B48 FF        2117            mov     r7,a
-0B49 8001      2118            sjmp    L007031?
-0B4B           2119   L007030?:
-0B4B 75820D    2120            mov     dpl,#0x0D
-0B4E 120100    2121            lcall   _Volts_at_Pin
-0B51 AC82      2122            mov     r4,dpl
-0B53 AD83      2123            mov     r5,dph
-0B55 AEF0      2124            mov     r6,b
-0B57 FF        2125            mov     r7,a
-0B58           2126   L007031?:
-0B58 8CE8      2127            mov     _turncar_v_1_93,r4
-0B5A 8DE9      2128            mov     (_turncar_v_1_93 + 1),r5
-0B5C 8EEA      2129            mov     (_turncar_v_1_93 + 2),r6
-0B5E 8FEB      2130            mov     (_turncar_v_1_93 + 3),r7
-0B60           2131   ;        robot.c:410: while (v < 1.3) {
-0B60           2132   L007004?:
-0B60 7466      2133            mov     a,#0x66
-0B62 C0E0      2134            push    acc
-0B64 C0E0      2135            push    acc
-0B66 74A6      2136            mov     a,#0xA6
-0B68 C0E0      2137            push    acc
-0B6A 743F      2138            mov     a,#0x3F
-0B6C C0E0      2139            push    acc
-0B6E 85E882    2140            mov     dpl,_turncar_v_1_93
-0B71 85E983    2141            mov     dph,(_turncar_v_1_93 + 1)
-0B74 85EAF0    2142            mov     b,(_turncar_v_1_93 + 2)
-0B77 E5EB      2143            mov     a,(_turncar_v_1_93 + 3)
-0B79 120100    2144            lcall   ___fslt
-0B7C AC82      2145            mov     r4,dpl
-0B7E E581      2146            mov     a,sp
-0B80 24FC      2147            add     a,#0xfc
-0B82 F581      2148            mov     sp,a
-0B84 EC        2149            mov     a,r4
-0B85 6001      2150            jz      L007006?
-0B87           2151   ;        robot.c:412: v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
-0B87 E538      2152            mov     a,_turncar_direction_1_93
-0B89 6001      2153            jz      L007032?
-0B8B 75820B    2154            mov     dpl,#0x0B
-0B8E 120100    2155            lcall   _Volts_at_Pin
-0B91 AC82      2156            mov     r4,dpl
-0B93 AD83      2157            mov     r5,dph
-0B95 AEF0      2158            mov     r6,b
-0B97 FF        2159            mov     r7,a
-0B98 8001      2160            sjmp    L007033?
-0B9A           2161   L007032?:
-0B9A 75820D    2162            mov     dpl,#0x0D
-0B9D 120100    2163            lcall   _Volts_at_Pin
-0BA0 AC82      2164            mov     r4,dpl
-0BA2 AD83      2165            mov     r5,dph
-0BA4 AEF0      2166            mov     r6,b
-0BA6 FF        2167            mov     r7,a
-0BA7           2168   L007033?:
-0BA7 8CE8      2169            mov     _turncar_v_1_93,r4
-0BA9 8DE9      2170            mov     (_turncar_v_1_93 + 1),r5
-0BAB 8EEA      2171            mov     (_turncar_v_1_93 + 2),r6
-0BAD 8FEB      2172            mov     (_turncar_v_1_93 + 3),r7
-0BAF 8001      2173            sjmp    L007004?
-0BB1           2174   L007006?:
-0BB1           2175   ;        robot.c:416: pwm_Left1 = -1; 
-0BB1 7530FF    2176            mov     _pwm_Left1,#0xFF
-0BB4 22        2177            ret
-0BB5           2178   L007019?:
-0BB5           2179   ;        robot.c:420: else if (leftright == 2) {
-0BB5 BA0240    2180            cjne    r2,#0x02,L007072?
-0BB8 BB0040    2181            cjne    r3,#0x00,L007072?
-0BBB 8001      2182            sjmp    L007073?
-0BBD           2183   L007072?:
-0BBD 020100    2184            ljmp    L007016?
-0BC0           2185   L007073?:
-0BC0           2186   ;        robot.c:422: pwm_Right1 = 100;
-0BC0 75B064    2187            mov     _pwm_Right1,#0x64
-0BC3           2188   ;        robot.c:425: v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
-0BC3 E538      2189            mov     a,_turncar_direction_1_93
-0BC5 6001      2190            jz      L007034?
-0BC7 75820C    2191            mov     dpl,#0x0C
-0BCA 120100    2192            lcall   _Volts_at_Pin
-0BCD AC82      2193            mov     r4,dpl
-0BCF AD83      2194            mov     r5,dph
-0BD1 AEF0      2195            mov     r6,b
-0BD3 FF        2196            mov     r7,a
-0BD4 8001      2197            sjmp    L007035?
-0BD6           2198   L007034?:
-0BD6 75820E    2199            mov     dpl,#0x0E
-0BD9 120100    2200            lcall   _Volts_at_Pin
-0BDC AC82      2201            mov     r4,dpl
-0BDE AD83      2202            mov     r5,dph
-0BE0 AEF0      2203            mov     r6,b
-0BE2 FF        2204            mov     r7,a
-0BE3           2205   L007035?:
-0BE3 8CE8      2206            mov     _turncar_v_1_93,r4
-0BE5 8DE9      2207            mov     (_turncar_v_1_93 + 1),r5
-0BE7 8EEA      2208            mov     (_turncar_v_1_93 + 2),r6
-0BE9 8FEB      2209            mov     (_turncar_v_1_93 + 3),r7
-0BEB           2210   ;        robot.c:427: while (v < 0.9) {
-0BEB           2211   L007007?:
-0BEB 7466      2212            mov     a,#0x66
-0BED C0E0      2213            push    acc
-0BEF C0E0      2214            push    acc
-0BF1 C0E0      2215            push    acc
-0BF3 743F      2216            mov     a,#0x3F
-0BF5 C0E0      2217            push    acc
-0BF7 85E882    2218            mov     dpl,_turncar_v_1_93
-0BFA 85E983    2219            mov     dph,(_turncar_v_1_93 + 1)
-0BFD 85EAF0    2220            mov     b,(_turncar_v_1_93 + 2)
-0C00 E5EB      2221            mov     a,(_turncar_v_1_93 + 3)
-0C02 120100    2222            lcall   ___fslt
-0C05 AC82      2223            mov     r4,dpl
-0C07 E581      2224            mov     a,sp
-0C09 24FC      2225            add     a,#0xfc
-0C0B F581      2226            mov     sp,a
-0C0D EC        2227            mov     a,r4
-0C0E 6001      2228            jz      L007009?
-0C10           2229   ;        robot.c:429: v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
-0C10 E538      2230            mov     a,_turncar_direction_1_93
-0C12 6001      2231            jz      L007036?
-0C14 75820C    2232            mov     dpl,#0x0C
-0C17 120100    2233            lcall   _Volts_at_Pin
-0C1A AC82      2234            mov     r4,dpl
-0C1C AD83      2235            mov     r5,dph
-0C1E AEF0      2236            mov     r6,b
-0C20 FF        2237            mov     r7,a
-0C21 8001      2238            sjmp    L007037?
-0C23           2239   L007036?:
-0C23 75820E    2240            mov     dpl,#0x0E
-0C26 120100    2241            lcall   _Volts_at_Pin
-0C29 AC82      2242            mov     r4,dpl
-0C2B AD83      2243            mov     r5,dph
-0C2D AEF0      2244            mov     r6,b
-0C2F FF        2245            mov     r7,a
-0C30           2246   L007037?:
-0C30 8CE8      2247            mov     _turncar_v_1_93,r4
-0C32 8DE9      2248            mov     (_turncar_v_1_93 + 1),r5
-0C34 8EEA      2249            mov     (_turncar_v_1_93 + 2),r6
-0C36 8FEB      2250            mov     (_turncar_v_1_93 + 3),r7
-0C38 8001      2251            sjmp    L007007?
-0C3A           2252   L007009?:
-0C3A           2253   ;        robot.c:433: waitms(300);
-0C3A 90012C    2254            mov     dptr,#0x012C
-0C3D 120100    2255            lcall   _waitms
-0C40           2256   ;        robot.c:436: pwm_Right1 = -1; 
-0C40 75B0FF    2257            mov     _pwm_Right1,#0xFF
-0C43 22        2258            ret
-0C44           2259   L007016?:
-0C44           2260   ;        robot.c:440: else if (leftright == 4) {
-0C44 BA0480    2261            cjne    r2,#0x04,L007077?
-0C47 BB0080    2262            cjne    r3,#0x00,L007077?
-0C4A 8001      2263            sjmp    L007078?
-0C4C           2264   L007077?:
-0C4C 22        2265            ret
-0C4D           2266   L007078?:
-0C4D           2267   ;        robot.c:442: pwm_Left0 = 75;
-0C4D 75704B    2268            mov     _pwm_Left0,#0x4B
-0C50           2269   ;        robot.c:443: waitms(200);
-0C50 9000C8    2270            mov     dptr,#0x00C8
-0C53 120100    2271            lcall   _waitms
-0C56           2272   ;        robot.c:446: v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
-0C56 E538      2273            mov     a,_turncar_direction_1_93
-0C58 6001      2274            jz      L007038?
-0C5A 75820B    2275            mov     dpl,#0x0B
-0C5D 120100    2276            lcall   _Volts_at_Pin
-0C60 AA82      2277            mov     r2,dpl
-0C62 AB83      2278            mov     r3,dph
-0C64 ACF0      2279            mov     r4,b
-0C66 FD        2280            mov     r5,a
-0C67 8001      2281            sjmp    L007039?
-0C69           2282   L007038?:
-0C69 75820D    2283            mov     dpl,#0x0D
-0C6C 120100    2284            lcall   _Volts_at_Pin
-0C6F AA82      2285            mov     r2,dpl
-0C71 AB83      2286            mov     r3,dph
-0C73 ACF0      2287            mov     r4,b
-0C75 FD        2288            mov     r5,a
-0C76           2289   L007039?:
-0C76 8AE8      2290            mov     _turncar_v_1_93,r2
-0C78 8BE9      2291            mov     (_turncar_v_1_93 + 1),r3
-0C7A 8CEA      2292            mov     (_turncar_v_1_93 + 2),r4
-0C7C 8DEB      2293            mov     (_turncar_v_1_93 + 3),r5
-0C7E           2294   ;        robot.c:448: while (v < 0.9) {
-0C7E           2295   L007010?:
-0C7E 7466      2296            mov     a,#0x66
-0C80 C0E0      2297            push    acc
-0C82 C0E0      2298            push    acc
-0C84 C0E0      2299            push    acc
-0C86 743F      2300            mov     a,#0x3F
-0C88 C0E0      2301            push    acc
-0C8A 85E882    2302            mov     dpl,_turncar_v_1_93
-0C8D 85E983    2303            mov     dph,(_turncar_v_1_93 + 1)
-0C90 85EAF0    2304            mov     b,(_turncar_v_1_93 + 2)
-0C93 E5EB      2305            mov     a,(_turncar_v_1_93 + 3)
-0C95 120100    2306            lcall   ___fslt
-0C98 AA82      2307            mov     r2,dpl
-0C9A E581      2308            mov     a,sp
-0C9C 24FC      2309            add     a,#0xfc
-0C9E F581      2310            mov     sp,a
-0CA0 EA        2311            mov     a,r2
-0CA1 6001      2312            jz      L007012?
-0CA3           2313   ;        robot.c:450: v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
-0CA3 E538      2314            mov     a,_turncar_direction_1_93
-0CA5 6001      2315            jz      L007040?
-0CA7 75820B    2316            mov     dpl,#0x0B
-0CAA 120100    2317            lcall   _Volts_at_Pin
-0CAD AA82      2318            mov     r2,dpl
-0CAF AB83      2319            mov     r3,dph
-0CB1 ACF0      2320            mov     r4,b
-0CB3 FD        2321            mov     r5,a
-0CB4 8001      2322            sjmp    L007041?
-0CB6           2323   L007040?:
-0CB6 75820D    2324            mov     dpl,#0x0D
-0CB9 120100    2325            lcall   _Volts_at_Pin
-0CBC AA82      2326            mov     r2,dpl
-0CBE AB83      2327            mov     r3,dph
-0CC0 ACF0      2328            mov     r4,b
-0CC2 FD        2329            mov     r5,a
-0CC3           2330   L007041?:
-0CC3 8AE8      2331            mov     _turncar_v_1_93,r2
-0CC5 8BE9      2332            mov     (_turncar_v_1_93 + 1),r3
-0CC7 8CEA      2333            mov     (_turncar_v_1_93 + 2),r4
-0CC9 8DEB      2334            mov     (_turncar_v_1_93 + 3),r5
-0CCB 8001      2335            sjmp    L007010?
-0CCD           2336   L007012?:
-0CCD           2337   ;        robot.c:454: pwm_Left0 = -1; 
-0CCD 7570FF    2338            mov     _pwm_Left0,#0xFF
-0CD0 22        2339            ret
-0CD1           2340   ;------------------------------------------------------------
-0CD1           2341   ;Allocation info for local variables in function 'uturn'
-0CD1           2342   ;------------------------------------------------------------
-0CD1           2343   ;vleft                     Allocated with name '_uturn_vleft_1_103'
-0CD1           2344   ;vright                    Allocated with name '_uturn_vright_1_103'
-0CD1           2345   ;------------------------------------------------------------
-0CD1           2346   ;        robot.c:461: void uturn(void) {
-0CD1           2347   ;        -----------------------------------------
-0CD1           2348   ;         function uturn
-0CD1           2349   ;        -----------------------------------------
-0CD1           2350   _uturn:
-0CD1           2351   ;        robot.c:465: vleft = Volts_at_Pin(TANK_FL);
-0CD1 75820B    2352            mov     dpl,#0x0B
-0CD4 120100    2353            lcall   _Volts_at_Pin
-0CD7 858288    2354            mov     _uturn_vleft_1_103,dpl
-0CDA 858389    2355            mov     (_uturn_vleft_1_103 + 1),dph
-0CDD 85F08A    2356            mov     (_uturn_vleft_1_103 + 2),b
-0CE0 F58B      2357            mov     (_uturn_vleft_1_103 + 3),a
-0CE2           2358   ;        robot.c:466: vright = Volts_at_Pin(TANK_FR);
-0CE2 75820C    2359            mov     dpl,#0x0C
-0CE5 120100    2360            lcall   _Volts_at_Pin
-0CE8 8582D8    2361            mov     _uturn_vright_1_103,dpl
-0CEB 8583D9    2362            mov     (_uturn_vright_1_103 + 1),dph
-0CEE 85F0DA    2363            mov     (_uturn_vright_1_103 + 2),b
-0CF1 F5DB      2364            mov     (_uturn_vright_1_103 + 3),a
-0CF3           2365   ;        robot.c:469: pwm_Left0 = -1;
-0CF3 7570FF    2366            mov     _pwm_Left0,#0xFF
-0CF6           2367   ;        robot.c:470: pwm_Left1 = 50;
-0CF6 753032    2368            mov     _pwm_Left1,#0x32
-0CF9           2369   ;        robot.c:471: pwm_Right0 = -1;
-0CF9 75F0FF    2370            mov     _pwm_Right0,#0xFF
-0CFC           2371   ;        robot.c:472: pwm_Right1 = 50;
-0CFC 75B032    2372            mov     _pwm_Right1,#0x32
-0CFF           2373   ;        robot.c:475: waitms(3000);
-0CFF 900BB8    2374            mov     dptr,#0x0BB8
-0D02 120100    2375            lcall   _waitms
-0D05           2376   ;        robot.c:477: while ((Volts_at_Pin(TANK_FL)-Volts_at_Pin(TANK_FR))<-0.3 || (Volts_at_Pin(TANK_FL)-Volts_at_Pin(TANK_FR))>0.3);
-0D05           2377   L008002?:
-0D05 75820B    2378            mov     dpl,#0x0B
-0D08 120100    2379            lcall   _Volts_at_Pin
-0D0B AA82      2380            mov     r2,dpl
-0D0D AB83      2381            mov     r3,dph
-0D0F ACF0      2382            mov     r4,b
-0D11 FD        2383            mov     r5,a
-0D12 75820C    2384            mov     dpl,#0x0C
-0D15 C002      2385            push    ar2
-0D17 C003      2386            push    ar3
-0D19 C004      2387            push    ar4
-0D1B C005      2388            push    ar5
-0D1D 120100    2389            lcall   _Volts_at_Pin
-0D20 AE82      2390            mov     r6,dpl
-0D22 AF83      2391            mov     r7,dph
-0D24 A8F0      2392            mov     r0,b
-0D26 F9        2393            mov     r1,a
-0D27 D005      2394            pop     ar5
-0D29 D004      2395            pop     ar4
-0D2B D003      2396            pop     ar3
-0D2D D002      2397            pop     ar2
-0D2F C006      2398            push    ar6
-0D31 C007      2399            push    ar7
-0D33 C000      2400            push    ar0
-0D35 C001      2401            push    ar1
-0D37 8A82      2402            mov     dpl,r2
-0D39 8B83      2403            mov     dph,r3
-0D3B 8CF0      2404            mov     b,r4
-0D3D ED        2405            mov     a,r5
-0D3E 120100    2406            lcall   ___fssub
-0D41 AA82      2407            mov     r2,dpl
-0D43 AB83      2408            mov     r3,dph
-0D45 ACF0      2409            mov     r4,b
-0D47 FD        2410            mov     r5,a
-0D48 E581      2411            mov     a,sp
-0D4A 24FC      2412            add     a,#0xfc
-0D4C F581      2413            mov     sp,a
-0D4E 749A      2414            mov     a,#0x9A
-0D50 C0E0      2415            push    acc
-0D52 7499      2416            mov     a,#0x99
-0D54 C0E0      2417            push    acc
-0D56 C0E0      2418            push    acc
-0D58 74BE      2419            mov     a,#0xBE
-0D5A C0E0      2420            push    acc
-0D5C 8A82      2421            mov     dpl,r2
-0D5E 8B83      2422            mov     dph,r3
-0D60 8CF0      2423            mov     b,r4
-0D62 ED        2424            mov     a,r5
-0D63 120100    2425            lcall   ___fslt
-0D66 AA82      2426            mov     r2,dpl
-0D68 E581      2427            mov     a,sp
-0D6A 24FC      2428            add     a,#0xfc
-0D6C F581      2429            mov     sp,a
-0D6E EA        2430            mov     a,r2
-0D6F 7001      2431            jnz     L008002?
-0D71 75820B    2432            mov     dpl,#0x0B
-0D74 120100    2433            lcall   _Volts_at_Pin
-0D77 AA82      2434            mov     r2,dpl
-0D79 AB83      2435            mov     r3,dph
-0D7B ACF0      2436            mov     r4,b
-0D7D FD        2437            mov     r5,a
-0D7E 75820C    2438            mov     dpl,#0x0C
-0D81 C002      2439            push    ar2
-0D83 C003      2440            push    ar3
-0D85 C004      2441            push    ar4
-0D87 C005      2442            push    ar5
-0D89 120100    2443            lcall   _Volts_at_Pin
-0D8C AE82      2444            mov     r6,dpl
-0D8E AF83      2445            mov     r7,dph
-0D90 A8F0      2446            mov     r0,b
-0D92 F9        2447            mov     r1,a
-0D93 D005      2448            pop     ar5
-0D95 D004      2449            pop     ar4
-0D97 D003      2450            pop     ar3
-0D99 D002      2451            pop     ar2
-0D9B C006      2452            push    ar6
-0D9D C007      2453            push    ar7
-0D9F C000      2454            push    ar0
-0DA1 C001      2455            push    ar1
-0DA3 8A82      2456            mov     dpl,r2
-0DA5 8B83      2457            mov     dph,r3
-0DA7 8CF0      2458            mov     b,r4
-0DA9 ED        2459            mov     a,r5
-0DAA 120100    2460            lcall   ___fssub
-0DAD AA82      2461            mov     r2,dpl
-0DAF AB83      2462            mov     r3,dph
-0DB1 ACF0      2463            mov     r4,b
-0DB3 FD        2464            mov     r5,a
-0DB4 E581      2465            mov     a,sp
-0DB6 24FC      2466            add     a,#0xfc
-0DB8 F581      2467            mov     sp,a
-0DBA 749A      2468            mov     a,#0x9A
-0DBC C0E0      2469            push    acc
-0DBE 7499      2470            mov     a,#0x99
-0DC0 C0E0      2471            push    acc
-0DC2 C0E0      2472            push    acc
-0DC4 743E      2473            mov     a,#0x3E
-0DC6 C0E0      2474            push    acc
-0DC8 8A82      2475            mov     dpl,r2
-0DCA 8B83      2476            mov     dph,r3
-0DCC 8CF0      2477            mov     b,r4
-0DCE ED        2478            mov     a,r5
-0DCF 120100    2479            lcall   ___fsgt
-0DD2 AA82      2480            mov     r2,dpl
-0DD4 E581      2481            mov     a,sp
-0DD6 24FC      2482            add     a,#0xfc
-0DD8 F581      2483            mov     sp,a
-0DDA EA        2484            mov     a,r2
-0DDB 6001      2485            jz      L008010?
-0DDD 020100    2486            ljmp    L008002?
-0DE0           2487   L008010?:
-0DE0 22        2488            ret
-0DE1           2489            rseg R_CSEG
-0DE1           2490   
-0000           2491            rseg R_XINIT
-0000           2492   
-0000           2493            rseg R_CONST
-0000           2494   __str_0:
-0000 1B        2495            db 0x1B
-0001 5B324A    2496            db '[2J'
-0004 00        2497            db 0x00
-0005           2498   __str_1:
-0005 66726F6E  2499            db 'frontL %f frontR %f backL %f backR %f command %1d, state %1d'
+015F 120100     708            lcall   _mxStop
+0162 8001       709            sjmp    L002011?
+0164            710   L002004?:
+0164            711   ;        robot.c:62: else if (currentcmd == CMD_UTURN) mxUTurn();
+0164 7406       712            mov     a,#0x06
+0166 B530F8     713            cjne    a,_currentcmd,L002011?
+0169 120100     714            lcall   _mxUTurn
+016C            715   L002011?:
+016C            716   ;        robot.c:65: switch (currentstate) {
+016C AAF0       717            mov     r2,_currentstate
+016E BA0138     718            cjne    r2,#0x01,L002087?
+0171 8001       719            sjmp    L002012?
+0173            720   L002087?:
+0173 BA02B8     721            cjne    r2,#0x02,L002088?
+0176 8001       722            sjmp    L002013?
+0178            723   L002088?:
+0178            724   ;        robot.c:66: case FORWARD_STATE:
+0178 BA0338     725            cjne    r2,#0x03,L002015?
+017B 8001       726            sjmp    L002014?
+017D            727   L002012?:
+017D            728   ;        robot.c:67: linetrack(0);       // forwards
+017D 900000     729            mov     dptr,#0x0000
+0180 120100     730            lcall   _linetrack
+0183            731   ;        robot.c:69: v1 = Volts_at_Pin(TANK_FL);
+0183 75820B     732            mov     dpl,#0x0B
+0186 120100     733            lcall   _Volts_at_Pin
+0189 858228     734            mov     _main_v1_1_70,dpl
+018C 858329     735            mov     (_main_v1_1_70 + 1),dph
+018F 85F02A     736            mov     (_main_v1_1_70 + 2),b
+0192 F52B       737            mov     (_main_v1_1_70 + 3),a
+0194            738   ;        robot.c:70: v2 = Volts_at_Pin(TANK_FR);
+0194 75820C     739            mov     dpl,#0x0C
+0197 120100     740            lcall   _Volts_at_Pin
+019A 858268     741            mov     _main_v2_1_70,dpl
+019D 858369     742            mov     (_main_v2_1_70 + 1),dph
+01A0 85F06A     743            mov     (_main_v2_1_70 + 2),b
+01A3 F56B       744            mov     (_main_v2_1_70 + 3),a
+01A5            745   ;        robot.c:71: break;
+01A5            746   ;        robot.c:72: case REVERSE_STATE:
+01A5 8001       747            sjmp    L002015?
+01A7            748   L002013?:
+01A7            749   ;        robot.c:73: linetrack(1);       // backwards
+01A7 900001     750            mov     dptr,#0x0001
+01AA 120100     751            lcall   _linetrack
+01AD            752   ;        robot.c:75: v2 = Volts_at_Pin(TANK_RL);
+01AD 75820D     753            mov     dpl,#0x0D
+01B0 120100     754            lcall   _Volts_at_Pin
+01B3 858268     755            mov     _main_v2_1_70,dpl
+01B6 858369     756            mov     (_main_v2_1_70 + 1),dph
+01B9 85F06A     757            mov     (_main_v2_1_70 + 2),b
+01BC F56B       758            mov     (_main_v2_1_70 + 3),a
+01BE            759   ;        robot.c:76: v1 = Volts_at_Pin(TANK_RR);
+01BE 75820E     760            mov     dpl,#0x0E
+01C1 120100     761            lcall   _Volts_at_Pin
+01C4 858228     762            mov     _main_v1_1_70,dpl
+01C7 858329     763            mov     (_main_v1_1_70 + 1),dph
+01CA 85F02A     764            mov     (_main_v1_1_70 + 2),b
+01CD F52B       765            mov     (_main_v1_1_70 + 3),a
+01CF            766   ;        robot.c:77: break;
+01CF            767   ;        robot.c:78: case STOP_STATE:
+01CF 8001       768            sjmp    L002015?
+01D1            769   L002014?:
+01D1            770   ;        robot.c:79: stopcar();          // stop car
+01D1 120100     771            lcall   _stopcar
+01D4            772   ;        robot.c:81: }
+01D4            773   L002015?:
+01D4            774   ;        robot.c:84: switch (currentcmd) {
+01D4 E530       775            mov     a,_currentcmd
+01D6 FA         776            mov     r2,a
+01D7 30E7B8     777            jnb     acc.7,L002090?
+01DA 020100     778            ljmp    L002042?
+01DD            779   L002090?:
+01DD C3         780            clr     c
+01DE 7486       781            mov     a,#(0x06 ^ 0x80)
+01E0 8AF0       782            mov     b,r2
+01E2 63F080     783            xrl     b,#0x80
+01E5 95F0       784            subb    a,b
+01E7 5001       785            jnc     L002091?
+01E9 020100     786            ljmp    L002042?
+01EC            787   L002091?:
+01EC EA         788            mov     a,r2
+01ED 2A         789            add     a,r2
+01EE 2A         790            add     a,r2
+01EF 909E78     791            mov     dptr,#L002092?
+01F2 73         792            jmp     @a+dptr
+01F3            793   L002092?:
+01F3 020100     794            ljmp    L002016?
+01F6 020100     795            ljmp    L002030?
+01F9 020100     796            ljmp    L002034?
+01FC 020100     797            ljmp    L002038?
+01FF 020100     798            ljmp    L002039?
+0202 020100     799            ljmp    L002040?
+0205 020100     800            ljmp    L002041?
+0208            801   ;        robot.c:86: case CMD_NONE:
+0208            802   L002016?:
+0208            803   ;        robot.c:88: if ((currentstate-1) ? 
+0208 AAF0       804            mov     r2,_currentstate
+020A E5F0       805            mov     a,_currentstate
+020C 33         806            rlc     a
+020D 95E0       807            subb    a,acc
+020F FB         808            mov     r3,a
+0210 1A         809            dec     r2
+0211 BAFF80     810            cjne    r2,#0xff,L002093?
+0214 1B         811            dec     r3
+0215            812   L002093?:
+0215 EA         813            mov     a,r2
+0216 4B         814            orl     a,r3
+0217 6001       815            jz      L002049?
+0219            816   ;        robot.c:89: (v1 > 1.2 && v2 > 1.2) :
+0219 749A       817            mov     a,#0x9A
+021B C0E0       818            push    acc
+021D 7499       819            mov     a,#0x99
+021F C0E0       820            push    acc
+0221 C0E0       821            push    acc
+0223 743F       822            mov     a,#0x3F
+0225 C0E0       823            push    acc
+0227 852882     824            mov     dpl,_main_v1_1_70
+022A 852983     825            mov     dph,(_main_v1_1_70 + 1)
+022D 852AF0     826            mov     b,(_main_v1_1_70 + 2)
+0230 E52B       827            mov     a,(_main_v1_1_70 + 3)
+0232 120100     828            lcall   ___fsgt
+0235 AA82       829            mov     r2,dpl
+0237 E581       830            mov     a,sp
+0239 24FC       831            add     a,#0xfc
+023B F581       832            mov     sp,a
+023D EA         833            mov     a,r2
+023E 6001       834            jz      L002051?
+0240 749A       835            mov     a,#0x9A
+0242 C0E0       836            push    acc
+0244 7499       837            mov     a,#0x99
+0246 C0E0       838            push    acc
+0248 C0E0       839            push    acc
+024A 743F       840            mov     a,#0x3F
+024C C0E0       841            push    acc
+024E 856882     842            mov     dpl,_main_v2_1_70
+0251 856983     843            mov     dph,(_main_v2_1_70 + 1)
+0254 856AF0     844            mov     b,(_main_v2_1_70 + 2)
+0257 E56B       845            mov     a,(_main_v2_1_70 + 3)
+0259 120100     846            lcall   ___fsgt
+025C AA82       847            mov     r2,dpl
+025E E581       848            mov     a,sp
+0260 24FC       849            add     a,#0xfc
+0262 F581       850            mov     sp,a
+0264 EA         851            mov     a,r2
+0265 7001       852            jnz     L002052?
+0267            853   L002051?:
+0267 7A00       854            mov     r2,#0x00
+0269 8001       855            sjmp    L002053?
+026B            856   L002052?:
+026B 7A01       857            mov     r2,#0x01
+026D            858   L002053?:
+026D EA         859            mov     a,r2
+026E 24FF       860            add     a,#0xff
+0270 9218       861            mov     _main_sloc8_1_0,c
+0272 8001       862            sjmp    L002050?
+0274            863   L002049?:
+0274            864   ;        robot.c:90: (v1 > 0.7 && v2 > 1)) {
+0274 7433       865            mov     a,#0x33
+0276 C0E0       866            push    acc
+0278 C0E0       867            push    acc
+027A C0E0       868            push    acc
+027C 743F       869            mov     a,#0x3F
+027E C0E0       870            push    acc
+0280 852882     871            mov     dpl,_main_v1_1_70
+0283 852983     872            mov     dph,(_main_v1_1_70 + 1)
+0286 852AF0     873            mov     b,(_main_v1_1_70 + 2)
+0289 E52B       874            mov     a,(_main_v1_1_70 + 3)
+028B 120100     875            lcall   ___fsgt
+028E AA82       876            mov     r2,dpl
+0290 E581       877            mov     a,sp
+0292 24FC       878            add     a,#0xfc
+0294 F581       879            mov     sp,a
+0296 EA         880            mov     a,r2
+0297 6001       881            jz      L002054?
+0299 E4         882            clr     a
+029A C0E0       883            push    acc
+029C C0E0       884            push    acc
+029E 7480       885            mov     a,#0x80
+02A0 C0E0       886            push    acc
+02A2 743F       887            mov     a,#0x3F
+02A4 C0E0       888            push    acc
+02A6 856882     889            mov     dpl,_main_v2_1_70
+02A9 856983     890            mov     dph,(_main_v2_1_70 + 1)
+02AC 856AF0     891            mov     b,(_main_v2_1_70 + 2)
+02AF E56B       892            mov     a,(_main_v2_1_70 + 3)
+02B1 120100     893            lcall   ___fsgt
+02B4 AA82       894            mov     r2,dpl
+02B6 E581       895            mov     a,sp
+02B8 24FC       896            add     a,#0xfc
+02BA F581       897            mov     sp,a
+02BC EA         898            mov     a,r2
+02BD 7001       899            jnz     L002055?
+02BF            900   L002054?:
+02BF 7A00       901            mov     r2,#0x00
+02C1 8001       902            sjmp    L002056?
+02C3            903   L002055?:
+02C3 7A01       904            mov     r2,#0x01
+02C5            905   L002056?:
+02C5 EA         906            mov     a,r2
+02C6 24FF       907            add     a,#0xff
+02C8 9218       908            mov     _main_sloc8_1_0,c
+02CA            909   L002050?:
+02CA 201800     910            jb      _main_sloc8_1_0,L002099?
+02CD 020100     911            ljmp    L002045?
+02D0            912   L002099?:
+02D0            913   ;        robot.c:91: printf("\nINTERSECTION\n");
+02D0 7440       914            mov     a,#__str_2
+02D2 C0E0       915            push    acc
+02D4 74A3       916            mov     a,#(__str_2 >> 8)
+02D6 C0E0       917            push    acc
+02D8 7480       918            mov     a,#0x80
+02DA C0E0       919            push    acc
+02DC 120100     920            lcall   _printf
+02DF 1581       921            dec     sp
+02E1 1581       922            dec     sp
+02E3 1581       923            dec     sp
+02E5            924   ;        robot.c:93: if (currentstate == 1) {
+02E5 7401       925            mov     a,#0x01
+02E7 B5F080     926            cjne    a,_currentstate,L002026?
+02EA            927   ;        robot.c:94: if (Volts_at_Pin(TANK_RL)>Volts_at_Pin(TANK_RR)) {
+02EA 75820D     928            mov     dpl,#0x0D
+02ED 120100     929            lcall   _Volts_at_Pin
+02F0 AA82       930            mov     r2,dpl
+02F2 AB83       931            mov     r3,dph
+02F4 ACF0       932            mov     r4,b
+02F6 FD         933            mov     r5,a
+02F7 75820E     934            mov     dpl,#0x0E
+02FA C002       935            push    ar2
+02FC C003       936            push    ar3
+02FE C004       937            push    ar4
+0300 C005       938            push    ar5
+0302 120100     939            lcall   _Volts_at_Pin
+0305 AE82       940            mov     r6,dpl
+0307 AF83       941            mov     r7,dph
+0309 A8F0       942            mov     r0,b
+030B F9         943            mov     r1,a
+030C D005       944            pop     ar5
+030E D004       945            pop     ar4
+0310 D003       946            pop     ar3
+0312 D002       947            pop     ar2
+0314 C006       948            push    ar6
+0316 C007       949            push    ar7
+0318 C000       950            push    ar0
+031A C001       951            push    ar1
+031C 8A82       952            mov     dpl,r2
+031E 8B83       953            mov     dph,r3
+0320 8CF0       954            mov     b,r4
+0322 ED         955            mov     a,r5
+0323 120100     956            lcall   ___fsgt
+0326 AA82       957            mov     r2,dpl
+0328 E581       958            mov     a,sp
+032A 24FC       959            add     a,#0xfc
+032C F581       960            mov     sp,a
+032E EA         961            mov     a,r2
+032F 6001       962            jz      L002018?
+0331            963   ;        robot.c:95: pwm_Left1 = 50;
+0331 753032     964            mov     _pwm_Left1,#0x32
+0334            965   ;        robot.c:96: pwm_Left0 = -1;
+0334 7570FF     966            mov     _pwm_Left0,#0xFF
+0337            967   ;        robot.c:97: pwm_Right0 = 30;
+0337 75F01E     968            mov     _pwm_Right0,#0x1E
+033A            969   ;        robot.c:98: pwm_Right1 = -1;
+033A 75B0FF     970            mov     _pwm_Right1,#0xFF
+033D 8001       971            sjmp    L002027?
+033F            972   L002018?:
+033F            973   ;        robot.c:101: pwm_Left1 = 30;
+033F 75301E     974            mov     _pwm_Left1,#0x1E
+0342            975   ;        robot.c:102: pwm_Left0 = -1;
+0342 7570FF     976            mov     _pwm_Left0,#0xFF
+0345            977   ;        robot.c:103: pwm_Right0 = 50;
+0345 75F032     978            mov     _pwm_Right0,#0x32
+0348            979   ;        robot.c:104: pwm_Right1 = -1;
+0348 75B0FF     980            mov     _pwm_Right1,#0xFF
+034B 8001       981            sjmp    L002027?
+034D            982   L002026?:
+034D            983   ;        robot.c:106: } else if (currentstate == 2) {
+034D 7402       984            mov     a,#0x02
+034F B5F000     985            cjne    a,_currentstate,L002027?
+0352            986   ;        robot.c:107: if (Volts_at_Pin(TANK_FL)>Volts_at_Pin(TANK_FR)) {
+0352 75820B     987            mov     dpl,#0x0B
+0355 120100     988            lcall   _Volts_at_Pin
+0358 AA82       989            mov     r2,dpl
+035A AB83       990            mov     r3,dph
+035C ACF0       991            mov     r4,b
+035E FD         992            mov     r5,a
+035F 75820C     993            mov     dpl,#0x0C
+0362 C002       994            push    ar2
+0364 C003       995            push    ar3
+0366 C004       996            push    ar4
+0368 C005       997            push    ar5
+036A 120100     998            lcall   _Volts_at_Pin
+036D AE82       999            mov     r6,dpl
+036F AF83      1000            mov     r7,dph
+0371 A8F0      1001            mov     r0,b
+0373 F9        1002            mov     r1,a
+0374 D005      1003            pop     ar5
+0376 D004      1004            pop     ar4
+0378 D003      1005            pop     ar3
+037A D002      1006            pop     ar2
+037C C006      1007            push    ar6
+037E C007      1008            push    ar7
+0380 C000      1009            push    ar0
+0382 C001      1010            push    ar1
+0384 8A82      1011            mov     dpl,r2
+0386 8B83      1012            mov     dph,r3
+0388 8CF0      1013            mov     b,r4
+038A ED        1014            mov     a,r5
+038B 120100    1015            lcall   ___fsgt
+038E AA82      1016            mov     r2,dpl
+0390 E581      1017            mov     a,sp
+0392 24FC      1018            add     a,#0xfc
+0394 F581      1019            mov     sp,a
+0396 EA        1020            mov     a,r2
+0397 6001      1021            jz      L002021?
+0399           1022   ;        robot.c:108: pwm_Left0 = 50;
+0399 757032    1023            mov     _pwm_Left0,#0x32
+039C           1024   ;        robot.c:109: pwm_Left1 = -1;
+039C 7530FF    1025            mov     _pwm_Left1,#0xFF
+039F           1026   ;        robot.c:110: pwm_Right0 = -1;
+039F 75F0FF    1027            mov     _pwm_Right0,#0xFF
+03A2           1028   ;        robot.c:111: pwm_Right1 = 30;
+03A2 75B01E    1029            mov     _pwm_Right1,#0x1E
+03A5 8001      1030            sjmp    L002027?
+03A7           1031   L002021?:
+03A7           1032   ;        robot.c:114: pwm_Left0 = 30;
+03A7 75701E    1033            mov     _pwm_Left0,#0x1E
+03AA           1034   ;        robot.c:115: pwm_Left1 = -1;
+03AA 7530FF    1035            mov     _pwm_Left1,#0xFF
+03AD           1036   ;        robot.c:116: pwm_Right0 = -1;
+03AD 75F0FF    1037            mov     _pwm_Right0,#0xFF
+03B0           1038   ;        robot.c:117: pwm_Right1 = 50;
+03B0 75B032    1039            mov     _pwm_Right1,#0x32
+03B3           1040   L002027?:
+03B3           1041   ;        robot.c:121: waitms(1500);
+03B3 9005DC    1042            mov     dptr,#0x05DC
+03B6 120100    1043            lcall   _waitms
+03B9           1044   ;        robot.c:123: break;
+03B9 020100    1045            ljmp    L002045?
+03BC           1046   ;        robot.c:125: case CMD_LEFT:
+03BC           1047   L002030?:
+03BC           1048   ;        robot.c:127: printf("Turn left at the next intersection\n");
+03BC 74C0      1049            mov     a,#__str_3
+03BE C0E0      1050            push    acc
+03C0 74A4      1051            mov     a,#(__str_3 >> 8)
+03C2 C0E0      1052            push    acc
+03C4 7480      1053            mov     a,#0x80
+03C6 C0E0      1054            push    acc
+03C8 120100    1055            lcall   _printf
+03CB 1581      1056            dec     sp
+03CD 1581      1057            dec     sp
+03CF 1581      1058            dec     sp
+03D1           1059   ;        robot.c:128: if (v1 > 0.7 && v2 >1)  {
+03D1 7433      1060            mov     a,#0x33
+03D3 C0E0      1061            push    acc
+03D5 C0E0      1062            push    acc
+03D7 C0E0      1063            push    acc
+03D9 743F      1064            mov     a,#0x3F
+03DB C0E0      1065            push    acc
+03DD 852882    1066            mov     dpl,_main_v1_1_70
+03E0 852983    1067            mov     dph,(_main_v1_1_70 + 1)
+03E3 852AF0    1068            mov     b,(_main_v1_1_70 + 2)
+03E6 E52B      1069            mov     a,(_main_v1_1_70 + 3)
+03E8 120100    1070            lcall   ___fsgt
+03EB AA82      1071            mov     r2,dpl
+03ED E581      1072            mov     a,sp
+03EF 24FC      1073            add     a,#0xfc
+03F1 F581      1074            mov     sp,a
+03F3 EA        1075            mov     a,r2
+03F4 7001      1076            jnz     L002106?
+03F6 020100    1077            ljmp    L002045?
+03F9           1078   L002106?:
+03F9 E4        1079            clr     a
+03FA C0E0      1080            push    acc
+03FC C0E0      1081            push    acc
+03FE 7480      1082            mov     a,#0x80
+0400 C0E0      1083            push    acc
+0402 743F      1084            mov     a,#0x3F
+0404 C0E0      1085            push    acc
+0406 856882    1086            mov     dpl,_main_v2_1_70
+0409 856983    1087            mov     dph,(_main_v2_1_70 + 1)
+040C 856AF0    1088            mov     b,(_main_v2_1_70 + 2)
+040F E56B      1089            mov     a,(_main_v2_1_70 + 3)
+0411 120100    1090            lcall   ___fsgt
+0414 AA82      1091            mov     r2,dpl
+0416 E581      1092            mov     a,sp
+0418 24FC      1093            add     a,#0xfc
+041A F581      1094            mov     sp,a
+041C EA        1095            mov     a,r2
+041D 7001      1096            jnz     L002107?
+041F 020100    1097            ljmp    L002045?
+0422           1098   L002107?:
+0422           1099   ;        robot.c:129: printf("\n\r INTERSECTION\n");
+0422 7480      1100            mov     a,#__str_4
+0424 C0E0      1101            push    acc
+0426 74A5      1102            mov     a,#(__str_4 >> 8)
+0428 C0E0      1103            push    acc
+042A 7480      1104            mov     a,#0x80
+042C C0E0      1105            push    acc
+042E 120100    1106            lcall   _printf
+0431 1581      1107            dec     sp
+0433 1581      1108            dec     sp
+0435 1581      1109            dec     sp
+0437           1110   ;        robot.c:134: turncar(currentstate);
+0437 AAF0      1111            mov     r2,_currentstate
+0439 E5F0      1112            mov     a,_currentstate
+043B 33        1113            rlc     a
+043C 95E0      1114            subb    a,acc
+043E FB        1115            mov     r3,a
+043F 8A82      1116            mov     dpl,r2
+0441 8B83      1117            mov     dph,r3
+0443 120100    1118            lcall   _turncar
+0446           1119   ;        robot.c:135: currentcmd = 0;
+0446 753000    1120            mov     _currentcmd,#0x00
+0449           1121   ;        robot.c:137: break;
+0449 020100    1122            ljmp    L002045?
+044C           1123   ;        robot.c:140: case CMD_RIGHT:
+044C           1124   L002034?:
+044C           1125   ;        robot.c:142: printf("Turn right at the next intersection\n");
+044C 74C0      1126            mov     a,#__str_5
+044E C0E0      1127            push    acc
+0450 74A5      1128            mov     a,#(__str_5 >> 8)
+0452 C0E0      1129            push    acc
+0454 7480      1130            mov     a,#0x80
+0456 C0E0      1131            push    acc
+0458 120100    1132            lcall   _printf
+045B 1581      1133            dec     sp
+045D 1581      1134            dec     sp
+045F 1581      1135            dec     sp
+0461           1136   ;        robot.c:143: if (v1 > 0.7 && v2 >1) {
+0461 7433      1137            mov     a,#0x33
+0463 C0E0      1138            push    acc
+0465 C0E0      1139            push    acc
+0467 C0E0      1140            push    acc
+0469 743F      1141            mov     a,#0x3F
+046B C0E0      1142            push    acc
+046D 852882    1143            mov     dpl,_main_v1_1_70
+0470 852983    1144            mov     dph,(_main_v1_1_70 + 1)
+0473 852AF0    1145            mov     b,(_main_v1_1_70 + 2)
+0476 E52B      1146            mov     a,(_main_v1_1_70 + 3)
+0478 120100    1147            lcall   ___fsgt
+047B AA82      1148            mov     r2,dpl
+047D E581      1149            mov     a,sp
+047F 24FC      1150            add     a,#0xfc
+0481 F581      1151            mov     sp,a
+0483 EA        1152            mov     a,r2
+0484 7001      1153            jnz     L002108?
+0486 020100    1154            ljmp    L002045?
+0489           1155   L002108?:
+0489 E4        1156            clr     a
+048A C0E0      1157            push    acc
+048C C0E0      1158            push    acc
+048E 7480      1159            mov     a,#0x80
+0490 C0E0      1160            push    acc
+0492 743F      1161            mov     a,#0x3F
+0494 C0E0      1162            push    acc
+0496 856882    1163            mov     dpl,_main_v2_1_70
+0499 856983    1164            mov     dph,(_main_v2_1_70 + 1)
+049C 856AF0    1165            mov     b,(_main_v2_1_70 + 2)
+049F E56B      1166            mov     a,(_main_v2_1_70 + 3)
+04A1 120100    1167            lcall   ___fsgt
+04A4 AA82      1168            mov     r2,dpl
+04A6 E581      1169            mov     a,sp
+04A8 24FC      1170            add     a,#0xfc
+04AA F581      1171            mov     sp,a
+04AC EA        1172            mov     a,r2
+04AD 7001      1173            jnz     L002109?
+04AF 020100    1174            ljmp    L002045?
+04B2           1175   L002109?:
+04B2           1176   ;        robot.c:144: printf("\n\r INTERSECTION\n");
+04B2 7480      1177            mov     a,#__str_4
+04B4 C0E0      1178            push    acc
+04B6 74A5      1179            mov     a,#(__str_4 >> 8)
+04B8 C0E0      1180            push    acc
+04BA 7480      1181            mov     a,#0x80
+04BC C0E0      1182            push    acc
+04BE 120100    1183            lcall   _printf
+04C1 1581      1184            dec     sp
+04C3 1581      1185            dec     sp
+04C5 1581      1186            dec     sp
+04C7           1187   ;        robot.c:146: turncar(currentstate + 2); //1 = right
+04C7 AAF0      1188            mov     r2,_currentstate
+04C9 E5F0      1189            mov     a,_currentstate
+04CB 33        1190            rlc     a
+04CC 95E0      1191            subb    a,acc
+04CE FB        1192            mov     r3,a
+04CF 8A82      1193            mov     dpl,r2
+04D1 8B83      1194            mov     dph,r3
+04D3 A3        1195            inc     dptr
+04D4 A3        1196            inc     dptr
+04D5 120100    1197            lcall   _turncar
+04D8           1198   ;        robot.c:147: currentcmd = 0;
+04D8 753000    1199            mov     _currentcmd,#0x00
+04DB           1200   ;        robot.c:149: break;
+04DB 020100    1201            ljmp    L002045?
+04DE           1202   ;        robot.c:152: case CMD_FORWARD:
+04DE           1203   L002038?:
+04DE           1204   ;        robot.c:154: printf("GO!\n");
+04DE 7480      1205            mov     a,#__str_6
+04E0 C0E0      1206            push    acc
+04E2 74A6      1207            mov     a,#(__str_6 >> 8)
+04E4 C0E0      1208            push    acc
+04E6 7480      1209            mov     a,#0x80
+04E8 C0E0      1210            push    acc
+04EA 120100    1211            lcall   _printf
+04ED 1581      1212            dec     sp
+04EF 1581      1213            dec     sp
+04F1 1581      1214            dec     sp
+04F3           1215   ;        robot.c:155: currentstate = 1;
+04F3 75F001    1216            mov     _currentstate,#0x01
+04F6           1217   ;        robot.c:156: currentcmd = 0;
+04F6 753000    1218            mov     _currentcmd,#0x00
+04F9           1219   ;        robot.c:157: break;
+04F9 020100    1220            ljmp    L002045?
+04FC           1221   ;        robot.c:160: case CMD_REVERSE:
+04FC           1222   L002039?:
+04FC           1223   ;        robot.c:162: printf("Reverse Reverse!\n");
+04FC 74C0      1224            mov     a,#__str_7
+04FE C0E0      1225            push    acc
+0500 74A6      1226            mov     a,#(__str_7 >> 8)
+0502 C0E0      1227            push    acc
+0504 7480      1228            mov     a,#0x80
+0506 C0E0      1229            push    acc
+0508 120100    1230            lcall   _printf
+050B 1581      1231            dec     sp
+050D 1581      1232            dec     sp
+050F 1581      1233            dec     sp
+0511           1234   ;        robot.c:163: currentstate = 2;
+0511 75F002    1235            mov     _currentstate,#0x02
+0514           1236   ;        robot.c:164: currentcmd = 0;
+0514 753000    1237            mov     _currentcmd,#0x00
+0517           1238   ;        robot.c:165: break;
+0517 020100    1239            ljmp    L002045?
+051A           1240   ;        robot.c:168: case CMD_STOP:
+051A           1241   L002040?:
+051A           1242   ;        robot.c:170: printf("HALT peasants!\n");
+051A 7400      1243            mov     a,#__str_8
+051C C0E0      1244            push    acc
+051E 74A7      1245            mov     a,#(__str_8 >> 8)
+0520 C0E0      1246            push    acc
+0522 7480      1247            mov     a,#0x80
+0524 C0E0      1248            push    acc
+0526 120100    1249            lcall   _printf
+0529 1581      1250            dec     sp
+052B 1581      1251            dec     sp
+052D 1581      1252            dec     sp
+052F           1253   ;        robot.c:171: currentstate = 3;
+052F 75F003    1254            mov     _currentstate,#0x03
+0532           1255   ;        robot.c:172: currentcmd = 0;
+0532 753000    1256            mov     _currentcmd,#0x00
+0535           1257   ;        robot.c:173: break;
+0535 020100    1258            ljmp    L002045?
+0538           1259   ;        robot.c:176: case CMD_UTURN:
+0538           1260   L002041?:
+0538           1261   ;        robot.c:177: uturn();
+0538 120100    1262            lcall   _uturn
+053B           1263   ;        robot.c:178: printf("UTURN\n");
+053B 7440      1264            mov     a,#__str_9
+053D C0E0      1265            push    acc
+053F 74A7      1266            mov     a,#(__str_9 >> 8)
+0541 C0E0      1267            push    acc
+0543 7480      1268            mov     a,#0x80
+0545 C0E0      1269            push    acc
+0547 120100    1270            lcall   _printf
+054A 1581      1271            dec     sp
+054C 1581      1272            dec     sp
+054E 1581      1273            dec     sp
+0550           1274   ;        robot.c:179: currentcmd = 0;
+0550 753000    1275            mov     _currentcmd,#0x00
+0553           1276   ;        robot.c:180: break;
+0553 020100    1277            ljmp    L002045?
+0556           1278   ;        robot.c:183: default: 
+0556           1279   L002042?:
+0556           1280   ;        robot.c:184: currentstate = 1;
+0556 75F001    1281            mov     _currentstate,#0x01
+0559           1282   ;        robot.c:185: }
+0559 020100    1283            ljmp    L002045?
+055C           1284   ;------------------------------------------------------------
+055C           1285   ;Allocation info for local variables in function 'Timer2_ISR'
+055C           1286   ;------------------------------------------------------------
+055C           1287   ;------------------------------------------------------------
+055C           1288   ;        robot.c:189: void Timer2_ISR (void) interrupt 5 {
+055C           1289   ;        -----------------------------------------
+055C           1290   ;         function Timer2_ISR
+055C           1291   ;        -----------------------------------------
+055C           1292   _Timer2_ISR:
+055C C0E0      1293            push    acc
+055E C0F0      1294            push    b
+0560 C0D0      1295            push    psw
+0562 75D000    1296            mov     psw,#0x00
+0565           1297   ;        robot.c:190: TF2H = 0; // Clear Timer2 interrupt flag
+0565 C2CF      1298            clr     _TF2H
+0567           1299   ;        robot.c:192: pwm_count++;
+0567 0520      1300            inc     _pwm_count
+0569           1301   ;        robot.c:193: if(pwm_count>100) pwm_count=0;
+0569 C3        1302            clr     c
+056A 74E4      1303            mov     a,#(0x64 ^ 0x80)
+056C 8520F0    1304            mov     b,_pwm_count
+056F 63F080    1305            xrl     b,#0x80
+0572 95F0      1306            subb    a,b
+0574 5001      1307            jnc     L003002?
+0576 752000    1308            mov     _pwm_count,#0x00
+0579           1309   L003002?:
+0579           1310   ;        robot.c:196: MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
+0579 C3        1311            clr     c
+057A E570      1312            mov     a,_pwm_Left0
+057C 6480      1313            xrl     a,#0x80
+057E 8520F0    1314            mov     b,_pwm_count
+0581 63F080    1315            xrl     b,#0x80
+0584 95F0      1316            subb    a,b
+0586 9268      1317            mov  _Timer2_ISR_sloc0_1_0,c
+0588 B3        1318            cpl     c
+0589 9295      1319            mov     _P1_5,c
+058B           1320   ;        robot.c:197: MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
+058B C3        1321            clr     c
+058C E530      1322            mov     a,_pwm_Left1
+058E 6480      1323            xrl     a,#0x80
+0590 8520F0    1324            mov     b,_pwm_count
+0593 63F080    1325            xrl     b,#0x80
+0596 95F0      1326            subb    a,b
+0598 9268      1327            mov  _Timer2_ISR_sloc0_1_0,c
+059A B3        1328            cpl     c
+059B 9296      1329            mov     _P1_6,c
+059D           1330   ;        robot.c:198: MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
+059D C3        1331            clr     c
+059E E5F0      1332            mov     a,_pwm_Right0
+05A0 6480      1333            xrl     a,#0x80
+05A2 8520F0    1334            mov     b,_pwm_count
+05A5 63F080    1335            xrl     b,#0x80
+05A8 95F0      1336            subb    a,b
+05AA 9268      1337            mov  _Timer2_ISR_sloc0_1_0,c
+05AC B3        1338            cpl     c
+05AD 92A0      1339            mov     _P2_0,c
+05AF           1340   ;        robot.c:199: MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
+05AF C3        1341            clr     c
+05B0 E5B0      1342            mov     a,_pwm_Right1
+05B2 6480      1343            xrl     a,#0x80
+05B4 8520F0    1344            mov     b,_pwm_count
+05B7 63F080    1345            xrl     b,#0x80
+05BA 95F0      1346            subb    a,b
+05BC 9268      1347            mov  _Timer2_ISR_sloc0_1_0,c
+05BE B3        1348            cpl     c
+05BF 92A1      1349            mov     _P2_1,c
+05C1 D0D0      1350            pop     psw
+05C3 D0F0      1351            pop     b
+05C5 D0E0      1352            pop     acc
+05C7 32        1353            reti
+05C8           1354   ;        eliminated unneeded push/pop dpl
+05C8           1355   ;        eliminated unneeded push/pop dph
+05C8           1356   ;------------------------------------------------------------
+05C8           1357   ;Allocation info for local variables in function 'readData'
+05C8           1358   ;------------------------------------------------------------
+05C8           1359   ;command                   Allocated to registers r2 
+05C8           1360   ;------------------------------------------------------------
+05C8           1361   ;        robot.c:292: unsigned char readData(void) {
+05C8           1362   ;        -----------------------------------------
+05C8           1363   ;         function readData
+05C8           1364   ;        -----------------------------------------
+05C8           1365   _readData:
+05C8           1366   ;        robot.c:293: unsigned char command = 0;
+05C8 7A00      1367            mov     r2,#0x00
+05CA           1368   ;        robot.c:294: if (!COMMAND_PIN) {
+05CA 309100    1369            jnb     _P1_1,L004024?
+05CD 020100    1370            ljmp    L004008?
+05D0           1371   L004024?:
+05D0           1372   ;        robot.c:295: while (!COMMAND_PIN);
+05D0           1373   L004001?:
+05D0 309180    1374            jnb     _P1_1,L004001?
+05D3           1375   ;        robot.c:296: P1_4 = 1;
+05D3 D294      1376            setb    _P1_4
+05D5           1377   ;        robot.c:297: waitms((int)(CMDFRQ + CMDFRQ/2));
+05D5 900060    1378            mov     dptr,#0x0060
+05D8 120100    1379            lcall   _waitms
+05DB           1380   ;        robot.c:298: P1_4 = 0;
+05DB C294      1381            clr     _P1_4
+05DD           1382   ;        robot.c:299: command |= COMMAND_PIN<<2;
+05DD A291      1383            mov     c,_P1_1
+05DF E4        1384            clr     a
+05E0 33        1385            rlc     a
+05E1 25E0      1386            add     a,acc
+05E3 25E0      1387            add     a,acc
+05E5 FA        1388            mov     r2,a
+05E6           1389   ;        robot.c:300: waitms(CMDFRQ);
+05E6 900040    1390            mov     dptr,#0x0040
+05E9 C002      1391            push    ar2
+05EB 120100    1392            lcall   _waitms
+05EE D002      1393            pop     ar2
+05F0           1394   ;        robot.c:301: P1_4 = 1;
+05F0 D294      1395            setb    _P1_4
+05F2           1396   ;        robot.c:302: command |= COMMAND_PIN<<1;
+05F2 A291      1397            mov     c,_P1_1
+05F4 E4        1398            clr     a
+05F5 33        1399            rlc     a
+05F6 25E0      1400            add     a,acc
+05F8 4202      1401            orl     ar2,a
+05FA           1402   ;        robot.c:303: waitms(CMDFRQ);
+05FA 900040    1403            mov     dptr,#0x0040
+05FD C002      1404            push    ar2
+05FF 120100    1405            lcall   _waitms
+0602 D002      1406            pop     ar2
+0604           1407   ;        robot.c:304: P1_4 = 0;
+0604 C294      1408            clr     _P1_4
+0606           1409   ;        robot.c:305: command |= COMMAND_PIN;
+0606 A291      1410            mov     c,_P1_1
+0608 E4        1411            clr     a
+0609 33        1412            rlc     a
+060A FB        1413            mov     r3,a
+060B 4202      1414            orl     ar2,a
+060D           1415   ;        robot.c:306: while (!COMMAND_PIN);
+060D           1416   L004004?:
+060D 3091C0    1417            jnb     _P1_1,L004004?
+0610           1418   ;        robot.c:310: (command & 0x01) ? '1' : '0');
+0610 EA        1419            mov     a,r2
+0611 30E000    1420            jnb     acc.0,L004011?
+0614 7B31      1421            mov     r3,#0x31
+0616 8001      1422            sjmp    L004012?
+0618           1423   L004011?:
+0618 7B30      1424            mov     r3,#0x30
+061A           1425   L004012?:
+061A EB        1426            mov     a,r3
+061B 33        1427            rlc     a
+061C 95E0      1428            subb    a,acc
+061E FC        1429            mov     r4,a
+061F           1430   ;        robot.c:309: (command & 0x02) ? '1' : '0',
+061F EA        1431            mov     a,r2
+0620 30E180    1432            jnb     acc.1,L004013?
+0623 7D31      1433            mov     r5,#0x31
+0625 8001      1434            sjmp    L004014?
+0627           1435   L004013?:
+0627 7D30      1436            mov     r5,#0x30
+0629           1437   L004014?:
+0629 ED        1438            mov     a,r5
+062A 33        1439            rlc     a
+062B 95E0      1440            subb    a,acc
+062D FE        1441            mov     r6,a
+062E           1442   ;        robot.c:308: (command & 0x04) ? '1' : '0',
+062E EA        1443            mov     a,r2
+062F 30E200    1444            jnb     acc.2,L004015?
+0632 7F31      1445            mov     r7,#0x31
+0634 8001      1446            sjmp    L004016?
+0636           1447   L004015?:
+0636 7F30      1448            mov     r7,#0x30
+0638           1449   L004016?:
+0638 EF        1450            mov     a,r7
+0639 33        1451            rlc     a
+063A 95E0      1452            subb    a,acc
+063C F8        1453            mov     r0,a
+063D           1454   ;        robot.c:307: printf("\nCommand received: 0b_0%c%c%c\n", 
+063D C002      1455            push    ar2
+063F C003      1456            push    ar3
+0641 C004      1457            push    ar4
+0643 C005      1458            push    ar5
+0645 C006      1459            push    ar6
+0647 C007      1460            push    ar7
+0649 C000      1461            push    ar0
+064B 7480      1462            mov     a,#__str_10
+064D C0E0      1463            push    acc
+064F 74AA      1464            mov     a,#(__str_10 >> 8)
+0651 C0E0      1465            push    acc
+0653 7480      1466            mov     a,#0x80
+0655 C0E0      1467            push    acc
+0657 120100    1468            lcall   _printf
+065A E581      1469            mov     a,sp
+065C 24F7      1470            add     a,#0xf7
+065E F581      1471            mov     sp,a
+0660 D002      1472            pop     ar2
+0662           1473   L004008?:
+0662           1474   ;        robot.c:312: return command;
+0662 8A82      1475            mov     dpl,r2
+0664 22        1476            ret
+0665           1477   ;------------------------------------------------------------
+0665           1478   ;Allocation info for local variables in function 'linetrack'
+0665           1479   ;------------------------------------------------------------
+0665           1480   ;forwardbackward           Allocated to registers r2 r3 
+0665           1481   ;vleft                     Allocated with name '_linetrack_vleft_1_89'
+0665           1482   ;vright                    Allocated with name '_linetrack_vright_1_89'
+0665           1483   ;sloc0                     Allocated with name '_linetrack_sloc0_1_0'
+0665           1484   ;sloc1                     Allocated with name '_linetrack_sloc1_1_0'
+0665           1485   ;------------------------------------------------------------
+0665           1486   ;        robot.c:319: void linetrack (int forwardbackward) {
+0665           1487   ;        -----------------------------------------
+0665           1488   ;         function linetrack
+0665           1489   ;        -----------------------------------------
+0665           1490   _linetrack:
+0665 AA82      1491            mov     r2,dpl
+0667 AB83      1492            mov     r3,dph
+0669           1493   ;        robot.c:327: if (forwardbackward == 0) {
+0669 EA        1494            mov     a,r2
+066A 4B        1495            orl     a,r3
+066B 6001      1496            jz      L005010?
+066D 020100    1497            ljmp    L005004?
+0670           1498   L005010?:
+0670           1499   ;        robot.c:328: vleft=Volts_at_Pin(TANK_FL);
+0670 75820B    1500            mov     dpl,#0x0B
+0673 120100    1501            lcall   _Volts_at_Pin
+0676 8582B8    1502            mov     _linetrack_vleft_1_89,dpl
+0679 8583B9    1503            mov     (_linetrack_vleft_1_89 + 1),dph
+067C 85F0BA    1504            mov     (_linetrack_vleft_1_89 + 2),b
+067F F5BB      1505            mov     (_linetrack_vleft_1_89 + 3),a
+0681           1506   ;        robot.c:329: vright=Volts_at_Pin(TANK_FR);
+0681 75820C    1507            mov     dpl,#0x0C
+0684 120100    1508            lcall   _Volts_at_Pin
+0687 858208    1509            mov     _linetrack_vright_1_89,dpl
+068A 858309    1510            mov     (_linetrack_vright_1_89 + 1),dph
+068D 85F00A    1511            mov     (_linetrack_vright_1_89 + 2),b
+0690 F50B      1512            mov     (_linetrack_vright_1_89 + 3),a
+0692           1513   ;        robot.c:332: pwm_Left0 = -1;
+0692 7570FF    1514            mov     _pwm_Left0,#0xFF
+0695           1515   ;        robot.c:333: pwm_Left1 = vright*vright*75/(vright*vright+vleft*vleft);
+0695 C008      1516            push    _linetrack_vright_1_89
+0697 C009      1517            push    (_linetrack_vright_1_89 + 1)
+0699 C00A      1518            push    (_linetrack_vright_1_89 + 2)
+069B C00B      1519            push    (_linetrack_vright_1_89 + 3)
+069D 850882    1520            mov     dpl,_linetrack_vright_1_89
+06A0 850983    1521            mov     dph,(_linetrack_vright_1_89 + 1)
+06A3 850AF0    1522            mov     b,(_linetrack_vright_1_89 + 2)
+06A6 E50B      1523            mov     a,(_linetrack_vright_1_89 + 3)
+06A8 120100    1524            lcall   ___fsmul
+06AB AC82      1525            mov     r4,dpl
+06AD AD83      1526            mov     r5,dph
+06AF AEF0      1527            mov     r6,b
+06B1 FF        1528            mov     r7,a
+06B2 E581      1529            mov     a,sp
+06B4 24FC      1530            add     a,#0xfc
+06B6 F581      1531            mov     sp,a
+06B8 C004      1532            push    ar4
+06BA C005      1533            push    ar5
+06BC C006      1534            push    ar6
+06BE C007      1535            push    ar7
+06C0 900000    1536            mov     dptr,#0x0000
+06C3 75F096    1537            mov     b,#0x96
+06C6 7442      1538            mov     a,#0x42
+06C8 120100    1539            lcall   ___fsmul
+06CB 858258    1540            mov     _linetrack_sloc0_1_0,dpl
+06CE 858359    1541            mov     (_linetrack_sloc0_1_0 + 1),dph
+06D1 85F05A    1542            mov     (_linetrack_sloc0_1_0 + 2),b
+06D4 F55B      1543            mov     (_linetrack_sloc0_1_0 + 3),a
+06D6 E581      1544            mov     a,sp
+06D8 24FC      1545            add     a,#0xfc
+06DA F581      1546            mov     sp,a
+06DC C008      1547            push    _linetrack_vright_1_89
+06DE C009      1548            push    (_linetrack_vright_1_89 + 1)
+06E0 C00A      1549            push    (_linetrack_vright_1_89 + 2)
+06E2 C00B      1550            push    (_linetrack_vright_1_89 + 3)
+06E4 850882    1551            mov     dpl,_linetrack_vright_1_89
+06E7 850983    1552            mov     dph,(_linetrack_vright_1_89 + 1)
+06EA 850AF0    1553            mov     b,(_linetrack_vright_1_89 + 2)
+06ED E50B      1554            mov     a,(_linetrack_vright_1_89 + 3)
+06EF 120100    1555            lcall   ___fsmul
+06F2 8582A8    1556            mov     _linetrack_sloc1_1_0,dpl
+06F5 8583A9    1557            mov     (_linetrack_sloc1_1_0 + 1),dph
+06F8 85F0AA    1558            mov     (_linetrack_sloc1_1_0 + 2),b
+06FB F5AB      1559            mov     (_linetrack_sloc1_1_0 + 3),a
+06FD E581      1560            mov     a,sp
+06FF 24FC      1561            add     a,#0xfc
+0701 F581      1562            mov     sp,a
+0703 C0B8      1563            push    _linetrack_vleft_1_89
+0705 C0B9      1564            push    (_linetrack_vleft_1_89 + 1)
+0707 C0BA      1565            push    (_linetrack_vleft_1_89 + 2)
+0709 C0BB      1566            push    (_linetrack_vleft_1_89 + 3)
+070B 85B882    1567            mov     dpl,_linetrack_vleft_1_89
+070E 85B983    1568            mov     dph,(_linetrack_vleft_1_89 + 1)
+0711 85BAF0    1569            mov     b,(_linetrack_vleft_1_89 + 2)
+0714 E5BB      1570            mov     a,(_linetrack_vleft_1_89 + 3)
+0716 120100    1571            lcall   ___fsmul
+0719 AE82      1572            mov     r6,dpl
+071B AF83      1573            mov     r7,dph
+071D ACF0      1574            mov     r4,b
+071F FD        1575            mov     r5,a
+0720 E581      1576            mov     a,sp
+0722 24FC      1577            add     a,#0xfc
+0724 F581      1578            mov     sp,a
+0726 C006      1579            push    ar6
+0728 C007      1580            push    ar7
+072A C004      1581            push    ar4
+072C C005      1582            push    ar5
+072E 85A882    1583            mov     dpl,_linetrack_sloc1_1_0
+0731 85A983    1584            mov     dph,(_linetrack_sloc1_1_0 + 1)
+0734 85AAF0    1585            mov     b,(_linetrack_sloc1_1_0 + 2)
+0737 E5AB      1586            mov     a,(_linetrack_sloc1_1_0 + 3)
+0739 120100    1587            lcall   ___fsadd
+073C AC82      1588            mov     r4,dpl
+073E AD83      1589            mov     r5,dph
+0740 AEF0      1590            mov     r6,b
+0742 FF        1591            mov     r7,a
+0743 E581      1592            mov     a,sp
+0745 24FC      1593            add     a,#0xfc
+0747 F581      1594            mov     sp,a
+0749 C004      1595            push    ar4
+074B C005      1596            push    ar5
+074D C006      1597            push    ar6
+074F C007      1598            push    ar7
+0751 855882    1599            mov     dpl,_linetrack_sloc0_1_0
+0754 855983    1600            mov     dph,(_linetrack_sloc0_1_0 + 1)
+0757 855AF0    1601            mov     b,(_linetrack_sloc0_1_0 + 2)
+075A E55B      1602            mov     a,(_linetrack_sloc0_1_0 + 3)
+075C 120100    1603            lcall   ___fsdiv
+075F AC82      1604            mov     r4,dpl
+0761 AD83      1605            mov     r5,dph
+0763 AEF0      1606            mov     r6,b
+0765 FF        1607            mov     r7,a
+0766 E581      1608            mov     a,sp
+0768 24FC      1609            add     a,#0xfc
+076A F581      1610            mov     sp,a
+076C 8C82      1611            mov     dpl,r4
+076E 8D83      1612            mov     dph,r5
+0770 8EF0      1613            mov     b,r6
+0772 EF        1614            mov     a,r7
+0773 120100    1615            lcall   ___fs2schar
+0776 858230    1616            mov     _pwm_Left1,dpl
+0779           1617   ;        robot.c:334: pwm_Right1 = -1;
+0779 75B0FF    1618            mov     _pwm_Right1,#0xFF
+077C           1619   ;        robot.c:335: pwm_Right0 = vleft*vleft*75/(vright*vright+vleft*vleft);
+077C C0B8      1620            push    _linetrack_vleft_1_89
+077E C0B9      1621            push    (_linetrack_vleft_1_89 + 1)
+0780 C0BA      1622            push    (_linetrack_vleft_1_89 + 2)
+0782 C0BB      1623            push    (_linetrack_vleft_1_89 + 3)
+0784 85B882    1624            mov     dpl,_linetrack_vleft_1_89
+0787 85B983    1625            mov     dph,(_linetrack_vleft_1_89 + 1)
+078A 85BAF0    1626            mov     b,(_linetrack_vleft_1_89 + 2)
+078D E5BB      1627            mov     a,(_linetrack_vleft_1_89 + 3)
+078F 120100    1628            lcall   ___fsmul
+0792 AC82      1629            mov     r4,dpl
+0794 AD83      1630            mov     r5,dph
+0796 AEF0      1631            mov     r6,b
+0798 FF        1632            mov     r7,a
+0799 E581      1633            mov     a,sp
+079B 24FC      1634            add     a,#0xfc
+079D F581      1635            mov     sp,a
+079F C004      1636            push    ar4
+07A1 C005      1637            push    ar5
+07A3 C006      1638            push    ar6
+07A5 C007      1639            push    ar7
+07A7 900000    1640            mov     dptr,#0x0000
+07AA 75F096    1641            mov     b,#0x96
+07AD 7442      1642            mov     a,#0x42
+07AF 120100    1643            lcall   ___fsmul
+07B2 8582A8    1644            mov     _linetrack_sloc1_1_0,dpl
+07B5 8583A9    1645            mov     (_linetrack_sloc1_1_0 + 1),dph
+07B8 85F0AA    1646            mov     (_linetrack_sloc1_1_0 + 2),b
+07BB F5AB      1647            mov     (_linetrack_sloc1_1_0 + 3),a
+07BD E581      1648            mov     a,sp
+07BF 24FC      1649            add     a,#0xfc
+07C1 F581      1650            mov     sp,a
+07C3 C008      1651            push    _linetrack_vright_1_89
+07C5 C009      1652            push    (_linetrack_vright_1_89 + 1)
+07C7 C00A      1653            push    (_linetrack_vright_1_89 + 2)
+07C9 C00B      1654            push    (_linetrack_vright_1_89 + 3)
+07CB 850882    1655            mov     dpl,_linetrack_vright_1_89
+07CE 850983    1656            mov     dph,(_linetrack_vright_1_89 + 1)
+07D1 850AF0    1657            mov     b,(_linetrack_vright_1_89 + 2)
+07D4 E50B      1658            mov     a,(_linetrack_vright_1_89 + 3)
+07D6 120100    1659            lcall   ___fsmul
+07D9 858258    1660            mov     _linetrack_sloc0_1_0,dpl
+07DC 858359    1661            mov     (_linetrack_sloc0_1_0 + 1),dph
+07DF 85F05A    1662            mov     (_linetrack_sloc0_1_0 + 2),b
+07E2 F55B      1663            mov     (_linetrack_sloc0_1_0 + 3),a
+07E4 E581      1664            mov     a,sp
+07E6 24FC      1665            add     a,#0xfc
+07E8 F581      1666            mov     sp,a
+07EA C0B8      1667            push    _linetrack_vleft_1_89
+07EC C0B9      1668            push    (_linetrack_vleft_1_89 + 1)
+07EE C0BA      1669            push    (_linetrack_vleft_1_89 + 2)
+07F0 C0BB      1670            push    (_linetrack_vleft_1_89 + 3)
+07F2 85B882    1671            mov     dpl,_linetrack_vleft_1_89
+07F5 85B983    1672            mov     dph,(_linetrack_vleft_1_89 + 1)
+07F8 85BAF0    1673            mov     b,(_linetrack_vleft_1_89 + 2)
+07FB E5BB      1674            mov     a,(_linetrack_vleft_1_89 + 3)
+07FD 120100    1675            lcall   ___fsmul
+0800 AE82      1676            mov     r6,dpl
+0802 AF83      1677            mov     r7,dph
+0804 ACF0      1678            mov     r4,b
+0806 FD        1679            mov     r5,a
+0807 E581      1680            mov     a,sp
+0809 24FC      1681            add     a,#0xfc
+080B F581      1682            mov     sp,a
+080D C006      1683            push    ar6
+080F C007      1684            push    ar7
+0811 C004      1685            push    ar4
+0813 C005      1686            push    ar5
+0815 855882    1687            mov     dpl,_linetrack_sloc0_1_0
+0818 855983    1688            mov     dph,(_linetrack_sloc0_1_0 + 1)
+081B 855AF0    1689            mov     b,(_linetrack_sloc0_1_0 + 2)
+081E E55B      1690            mov     a,(_linetrack_sloc0_1_0 + 3)
+0820 120100    1691            lcall   ___fsadd
+0823 AC82      1692            mov     r4,dpl
+0825 AD83      1693            mov     r5,dph
+0827 AEF0      1694            mov     r6,b
+0829 FF        1695            mov     r7,a
+082A E581      1696            mov     a,sp
+082C 24FC      1697            add     a,#0xfc
+082E F581      1698            mov     sp,a
+0830 C004      1699            push    ar4
+0832 C005      1700            push    ar5
+0834 C006      1701            push    ar6
+0836 C007      1702            push    ar7
+0838 85A882    1703            mov     dpl,_linetrack_sloc1_1_0
+083B 85A983    1704            mov     dph,(_linetrack_sloc1_1_0 + 1)
+083E 85AAF0    1705            mov     b,(_linetrack_sloc1_1_0 + 2)
+0841 E5AB      1706            mov     a,(_linetrack_sloc1_1_0 + 3)
+0843 120100    1707            lcall   ___fsdiv
+0846 AC82      1708            mov     r4,dpl
+0848 AD83      1709            mov     r5,dph
+084A AEF0      1710            mov     r6,b
+084C FF        1711            mov     r7,a
+084D E581      1712            mov     a,sp
+084F 24FC      1713            add     a,#0xfc
+0851 F581      1714            mov     sp,a
+0853 8C82      1715            mov     dpl,r4
+0855 8D83      1716            mov     dph,r5
+0857 8EF0      1717            mov     b,r6
+0859 EF        1718            mov     a,r7
+085A 120100    1719            lcall   ___fs2schar
+085D 8582F0    1720            mov     _pwm_Right0,dpl
+0860 22        1721            ret
+0861           1722   L005004?:
+0861           1723   ;        robot.c:336: } else if (forwardbackward == 1) {
+0861 BA0140    1724            cjne    r2,#0x01,L005011?
+0864 BB0040    1725            cjne    r3,#0x00,L005011?
+0867 8001      1726            sjmp    L005012?
+0869           1727   L005011?:
+0869 22        1728            ret
+086A           1729   L005012?:
+086A           1730   ;        robot.c:339: vleft=Volts_at_Pin(TANK_RL);
+086A 75820D    1731            mov     dpl,#0x0D
+086D 120100    1732            lcall   _Volts_at_Pin
+0870 8582B8    1733            mov     _linetrack_vleft_1_89,dpl
+0873 8583B9    1734            mov     (_linetrack_vleft_1_89 + 1),dph
+0876 85F0BA    1735            mov     (_linetrack_vleft_1_89 + 2),b
+0879 F5BB      1736            mov     (_linetrack_vleft_1_89 + 3),a
+087B           1737   ;        robot.c:340: vright=Volts_at_Pin(TANK_RR);
+087B 75820E    1738            mov     dpl,#0x0E
+087E 120100    1739            lcall   _Volts_at_Pin
+0881 858208    1740            mov     _linetrack_vright_1_89,dpl
+0884 858309    1741            mov     (_linetrack_vright_1_89 + 1),dph
+0887 85F00A    1742            mov     (_linetrack_vright_1_89 + 2),b
+088A F50B      1743            mov     (_linetrack_vright_1_89 + 3),a
+088C           1744   ;        robot.c:343: pwm_Left1 = -1;
+088C 7530FF    1745            mov     _pwm_Left1,#0xFF
+088F           1746   ;        robot.c:344: pwm_Left0 = vright*vright*75/(vright*vright+vleft*vleft);
+088F C008      1747            push    _linetrack_vright_1_89
+0891 C009      1748            push    (_linetrack_vright_1_89 + 1)
+0893 C00A      1749            push    (_linetrack_vright_1_89 + 2)
+0895 C00B      1750            push    (_linetrack_vright_1_89 + 3)
+0897 850882    1751            mov     dpl,_linetrack_vright_1_89
+089A 850983    1752            mov     dph,(_linetrack_vright_1_89 + 1)
+089D 850AF0    1753            mov     b,(_linetrack_vright_1_89 + 2)
+08A0 E50B      1754            mov     a,(_linetrack_vright_1_89 + 3)
+08A2 120100    1755            lcall   ___fsmul
+08A5 AA82      1756            mov     r2,dpl
+08A7 AB83      1757            mov     r3,dph
+08A9 ACF0      1758            mov     r4,b
+08AB FD        1759            mov     r5,a
+08AC E581      1760            mov     a,sp
+08AE 24FC      1761            add     a,#0xfc
+08B0 F581      1762            mov     sp,a
+08B2 C002      1763            push    ar2
+08B4 C003      1764            push    ar3
+08B6 C004      1765            push    ar4
+08B8 C005      1766            push    ar5
+08BA 900000    1767            mov     dptr,#0x0000
+08BD 75F096    1768            mov     b,#0x96
+08C0 7442      1769            mov     a,#0x42
+08C2 120100    1770            lcall   ___fsmul
+08C5 AA82      1771            mov     r2,dpl
+08C7 AB83      1772            mov     r3,dph
+08C9 ACF0      1773            mov     r4,b
+08CB FD        1774            mov     r5,a
+08CC E581      1775            mov     a,sp
+08CE 24FC      1776            add     a,#0xfc
+08D0 F581      1777            mov     sp,a
+08D2 C002      1778            push    ar2
+08D4 C003      1779            push    ar3
+08D6 C004      1780            push    ar4
+08D8 C005      1781            push    ar5
+08DA C008      1782            push    _linetrack_vright_1_89
+08DC C009      1783            push    (_linetrack_vright_1_89 + 1)
+08DE C00A      1784            push    (_linetrack_vright_1_89 + 2)
+08E0 C00B      1785            push    (_linetrack_vright_1_89 + 3)
+08E2 850882    1786            mov     dpl,_linetrack_vright_1_89
+08E5 850983    1787            mov     dph,(_linetrack_vright_1_89 + 1)
+08E8 850AF0    1788            mov     b,(_linetrack_vright_1_89 + 2)
+08EB E50B      1789            mov     a,(_linetrack_vright_1_89 + 3)
+08ED 120100    1790            lcall   ___fsmul
+08F0 8582A8    1791            mov     _linetrack_sloc1_1_0,dpl
+08F3 8583A9    1792            mov     (_linetrack_sloc1_1_0 + 1),dph
+08F6 85F0AA    1793            mov     (_linetrack_sloc1_1_0 + 2),b
+08F9 F5AB      1794            mov     (_linetrack_sloc1_1_0 + 3),a
+08FB E581      1795            mov     a,sp
+08FD 24FC      1796            add     a,#0xfc
+08FF F581      1797            mov     sp,a
+0901 C0B8      1798            push    _linetrack_vleft_1_89
+0903 C0B9      1799            push    (_linetrack_vleft_1_89 + 1)
+0905 C0BA      1800            push    (_linetrack_vleft_1_89 + 2)
+0907 C0BB      1801            push    (_linetrack_vleft_1_89 + 3)
+0909 85B882    1802            mov     dpl,_linetrack_vleft_1_89
+090C 85B983    1803            mov     dph,(_linetrack_vleft_1_89 + 1)
+090F 85BAF0    1804            mov     b,(_linetrack_vleft_1_89 + 2)
+0912 E5BB      1805            mov     a,(_linetrack_vleft_1_89 + 3)
+0914 120100    1806            lcall   ___fsmul
+0917 AE82      1807            mov     r6,dpl
+0919 AF83      1808            mov     r7,dph
+091B A8F0      1809            mov     r0,b
+091D F9        1810            mov     r1,a
+091E E581      1811            mov     a,sp
+0920 24FC      1812            add     a,#0xfc
+0922 F581      1813            mov     sp,a
+0924 C006      1814            push    ar6
+0926 C007      1815            push    ar7
+0928 C000      1816            push    ar0
+092A C001      1817            push    ar1
+092C 85A882    1818            mov     dpl,_linetrack_sloc1_1_0
+092F 85A983    1819            mov     dph,(_linetrack_sloc1_1_0 + 1)
+0932 85AAF0    1820            mov     b,(_linetrack_sloc1_1_0 + 2)
+0935 E5AB      1821            mov     a,(_linetrack_sloc1_1_0 + 3)
+0937 120100    1822            lcall   ___fsadd
+093A AE82      1823            mov     r6,dpl
+093C AF83      1824            mov     r7,dph
+093E A8F0      1825            mov     r0,b
+0940 F9        1826            mov     r1,a
+0941 E581      1827            mov     a,sp
+0943 24FC      1828            add     a,#0xfc
+0945 F581      1829            mov     sp,a
+0947 D005      1830            pop     ar5
+0949 D004      1831            pop     ar4
+094B D003      1832            pop     ar3
+094D D002      1833            pop     ar2
+094F C006      1834            push    ar6
+0951 C007      1835            push    ar7
+0953 C000      1836            push    ar0
+0955 C001      1837            push    ar1
+0957 8A82      1838            mov     dpl,r2
+0959 8B83      1839            mov     dph,r3
+095B 8CF0      1840            mov     b,r4
+095D ED        1841            mov     a,r5
+095E 120100    1842            lcall   ___fsdiv
+0961 AA82      1843            mov     r2,dpl
+0963 AB83      1844            mov     r3,dph
+0965 ACF0      1845            mov     r4,b
+0967 FD        1846            mov     r5,a
+0968 E581      1847            mov     a,sp
+096A 24FC      1848            add     a,#0xfc
+096C F581      1849            mov     sp,a
+096E 8A82      1850            mov     dpl,r2
+0970 8B83      1851            mov     dph,r3
+0972 8CF0      1852            mov     b,r4
+0974 ED        1853            mov     a,r5
+0975 120100    1854            lcall   ___fs2schar
+0978 858270    1855            mov     _pwm_Left0,dpl
+097B           1856   ;        robot.c:345: pwm_Right0 = -1;
+097B 75F0FF    1857            mov     _pwm_Right0,#0xFF
+097E           1858   ;        robot.c:346: pwm_Right1 = vleft*vleft*75/(vright*vright+vleft*vleft);
+097E C0B8      1859            push    _linetrack_vleft_1_89
+0980 C0B9      1860            push    (_linetrack_vleft_1_89 + 1)
+0982 C0BA      1861            push    (_linetrack_vleft_1_89 + 2)
+0984 C0BB      1862            push    (_linetrack_vleft_1_89 + 3)
+0986 85B882    1863            mov     dpl,_linetrack_vleft_1_89
+0989 85B983    1864            mov     dph,(_linetrack_vleft_1_89 + 1)
+098C 85BAF0    1865            mov     b,(_linetrack_vleft_1_89 + 2)
+098F E5BB      1866            mov     a,(_linetrack_vleft_1_89 + 3)
+0991 120100    1867            lcall   ___fsmul
+0994 AA82      1868            mov     r2,dpl
+0996 AB83      1869            mov     r3,dph
+0998 ACF0      1870            mov     r4,b
+099A FD        1871            mov     r5,a
+099B E581      1872            mov     a,sp
+099D 24FC      1873            add     a,#0xfc
+099F F581      1874            mov     sp,a
+09A1 C002      1875            push    ar2
+09A3 C003      1876            push    ar3
+09A5 C004      1877            push    ar4
+09A7 C005      1878            push    ar5
+09A9 900000    1879            mov     dptr,#0x0000
+09AC 75F096    1880            mov     b,#0x96
+09AF 7442      1881            mov     a,#0x42
+09B1 120100    1882            lcall   ___fsmul
+09B4 AA82      1883            mov     r2,dpl
+09B6 AB83      1884            mov     r3,dph
+09B8 ACF0      1885            mov     r4,b
+09BA FD        1886            mov     r5,a
+09BB E581      1887            mov     a,sp
+09BD 24FC      1888            add     a,#0xfc
+09BF F581      1889            mov     sp,a
+09C1 C002      1890            push    ar2
+09C3 C003      1891            push    ar3
+09C5 C004      1892            push    ar4
+09C7 C005      1893            push    ar5
+09C9 C008      1894            push    _linetrack_vright_1_89
+09CB C009      1895            push    (_linetrack_vright_1_89 + 1)
+09CD C00A      1896            push    (_linetrack_vright_1_89 + 2)
+09CF C00B      1897            push    (_linetrack_vright_1_89 + 3)
+09D1 850882    1898            mov     dpl,_linetrack_vright_1_89
+09D4 850983    1899            mov     dph,(_linetrack_vright_1_89 + 1)
+09D7 850AF0    1900            mov     b,(_linetrack_vright_1_89 + 2)
+09DA E50B      1901            mov     a,(_linetrack_vright_1_89 + 3)
+09DC 120100    1902            lcall   ___fsmul
+09DF 8582A8    1903            mov     _linetrack_sloc1_1_0,dpl
+09E2 8583A9    1904            mov     (_linetrack_sloc1_1_0 + 1),dph
+09E5 85F0AA    1905            mov     (_linetrack_sloc1_1_0 + 2),b
+09E8 F5AB      1906            mov     (_linetrack_sloc1_1_0 + 3),a
+09EA E581      1907            mov     a,sp
+09EC 24FC      1908            add     a,#0xfc
+09EE F581      1909            mov     sp,a
+09F0 C0B8      1910            push    _linetrack_vleft_1_89
+09F2 C0B9      1911            push    (_linetrack_vleft_1_89 + 1)
+09F4 C0BA      1912            push    (_linetrack_vleft_1_89 + 2)
+09F6 C0BB      1913            push    (_linetrack_vleft_1_89 + 3)
+09F8 85B882    1914            mov     dpl,_linetrack_vleft_1_89
+09FB 85B983    1915            mov     dph,(_linetrack_vleft_1_89 + 1)
+09FE 85BAF0    1916            mov     b,(_linetrack_vleft_1_89 + 2)
+0A01 E5BB      1917            mov     a,(_linetrack_vleft_1_89 + 3)
+0A03 120100    1918            lcall   ___fsmul
+0A06 AE82      1919            mov     r6,dpl
+0A08 AF83      1920            mov     r7,dph
+0A0A A8F0      1921            mov     r0,b
+0A0C F9        1922            mov     r1,a
+0A0D E581      1923            mov     a,sp
+0A0F 24FC      1924            add     a,#0xfc
+0A11 F581      1925            mov     sp,a
+0A13 C006      1926            push    ar6
+0A15 C007      1927            push    ar7
+0A17 C000      1928            push    ar0
+0A19 C001      1929            push    ar1
+0A1B 85A882    1930            mov     dpl,_linetrack_sloc1_1_0
+0A1E 85A983    1931            mov     dph,(_linetrack_sloc1_1_0 + 1)
+0A21 85AAF0    1932            mov     b,(_linetrack_sloc1_1_0 + 2)
+0A24 E5AB      1933            mov     a,(_linetrack_sloc1_1_0 + 3)
+0A26 120100    1934            lcall   ___fsadd
+0A29 AE82      1935            mov     r6,dpl
+0A2B AF83      1936            mov     r7,dph
+0A2D A8F0      1937            mov     r0,b
+0A2F F9        1938            mov     r1,a
+0A30 E581      1939            mov     a,sp
+0A32 24FC      1940            add     a,#0xfc
+0A34 F581      1941            mov     sp,a
+0A36 D005      1942            pop     ar5
+0A38 D004      1943            pop     ar4
+0A3A D003      1944            pop     ar3
+0A3C D002      1945            pop     ar2
+0A3E C006      1946            push    ar6
+0A40 C007      1947            push    ar7
+0A42 C000      1948            push    ar0
+0A44 C001      1949            push    ar1
+0A46 8A82      1950            mov     dpl,r2
+0A48 8B83      1951            mov     dph,r3
+0A4A 8CF0      1952            mov     b,r4
+0A4C ED        1953            mov     a,r5
+0A4D 120100    1954            lcall   ___fsdiv
+0A50 AA82      1955            mov     r2,dpl
+0A52 AB83      1956            mov     r3,dph
+0A54 ACF0      1957            mov     r4,b
+0A56 FD        1958            mov     r5,a
+0A57 E581      1959            mov     a,sp
+0A59 24FC      1960            add     a,#0xfc
+0A5B F581      1961            mov     sp,a
+0A5D 8A82      1962            mov     dpl,r2
+0A5F 8B83      1963            mov     dph,r3
+0A61 8CF0      1964            mov     b,r4
+0A63 ED        1965            mov     a,r5
+0A64 120100    1966            lcall   ___fs2schar
+0A67 8582B0    1967            mov     _pwm_Right1,dpl
+0A6A 22        1968            ret
+0A6B           1969   ;------------------------------------------------------------
+0A6B           1970   ;Allocation info for local variables in function 'stopcar'
+0A6B           1971   ;------------------------------------------------------------
+0A6B           1972   ;------------------------------------------------------------
+0A6B           1973   ;        robot.c:354: void stopcar(void) {
+0A6B           1974   ;        -----------------------------------------
+0A6B           1975   ;         function stopcar
+0A6B           1976   ;        -----------------------------------------
+0A6B           1977   _stopcar:
+0A6B           1978   ;        robot.c:356: pwm_Left1 = -1;
+0A6B 7530FF    1979            mov     _pwm_Left1,#0xFF
+0A6E           1980   ;        robot.c:357: pwm_Right1 = -1;
+0A6E 75B0FF    1981            mov     _pwm_Right1,#0xFF
+0A71           1982   ;        robot.c:358: pwm_Left0 = -1;
+0A71 7570FF    1983            mov     _pwm_Left0,#0xFF
+0A74           1984   ;        robot.c:359: pwm_Right0 = -1;
+0A74 75F0FF    1985            mov     _pwm_Right0,#0xFF
+0A77 22        1986            ret
+0A78           1987   ;------------------------------------------------------------
+0A78           1988   ;Allocation info for local variables in function 'turncar'
+0A78           1989   ;------------------------------------------------------------
+0A78           1990   ;leftright                 Allocated to registers r2 r3 
+0A78           1991   ;v                         Allocated with name '_turncar_v_1_95'
+0A78           1992   ;direction                 Allocated with name '_turncar_direction_1_95'
+0A78           1993   ;------------------------------------------------------------
+0A78           1994   ;        robot.c:365: void turncar (int leftright) {
+0A78           1995   ;        -----------------------------------------
+0A78           1996   ;         function turncar
+0A78           1997   ;        -----------------------------------------
+0A78           1998   _turncar:
+0A78 AA82      1999            mov     r2,dpl
+0A7A AB83      2000            mov     r3,dph
+0A7C           2001   ;        robot.c:374: pwm_Left0 = -1;
+0A7C 7570FF    2002            mov     _pwm_Left0,#0xFF
+0A7F           2003   ;        robot.c:375: pwm_Left1 = -1;
+0A7F 7530FF    2004            mov     _pwm_Left1,#0xFF
+0A82           2005   ;        robot.c:376: pwm_Right0 = -1;
+0A82 75F0FF    2006            mov     _pwm_Right0,#0xFF
+0A85           2007   ;        robot.c:377: pwm_Right1 = -1;
+0A85 75B0FF    2008            mov     _pwm_Right1,#0xFF
+0A88           2009   ;        robot.c:379: direction = currentstate - 1;
+0A88 E5F0      2010            mov     a,_currentstate
+0A8A 14        2011            dec     a
+0A8B F538      2012            mov     _turncar_direction_1_95,a
+0A8D           2013   ;        robot.c:382: if (leftright == 1) {
+0A8D BA01C0    2014            cjne    r2,#0x01,L007062?
+0A90 BB00C0    2015            cjne    r3,#0x00,L007062?
+0A93 8001      2016            sjmp    L007063?
+0A95           2017   L007062?:
+0A95 020100    2018            ljmp    L007022?
+0A98           2019   L007063?:
+0A98           2020   ;        robot.c:384: pwm_Right0 = 100;
+0A98 75F064    2021            mov     _pwm_Right0,#0x64
+0A9B           2022   ;        robot.c:387: v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+0A9B E538      2023            mov     a,_turncar_direction_1_95
+0A9D 6001      2024            jz      L007026?
+0A9F 75820C    2025            mov     dpl,#0x0C
+0AA2 120100    2026            lcall   _Volts_at_Pin
+0AA5 AC82      2027            mov     r4,dpl
+0AA7 AD83      2028            mov     r5,dph
+0AA9 AEF0      2029            mov     r6,b
+0AAB FF        2030            mov     r7,a
+0AAC 8001      2031            sjmp    L007027?
+0AAE           2032   L007026?:
+0AAE 75820E    2033            mov     dpl,#0x0E
+0AB1 120100    2034            lcall   _Volts_at_Pin
+0AB4 AC82      2035            mov     r4,dpl
+0AB6 AD83      2036            mov     r5,dph
+0AB8 AEF0      2037            mov     r6,b
+0ABA FF        2038            mov     r7,a
+0ABB           2039   L007027?:
+0ABB 8CE8      2040            mov     _turncar_v_1_95,r4
+0ABD 8DE9      2041            mov     (_turncar_v_1_95 + 1),r5
+0ABF 8EEA      2042            mov     (_turncar_v_1_95 + 2),r6
+0AC1 8FEB      2043            mov     (_turncar_v_1_95 + 3),r7
+0AC3           2044   ;        robot.c:389: while (v < 1.3) {
+0AC3           2045   L007001?:
+0AC3 7466      2046            mov     a,#0x66
+0AC5 C0E0      2047            push    acc
+0AC7 C0E0      2048            push    acc
+0AC9 74A6      2049            mov     a,#0xA6
+0ACB C0E0      2050            push    acc
+0ACD 743F      2051            mov     a,#0x3F
+0ACF C0E0      2052            push    acc
+0AD1 85E882    2053            mov     dpl,_turncar_v_1_95
+0AD4 85E983    2054            mov     dph,(_turncar_v_1_95 + 1)
+0AD7 85EAF0    2055            mov     b,(_turncar_v_1_95 + 2)
+0ADA E5EB      2056            mov     a,(_turncar_v_1_95 + 3)
+0ADC 120100    2057            lcall   ___fslt
+0ADF AC82      2058            mov     r4,dpl
+0AE1 E581      2059            mov     a,sp
+0AE3 24FC      2060            add     a,#0xfc
+0AE5 F581      2061            mov     sp,a
+0AE7 EC        2062            mov     a,r4
+0AE8 6001      2063            jz      L007003?
+0AEA           2064   ;        robot.c:391: v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+0AEA E538      2065            mov     a,_turncar_direction_1_95
+0AEC 6001      2066            jz      L007028?
+0AEE 75820C    2067            mov     dpl,#0x0C
+0AF1 120100    2068            lcall   _Volts_at_Pin
+0AF4 AC82      2069            mov     r4,dpl
+0AF6 AD83      2070            mov     r5,dph
+0AF8 AEF0      2071            mov     r6,b
+0AFA FF        2072            mov     r7,a
+0AFB 8001      2073            sjmp    L007029?
+0AFD           2074   L007028?:
+0AFD 75820E    2075            mov     dpl,#0x0E
+0B00 120100    2076            lcall   _Volts_at_Pin
+0B03 AC82      2077            mov     r4,dpl
+0B05 AD83      2078            mov     r5,dph
+0B07 AEF0      2079            mov     r6,b
+0B09 FF        2080            mov     r7,a
+0B0A           2081   L007029?:
+0B0A 8CE8      2082            mov     _turncar_v_1_95,r4
+0B0C 8DE9      2083            mov     (_turncar_v_1_95 + 1),r5
+0B0E 8EEA      2084            mov     (_turncar_v_1_95 + 2),r6
+0B10 8FEB      2085            mov     (_turncar_v_1_95 + 3),r7
+0B12 8001      2086            sjmp    L007001?
+0B14           2087   L007003?:
+0B14           2088   ;        robot.c:395: waitms(300);
+0B14 90012C    2089            mov     dptr,#0x012C
+0B17 120100    2090            lcall   _waitms
+0B1A           2091   ;        robot.c:398: pwm_Right0 = -1; 
+0B1A 75F0FF    2092            mov     _pwm_Right0,#0xFF
+0B1D 22        2093            ret
+0B1E           2094   L007022?:
+0B1E           2095   ;        robot.c:402: else if (leftright == 3) {
+0B1E BA0340    2096            cjne    r2,#0x03,L007067?
+0B21 BB0040    2097            cjne    r3,#0x00,L007067?
+0B24 8001      2098            sjmp    L007068?
+0B26           2099   L007067?:
+0B26 020100    2100            ljmp    L007019?
+0B29           2101   L007068?:
+0B29           2102   ;        robot.c:404: pwm_Left1 = 75;
+0B29 75304B    2103            mov     _pwm_Left1,#0x4B
+0B2C           2104   ;        robot.c:405: waitms(200);
+0B2C 9000C8    2105            mov     dptr,#0x00C8
+0B2F 120100    2106            lcall   _waitms
+0B32           2107   ;        robot.c:408: v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+0B32 E538      2108            mov     a,_turncar_direction_1_95
+0B34 6001      2109            jz      L007030?
+0B36 75820B    2110            mov     dpl,#0x0B
+0B39 120100    2111            lcall   _Volts_at_Pin
+0B3C AC82      2112            mov     r4,dpl
+0B3E AD83      2113            mov     r5,dph
+0B40 AEF0      2114            mov     r6,b
+0B42 FF        2115            mov     r7,a
+0B43 8001      2116            sjmp    L007031?
+0B45           2117   L007030?:
+0B45 75820D    2118            mov     dpl,#0x0D
+0B48 120100    2119            lcall   _Volts_at_Pin
+0B4B AC82      2120            mov     r4,dpl
+0B4D AD83      2121            mov     r5,dph
+0B4F AEF0      2122            mov     r6,b
+0B51 FF        2123            mov     r7,a
+0B52           2124   L007031?:
+0B52 8CE8      2125            mov     _turncar_v_1_95,r4
+0B54 8DE9      2126            mov     (_turncar_v_1_95 + 1),r5
+0B56 8EEA      2127            mov     (_turncar_v_1_95 + 2),r6
+0B58 8FEB      2128            mov     (_turncar_v_1_95 + 3),r7
+0B5A           2129   ;        robot.c:410: while (v < 1.3) {
+0B5A           2130   L007004?:
+0B5A 7466      2131            mov     a,#0x66
+0B5C C0E0      2132            push    acc
+0B5E C0E0      2133            push    acc
+0B60 74A6      2134            mov     a,#0xA6
+0B62 C0E0      2135            push    acc
+0B64 743F      2136            mov     a,#0x3F
+0B66 C0E0      2137            push    acc
+0B68 85E882    2138            mov     dpl,_turncar_v_1_95
+0B6B 85E983    2139            mov     dph,(_turncar_v_1_95 + 1)
+0B6E 85EAF0    2140            mov     b,(_turncar_v_1_95 + 2)
+0B71 E5EB      2141            mov     a,(_turncar_v_1_95 + 3)
+0B73 120100    2142            lcall   ___fslt
+0B76 AC82      2143            mov     r4,dpl
+0B78 E581      2144            mov     a,sp
+0B7A 24FC      2145            add     a,#0xfc
+0B7C F581      2146            mov     sp,a
+0B7E EC        2147            mov     a,r4
+0B7F 6001      2148            jz      L007006?
+0B81           2149   ;        robot.c:412: v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+0B81 E538      2150            mov     a,_turncar_direction_1_95
+0B83 6001      2151            jz      L007032?
+0B85 75820B    2152            mov     dpl,#0x0B
+0B88 120100    2153            lcall   _Volts_at_Pin
+0B8B AC82      2154            mov     r4,dpl
+0B8D AD83      2155            mov     r5,dph
+0B8F AEF0      2156            mov     r6,b
+0B91 FF        2157            mov     r7,a
+0B92 8001      2158            sjmp    L007033?
+0B94           2159   L007032?:
+0B94 75820D    2160            mov     dpl,#0x0D
+0B97 120100    2161            lcall   _Volts_at_Pin
+0B9A AC82      2162            mov     r4,dpl
+0B9C AD83      2163            mov     r5,dph
+0B9E AEF0      2164            mov     r6,b
+0BA0 FF        2165            mov     r7,a
+0BA1           2166   L007033?:
+0BA1 8CE8      2167            mov     _turncar_v_1_95,r4
+0BA3 8DE9      2168            mov     (_turncar_v_1_95 + 1),r5
+0BA5 8EEA      2169            mov     (_turncar_v_1_95 + 2),r6
+0BA7 8FEB      2170            mov     (_turncar_v_1_95 + 3),r7
+0BA9 8001      2171            sjmp    L007004?
+0BAB           2172   L007006?:
+0BAB           2173   ;        robot.c:416: pwm_Left1 = -1; 
+0BAB 7530FF    2174            mov     _pwm_Left1,#0xFF
+0BAE 22        2175            ret
+0BAF           2176   L007019?:
+0BAF           2177   ;        robot.c:420: else if (leftright == 2) {
+0BAF BA0280    2178            cjne    r2,#0x02,L007072?
+0BB2 BB0080    2179            cjne    r3,#0x00,L007072?
+0BB5 8001      2180            sjmp    L007073?
+0BB7           2181   L007072?:
+0BB7 020100    2182            ljmp    L007016?
+0BBA           2183   L007073?:
+0BBA           2184   ;        robot.c:422: pwm_Right1 = 100;
+0BBA 75B064    2185            mov     _pwm_Right1,#0x64
+0BBD           2186   ;        robot.c:425: v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+0BBD E538      2187            mov     a,_turncar_direction_1_95
+0BBF 6001      2188            jz      L007034?
+0BC1 75820C    2189            mov     dpl,#0x0C
+0BC4 120100    2190            lcall   _Volts_at_Pin
+0BC7 AC82      2191            mov     r4,dpl
+0BC9 AD83      2192            mov     r5,dph
+0BCB AEF0      2193            mov     r6,b
+0BCD FF        2194            mov     r7,a
+0BCE 8001      2195            sjmp    L007035?
+0BD0           2196   L007034?:
+0BD0 75820E    2197            mov     dpl,#0x0E
+0BD3 120100    2198            lcall   _Volts_at_Pin
+0BD6 AC82      2199            mov     r4,dpl
+0BD8 AD83      2200            mov     r5,dph
+0BDA AEF0      2201            mov     r6,b
+0BDC FF        2202            mov     r7,a
+0BDD           2203   L007035?:
+0BDD 8CE8      2204            mov     _turncar_v_1_95,r4
+0BDF 8DE9      2205            mov     (_turncar_v_1_95 + 1),r5
+0BE1 8EEA      2206            mov     (_turncar_v_1_95 + 2),r6
+0BE3 8FEB      2207            mov     (_turncar_v_1_95 + 3),r7
+0BE5           2208   ;        robot.c:427: while (v < 0.9) {
+0BE5           2209   L007007?:
+0BE5 7466      2210            mov     a,#0x66
+0BE7 C0E0      2211            push    acc
+0BE9 C0E0      2212            push    acc
+0BEB C0E0      2213            push    acc
+0BED 743F      2214            mov     a,#0x3F
+0BEF C0E0      2215            push    acc
+0BF1 85E882    2216            mov     dpl,_turncar_v_1_95
+0BF4 85E983    2217            mov     dph,(_turncar_v_1_95 + 1)
+0BF7 85EAF0    2218            mov     b,(_turncar_v_1_95 + 2)
+0BFA E5EB      2219            mov     a,(_turncar_v_1_95 + 3)
+0BFC 120100    2220            lcall   ___fslt
+0BFF AC82      2221            mov     r4,dpl
+0C01 E581      2222            mov     a,sp
+0C03 24FC      2223            add     a,#0xfc
+0C05 F581      2224            mov     sp,a
+0C07 EC        2225            mov     a,r4
+0C08 6001      2226            jz      L007009?
+0C0A           2227   ;        robot.c:429: v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+0C0A E538      2228            mov     a,_turncar_direction_1_95
+0C0C 6001      2229            jz      L007036?
+0C0E 75820C    2230            mov     dpl,#0x0C
+0C11 120100    2231            lcall   _Volts_at_Pin
+0C14 AC82      2232            mov     r4,dpl
+0C16 AD83      2233            mov     r5,dph
+0C18 AEF0      2234            mov     r6,b
+0C1A FF        2235            mov     r7,a
+0C1B 8001      2236            sjmp    L007037?
+0C1D           2237   L007036?:
+0C1D 75820E    2238            mov     dpl,#0x0E
+0C20 120100    2239            lcall   _Volts_at_Pin
+0C23 AC82      2240            mov     r4,dpl
+0C25 AD83      2241            mov     r5,dph
+0C27 AEF0      2242            mov     r6,b
+0C29 FF        2243            mov     r7,a
+0C2A           2244   L007037?:
+0C2A 8CE8      2245            mov     _turncar_v_1_95,r4
+0C2C 8DE9      2246            mov     (_turncar_v_1_95 + 1),r5
+0C2E 8EEA      2247            mov     (_turncar_v_1_95 + 2),r6
+0C30 8FEB      2248            mov     (_turncar_v_1_95 + 3),r7
+0C32 8001      2249            sjmp    L007007?
+0C34           2250   L007009?:
+0C34           2251   ;        robot.c:433: waitms(300);
+0C34 90012C    2252            mov     dptr,#0x012C
+0C37 120100    2253            lcall   _waitms
+0C3A           2254   ;        robot.c:436: pwm_Right1 = -1; 
+0C3A 75B0FF    2255            mov     _pwm_Right1,#0xFF
+0C3D 22        2256            ret
+0C3E           2257   L007016?:
+0C3E           2258   ;        robot.c:440: else if (leftright == 4) {
+0C3E BA04C0    2259            cjne    r2,#0x04,L007077?
+0C41 BB00C0    2260            cjne    r3,#0x00,L007077?
+0C44 8001      2261            sjmp    L007078?
+0C46           2262   L007077?:
+0C46 22        2263            ret
+0C47           2264   L007078?:
+0C47           2265   ;        robot.c:442: pwm_Left0 = 75;
+0C47 75704B    2266            mov     _pwm_Left0,#0x4B
+0C4A           2267   ;        robot.c:443: waitms(200);
+0C4A 9000C8    2268            mov     dptr,#0x00C8
+0C4D 120100    2269            lcall   _waitms
+0C50           2270   ;        robot.c:446: v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+0C50 E538      2271            mov     a,_turncar_direction_1_95
+0C52 6001      2272            jz      L007038?
+0C54 75820B    2273            mov     dpl,#0x0B
+0C57 120100    2274            lcall   _Volts_at_Pin
+0C5A AA82      2275            mov     r2,dpl
+0C5C AB83      2276            mov     r3,dph
+0C5E ACF0      2277            mov     r4,b
+0C60 FD        2278            mov     r5,a
+0C61 8001      2279            sjmp    L007039?
+0C63           2280   L007038?:
+0C63 75820D    2281            mov     dpl,#0x0D
+0C66 120100    2282            lcall   _Volts_at_Pin
+0C69 AA82      2283            mov     r2,dpl
+0C6B AB83      2284            mov     r3,dph
+0C6D ACF0      2285            mov     r4,b
+0C6F FD        2286            mov     r5,a
+0C70           2287   L007039?:
+0C70 8AE8      2288            mov     _turncar_v_1_95,r2
+0C72 8BE9      2289            mov     (_turncar_v_1_95 + 1),r3
+0C74 8CEA      2290            mov     (_turncar_v_1_95 + 2),r4
+0C76 8DEB      2291            mov     (_turncar_v_1_95 + 3),r5
+0C78           2292   ;        robot.c:448: while (v < 0.9) {
+0C78           2293   L007010?:
+0C78 7466      2294            mov     a,#0x66
+0C7A C0E0      2295            push    acc
+0C7C C0E0      2296            push    acc
+0C7E C0E0      2297            push    acc
+0C80 743F      2298            mov     a,#0x3F
+0C82 C0E0      2299            push    acc
+0C84 85E882    2300            mov     dpl,_turncar_v_1_95
+0C87 85E983    2301            mov     dph,(_turncar_v_1_95 + 1)
+0C8A 85EAF0    2302            mov     b,(_turncar_v_1_95 + 2)
+0C8D E5EB      2303            mov     a,(_turncar_v_1_95 + 3)
+0C8F 120100    2304            lcall   ___fslt
+0C92 AA82      2305            mov     r2,dpl
+0C94 E581      2306            mov     a,sp
+0C96 24FC      2307            add     a,#0xfc
+0C98 F581      2308            mov     sp,a
+0C9A EA        2309            mov     a,r2
+0C9B 6001      2310            jz      L007012?
+0C9D           2311   ;        robot.c:450: v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+0C9D E538      2312            mov     a,_turncar_direction_1_95
+0C9F 6001      2313            jz      L007040?
+0CA1 75820B    2314            mov     dpl,#0x0B
+0CA4 120100    2315            lcall   _Volts_at_Pin
+0CA7 AA82      2316            mov     r2,dpl
+0CA9 AB83      2317            mov     r3,dph
+0CAB ACF0      2318            mov     r4,b
+0CAD FD        2319            mov     r5,a
+0CAE 8001      2320            sjmp    L007041?
+0CB0           2321   L007040?:
+0CB0 75820D    2322            mov     dpl,#0x0D
+0CB3 120100    2323            lcall   _Volts_at_Pin
+0CB6 AA82      2324            mov     r2,dpl
+0CB8 AB83      2325            mov     r3,dph
+0CBA ACF0      2326            mov     r4,b
+0CBC FD        2327            mov     r5,a
+0CBD           2328   L007041?:
+0CBD 8AE8      2329            mov     _turncar_v_1_95,r2
+0CBF 8BE9      2330            mov     (_turncar_v_1_95 + 1),r3
+0CC1 8CEA      2331            mov     (_turncar_v_1_95 + 2),r4
+0CC3 8DEB      2332            mov     (_turncar_v_1_95 + 3),r5
+0CC5 8001      2333            sjmp    L007010?
+0CC7           2334   L007012?:
+0CC7           2335   ;        robot.c:454: pwm_Left0 = -1; 
+0CC7 7570FF    2336            mov     _pwm_Left0,#0xFF
+0CCA 22        2337            ret
+0CCB           2338   ;------------------------------------------------------------
+0CCB           2339   ;Allocation info for local variables in function 'uturn'
+0CCB           2340   ;------------------------------------------------------------
+0CCB           2341   ;vleft                     Allocated with name '_uturn_vleft_1_105'
+0CCB           2342   ;vright                    Allocated with name '_uturn_vright_1_105'
+0CCB           2343   ;------------------------------------------------------------
+0CCB           2344   ;        robot.c:461: void uturn(void) {
+0CCB           2345   ;        -----------------------------------------
+0CCB           2346   ;         function uturn
+0CCB           2347   ;        -----------------------------------------
+0CCB           2348   _uturn:
+0CCB           2349   ;        robot.c:465: vleft = Volts_at_Pin(TANK_FL);
+0CCB 75820B    2350            mov     dpl,#0x0B
+0CCE 120100    2351            lcall   _Volts_at_Pin
+0CD1 858288    2352            mov     _uturn_vleft_1_105,dpl
+0CD4 858389    2353            mov     (_uturn_vleft_1_105 + 1),dph
+0CD7 85F08A    2354            mov     (_uturn_vleft_1_105 + 2),b
+0CDA F58B      2355            mov     (_uturn_vleft_1_105 + 3),a
+0CDC           2356   ;        robot.c:466: vright = Volts_at_Pin(TANK_FR);
+0CDC 75820C    2357            mov     dpl,#0x0C
+0CDF 120100    2358            lcall   _Volts_at_Pin
+0CE2 8582D8    2359            mov     _uturn_vright_1_105,dpl
+0CE5 8583D9    2360            mov     (_uturn_vright_1_105 + 1),dph
+0CE8 85F0DA    2361            mov     (_uturn_vright_1_105 + 2),b
+0CEB F5DB      2362            mov     (_uturn_vright_1_105 + 3),a
+0CED           2363   ;        robot.c:469: pwm_Left0 = -1;
+0CED 7570FF    2364            mov     _pwm_Left0,#0xFF
+0CF0           2365   ;        robot.c:470: pwm_Left1 = 50;
+0CF0 753032    2366            mov     _pwm_Left1,#0x32
+0CF3           2367   ;        robot.c:471: pwm_Right0 = -1;
+0CF3 75F0FF    2368            mov     _pwm_Right0,#0xFF
+0CF6           2369   ;        robot.c:472: pwm_Right1 = 50;
+0CF6 75B032    2370            mov     _pwm_Right1,#0x32
+0CF9           2371   ;        robot.c:475: waitms(3000);
+0CF9 900BB8    2372            mov     dptr,#0x0BB8
+0CFC 120100    2373            lcall   _waitms
+0CFF           2374   ;        robot.c:477: while ((Volts_at_Pin(TANK_FL)-Volts_at_Pin(TANK_FR))<-0.3 || (Volts_at_Pin(TANK_FL)-Volts_at_Pin(TANK_FR))>0.3);
+0CFF           2375   L008002?:
+0CFF 75820B    2376            mov     dpl,#0x0B
+0D02 120100    2377            lcall   _Volts_at_Pin
+0D05 AA82      2378            mov     r2,dpl
+0D07 AB83      2379            mov     r3,dph
+0D09 ACF0      2380            mov     r4,b
+0D0B FD        2381            mov     r5,a
+0D0C 75820C    2382            mov     dpl,#0x0C
+0D0F C002      2383            push    ar2
+0D11 C003      2384            push    ar3
+0D13 C004      2385            push    ar4
+0D15 C005      2386            push    ar5
+0D17 120100    2387            lcall   _Volts_at_Pin
+0D1A AE82      2388            mov     r6,dpl
+0D1C AF83      2389            mov     r7,dph
+0D1E A8F0      2390            mov     r0,b
+0D20 F9        2391            mov     r1,a
+0D21 D005      2392            pop     ar5
+0D23 D004      2393            pop     ar4
+0D25 D003      2394            pop     ar3
+0D27 D002      2395            pop     ar2
+0D29 C006      2396            push    ar6
+0D2B C007      2397            push    ar7
+0D2D C000      2398            push    ar0
+0D2F C001      2399            push    ar1
+0D31 8A82      2400            mov     dpl,r2
+0D33 8B83      2401            mov     dph,r3
+0D35 8CF0      2402            mov     b,r4
+0D37 ED        2403            mov     a,r5
+0D38 120100    2404            lcall   ___fssub
+0D3B AA82      2405            mov     r2,dpl
+0D3D AB83      2406            mov     r3,dph
+0D3F ACF0      2407            mov     r4,b
+0D41 FD        2408            mov     r5,a
+0D42 E581      2409            mov     a,sp
+0D44 24FC      2410            add     a,#0xfc
+0D46 F581      2411            mov     sp,a
+0D48 749A      2412            mov     a,#0x9A
+0D4A C0E0      2413            push    acc
+0D4C 7499      2414            mov     a,#0x99
+0D4E C0E0      2415            push    acc
+0D50 C0E0      2416            push    acc
+0D52 74BE      2417            mov     a,#0xBE
+0D54 C0E0      2418            push    acc
+0D56 8A82      2419            mov     dpl,r2
+0D58 8B83      2420            mov     dph,r3
+0D5A 8CF0      2421            mov     b,r4
+0D5C ED        2422            mov     a,r5
+0D5D 120100    2423            lcall   ___fslt
+0D60 AA82      2424            mov     r2,dpl
+0D62 E581      2425            mov     a,sp
+0D64 24FC      2426            add     a,#0xfc
+0D66 F581      2427            mov     sp,a
+0D68 EA        2428            mov     a,r2
+0D69 7001      2429            jnz     L008002?
+0D6B 75820B    2430            mov     dpl,#0x0B
+0D6E 120100    2431            lcall   _Volts_at_Pin
+0D71 AA82      2432            mov     r2,dpl
+0D73 AB83      2433            mov     r3,dph
+0D75 ACF0      2434            mov     r4,b
+0D77 FD        2435            mov     r5,a
+0D78 75820C    2436            mov     dpl,#0x0C
+0D7B C002      2437            push    ar2
+0D7D C003      2438            push    ar3
+0D7F C004      2439            push    ar4
+0D81 C005      2440            push    ar5
+0D83 120100    2441            lcall   _Volts_at_Pin
+0D86 AE82      2442            mov     r6,dpl
+0D88 AF83      2443            mov     r7,dph
+0D8A A8F0      2444            mov     r0,b
+0D8C F9        2445            mov     r1,a
+0D8D D005      2446            pop     ar5
+0D8F D004      2447            pop     ar4
+0D91 D003      2448            pop     ar3
+0D93 D002      2449            pop     ar2
+0D95 C006      2450            push    ar6
+0D97 C007      2451            push    ar7
+0D99 C000      2452            push    ar0
+0D9B C001      2453            push    ar1
+0D9D 8A82      2454            mov     dpl,r2
+0D9F 8B83      2455            mov     dph,r3
+0DA1 8CF0      2456            mov     b,r4
+0DA3 ED        2457            mov     a,r5
+0DA4 120100    2458            lcall   ___fssub
+0DA7 AA82      2459            mov     r2,dpl
+0DA9 AB83      2460            mov     r3,dph
+0DAB ACF0      2461            mov     r4,b
+0DAD FD        2462            mov     r5,a
+0DAE E581      2463            mov     a,sp
+0DB0 24FC      2464            add     a,#0xfc
+0DB2 F581      2465            mov     sp,a
+0DB4 749A      2466            mov     a,#0x9A
+0DB6 C0E0      2467            push    acc
+0DB8 7499      2468            mov     a,#0x99
+0DBA C0E0      2469            push    acc
+0DBC C0E0      2470            push    acc
+0DBE 743E      2471            mov     a,#0x3E
+0DC0 C0E0      2472            push    acc
+0DC2 8A82      2473            mov     dpl,r2
+0DC4 8B83      2474            mov     dph,r3
+0DC6 8CF0      2475            mov     b,r4
+0DC8 ED        2476            mov     a,r5
+0DC9 120100    2477            lcall   ___fsgt
+0DCC AA82      2478            mov     r2,dpl
+0DCE E581      2479            mov     a,sp
+0DD0 24FC      2480            add     a,#0xfc
+0DD2 F581      2481            mov     sp,a
+0DD4 EA        2482            mov     a,r2
+0DD5 6001      2483            jz      L008010?
+0DD7 020100    2484            ljmp    L008002?
+0DDA           2485   L008010?:
+0DDA 22        2486            ret
+0DDB           2487            rseg R_CSEG
+0DDB           2488   
+0000           2489            rseg R_XINIT
+0000           2490   
+0000           2491            rseg R_CONST
+0000           2492   __str_0:
+0000 1B        2493            db 0x1B
+0001 5B324A    2494            db '[2J'
+0004 00        2495            db 0x00
+0005           2496   __str_1:
+0005 66726F6E  2497            db 'frontL %f frontR %f backL %f backR %f command %1d, state %1d'
      744C2025
      66206672
      6F6E7452
@@ -2511,7 +2509,7 @@
      642C2073
      74617465
      20253164
-0041 206C6566  2500            db ' left0 %3d left1 %3d right0 %3d right1 %3d'
+0041 206C6566  2498            db ' left0 %3d left1 %3d right0 %3d right1 %3d'
      74302025
      3364206C
      65667431
@@ -2522,17 +2520,17 @@
      72696768
      74312025
      3364
-006B 0D        2501            db 0x0D
-006C 00        2502            db 0x00
-006D           2503   __str_2:
-006D 0A        2504            db 0x0A
-006E 494E5445  2505            db 'INTERSECTION'
+006B 0D        2499            db 0x0D
+006C 00        2500            db 0x00
+006D           2501   __str_2:
+006D 0A        2502            db 0x0A
+006E 494E5445  2503            db 'INTERSECTION'
      52534543
      54494F4E
-007A 0A        2506            db 0x0A
-007B 00        2507            db 0x00
-007C           2508   __str_3:
-007C 5475726E  2509            db 'Turn left at the next intersection'
+007A 0A        2504            db 0x0A
+007B 00        2505            db 0x00
+007C           2506   __str_3:
+007C 5475726E  2507            db 'Turn left at the next intersection'
      206C6566
      74206174
      20746865
@@ -2541,19 +2539,19 @@
      74657273
      65637469
      6F6E
-009E 0A        2510            db 0x0A
-009F 00        2511            db 0x00
-00A0           2512   __str_4:
-00A0 0A        2513            db 0x0A
-00A1 0D        2514            db 0x0D
-00A2 20494E54  2515            db ' INTERSECTION'
+009E 0A        2508            db 0x0A
+009F 00        2509            db 0x00
+00A0           2510   __str_4:
+00A0 0A        2511            db 0x0A
+00A1 0D        2512            db 0x0D
+00A2 20494E54  2513            db ' INTERSECTION'
      45525345
      4354494F
      4E
-00AF 0A        2516            db 0x0A
-00B0 00        2517            db 0x00
-00B1           2518   __str_5:
-00B1 5475726E  2519            db 'Turn right at the next intersection'
+00AF 0A        2514            db 0x0A
+00B0 00        2515            db 0x00
+00B1           2516   __str_5:
+00B1 5475726E  2517            db 'Turn right at the next intersection'
      20726967
      68742061
      74207468
@@ -2562,43 +2560,43 @@
      6E746572
      73656374
      696F6E
-00D4 0A        2520            db 0x0A
-00D5 00        2521            db 0x00
-00D6           2522   __str_6:
-00D6 474F21    2523            db 'GO!'
-00D9 0A        2524            db 0x0A
-00DA 00        2525            db 0x00
-00DB           2526   __str_7:
-00DB 52657665  2527            db 'Reverse Reverse!'
+00D4 0A        2518            db 0x0A
+00D5 00        2519            db 0x00
+00D6           2520   __str_6:
+00D6 474F21    2521            db 'GO!'
+00D9 0A        2522            db 0x0A
+00DA 00        2523            db 0x00
+00DB           2524   __str_7:
+00DB 52657665  2525            db 'Reverse Reverse!'
      72736520
      52657665
      72736521
-00EB 0A        2528            db 0x0A
-00EC 00        2529            db 0x00
-00ED           2530   __str_8:
-00ED 48414C54  2531            db 'HALT peasants!'
+00EB 0A        2526            db 0x0A
+00EC 00        2527            db 0x00
+00ED           2528   __str_8:
+00ED 48414C54  2529            db 'HALT peasants!'
      20706561
      73616E74
      7321
-00FB 0A        2532            db 0x0A
-00FC 00        2533            db 0x00
-00FD           2534   __str_9:
-00FD 55545552  2535            db 'UTURN'
+00FB 0A        2530            db 0x0A
+00FC 00        2531            db 0x00
+00FD           2532   __str_9:
+00FD 55545552  2533            db 'UTURN'
      4E
-0102 0A        2536            db 0x0A
-0103 00        2537            db 0x00
-0104           2538   __str_10:
-0104 0A        2539            db 0x0A
-0105 436F6D6D  2540            db 'Command received: 0b_0%c%c%c'
+0102 0A        2534            db 0x0A
+0103 00        2535            db 0x00
+0104           2536   __str_10:
+0104 0A        2537            db 0x0A
+0105 436F6D6D  2538            db 'Command received: 0b_0%c%c%c'
      616E6420
      72656365
      69766564
      3A203062
      5F302563
      25632563
-0121 0A        2541            db 0x0A
-0122 00        2542            db 0x00
-0123           2543   
-002E           2544            CSEG
-002E           2545   
-002E           2546   end
+0121 0A        2539            db 0x0A
+0122 00        2540            db 0x00
+0123           2541   
+002E           2542            CSEG
+002E           2543   
+002E           2544   end

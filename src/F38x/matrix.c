@@ -12,7 +12,6 @@
 
 // LED MATRIX IMAGE IN MEMORY (COMPRESSED)
 unsigned char MX_TURN[8] = {0x10, 0x30, 0x70, 0xFC, 0x76, 0x32, 0x12, 0x02};
-unsigned char MX_GO[4] = {0x13, 0x7F, 0xD9, 0x11};
 unsigned char MX_STOP[2] = {0x37, 0xF8};
 unsigned char MX_UTURN[8] = {0x1C, 0x36, 0x22, 0x22, 0x22, 0xFA, 0x72, 0x22};
 
@@ -27,47 +26,55 @@ unsigned char reverse(unsigned char b) {
 // mirror the bits 
 unsigned char mirror(unsigned char b, unsigned char upper) {
 	if (upper) return ((reverse(b) & 0x0F) | (b & 0xF0));
-	else return ((reverse(b) & 0xF0) | (b & 0x0F));
+	else return ((reverse(b) & 0xF0)>>4 | (b & 0x0F)<<4);
 }
 
 // display direction
 void mxDirection(unsigned char flipped) {
-	if (flipped) mxDisplay(MX_TURN, 0x01);
-	else mxDisplay(MX_TURN, 0x00);
+	// right
+	if (flipped) mxDisplay(MX_TURN, 1);
+
+	// left
+	else mxDisplay(MX_TURN, 0);
 }
 
-// display forward / reverse
-void mxGo(unsigned char flipped) {
-	if (flipped) mxDisplay(MX_TURN, 0x02);
-	else mxDisplay(MX_TURN, 0x00);
+// display stop
+void mxStop(void) {
+	mxDisplay(MX_STOP, 2);
 }
 
-// display to screen
-// PARAMS:
-// *grid: the array of bits to send
-// options:
-//		bit 0: normal / flip horizontal
-// 		bit 1: normal / flip vertical
-// 		bit 2: normal / mirror horizontal
-// 		bit 3: normal / mirror vertical
+// display uturn
+void mxUTurn(void) {
+	mxDisplay(MX_UTURN, 0);
+}
+
+// display some image to the screen
+// options: 0 - 8 byte full image
+// 			1 - flipped 8 byte full image
+//			2 - 2 byte image
 void mxDisplay(unsigned char *grid, unsigned char options) {
 	unsigned char i;
 
 	// (2 byte images)
-	if (options & 0x80) && (options & 0x40) {
-		for (i = 0; i < 2) {
-
-		}
+	if (options == 2) {
+		mxWrite(1, mirror(grid[0], 1));
+		mxWrite(2, mirror(grid[0], 0));
+		mxWrite(3, mirror(grid[1], 1));
+		mxWrite(4, mirror(grid[1], 0));
+		mxWrite(5, mirror(grid[1], 0));
+		mxWrite(6, mirror(grid[1], 1));
+		mxWrite(7, mirror(grid[0], 0));
+		mxWrite(8, mirror(grid[0], 1));
+		return;
 	}
 
+	// (8 bytes)
 	for (i = 0; i < 8; i++) {
-		if (options & 0x02) {
-			if (options & 0x01) mxWrite(i+1, reverse(grid[7-i]));
-			else mxWrite(i+1, grid[7-i]);	
-		} else {
-			if (options & 0x01) mxWrite(i+1, reverse(grid[i]));
-			else mxWrite(i+1, grid[i]);	
-		}
+		// flipped horizontally <- ->
+		if (options == 1) mxWrite(i+1, reverse(grid[i]));
+
+		// normal
+		else mxWrite(i+1, grid[i]);
 	}
 }
 
@@ -167,15 +174,4 @@ void mxInit(void) {
 	mxSPI(0x0C);
 	mxSPI(0x01);
 	mxPulse();
-}
-
-// turn on LED for testing
-void mxTest(void) {
-	mxSPI(0x0F);
-    mxSPI(0x01);
-    mxPulse();
-    waitms(1000);
-    mxSPI(0x0F);
-    mxSPI(0x00);
-    mxPulse();
 }
