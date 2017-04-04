@@ -17,6 +17,10 @@ volatile  char direction = 0; // 1 for back 0 for forward
 volatile  char currentcmd = 0;
 volatile  char currentstate = 1;
 
+unsigned char overflow_count;
+volatile float time = 0.0f;
+volatile float distance = 0.0f;
+
 void main(void) {
 	//VARIABLES FOR VOLTAGES
 	volatile float v1 = 0;
@@ -47,13 +51,21 @@ void main(void) {
 	while (1) {	
 
 		//RECEIVE COMMANDS
-		currentcmd = readData(); 
+		currentcmd = readData(currentcmd); 
 		
 		// FOR DEBUGGING
 		printf("frontL %f frontR %f backL %f backR %f command %1d, state %1d left0 %3d left1 %3d right0 %3d right1 %3d\r", Volts_at_Pin(TANK_FL),Volts_at_Pin(TANK_FR),Volts_at_Pin(TANK_RL),Volts_at_Pin(TANK_RR), currentcmd, currentstate, pwm_Left0, pwm_Left1, pwm_Right0, pwm_Right1);
 		// waitms(100);
 		// continue;
-
+		Sonar_Reading();
+		if (distance < 7) {
+			currentstate = 3;		//code for testing
+			stopcar();
+			while (distance < 7) {
+				Sonar_Reading();
+			}
+			currentstate = 1;		//code for testing
+		}		 
 
 		// CURRENT STATE
 		switch (currentstate) {
@@ -133,7 +145,7 @@ void main(void) {
 			//case for right turn			
 			case CMD_RIGHT:
 				//CHECK FOR INTERSECTION
-				printf("Turn right at the next intersection\n");
+				printf("\nTurn right at the next intersection\n");
 				if (v1 > 0.7 && v2 >1) {
 						printf("\n\r INTERSECTION\n");
 						//TURN
@@ -145,7 +157,7 @@ void main(void) {
 			//case for forwards
 			case CMD_FORWARD:
 				// CHANGE TO FORWARD STATE
-				printf("GO!\n");
+				printf("\nGO!\n");
 				currentstate = 1;
 				currentcmd = 0;
 				break;
@@ -153,7 +165,7 @@ void main(void) {
 			//case for backwards
 			case CMD_REVERSE:
 				//CHANGE TO BACKWARDS STATE
-				printf("Reverse Reverse!\n");
+				printf("\nReverse Reverse!\n");
 				currentstate = 2;
 				currentcmd = 0;
 				break;
@@ -161,7 +173,7 @@ void main(void) {
 			//case for stop
 			case CMD_STOP:
 				//CHANGE TO STOPPED STATE
-				printf("HALT peasants!\n");
+				printf("\nHALT peasants!\n");
 				currentstate = 3;
 				currentcmd = 0;
 				break;
@@ -169,7 +181,7 @@ void main(void) {
 			//case for 180 turn 
 			case CMD_UTURN:
 				uturn();
-				printf("UTURN\n");
+				printf("\nUTURN\n");
 				currentcmd = 0;
 				break;
 				
@@ -283,9 +295,10 @@ void Timer2_ISR (void) interrupt 5 {
 // 	else return CMD_NONE;
 // }
 
-unsigned char readData(void) {
-	unsigned char command = 0;
+unsigned char readData(unsigned char prevcommand) {
+	unsigned char command = prevcommand;
 	if (!COMMAND_PIN) {
+		command = 0; 
 		while (!COMMAND_PIN);
 		P1_4 = 1;
 		waitms((int)(CMDFRQ + CMDFRQ/2));
@@ -302,6 +315,8 @@ unsigned char readData(void) {
 			(command & 0x04) ? '1' : '0',
 			(command & 0x02) ? '1' : '0',
 			(command & 0x01) ? '1' : '0');
+		if (command > 6) command = prevcommand; 
+		
 	}
 	return command;
 }
@@ -380,9 +395,10 @@ void turncar (int leftright) {
 		//CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
 		v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
 				
-		while (v < 1.3) {
+		while (v < 1.2) {
 			//get voltage
 			v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+			printf ("\nv = %f\r\n", v);
 		}
 
 		// turning
@@ -401,9 +417,10 @@ void turncar (int leftright) {
 		// CHECK FOR VOLTAGES AND WAIT TILL OPPOSITE IS HIGH
 		v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
 				
-		while (v < 1.3) {
+		while (v < 1.2) {
 			//get voltage
 			v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+			printf ("\nv = %f\r\n", v);
 		}
 		
 		//SET MOTOR BACK TO 0
@@ -421,6 +438,7 @@ void turncar (int leftright) {
 		while (v < 0.9) {
 			//get voltage
 			v = direction ? Volts_at_Pin(TANK_FR) : Volts_at_Pin(TANK_RR);
+			printf ("\nv = %f\r\n", v);
 		}
 
 		// turning
@@ -442,6 +460,7 @@ void turncar (int leftright) {
 		while (v < 0.9) {
 			//get voltage
 			v = direction ? Volts_at_Pin(TANK_FL) : Volts_at_Pin(TANK_RL);
+			printf ("\nv = %f\r\n", v);
 		}
 		
 		//SET MOTOR BACK TO 0
@@ -493,3 +512,39 @@ void uturn(void) {
 // }
 		
 // 		
+
+void Sonar_Reading(void)
+{
+	// Reset the counter
+		TL0=0; 
+		TH0=0;
+		TF0=0;
+		overflow_count=0;
+		
+		//initial the sonar
+		Trigger = 0; 
+		Timer3us(2);
+		Trigger = 1; // turn on trig
+		Timer3us(10);//10us delay 
+		Trigger = 0; // trun off trig 
+		while(Echo!=0); // Wait for the signal to be zero
+		while(Echo!=1); // Wait for the signal to be one
+
+		
+		// start the timer 0 
+		TR0=1; // Start the timer
+		while(Echo!=0) // Wait for the signal to be zero
+		{
+			if(TF0==1) // Did the 16-bit timer overflow?
+			{
+				TF0=0;
+				overflow_count++;
+			}
+		}
+		TR0=0; // Stop timer 0, the 24-bit number [overflow_count-TH0-TL0] has the period!
+		time=(overflow_count*65536.0+TH0*256.0+TL0)*(12.0/SYSCLK);
+		distance = ((time/2.0f)/29.1f)*100000;
+		// Send the period to the serial port
+		printf( "\r\n p=%fcm\n" , distance);
+
+}
