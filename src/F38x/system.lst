@@ -1,7 +1,7 @@
 0000              1   ;--------------------------------------------------------
 0000              2   ; File Created by C51
 0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-0000              4   ; This file was generated Tue Apr 04 01:27:08 2017
+0000              4   ; This file was generated Tue Apr 04 07:06:58 2017
 0000              5   ;--------------------------------------------------------
                   5   $name system
                   6   $optc51 --model-small
@@ -449,7 +449,7 @@
 0024 D28E       449            setb    _TR1
 0026            450   ;        system.c:44: TI = 1;  // Indicate TX0 ready
 0026 D299       451            setb    _TI
-0028            452   ;        system.c:47: P2MDOUT|=0b_0000_0011;
+0028            452   ;        system.c:47: P2MDOUT |= 0b_0000_0011;
 0028 43A603     453            orl     _P2MDOUT,#0x03
 002B            454   ;        system.c:48: P0MDOUT |= 0x10; // Enable UTX as push-pull output OR IT MIGHT BE THIS LINE GOING WRONG
 002B 43A410     455            orl     _P0MDOUT,#0x10

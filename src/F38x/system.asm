@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Tue Apr 04 01:27:08 2017
+; This file was generated Tue Apr 04 07:06:58 2017
 ;--------------------------------------------------------
 $name system
 $optc51 --model-small
@@ -449,7 +449,7 @@ __c51_external_startup:
 	setb	_TR1
 ;	system.c:44: TI = 1;  // Indicate TX0 ready
 	setb	_TI
-;	system.c:47: P2MDOUT|=0b_0000_0011;
+;	system.c:47: P2MDOUT |= 0b_0000_0011;
 	orl	_P2MDOUT,#0x03
 ;	system.c:48: P0MDOUT |= 0x10; // Enable UTX as push-pull output OR IT MIGHT BE THIS LINE GOING WRONG
 	orl	_P0MDOUT,#0x10

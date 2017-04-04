@@ -26,7 +26,7 @@ volatile float time = 0.0f;
 volatile float distance = 0.0f;
 
 // blinkers
-volatile unsigned char blinkerCount = 0;
+volatile unsigned int blinkerCount = 0;
 unsigned char blinkerEnabled = 0;
 
 // ===[INTERRUPT SERIVEC ROUTINE]===
@@ -36,7 +36,7 @@ void Timer2_ISR (void) interrupt 5 {
 
 	// blinker
 	blinkerCount++;
-	if (blinkerCount==0) blinkerEnabled = !blinkerEnabled;
+	if (!(blinkerCount%3600)) blinkerEnabled = !blinkerEnabled;
 
 	// count PWM
 	pwm_count++;
@@ -75,6 +75,11 @@ void main(void) {
 	
 	// initialize LED matrix
 	mxInit();
+
+	// initialize blinkers
+	P0MDOUT |= 0b_0000_1100;
+	L_BLINKER = 0;
+	R_BLINKER = 0;
 	
 	// ===[MAIN LOOP]===
 	while (1) {	
@@ -105,8 +110,8 @@ void main(void) {
 		}
 
 		// blinkers
-		L_BLINKER = (blinkerEnabled && currentcmd == CMD_LEFT);
-		R_BLINKER = (blinkerEnabled && currentcmd == CMD_RIGHT); 
+		L_BLINKER = (blinkerEnabled && (currentcmd == CMD_LEFT ||currentstate == 3));
+		R_BLINKER = (blinkerEnabled && (currentcmd == CMD_RIGHT||currentstate == 3)); 
 
 		// CURRENT STATE
 		switch (currentstate) {

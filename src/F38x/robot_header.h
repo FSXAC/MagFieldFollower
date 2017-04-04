@@ -41,8 +41,8 @@
 #define Echo		P0_1
 
 // blinkers
-#define L_BLINKER P0_2
-#define R_BLINKER P0_3
+#define L_BLINKER P0_3
+#define R_BLINKER P0_2
 
 // ===[FUNCTION PROTOTYPES]===
 // system functions
