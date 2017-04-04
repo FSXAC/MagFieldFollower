@@ -25,6 +25,31 @@ unsigned char overflow_count;
 volatile float time = 0.0f;
 volatile float distance = 0.0f;
 
+// blinkers
+volatile unsigned char blinkerCount = 0;
+unsigned char blinkerEnabled = 0;
+
+// ===[INTERRUPT SERIVEC ROUTINE]===
+void Timer2_ISR (void) interrupt 5 {
+	// Clear Timer2 interrupt flag
+	TF2H = 0;
+
+	// blinker
+	blinkerCount++;
+	if (blinkerCount==0) blinkerEnabled = !blinkerEnabled;
+
+	// count PWM
+	pwm_count++;
+	if(pwm_count>100) pwm_count=0;
+
+	// To fully turn off one pin pass -1 to their pwm_***
+	MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
+	MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
+	MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
+	MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
+}
+
+// ===[MAIN PROGRAM]===
 void main(void) {
 	//VARIABLES FOR VOLTAGES
 	volatile float v1 = 0;
@@ -48,9 +73,10 @@ void main(void) {
 	//INITIALIZE ADC
 	InitADC();	
 	
+	// initialize LED matrix
 	mxInit();
 	
-	//MAIN CODE
+	// ===[MAIN LOOP]===
 	while (1) {	
 
 		//RECEIVE COMMANDS
@@ -60,7 +86,7 @@ void main(void) {
 		#ifdef DEBUG
 		printf("frontL %f frontR %f backL %f backR %f command %1d, state %1d left0 %3d left1 %3d right0 %3d right1 %3d\r", Volts_at_Pin(TANK_FL),Volts_at_Pin(TANK_FR),Volts_at_Pin(TANK_RL),Volts_at_Pin(TANK_RR), currentcmd, currentstate, pwm_Left0, pwm_Left1, pwm_Right0, pwm_Right1);
 		#endif
-		
+
 		// LED Matrix output
 		if (currentcmd == CMD_LEFT) mxDirection(0);
 		else if (currentcmd == CMD_RIGHT) mxDirection(1);
@@ -76,7 +102,11 @@ void main(void) {
 				Sonar_Reading();
 				mxStop();
 			}
-		}		 
+		}
+
+		// blinkers
+		L_BLINKER = (blinkerEnabled && currentcmd == CMD_LEFT);
+		R_BLINKER = (blinkerEnabled && currentcmd == CMD_RIGHT); 
 
 		// CURRENT STATE
 		switch (currentstate) {
@@ -203,19 +233,6 @@ void main(void) {
 				currentstate = 1;
 		}
 	}
-}
-
-void Timer2_ISR (void) interrupt 5 {
-	TF2H = 0; // Clear Timer2 interrupt flag
-
-	pwm_count++;
-	if(pwm_count>100) pwm_count=0;
-
-	// To fully turn off one pin pass -1 to their pwm_***
-	MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
-	MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
-	MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
-	MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
 }
 
 unsigned char readData(unsigned char prevcommand) {
