@@ -15,19 +15,26 @@ uint8_t controller_x, controller_y, controller_sw;
 uint32_t ms_current, ms_since;
 
 // ===[starting vector]===
-int main(void) {setup(); while (1) loop();}
+int main(void) {
+	setup(); 
+	while (1) {
+		loop();
+	}
+}
 
 // runs once
 void setup(void) {
     // initialize usart
     usart_init();
-    printf("Hello World!\n");
+    //printf("Hello World!\n");
 
     // initialize some pins
     // set direction of port/pin
     pinMode('b', 0);
     pinMode('b', 1);
-    pinMode('d', 7);
+	
+	// output for LCD pins
+	DDRD |= 0xFC;
 
     // set pin for input
     // pin 2 for one input
@@ -39,6 +46,10 @@ void setup(void) {
     // turn on ADC
     adc_init();
     PORTB turnOff(1);
+    
+    // initialize LCD
+	LCD_4BIT();
+	LCDprint("TRANSMITTER", 1, 1);
 }
 
 // loop forever
@@ -51,8 +62,27 @@ void loop(void) {
     if (ms_current - ms_since > TX_PERIOD) {
         // get control inputs
         magDataBuffer = getInput();
+		
+		// output to LCD
+		switch(magDataBuffer) {
+			case CMD_FORWARD:
+				LCDprint("FORWARD", 2, 1); break;
+			case CMD_BACK:
+				LCDprint("REVERSE", 2, 1); break;
+			case CMD_LEFT:
+				LCDprint("LEFT TURN", 2, 1); break;
+			case CMD_RIGHT:
+				LCDprint("RIGHT TURN", 2, 1); break;
+			case CMD_STOP:
+				LCDprint("STOP!!", 2, 1); break;
+			case CMD_180:
+				LCDprint("TURN AROUND", 2, 1); break;
+			default:
+				LCDprint("Awaiting Command", 2, 1); break;
+		}
+		
         if (magDataBuffer) {
-            printf("TRANSMITTING COMMAND 0x%02x\n", magDataBuffer);
+            //printf("TRANSMITTING COMMAND 0x%02x\n", magDataBuffer);
             transmit(magDataBuffer);
             ms_since = ms_current;
         }

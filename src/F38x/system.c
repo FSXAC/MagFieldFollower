@@ -45,9 +45,10 @@ char _c51_external_startup (void) {
 
 	// Configure the pins used for square output
 	P2MDOUT|=0b_0000_0011;
-	P0MDOUT |= 0x10; // Enable UTX as push-pull output
+	P0MDOUT |= 0x10; // Enable UTX as push-pull output OR IT MIGHT BE THIS LINE GOING WRONG
 	XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
-	XBR1     = 0x40; // Enable crossbar and weak pull-ups
+	XBR1     = 0x50; // Enable crossbar and weak pull-ups IF SOMETHING GOES WRONG IT'S RIGHT HERE!!!
+	XBR2 	 = 0x00;
 
 	// Initialize timer 2 for periodic interrupts
 	TMR2CN=0x00;   // Stop Timer2; Clear TF2;
@@ -90,3 +91,11 @@ void waitms (unsigned int ms) {
 		Timer3us(250);
 	}
 }
+
+void TIMER0_Init(void)
+{
+	TMOD&=0b_1111_0000; // Set the bits of Timer/Counter 0 to zero
+	TMOD|=0b_0000_0001; // Timer/Counter 0 used as a 16-bit timer
+	TR0=0; // Stop Timer/Counter 0
+}
+

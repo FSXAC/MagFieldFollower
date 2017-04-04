@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Tue Apr 04 01:07:23 2017
+; This file was generated Tue Apr 04 01:11:27 2017
 ;--------------------------------------------------------
 $name system
 $optc51 --model-small
@@ -26,6 +26,7 @@ $optc51 --model-small
 	public __c51_external_startup
 	public _Timer3us
 	public _waitms
+	public _TIMER0_Init
 ;--------------------------------------------------------
 ; Special Function Registers
 ;--------------------------------------------------------
@@ -450,29 +451,31 @@ __c51_external_startup:
 	setb	_TI
 ;	system.c:47: P2MDOUT|=0b_0000_0011;
 	orl	_P2MDOUT,#0x03
-;	system.c:48: P0MDOUT |= 0x10; // Enable UTX as push-pull output
+;	system.c:48: P0MDOUT |= 0x10; // Enable UTX as push-pull output OR IT MIGHT BE THIS LINE GOING WRONG
 	orl	_P0MDOUT,#0x10
 ;	system.c:49: XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
 	mov	_XBR0,#0x01
-;	system.c:50: XBR1     = 0x40; // Enable crossbar and weak pull-ups
-	mov	_XBR1,#0x40
-;	system.c:53: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
+;	system.c:50: XBR1     = 0x50; // Enable crossbar and weak pull-ups IF SOMETHING GOES WRONG IT'S RIGHT HERE!!!
+	mov	_XBR1,#0x50
+;	system.c:51: XBR2 	 = 0x00;
+	mov	_XBR2,#0x00
+;	system.c:54: TMR2CN=0x00;   // Stop Timer2; Clear TF2;
 	mov	_TMR2CN,#0x00
-;	system.c:54: CKCON|=0b_0001_0000;
+;	system.c:55: CKCON|=0b_0001_0000;
 	orl	_CKCON,#0x10
-;	system.c:55: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
+;	system.c:56: TMR2RL=(-(SYSCLK/(2*48))/(100L)); // Initialize reload value
 	mov	_TMR2RL,#0x78
 	mov	(_TMR2RL >> 8),#0xEC
-;	system.c:56: TMR2=0xffff;   // Set to reload immediately
+;	system.c:57: TMR2=0xffff;   // Set to reload immediately
 	mov	_TMR2,#0xFF
 	mov	(_TMR2 >> 8),#0xFF
-;	system.c:57: ET2=1;         // Enable Timer2 interrupts
+;	system.c:58: ET2=1;         // Enable Timer2 interrupts
 	setb	_ET2
-;	system.c:58: TR2=1;         // Start Timer2
+;	system.c:59: TR2=1;         // Start Timer2
 	setb	_TR2
-;	system.c:60: EA=1; // Enable interrupts
+;	system.c:61: EA=1; // Enable interrupts
 	setb	_EA
-;	system.c:62: return 0;
+;	system.c:63: return 0;
 	mov	dpl,#0x00
 	ret
 ;------------------------------------------------------------
@@ -481,40 +484,40 @@ __c51_external_startup:
 ;us                        Allocated to registers r2 
 ;i                         Allocated to registers r3 
 ;------------------------------------------------------------
-;	system.c:65: void Timer3us(unsigned char us) {
+;	system.c:66: void Timer3us(unsigned char us) {
 ;	-----------------------------------------
 ;	 function Timer3us
 ;	-----------------------------------------
 _Timer3us:
 	mov	r2,dpl
-;	system.c:69: CKCON|=0b_0100_0000;
+;	system.c:70: CKCON|=0b_0100_0000;
 	orl	_CKCON,#0x40
-;	system.c:71: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+;	system.c:72: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
 	mov	_TMR3RL,#0xD0
 	mov	(_TMR3RL >> 8),#0xFF
-;	system.c:72: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+;	system.c:73: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
 	mov	_TMR3,_TMR3RL
 	mov	(_TMR3 >> 8),(_TMR3RL >> 8)
-;	system.c:74: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
+;	system.c:75: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
 	mov	_TMR3CN,#0x04
-;	system.c:75: for (i = 0; i < us; i++)       // Count <us> overflows
+;	system.c:76: for (i = 0; i < us; i++)       // Count <us> overflows
 	mov	r3,#0x00
 L003004?:
 	clr	c
 	mov	a,r3
 	subb	a,r2
 	jnc	L003007?
-;	system.c:77: while (!(TMR3CN & 0x80));  // Wait for overflow
+;	system.c:78: while (!(TMR3CN & 0x80));  // Wait for overflow
 L003001?:
 	mov	a,_TMR3CN
 	jnb	acc.7,L003001?
-;	system.c:78: TMR3CN &= ~(0x80);         // Clear overflow indicator
+;	system.c:79: TMR3CN &= ~(0x80);         // Clear overflow indicator
 	anl	_TMR3CN,#0x7F
-;	system.c:75: for (i = 0; i < us; i++)       // Count <us> overflows
+;	system.c:76: for (i = 0; i < us; i++)       // Count <us> overflows
 	inc	r3
 	sjmp	L003004?
 L003007?:
-;	system.c:80: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
+;	system.c:81: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
 	mov	_TMR3CN,#0x00
 	ret
 ;------------------------------------------------------------
@@ -523,41 +526,57 @@ L003007?:
 ;ms                        Allocated to registers r2 r3 
 ;j                         Allocated to registers r2 r3 
 ;------------------------------------------------------------
-;	system.c:83: void waitms (unsigned int ms) {
+;	system.c:84: void waitms (unsigned int ms) {
 ;	-----------------------------------------
 ;	 function waitms
 ;	-----------------------------------------
 _waitms:
 	mov	r2,dpl
 	mov	r3,dph
-;	system.c:85: for(j=ms; j!=0; j--)
+;	system.c:86: for(j=ms; j!=0; j--)
 L004001?:
 	cjne	r2,#0x00,L004010?
 	cjne	r3,#0x00,L004010?
 	ret
 L004010?:
-;	system.c:87: Timer3us(249);
+;	system.c:88: Timer3us(249);
 	mov	dpl,#0xF9
 	push	ar2
 	push	ar3
 	lcall	_Timer3us
-;	system.c:88: Timer3us(249);
-	mov	dpl,#0xF9
-	lcall	_Timer3us
 ;	system.c:89: Timer3us(249);
 	mov	dpl,#0xF9
 	lcall	_Timer3us
-;	system.c:90: Timer3us(250);
+;	system.c:90: Timer3us(249);
+	mov	dpl,#0xF9
+	lcall	_Timer3us
+;	system.c:91: Timer3us(250);
 	mov	dpl,#0xFA
 	lcall	_Timer3us
 	pop	ar3
 	pop	ar2
-;	system.c:85: for(j=ms; j!=0; j--)
+;	system.c:86: for(j=ms; j!=0; j--)
 	dec	r2
 	cjne	r2,#0xff,L004011?
 	dec	r3
 L004011?:
 	sjmp	L004001?
+;------------------------------------------------------------
+;Allocation info for local variables in function 'TIMER0_Init'
+;------------------------------------------------------------
+;------------------------------------------------------------
+;	system.c:95: void TIMER0_Init(void)
+;	-----------------------------------------
+;	 function TIMER0_Init
+;	-----------------------------------------
+_TIMER0_Init:
+;	system.c:97: TMOD&=0b_1111_0000; // Set the bits of Timer/Counter 0 to zero
+	anl	_TMOD,#0xF0
+;	system.c:98: TMOD|=0b_0000_0001; // Timer/Counter 0 used as a 16-bit timer
+	orl	_TMOD,#0x01
+;	system.c:99: TR0=0; // Stop Timer/Counter 0
+	clr	_TR0
+	ret
 	rseg R_CSEG
 
 	rseg R_XINIT

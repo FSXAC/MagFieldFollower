@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Tue Apr 04 01:07:24 2017
+; This file was generated Tue Apr 04 01:11:27 2017
 ;--------------------------------------------------------
 $name matrix
 $optc51 --model-small
@@ -383,7 +383,7 @@ _mirror_PARM_2:
 	ds 1
 _mxDisplay_PARM_2:
 	ds 1
-_mxDisplay_grid_1_60:
+_mxDisplay_grid_1_62:
 	ds 3
 _mxWrite_PARM_2:
 	ds 1
@@ -612,7 +612,7 @@ _mxUTurn:
 ;Allocation info for local variables in function 'mxDisplay'
 ;------------------------------------------------------------
 ;options                   Allocated with name '_mxDisplay_PARM_2'
-;grid                      Allocated with name '_mxDisplay_grid_1_60'
+;grid                      Allocated with name '_mxDisplay_grid_1_62'
 ;i                         Allocated to registers r6 
 ;------------------------------------------------------------
 ;	matrix.c:55: void mxDisplay(unsigned char *grid, unsigned char options) {
@@ -620,9 +620,9 @@ _mxUTurn:
 ;	 function mxDisplay
 ;	-----------------------------------------
 _mxDisplay:
-	mov	_mxDisplay_grid_1_60,dpl
-	mov	(_mxDisplay_grid_1_60 + 1),dph
-	mov	(_mxDisplay_grid_1_60 + 2),b
+	mov	_mxDisplay_grid_1_62,dpl
+	mov	(_mxDisplay_grid_1_62 + 1),dph
+	mov	(_mxDisplay_grid_1_62 + 2),b
 ;	matrix.c:59: if (options == 2) {
 	mov	a,#0x02
 	cjne	a,_mxDisplay_PARM_2,L007017?
@@ -631,9 +631,9 @@ L007017?:
 	ljmp	L007015?
 L007018?:
 ;	matrix.c:60: mxWrite(1, mirror(grid[0], 1));
-	mov	dpl,_mxDisplay_grid_1_60
-	mov	dph,(_mxDisplay_grid_1_60 + 1)
-	mov	b,(_mxDisplay_grid_1_60 + 2)
+	mov	dpl,_mxDisplay_grid_1_62
+	mov	dph,(_mxDisplay_grid_1_62 + 1)
+	mov	b,(_mxDisplay_grid_1_62 + 2)
 	lcall	__gptrget
 	mov	r5,a
 	mov	_mirror_PARM_2,#0x01
@@ -643,9 +643,9 @@ L007018?:
 	mov	dpl,#0x01
 	lcall	_mxWrite
 ;	matrix.c:61: mxWrite(2, mirror(grid[0], 0));
-	mov	dpl,_mxDisplay_grid_1_60
-	mov	dph,(_mxDisplay_grid_1_60 + 1)
-	mov	b,(_mxDisplay_grid_1_60 + 2)
+	mov	dpl,_mxDisplay_grid_1_62
+	mov	dph,(_mxDisplay_grid_1_62 + 1)
+	mov	b,(_mxDisplay_grid_1_62 + 2)
 	lcall	__gptrget
 	mov	r5,a
 	mov	_mirror_PARM_2,#0x00
@@ -656,12 +656,12 @@ L007018?:
 	lcall	_mxWrite
 ;	matrix.c:62: mxWrite(3, mirror(grid[1], 1));
 	mov	a,#0x01
-	add	a,_mxDisplay_grid_1_60
+	add	a,_mxDisplay_grid_1_62
 	mov	r5,a
 	clr	a
-	addc	a,(_mxDisplay_grid_1_60 + 1)
+	addc	a,(_mxDisplay_grid_1_62 + 1)
 	mov	r6,a
-	mov	r7,(_mxDisplay_grid_1_60 + 2)
+	mov	r7,(_mxDisplay_grid_1_62 + 2)
 	mov	dpl,r5
 	mov	dph,r6
 	mov	b,r7
@@ -728,9 +728,9 @@ L007018?:
 	mov	dpl,#0x06
 	lcall	_mxWrite
 ;	matrix.c:66: mxWrite(7, mirror(grid[0], 0));
-	mov	dpl,_mxDisplay_grid_1_60
-	mov	dph,(_mxDisplay_grid_1_60 + 1)
-	mov	b,(_mxDisplay_grid_1_60 + 2)
+	mov	dpl,_mxDisplay_grid_1_62
+	mov	dph,(_mxDisplay_grid_1_62 + 1)
+	mov	b,(_mxDisplay_grid_1_62 + 2)
 	lcall	__gptrget
 	mov	r5,a
 	mov	_mirror_PARM_2,#0x00
@@ -740,9 +740,9 @@ L007018?:
 	mov	dpl,#0x07
 	lcall	_mxWrite
 ;	matrix.c:67: mxWrite(8, mirror(grid[0], 1));
-	mov	dpl,_mxDisplay_grid_1_60
-	mov	dph,(_mxDisplay_grid_1_60 + 1)
-	mov	b,(_mxDisplay_grid_1_60 + 2)
+	mov	dpl,_mxDisplay_grid_1_62
+	mov	dph,(_mxDisplay_grid_1_62 + 1)
+	mov	b,(_mxDisplay_grid_1_62 + 2)
 	lcall	__gptrget
 	mov	r5,a
 	mov	_mirror_PARM_2,#0x01
@@ -774,12 +774,12 @@ L007021?:
 	inc	a
 	mov	r7,a
 	mov	a,r6
-	add	a,_mxDisplay_grid_1_60
+	add	a,_mxDisplay_grid_1_62
 	mov	r0,a
 	clr	a
-	addc	a,(_mxDisplay_grid_1_60 + 1)
+	addc	a,(_mxDisplay_grid_1_62 + 1)
 	mov	r1,a
-	mov	r2,(_mxDisplay_grid_1_60 + 2)
+	mov	r2,(_mxDisplay_grid_1_62 + 2)
 	mov	dpl,r0
 	mov	dph,r1
 	mov	b,r2
@@ -802,12 +802,12 @@ L007004?:
 	inc	a
 	mov	r2,a
 	mov	a,r6
-	add	a,_mxDisplay_grid_1_60
+	add	a,_mxDisplay_grid_1_62
 	mov	r3,a
 	clr	a
-	addc	a,(_mxDisplay_grid_1_60 + 1)
+	addc	a,(_mxDisplay_grid_1_62 + 1)
 	mov	r4,a
-	mov	r7,(_mxDisplay_grid_1_60 + 2)
+	mov	r7,(_mxDisplay_grid_1_62 + 2)
 	mov	dpl,r3
 	mov	dph,r4
 	mov	b,r7
