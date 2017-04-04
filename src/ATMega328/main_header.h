@@ -81,3 +81,13 @@ void adc_init(void);
 // void buzz(float duration, float period);
 // void alert(void);
 void note(int n, int octave);
+
+void LCD_pulse (void);
+void LCD_byte (unsigned char x);
+void WriteData (unsigned char x);
+void WriteCommand (unsigned char x);
+void LCD_4BIT (void);
+void LCDprint(char * string, unsigned char line, uint8_t clear);
+
+
+
