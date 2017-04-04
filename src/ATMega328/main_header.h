@@ -63,7 +63,6 @@ void transmit(uint8_t command);
 void pinMode(char port, unsigned char pin);
 uint8_t getInput(void);
 uint8_t mapDigital(uint16_t adc, uint16_t low, uint16_t high);
-uint8_t digitalRead(char port, uint8_t pin);
 
 // usart function prototypes for serial
 void usart_init(void);
@@ -77,11 +76,7 @@ int usart_putchar_printf(char var, FILE *stream);
 uint16_t adc_read(uint8_t adcx);
 void adc_init(void);
 
-// sound functions
-// void buzz(float duration, float period);
-// void alert(void);
-void note(int n, int octave);
-
+// LCD functions
 void LCD_pulse (void);
 void LCD_byte (unsigned char x);
 void WriteData (unsigned char x);

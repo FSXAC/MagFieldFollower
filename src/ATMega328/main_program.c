@@ -11,7 +11,7 @@
 
 // global constants
 uint8_t magDataBuffer;
-uint8_t controller_x, controller_y, controller_sw;
+uint8_t controller_x, controller_y;
 uint32_t ms_current, ms_since;
 
 // ===[starting vector]===
@@ -39,6 +39,7 @@ void setup(void) {
     // set pin for input
     // pin 2 for one input
     DDRB &= ~(1<<PB2);
+    DDRC &= ~(1<<PC2);
 
     // Turn on timer 0 for square output
     timer_init();
@@ -49,13 +50,12 @@ void setup(void) {
     
     // initialize LCD
 	LCD_4BIT();
-	LCDprint("TRANSMITTER", 1, 1);
+	LCDprint("LAS TX", 1, 1);
 }
 
 // loop forever
 void loop(void) {
     // get milliseconds
-
     ms_current = millis();
 
     // executed every 1 seconds
@@ -66,23 +66,22 @@ void loop(void) {
 		// output to LCD
 		switch(magDataBuffer) {
 			case CMD_FORWARD:
-				LCDprint("FORWARD", 2, 1); break;
+				LCDprint("Forward", 2, 1); break;
 			case CMD_BACK:
-				LCDprint("REVERSE", 2, 1); break;
+				LCDprint("Reverse", 2, 1); break;
 			case CMD_LEFT:
-				LCDprint("LEFT TURN", 2, 1); break;
+				LCDprint("Turn left", 2, 1); break;
 			case CMD_RIGHT:
-				LCDprint("RIGHT TURN", 2, 1); break;
+				LCDprint("Turn right", 2, 1); break;
 			case CMD_STOP:
 				LCDprint("STOP!!", 2, 1); break;
 			case CMD_180:
-				LCDprint("TURN AROUND", 2, 1); break;
+				LCDprint("Turn around", 2, 1); break;
 			default:
-				LCDprint("Awaiting Command", 2, 1); break;
+				LCDprint("Awaiting command", 2, 1); break;
 		}
 		
         if (magDataBuffer) {
-            //printf("TRANSMITTING COMMAND 0x%02x\n", magDataBuffer);
             transmit(magDataBuffer);
             ms_since = ms_current;
         }
@@ -146,18 +145,13 @@ uint8_t mapDigital(uint16_t adc, uint16_t low, uint16_t high) {
 uint8_t getInput(void) {
     controller_x = mapDigital(adc_read(0), 180, 800);
     controller_y = mapDigital(adc_read(1), 300, 700);
-    controller_sw = PORTD & 0x80;
 
     // parse control into commands
-    if (digitalRead('b', 2)) {
-        // stop
-        return CMD_STOP;
-    }
+    // stop
+    if (PINB & (1<<2)) return CMD_STOP;
 
     // 180
-    if (PINC & (1<<2)) {
-        return CMD_180;
-    }
+    if (PINC & (1<<2)) return CMD_180;
 
     // L/R has more dominance control
     if (controller_x == 0) return CMD_LEFT;
@@ -169,9 +163,4 @@ uint8_t getInput(void) {
 
     // return 0 by default
     return 0;
-}
-
-// get digital reading
-uint8_t digitalRead(char port, uint8_t pin) {
-    return PINB & (1<<pin);
 }
