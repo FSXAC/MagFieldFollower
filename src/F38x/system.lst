@@ -1,7 +1,7 @@
 0000              1   ;--------------------------------------------------------
 0000              2   ; File Created by C51
 0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-0000              4   ; This file was generated Mon Apr 03 16:15:18 2017
+0000              4   ; This file was generated Mon Apr 03 19:29:45 2017
 0000              5   ;--------------------------------------------------------
                   5   $name system
                   6   $optc51 --model-small
@@ -481,40 +481,40 @@
 0050            481   ;us                        Allocated to registers r2 
 0050            482   ;i                         Allocated to registers r3 
 0050            483   ;------------------------------------------------------------
-0050            484   ;        system.c:65: void Timer3us(unsigned char us) {
+0050            484   ;        system.c:67: void Timer3us(unsigned char us) {
 0050            485   ;        -----------------------------------------
 0050            486   ;         function Timer3us
 0050            487   ;        -----------------------------------------
 0050            488   _Timer3us:
 0050 AA82       489            mov     r2,dpl
-0052            490   ;        system.c:69: CKCON|=0b_0100_0000;
+0052            490   ;        system.c:71: CKCON|=0b_0100_0000;
 0052 438E40     491            orl     _CKCON,#0x40
-0055            492   ;        system.c:71: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+0055            492   ;        system.c:73: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
 0055 7592D0     493            mov     _TMR3RL,#0xD0
 0058 7593FF     494            mov     (_TMR3RL >> 8),#0xFF
-005B            495   ;        system.c:72: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+005B            495   ;        system.c:74: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
 005B 859294     496            mov     _TMR3,_TMR3RL
 005E 859395     497            mov     (_TMR3 >> 8),(_TMR3RL >> 8)
-0061            498   ;        system.c:74: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
+0061            498   ;        system.c:76: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
 0061 759104     499            mov     _TMR3CN,#0x04
-0064            500   ;        system.c:75: for (i = 0; i < us; i++)       // Count <us> overflows
+0064            500   ;        system.c:77: for (i = 0; i < us; i++)       // Count <us> overflows
 0064 7B00       501            mov     r3,#0x00
 0066            502   L003004?:
 0066 C3         503            clr     c
 0067 EB         504            mov     a,r3
 0068 9A         505            subb    a,r2
 0069 5001       506            jnc     L003007?
-006B            507   ;        system.c:77: while (!(TMR3CN & 0x80));  // Wait for overflow
+006B            507   ;        system.c:79: while (!(TMR3CN & 0x80));  // Wait for overflow
 006B            508   L003001?:
 006B E591       509            mov     a,_TMR3CN
 006D 30E768     510            jnb     acc.7,L003001?
-0070            511   ;        system.c:78: TMR3CN &= ~(0x80);         // Clear overflow indicator
+0070            511   ;        system.c:80: TMR3CN &= ~(0x80);         // Clear overflow indicator
 0070 53917F     512            anl     _TMR3CN,#0x7F
-0073            513   ;        system.c:75: for (i = 0; i < us; i++)       // Count <us> overflows
+0073            513   ;        system.c:77: for (i = 0; i < us; i++)       // Count <us> overflows
 0073 0B         514            inc     r3
 0074 8001       515            sjmp    L003004?
 0076            516   L003007?:
-0076            517   ;        system.c:80: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
+0076            517   ;        system.c:82: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
 0076 759100     518            mov     _TMR3CN,#0x00
 0079 22         519            ret
 007A            520   ;------------------------------------------------------------
@@ -523,36 +523,36 @@
 007A            523   ;ms                        Allocated to registers r2 r3 
 007A            524   ;j                         Allocated to registers r2 r3 
 007A            525   ;------------------------------------------------------------
-007A            526   ;        system.c:83: void waitms (unsigned int ms) {
+007A            526   ;        system.c:85: void waitms (unsigned int ms) {
 007A            527   ;        -----------------------------------------
 007A            528   ;         function waitms
 007A            529   ;        -----------------------------------------
 007A            530   _waitms:
 007A AA82       531            mov     r2,dpl
 007C AB83       532            mov     r3,dph
-007E            533   ;        system.c:85: for(j=ms; j!=0; j--)
+007E            533   ;        system.c:87: for(j=ms; j!=0; j--)
 007E            534   L004001?:
 007E BA0068     535            cjne    r2,#0x00,L004010?
 0081 BB0068     536            cjne    r3,#0x00,L004010?
 0084 22         537            ret
 0085            538   L004010?:
-0085            539   ;        system.c:87: Timer3us(249);
+0085            539   ;        system.c:89: Timer3us(249);
 0085 7582F9     540            mov     dpl,#0xF9
 0088 C002       541            push    ar2
 008A C003       542            push    ar3
 008C 120100     543            lcall   _Timer3us
-008F            544   ;        system.c:88: Timer3us(249);
+008F            544   ;        system.c:90: Timer3us(249);
 008F 7582F9     545            mov     dpl,#0xF9
 0092 120100     546            lcall   _Timer3us
-0095            547   ;        system.c:89: Timer3us(249);
+0095            547   ;        system.c:91: Timer3us(249);
 0095 7582F9     548            mov     dpl,#0xF9
 0098 120100     549            lcall   _Timer3us
-009B            550   ;        system.c:90: Timer3us(250);
+009B            550   ;        system.c:92: Timer3us(250);
 009B 7582FA     551            mov     dpl,#0xFA
 009E 120100     552            lcall   _Timer3us
 00A1 D003       553            pop     ar3
 00A3 D002       554            pop     ar2
-00A5            555   ;        system.c:85: for(j=ms; j!=0; j--)
+00A5            555   ;        system.c:87: for(j=ms; j!=0; j--)
 00A5 1A         556            dec     r2
 00A6 BAFFA8     557            cjne    r2,#0xff,L004011?
 00A9 1B         558            dec     r3

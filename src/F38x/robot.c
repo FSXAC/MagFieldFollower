@@ -41,7 +41,10 @@ void main(void) {
 	InitPinADC(2, 6); // Configure P2.6 as analog input (tank2)
 
 	//INITIALIZE ADC
-	InitADC();	
+	InitADC();
+
+	// initialize LED
+	mxInit();
 	
 	//MAIN CODE
 	while (1) {	
@@ -53,7 +56,10 @@ void main(void) {
 		printf("frontL %f frontR %f backL %f backR %f command %1d, state %1d left0 %3d left1 %3d right0 %3d right1 %3d\r", Volts_at_Pin(TANK_FL),Volts_at_Pin(TANK_FR),Volts_at_Pin(TANK_RL),Volts_at_Pin(TANK_RR), currentcmd, currentstate, pwm_Left0, pwm_Left1, pwm_Right0, pwm_Right1);
 		// waitms(100);
 		// continue;
-
+		if (currentcmd == CMD_LEFT) mxDirection(0);
+		else if (currentcmd == CMD_RIGHT) mxDirection(1);
+		else if (currentcmd == CMD_FORWARD) mxGo(0);
+		else if (currentcmd == CMD_REVERSE) mxGo(1);
 
 		// CURRENT STATE
 		switch (currentstate) {

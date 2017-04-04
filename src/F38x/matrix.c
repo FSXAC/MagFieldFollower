@@ -1,9 +1,9 @@
 // functions containing stuff for LED matrix
 
 // Matrix pins
-#define LED_CS P1_2
+#define LED_CS P1_4
 #define LED_DATA P1_3
-#define LED_CLK P1_4
+#define LED_CLK P1_2
 
 // libraries
 #include <stdio.h>
@@ -24,6 +24,24 @@ unsigned char reverse(unsigned char b) {
    return b;
 }
 
+// mirror the bits 
+unsigned char mirror(unsigned char b, unsigned char upper) {
+	if (upper) return ((reverse(b) & 0x0F) | (b & 0xF0));
+	else return ((reverse(b) & 0xF0) | (b & 0x0F));
+}
+
+// display direction
+void mxDirection(unsigned char flipped) {
+	if (flipped) mxDisplay(MX_TURN, 0x01);
+	else mxDisplay(MX_TURN, 0x00);
+}
+
+// display forward / reverse
+void mxGo(unsigned char flipped) {
+	if (flipped) mxDisplay(MX_TURN, 0x02);
+	else mxDisplay(MX_TURN, 0x00);
+}
+
 // display to screen
 // PARAMS:
 // *grid: the array of bits to send
@@ -34,9 +52,22 @@ unsigned char reverse(unsigned char b) {
 // 		bit 3: normal / mirror vertical
 void mxDisplay(unsigned char *grid, unsigned char options) {
 	unsigned char i;
+
+	// (2 byte images)
+	if (options & 0x80) && (options & 0x40) {
+		for (i = 0; i < 2) {
+
+		}
+	}
+
 	for (i = 0; i < 8; i++) {
-		if (options & 0x01) mxWrite(i+1, reverse(grid[i]));
-		else mxWtite(i+1, grid[i]);	
+		if (options & 0x02) {
+			if (options & 0x01) mxWrite(i+1, reverse(grid[7-i]));
+			else mxWrite(i+1, grid[7-i]);	
+		} else {
+			if (options & 0x01) mxWrite(i+1, reverse(grid[i]));
+			else mxWrite(i+1, grid[i]);	
+		}
 	}
 }
 
@@ -90,7 +121,7 @@ void mxPulse(void) {
 }
 
 // clear all memory in MAX7219
-void msClear(void) {
+void mxClear(void) {
 	unsigned char j;
 	for (j = 1; j <= 8; j++) {
 		mxSPI(j);

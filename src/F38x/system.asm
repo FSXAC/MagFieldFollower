@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
-; This file was generated Mon Apr 03 16:15:18 2017
+; This file was generated Mon Apr 03 19:29:45 2017
 ;--------------------------------------------------------
 $name system
 $optc51 --model-small
@@ -481,40 +481,40 @@ __c51_external_startup:
 ;us                        Allocated to registers r2 
 ;i                         Allocated to registers r3 
 ;------------------------------------------------------------
-;	system.c:65: void Timer3us(unsigned char us) {
+;	system.c:67: void Timer3us(unsigned char us) {
 ;	-----------------------------------------
 ;	 function Timer3us
 ;	-----------------------------------------
 _Timer3us:
 	mov	r2,dpl
-;	system.c:69: CKCON|=0b_0100_0000;
+;	system.c:71: CKCON|=0b_0100_0000;
 	orl	_CKCON,#0x40
-;	system.c:71: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+;	system.c:73: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
 	mov	_TMR3RL,#0xD0
 	mov	(_TMR3RL >> 8),#0xFF
-;	system.c:72: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+;	system.c:74: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
 	mov	_TMR3,_TMR3RL
 	mov	(_TMR3 >> 8),(_TMR3RL >> 8)
-;	system.c:74: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
+;	system.c:76: TMR3CN = 0x04;                 // Sart Timer3 and clear overflow flag
 	mov	_TMR3CN,#0x04
-;	system.c:75: for (i = 0; i < us; i++)       // Count <us> overflows
+;	system.c:77: for (i = 0; i < us; i++)       // Count <us> overflows
 	mov	r3,#0x00
 L003004?:
 	clr	c
 	mov	a,r3
 	subb	a,r2
 	jnc	L003007?
-;	system.c:77: while (!(TMR3CN & 0x80));  // Wait for overflow
+;	system.c:79: while (!(TMR3CN & 0x80));  // Wait for overflow
 L003001?:
 	mov	a,_TMR3CN
 	jnb	acc.7,L003001?
-;	system.c:78: TMR3CN &= ~(0x80);         // Clear overflow indicator
+;	system.c:80: TMR3CN &= ~(0x80);         // Clear overflow indicator
 	anl	_TMR3CN,#0x7F
-;	system.c:75: for (i = 0; i < us; i++)       // Count <us> overflows
+;	system.c:77: for (i = 0; i < us; i++)       // Count <us> overflows
 	inc	r3
 	sjmp	L003004?
 L003007?:
-;	system.c:80: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
+;	system.c:82: TMR3CN = 0 ;                   // Stop Timer3 and clear overflow flag
 	mov	_TMR3CN,#0x00
 	ret
 ;------------------------------------------------------------
@@ -523,36 +523,36 @@ L003007?:
 ;ms                        Allocated to registers r2 r3 
 ;j                         Allocated to registers r2 r3 
 ;------------------------------------------------------------
-;	system.c:83: void waitms (unsigned int ms) {
+;	system.c:85: void waitms (unsigned int ms) {
 ;	-----------------------------------------
 ;	 function waitms
 ;	-----------------------------------------
 _waitms:
 	mov	r2,dpl
 	mov	r3,dph
-;	system.c:85: for(j=ms; j!=0; j--)
+;	system.c:87: for(j=ms; j!=0; j--)
 L004001?:
 	cjne	r2,#0x00,L004010?
 	cjne	r3,#0x00,L004010?
 	ret
 L004010?:
-;	system.c:87: Timer3us(249);
+;	system.c:89: Timer3us(249);
 	mov	dpl,#0xF9
 	push	ar2
 	push	ar3
 	lcall	_Timer3us
-;	system.c:88: Timer3us(249);
+;	system.c:90: Timer3us(249);
 	mov	dpl,#0xF9
 	lcall	_Timer3us
-;	system.c:89: Timer3us(249);
+;	system.c:91: Timer3us(249);
 	mov	dpl,#0xF9
 	lcall	_Timer3us
-;	system.c:90: Timer3us(250);
+;	system.c:92: Timer3us(250);
 	mov	dpl,#0xFA
 	lcall	_Timer3us
 	pop	ar3
 	pop	ar2
-;	system.c:85: for(j=ms; j!=0; j--)
+;	system.c:87: for(j=ms; j!=0; j--)
 	dec	r2
 	cjne	r2,#0xff,L004011?
 	dec	r3

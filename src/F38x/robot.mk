@@ -8,7 +8,7 @@ CC=c51
 # specify microcontroller
 
 # objects
-OBJS=robot.obj system.obj adc.obj
+OBJS=robot.obj system.obj adc.obj matrix.obj
 
 # default target
 robot.hex: $(OBJS)
@@ -20,8 +20,10 @@ robot.obj: robot.c robot_header.h
 	$(CC) -c robot.c
 adc.obj: adc.c robot_header.h
 	$(CC) -c adc.c
-system.obj : system.c robot_header.h
+system.obj: system.c robot_header.h
 	$(CC) -c system.c
+matrix.obj: matrix.c robot_header.h
+	$(CC) -c matrix.c
 
 # clean directory
 CLEAN:
