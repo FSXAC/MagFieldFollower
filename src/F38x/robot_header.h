@@ -36,9 +36,13 @@
 #define STOP_STATE 3
 #define DEBUG_STATE 4
 
+// sonar
 #define Trigger     P0_6 
-#define Echo		P0_1  
+#define Echo		P0_1
 
+// blinkers
+#define L_BLINKER P0_3
+#define R_BLINKER P0_2
 
 // ===[FUNCTION PROTOTYPES]===
 // system functions

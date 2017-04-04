@@ -44,7 +44,7 @@ char _c51_external_startup (void) {
 	TI = 1;  // Indicate TX0 ready
 
 	// Configure the pins used for square output
-	P2MDOUT|=0b_0000_0011;
+	P2MDOUT |= 0b_0000_0011;
 	P0MDOUT |= 0x10; // Enable UTX as push-pull output OR IT MIGHT BE THIS LINE GOING WRONG
 	XBR0     = 0x01; // Enable UART on P0.4(TX) and P0.5(RX)
 	XBR1     = 0x50; // Enable crossbar and weak pull-ups IF SOMETHING GOES WRONG IT'S RIGHT HERE!!!

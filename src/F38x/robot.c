@@ -1,26 +1,55 @@
 // ELEC 291 Project 2
+// #define DEBUG
 
 #include <C8051F38x.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "robot_header.h"
 
-volatile  char pwm_count=0;
-volatile  char mode = 0;
-volatile  char pwm_both =0;
-volatile  char pwm_Left0 = 0; //p1.5
-volatile  char pwm_Left1 = 0; //p1.6
-volatile  char pwm_Right0 = 0; //p2.0
-volatile  char pwm_Right1 = 0; //p2.1
-volatile  char direction = 0; // 1 for back 0 for forward
+// control systems
+volatile char pwm_count=0;
+volatile char mode = 0;
+volatile char pwm_both =0;
+volatile char pwm_Left0 = 0; //p1.5
+volatile char pwm_Left1 = 0; //p1.6
+volatile char pwm_Right0 = 0; //p2.0
+volatile char pwm_Right1 = 0; //p2.1
+volatile char direction = 0; // 1 for back 0 for forward
 
-volatile  char currentcmd = 0;
-volatile  char currentstate = 1;
+// states
+volatile char currentcmd = 0;
+volatile char currentstate = 1;
 
+// sonar
 unsigned char overflow_count;
 volatile float time = 0.0f;
 volatile float distance = 0.0f;
 
+// blinkers
+volatile unsigned int blinkerCount = 0;
+unsigned char blinkerEnabled = 0;
+
+// ===[INTERRUPT SERIVEC ROUTINE]===
+void Timer2_ISR (void) interrupt 5 {
+	// Clear Timer2 interrupt flag
+	TF2H = 0;
+
+	// blinker
+	blinkerCount++;
+	if (!(blinkerCount%3600)) blinkerEnabled = !blinkerEnabled;
+
+	// count PWM
+	pwm_count++;
+	if(pwm_count>100) pwm_count=0;
+
+	// To fully turn off one pin pass -1 to their pwm_***
+	MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
+	MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
+	MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
+	MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
+}
+
+// ===[MAIN PROGRAM]===
 void main(void) {
 	//VARIABLES FOR VOLTAGES
 	volatile float v1 = 0;
@@ -35,9 +64,6 @@ void main(void) {
    	currentstate = 1;  	//1-FORWARD, 2-BACKWARDS, 3-STOPPED, 4-DEBUGGER
    	currentcmd = 0;		//0-NO COMMAND, 1-TURN LEFT, 2-TURN RIGHT, 3-FORWARDS, 4-BACKWARDS, 5-STOP, 6-UTURN
 
-	//CLEAR PUTTY SCREEN
-	//printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
-
     //INITIALIZE ADC PINS
     InitPinADC(2, 3); // Configure P2.3 as analog input (tank1)
 	InitPinADC(2, 4); // Configure P2.4 as analog input	(tank1)
@@ -47,16 +73,24 @@ void main(void) {
 	//INITIALIZE ADC
 	InitADC();	
 	
+	// initialize LED matrix
 	mxInit();
+
+	// initialize blinkers
+	P0MDOUT |= 0b_0000_1100;
+	L_BLINKER = 0;
+	R_BLINKER = 0;
 	
-	//MAIN CODE
+	// ===[MAIN LOOP]===
 	while (1) {	
 
 		//RECEIVE COMMANDS
 		currentcmd = readData(currentcmd); 
 		
 		// FOR DEBUGGING
-		//printf("frontL %f frontR %f backL %f backR %f command %1d, state %1d left0 %3d left1 %3d right0 %3d right1 %3d\r", Volts_at_Pin(TANK_FL),Volts_at_Pin(TANK_FR),Volts_at_Pin(TANK_RL),Volts_at_Pin(TANK_RR), currentcmd, currentstate, pwm_Left0, pwm_Left1, pwm_Right0, pwm_Right1);
+		#ifdef DEBUG
+		printf("frontL %f frontR %f backL %f backR %f command %1d, state %1d left0 %3d left1 %3d right0 %3d right1 %3d\r", Volts_at_Pin(TANK_FL),Volts_at_Pin(TANK_FR),Volts_at_Pin(TANK_RL),Volts_at_Pin(TANK_RR), currentcmd, currentstate, pwm_Left0, pwm_Left1, pwm_Right0, pwm_Right1);
+		#endif
 
 		// LED Matrix output
 		if (currentcmd == CMD_LEFT) mxDirection(0);
@@ -64,8 +98,8 @@ void main(void) {
 		else if (currentcmd == CMD_STOP||currentstate == 3) mxStop();
 		else if (currentcmd == CMD_UTURN) mxUTurn();
 		else if (currentcmd == CMD_NONE) mxClear();
-		// waitms(100);
-		// continue;
+
+		// collision detection
 		Sonar_Reading();
 		if (distance < 7) {
 			stopcar();
@@ -73,7 +107,11 @@ void main(void) {
 				Sonar_Reading();
 				mxStop();
 			}
-		}		 
+		}
+
+		// blinkers
+		L_BLINKER = (blinkerEnabled && (currentcmd == CMD_LEFT ||currentstate == 3));
+		R_BLINKER = (blinkerEnabled && (currentcmd == CMD_RIGHT||currentstate == 3)); 
 
 		// CURRENT STATE
 		switch (currentstate) {
@@ -202,129 +240,18 @@ void main(void) {
 	}
 }
 
-void Timer2_ISR (void) interrupt 5 {
-	TF2H = 0; // Clear Timer2 interrupt flag
-
-	pwm_count++;
-	if(pwm_count>100) pwm_count=0;
-
-	// To fully turn off one pin pass -1 to their pwm_***
-	MOTOR_LEFT0 = pwm_count > pwm_Left0 ? 0 : 1; //p1.5
-	MOTOR_LEFT1 = pwm_count > pwm_Left1 ? 0 : 1; //p1.6
-	MOTOR_RIGHT0 = pwm_count > pwm_Right0 ? 0 : 1; //p2.0
-	MOTOR_RIGHT1 = pwm_count > pwm_Right1 ? 0 : 1; //p2.1
-}
-
-/* Program that controls forward/reverse direction of the robot.
-	Parameters
-	pwm_both: the value of pwm that controls speed of motors
-	direction: flag to set whether robot goes forwards(0) or backwards(1). */
-// void forward_backward(unsigned char direction) {
-// 	if (direction == 0) { //p2.1,1.6 on
-// 		pwm_Left0 = pwm_Right0 = -1;
-// 		pwm_Left1 = pwm_Right1 = pwm_both;  //MOTOR_LEFT1 = MOTOR_RIGHT1 = pwm_both;
-// 	}
-
-// 	else if (direction == 1) { //p2.0,1.5 on
-// 		pwm_Left1 = pwm_Right1 = -1;
-// 		pwm_Left0 = pwm_Right0 = pwm_both; 
-// 		//MOTOR_LEFT0 = MOTOR_RIGHT0 = pwm_both;
-// 		//MOTOR_LEFT1 = MOTOR_RIGHT1 = 0;
-// 	}
-
-// }
-
-
-//--------------------------------------------------//
-// RECEIVE COMMANDS
-//--------------------------------------------------//
-/*void readData(void) {
-	int commandflag = 1;					//determines if there's a real command coming in or not
-	
-	//ENTER CODE ONLY IF TRIGGERED BY 0
-	if (COMMAND_PIN == 0) {					//0---
-		waitms(CMDFRQ*1.5);
-		if (COMMAND_PIN == 1) {				//01--
-			waitms(CMDFRQ);
-			if (COMMAND_PIN == 0) {			//010-
-				waitms(CMDFRQ);
-				if (COMMAND_PIN == 0) 	currentcmd = 4;	//0100	
-				else 					currentcmd = 5;	//0101
-			}
-			else {							//011-
-				waitms(CMDFRQ);
-				if (COMMAND_PIN == 0) 	currentcmd = 6;	//0110
-			}
-		}
-		else {								//00--
-			waitms(CMDFRQ);
-			if (COMMAND_PIN == 1) {			//001-
-				waitms(CMDFRQ);
-				if (COMMAND_PIN == 1) 	currentcmd = 3;	//0011
-				else 					currentcmd = 2;	//0010
-			}
-			else {							//000-
-				waitms(CMDFRQ);
-				if (COMMAND_PIN == 1) 	currentcmd = 1; //0001
-				else {						//0000 this is no signal, set commandflag to 1 and go back to main loop
-					commandflag = 1;
-				}
-			}
-		}
-		printf("\n\r current command is %d, commandflag = %d\r\n", currentcmd, commandflag);		
-	}
-	
-	//STAYS IN READ DATA UNTIL END OF RECEIVE (IF A PROPER COMMAND IS RECEIVED)
-	if (commandflag == 0)	{while (COMMAND_PIN == 0);} 
-}*/
-
-// returns the 4 bits that was transmitted
-// unsigned char readData(void) {
-// 	unsigned char index = 1;
-// 	unsigned char command = 0;
-// 	if (!COMMAND_PIN) {
-// 		waitms(CMDFRQ*1.5);
-// 		for (; index < 4; index++) {
-// 			// read the next one
-// 			printf("*****%d:::%d*****\n", index, COMMAND_PIN);
-// 			command |= COMMAND_PIN << index;
-// 			waitms(CMDFRQ);
-// 		}
-// 	}
-
-// 	// check the validity of the command
-// 	if ((command == CMD_LEFT) ||
-// 		(command == CMD_RIGHT) ||
-// 		(command == CMD_FORWARD) ||
-// 		(command == CMD_REVERSE) ||
-// 		(command == CMD_STOP) ||
-// 		(command == CMD_UTURN))	{
-// 		printf("Command received: 0x%02x\n", command);
-// 		return command;
-// 	}
-// 	else return CMD_NONE;
-// }
-
 unsigned char readData(unsigned char prevcommand) {
 	unsigned char command = prevcommand;
 	if (!COMMAND_PIN) {
 		command = 0; 
 		while (!COMMAND_PIN);
-		P1_4 = 1;
 		waitms((int)(CMDFRQ + CMDFRQ/2));
-		P1_4 = 0;
 		command |= COMMAND_PIN<<2;
 		waitms(CMDFRQ);
-		P1_4 = 1;
 		command |= COMMAND_PIN<<1;
 		waitms(CMDFRQ);
-		P1_4 = 0;
 		command |= COMMAND_PIN;
 		while (!COMMAND_PIN);
-		/*printf("\nCommand received: 0b_0%c%c%c\n", 
-			(command & 0x04) ? '1' : '0',
-			(command & 0x02) ? '1' : '0',
-			(command & 0x01) ? '1' : '0');*/
 		if (command > 6) command = prevcommand; 
 		
 	}
@@ -389,10 +316,11 @@ void turncar (int leftright) {
 	volatile float 	v;
 		
 	//SET ALL PWM TO 0		
-	pwm_Left0 = -1;
-	pwm_Left1 = -1;
-	pwm_Right0 = -1;
-	pwm_Right1 = -1;
+	// pwm_Left0 = -1;
+	// pwm_Left1 = -1;
+	// pwm_Right0 = -1;
+	// pwm_Right1 = -1;
+	stopcar();
 
 	//CODE FOR TURNING LEFT
 	if (leftright == 1) {
@@ -513,59 +441,33 @@ void uturn(void) {
 	
 }	
 
-//--------------------------------------------------//
-// STRAIGHT LINE
-//--------------------------------------------------//
-// void movecar (int forback, int power) {
-// 	//1 = forwards, 2 = backwards, power = PWM
-// 	if (forback == 1) {
-// 		pwm_Left1 = power;
-// 		pwm_Left0 = -1;
-// 		pwm_Right0 = power;
-// 		pwm_Right1 = -1;
-// 	}
-// 	else if (forback == 2) {
-// 		pwm_Left0 = power;
-// 		pwm_Left1 = -1;
-// 		pwm_Right1 = power;
-// 		pwm_Right0 = -1;
-// 	}
-// }
-		
-// 		
-
-void Sonar_Reading(void)
-{
+void Sonar_Reading(void) {
 	// Reset the counter
-		TL0=0; 
-		TH0=0;
-		TF0=0;
-		overflow_count=0;
-		
-		//initial the sonar
-		Trigger = 0; 
-		Timer3us(2);
-		Trigger = 1; // turn on trig
-		Timer3us(10);//10us delay 
-		Trigger = 0; // trun off trig 
-		while(Echo!=0); // Wait for the signal to be zero
-		while(Echo!=1); // Wait for the signal to be one
+	TL0=0; 
+	TH0=0;
+	TF0=0;
+	overflow_count=0;
+	
+	//initial the sonar
+	Trigger = 0; 
+	Timer3us(2);
+	Trigger = 1; // turn on trig
+	Timer3us(10);//10us delay 
+	Trigger = 0; // trun off trig 
+	while(Echo!=0); // Wait for the signal to be zero
+	while(Echo!=1); // Wait for the signal to be one
 
-		
-		// start the timer 0 
-		TR0=1; // Start the timer
-		while(Echo!=0) // Wait for the signal to be zero
+	// start the timer 0 
+	TR0=1; // Start the timer
+	while(Echo!=0) // Wait for the signal to be zero
+	{
+		if(TF0==1) // Did the 16-bit timer overflow?
 		{
-			if(TF0==1) // Did the 16-bit timer overflow?
-			{
-				TF0=0;
-				overflow_count++;
-			}
+			TF0=0;
+			overflow_count++;
 		}
-		TR0=0; // Stop timer 0, the 24-bit number [overflow_count-TH0-TL0] has the period!
-		time=(overflow_count*65536.0+TH0*256.0+TL0)*(12.0/SYSCLK);
-		distance = ((time/2.0f)/29.1f)*100000;
-		// Send the period to the serial port
-		//printf( "\r\n p=%fcm\n" , distance);
-
+	}
+	TR0=0; // Stop timer 0, the 24-bit number [overflow_count-TH0-TL0] has the period!
+	time=(overflow_count*65536.0+TH0*256.0+TL0)*(12.0/SYSCLK);
+	distance = ((time/2.0f)/29.1f)*100000;
 }
