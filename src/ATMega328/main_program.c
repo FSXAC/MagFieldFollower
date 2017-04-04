@@ -151,8 +151,12 @@ uint8_t getInput(void) {
     // parse control into commands
     if (digitalRead('b', 2)) {
         // stop
-        if (!controller_y) return CMD_180;
-        else return CMD_STOP;
+        return CMD_STOP;
+    }
+
+    // 180
+    if (PINC & (1<<2)) {
+        return CMD_180;
     }
 
     // L/R has more dominance control
