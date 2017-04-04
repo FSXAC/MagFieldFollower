@@ -1,10 +1,12 @@
 // ELEC 291 Project 2
+// #define DEBUG
 
 #include <C8051F38x.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "robot_header.h"
 
+// control systems
 volatile char pwm_count=0;
 volatile char mode = 0;
 volatile char pwm_both =0;
@@ -14,9 +16,11 @@ volatile char pwm_Right0 = 0; //p2.0
 volatile char pwm_Right1 = 0; //p2.1
 volatile char direction = 0; // 1 for back 0 for forward
 
+// states
 volatile char currentcmd = 0;
 volatile char currentstate = 1;
 
+// sonar
 unsigned char overflow_count;
 volatile float time = 0.0f;
 volatile float distance = 0.0f;
@@ -34,9 +38,6 @@ void main(void) {
    	//INITIAL STATE
    	currentstate = 1;  	//1-FORWARD, 2-BACKWARDS, 3-STOPPED, 4-DEBUGGER
    	currentcmd = 0;		//0-NO COMMAND, 1-TURN LEFT, 2-TURN RIGHT, 3-FORWARDS, 4-BACKWARDS, 5-STOP, 6-UTURN
-
-	//CLEAR PUTTY SCREEN
-	//printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 
     //INITIALIZE ADC PINS
     InitPinADC(2, 3); // Configure P2.3 as analog input (tank1)
@@ -56,8 +57,10 @@ void main(void) {
 		currentcmd = readData(currentcmd); 
 		
 		// FOR DEBUGGING
-		//printf("frontL %f frontR %f backL %f backR %f command %1d, state %1d left0 %3d left1 %3d right0 %3d right1 %3d\r", Volts_at_Pin(TANK_FL),Volts_at_Pin(TANK_FR),Volts_at_Pin(TANK_RL),Volts_at_Pin(TANK_RR), currentcmd, currentstate, pwm_Left0, pwm_Left1, pwm_Right0, pwm_Right1);
-
+		#ifdef DEBUG
+		printf("frontL %f frontR %f backL %f backR %f command %1d, state %1d left0 %3d left1 %3d right0 %3d right1 %3d\r", Volts_at_Pin(TANK_FL),Volts_at_Pin(TANK_FR),Volts_at_Pin(TANK_RL),Volts_at_Pin(TANK_RR), currentcmd, currentstate, pwm_Left0, pwm_Left1, pwm_Right0, pwm_Right1);
+		#endif
+		
 		// LED Matrix output
 		if (currentcmd == CMD_LEFT) mxDirection(0);
 		else if (currentcmd == CMD_RIGHT) mxDirection(1);
