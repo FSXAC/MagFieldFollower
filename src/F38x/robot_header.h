@@ -15,7 +15,7 @@
 
 // Command receiving
 #define COMMAND_PIN P1_1
-#define	CMDFRQ 70
+#define	CMDFRQ 64
 
 // Commands
 #define CMD_NONE 0

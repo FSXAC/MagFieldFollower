@@ -1,6 +1,6 @@
 #define F_CPU 16000000UL
 #define TX_BITS 3
-#define TX_BIT_DELAY 70
+#define TX_BIT_DELAY 50
 #define TX_PERIOD (TX_BIT_DELAY*TX_BITS*2)
 
 // include libararies
