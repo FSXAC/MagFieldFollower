@@ -32,6 +32,9 @@
 #define STOP_STATE 3
 #define DEBUG_STATE 4
 
+#define Trigger     P0_6 
+#define Echo		P0_1  
+
 
 // ===[FUNCTION PROTOTYPES]===
 // system functions
@@ -41,6 +44,8 @@ char _c51_external_startup(void);
 void Timer3us(unsigned char us);
 void waitms (unsigned int ms);
 
+void TIMER0_Init(void);
+
 // adc functions
 void InitADC(void);
 void InitPinADC(unsigned char portno, unsigned char pinno);
@@ -48,10 +53,12 @@ unsigned int ADC_at_Pin(unsigned char pin);
 float Volts_at_Pin(unsigned char pin);
 
 // robot control functions
-unsigned char readData(void);
+unsigned char readData(unsigned char prevcommand);
 void forward_backward(unsigned char direction);
 void linetrack(int forwardbackward);
 void stopcar(void);
 void turncar(int leftright);
 void uturn(void);
 void movecar (int forback, int power);
+
+void Sonar_Reading(void);
